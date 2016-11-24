@@ -42,7 +42,7 @@ namespace BesiegeCustomScene
             try
             {
                 StreamReader srd;
-                if (File.Exists(GeoTools.UIPath+"CHN.txt"))
+                if (File.Exists(GeoTools.UIPath + "CHN.txt"))
                 {
                     Debug.Log("zh-CN UI");
                     srd = File.OpenText(GeoTools.UIPath + "CHN.txt");
@@ -216,6 +216,7 @@ namespace BesiegeCustomScene
         }
         void LoadScene(string SceneName)
         {
+            HideFloorBig();
             this.ReadScene(SceneName);
             try { this.gameObject.GetComponent<MeshMod>().ReadScene(SceneName); } catch { }
             try { this.gameObject.GetComponent<TriggerMod>().ReadScene(SceneName); } catch { }
@@ -273,7 +274,7 @@ namespace BesiegeCustomScene
             for (int i = 0; i < _SceneName.Count; i++)
             {
                 if (GUILayout.Button(_ButtonName[i], style, new GUILayoutOption[0]) && !StatMaster.isSimulating)
-                {  LoadScene(_SceneName[i]); }
+                { LoadScene(_SceneName[i]); }
             }
             GUILayout.EndHorizontal();
             GUI.DragWindow(new Rect(0f, 0f, this.windowRect.width, this.windowRect.height));
@@ -285,5 +286,35 @@ namespace BesiegeCustomScene
                 this.windowRect = GUI.Window(this.windowID, this.windowRect, new GUI.WindowFunction(DoWindow), "", GUIStyle.none);
             }
         }
+
+        Vector3 fpos = new Vector3();
+        Vector3 gpos = new Vector3();
+
+        public  void HideFloorBig()
+        {
+            try
+            {
+                if (GameObject.Find("FloorGrid").transform.localScale != Vector3.zero) gpos = GameObject.Find("FloorGrid").transform.localScale;
+                GameObject.Find("FloorGrid").transform.localScale = new Vector3(0, 0, 0);
+            }
+            catch { }
+            try
+            {
+                GameObject.Find("Main Camera").GetComponent<Camera>().farClipPlane = 2500;
+            }
+            catch { }
+            try
+            {
+                if (GameObject.Find("FloorBig").transform.localScale != Vector3.zero) fpos = GameObject.Find("FloorBig").transform.localScale;
+                GameObject.Find("FloorBig").transform.localScale = new Vector3(0, 0, 0);
+            }
+            catch { }
+            try
+            {
+                GameObject.Find("WORLD BOUNDARIES").transform.localScale = new Vector3(0, 0, 0);
+            }
+            catch { }
+        }
+
     }
 }
