@@ -10,7 +10,7 @@ namespace BesiegeCustomScene
     {
         public int Index = -1;
         public bool entry = false;
-        void start()
+        void Start()
         {
 
         }

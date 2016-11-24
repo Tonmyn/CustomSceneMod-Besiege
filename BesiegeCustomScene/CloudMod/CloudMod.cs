@@ -9,7 +9,7 @@ namespace BesiegeCustomScene
 {
     class CloudMod : MonoBehaviour
     {
-        void start()
+        void Start()
         {
 
         }

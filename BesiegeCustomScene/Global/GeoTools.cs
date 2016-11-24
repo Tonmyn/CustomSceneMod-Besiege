@@ -342,7 +342,7 @@ namespace BesiegeCustomScene
             }
             catch
             {
-                Debug.Log("Besiege_Sky_and_Cloud_Mod==> File open failed");
+                Debug.Log("File open failed");
                 return null;
             }
             try
@@ -439,13 +439,13 @@ namespace BesiegeCustomScene
                 }
                 else
                 {
-                    Debug.Log("Besiege_Sky_and_Cloud_Mod==>No image in folder or image could not be used!");
+                    Debug.Log("No image in folder or image could not be used!");
                     return GameObject.Find("FloorBig").GetComponent<Renderer>().material.mainTexture;
                 }
             }
             catch
             {
-                Debug.Log("Besiege_Sky_and_Cloud_Mod==>No image in folder,use white image instead !");
+                Debug.Log("No image in folder,use white image instead !");
                 return GameObject.Find("FloorBig").GetComponent<Renderer>().material.mainTexture;
             }
         }
@@ -497,7 +497,7 @@ namespace BesiegeCustomScene
                 Texture2D te2 = (Texture2D)LoadTexture(HeightMap);
                 if (te2.width < u || te2.height < v)
                 {
-                    Debug.Log("Besiege_Sky_and_Cloud_Mod==>ResetBigFloor Failed ! Need a larger Height map！");
+                    Debug.Log("ResetBigFloor Failed ! Need a larger Height map！");
                     u = te2.width; v = te2.height;
                 }
                 List<Vector3> newVertices = new List<Vector3>();
@@ -530,16 +530,16 @@ namespace BesiegeCustomScene
             }
             catch (System.Exception ex)
             {
-                Debug.Log("Besiege_Sky_and_Cloud_Mod==>ResetBigFloor Failed ! Please Open dev to search your FloorBig！");
+                Debug.Log("ResetBigFloor Failed ! Please Open dev to search your FloorBig！");
                 Debug.Log(ex.ToString());
                 return null;
             }
         }
-        public static void PrintAssets(string name)
+        public static void PrintAssets()
         {
             try
             {
-                WWW iteratorVariable0 = new WWW("file:///" + Application.dataPath + name);
+                WWW iteratorVariable0 = new WWW("file:///" + GeoTools.ShaderPath+"Water.unity3d");
                 AssetBundle iteratorVariable1 = iteratorVariable0.assetBundle;
                 string[] names = iteratorVariable1.GetAllAssetNames();
                 for (int i = 0; i < names.Length; i++)

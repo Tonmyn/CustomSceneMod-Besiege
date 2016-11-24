@@ -10,7 +10,7 @@ namespace BesiegeCustomScene
 {
     public class TriggerMod : MonoBehaviour
     {
-        void start()
+        void Start()
         {
         }
         void OnDisable()

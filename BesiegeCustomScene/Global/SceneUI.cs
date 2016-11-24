@@ -12,7 +12,6 @@ namespace BesiegeCustomScene
     {
         private bool isSimulating = false;
         //UI
-        public string DefaultSceneName = "SteelHill";
         private int _FontSize = 15;
         private Rect windowRect = new Rect(15f, Screen.height - 95f, 800f, 50f);
         private int windowID = spaar.ModLoader.Util.GetWindowID();
@@ -43,15 +42,15 @@ namespace BesiegeCustomScene
             try
             {
                 StreamReader srd;
-                if (File.Exists(Application.dataPath + "/Mods/BesiegeCustomScene/UI/CHN.txt"))
+                if (File.Exists(GeoTools.UIPath+"CHN.txt"))
                 {
                     Debug.Log("zh-CN UI");
-                    srd = File.OpenText(Application.dataPath + "/Mods/BesiegeCustomScene/UI/CHN.txt");
+                    srd = File.OpenText(GeoTools.UIPath + "CHN.txt");
                 }
                 else
                 {
                     Debug.Log("en-US UI");
-                    srd = File.OpenText(Application.dataPath + "/Mods/BesiegeCustomScene/UI/EN.txt");
+                    srd = File.OpenText(GeoTools.UIPath + "EN.txt");
                 }
                 Debug.Log(Screen.width.ToString() + "*" + Screen.height.ToString());
                 while (srd.Peek() != -1)
@@ -274,7 +273,7 @@ namespace BesiegeCustomScene
             for (int i = 0; i < _SceneName.Count; i++)
             {
                 if (GUILayout.Button(_ButtonName[i], style, new GUILayoutOption[0]) && !StatMaster.isSimulating)
-                { DefaultSceneName = _SceneName[i]; LoadScene(DefaultSceneName); }
+                {  LoadScene(_SceneName[i]); }
             }
             GUILayout.EndHorizontal();
             GUI.DragWindow(new Rect(0f, 0f, this.windowRect.width, this.windowRect.height));

@@ -81,15 +81,13 @@ namespace BesiegeCustomScene
             try
             {
                 StreamReader srd;
-                string Ci = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
-                string ParentPath = Directory.GetParent(Application.dataPath).FullName;
-                if (Ci == "zh-CN" || File.Exists(ParentPath + "/3DMGAME.ini"))
+                if (File.Exists(GeoTools.UIPath + "CHN.txt"))
                 {
-                    srd = File.OpenText(Application.dataPath + "/Mods/Blocks/UI/CHN.txt");
+                    srd = File.OpenText(GeoTools.UIPath + "CHN.txt");
                 }
                 else
                 {
-                    srd = File.OpenText(Application.dataPath + "/Mods/Blocks/UI/EN.txt");
+                    srd = File.OpenText(GeoTools.UIPath + "EN.txt");
                 }
                 //Debug.Log(Ci + "  " + Screen.width.ToString() + "*" + Screen.height.ToString());
                 while (srd.Peek() != -1)

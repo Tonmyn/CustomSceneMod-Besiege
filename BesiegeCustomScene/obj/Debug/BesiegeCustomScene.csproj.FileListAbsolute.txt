@@ -6,3 +6,5 @@ D:\我的文档\GitHub\BesiegeCustomScene\BesiegeCustomScene\obj\Debug\BesiegeCu
 D:\我的文档\GitHub\BesiegeCustomScene\BesiegeCustomScene\obj\Debug\BesiegeCustomScene.pdb
 D:\Program Files (x86)\Besiege0.40\Besiege_Data\Mods\BesiegeCustomScene.dll
 D:\Program Files (x86)\Besiege0.40\Besiege_Data\Mods\BesiegeCustomScene.pdb
+C:\Users\Administrator\Documents\GitHub\BesiegeCustomScene\BesiegeCustomScene\obj\Debug\BesiegeCustomScene.dll
+C:\Users\Administrator\Documents\GitHub\BesiegeCustomScene\BesiegeCustomScene\obj\Debug\BesiegeCustomScene.pdb

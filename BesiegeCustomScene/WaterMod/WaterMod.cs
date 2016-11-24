@@ -9,10 +9,15 @@ namespace BesiegeCustomScene
 {
     class WaterMod: MonoBehaviour
     {
-        void start()
+        void Start()
         {
-            WWW iteratorVariable0 = new WWW("file:///" + Application.dataPath + "/Mods/BesiegeCustomScene/Shader/Water.unity3d.dll");
+            WWW iteratorVariable0 = new WWW("file:///" + GeoTools.ShaderPath+"Water.unity3d");
             iteratorVariable1 = iteratorVariable0.assetBundle;
+            string[] names = iteratorVariable1.GetAllAssetNames();
+            for (int i = 0; i < names.Length; i++)
+            {
+                Debug.Log(names[i]);
+            }
         }
         void OnDisable()
         {
@@ -110,9 +115,10 @@ namespace BesiegeCustomScene
                 if (waterScale.z < 0) waterScale.z = 0;
                 if (waterScale.z > 9) waterScale.z = 9;
                 Mwater = new GameObject[((int)waterScale.x * 2 + 1) * ((int)waterScale.z * 2 + 1)];
-                Mwater[0] = (GameObject)Instantiate(iteratorVariable1.LoadAsset("water4example (advanced)"), waterLocation, new Quaternion());
+                Mwater[0] = (GameObject)Instantiate(iteratorVariable1.LoadAsset("water4example (advanced)",typeof(GameObject)), waterLocation, new Quaternion());             
                 Mwater[0].name = "water0";
-                GeoTools.ResetWaterMaterial(ref Mwater[0].GetComponent<WaterBase>().sharedMaterial);
+               //Debug.Log(Mwater[0].GetComponent<WaterBase>().sharedMaterial.name);
+               GeoTools.ResetWaterMaterial(ref Mwater[0].GetComponent<WaterBase>().sharedMaterial);
                 Mwater[0].transform.localScale = MwaterScale;
                 int index = 1;
                 for (float k = -waterScale.x; k <= waterScale.x; k++)
@@ -144,7 +150,10 @@ namespace BesiegeCustomScene
             Debug.Log("ClearWater");
             for (int i = 0; i < Mwater.Length; i++)
             {
-                Destroy(GameObject.Find("water" + i.ToString() + "ReflectionMain Camera"));
+                try {
+                    Destroy(GameObject.Find("water" + i.ToString() + "ReflectionMain Camera"));
+                }
+                catch { }
                 Destroy(Mwater[i]);
             }
         }
@@ -181,7 +190,7 @@ namespace BesiegeCustomScene
             }
             catch
             {
-                Debug.Log("LoadFloater Failed");
+                Debug.Log("ClearFloater Failed");
             }
         }
     }

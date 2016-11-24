@@ -6,7 +6,7 @@ namespace BesiegeCustomScene
 {
     class MeshMod : MonoBehaviour
     {
-        void start()
+        void Start()
         {
 
         }
