@@ -7,7 +7,6 @@ using UnityEngine;
 
 namespace BesiegeCustomScene
 {
-
     public class SceneUI : MonoBehaviour
     {
         private bool isSimulating = false;
@@ -16,13 +15,11 @@ namespace BesiegeCustomScene
         private Rect windowRect = new Rect(15f, Screen.height - 95f, 800f, 50f);
         private int windowID = spaar.ModLoader.Util.GetWindowID();
         private bool ShowGUI = true;
-        List<string> _ButtonName = new List<string>();
-        List<string> _SceneName = new List<string>();
-        string ScenePath = GeoTools.ScenePath;
-
+        private List<string> _ButtonName = new List<string>();
+        private List<string> _SceneName = new List<string>();
+        private string ScenePath = GeoTools.ScenePath;
         KeyCode _DisplayUI = KeyCode.F9;
         KeyCode _ReloadUI = KeyCode.F5;
-
         void DefaultUI()
         {
             _ButtonName.Clear(); _SceneName.Clear();
@@ -206,7 +203,6 @@ namespace BesiegeCustomScene
                 return;
             }
         }
-
         void ClearScene()
         {
             this.gameObject.GetComponent<MeshMod>().ClearMeshes();
@@ -286,10 +282,11 @@ namespace BesiegeCustomScene
                 this.windowRect = GUI.Window(this.windowID, this.windowRect, new GUI.WindowFunction(DoWindow), "", GUIStyle.none);
             }
         }
-
-        Vector3 fpos = new Vector3();
-        Vector3 gpos = new Vector3();
-
+        /// <summary>
+        /// ////////////////////
+        /// </summary>
+        private Vector3 fpos = new Vector3();
+        private Vector3 gpos = new Vector3();
         public  void HideFloorBig()
         {
             try
@@ -315,6 +312,23 @@ namespace BesiegeCustomScene
             }
             catch { }
         }
-
+        public  void UnhideFloorBig()
+        {
+            try
+            {
+                if (fpos != Vector3.zero) GameObject.Find("FloorBig").transform.localScale = fpos;
+            }
+            catch { }
+            try
+            {
+                if (fpos != Vector3.zero) GameObject.Find("FloorGrid").transform.localScale = gpos;
+            }
+            catch { }
+            try
+            {
+                GameObject.Find("Main Camera").GetComponent<Camera>().farClipPlane = 1500;
+            }
+            catch { }
+        }
     }
 }
