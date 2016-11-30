@@ -539,7 +539,7 @@ namespace BesiegeCustomScene
         {
             try
             {
-                WWW iteratorVariable0 = new WWW("file:///" + GeoTools.ShaderPath+"Water.unity3d");
+                WWW iteratorVariable0 = new WWW("file:///" + GeoTools.ShaderPath + "Water.unity3d");
                 AssetBundle iteratorVariable1 = iteratorVariable0.assetBundle;
                 string[] names = iteratorVariable1.GetAllAssetNames();
                 for (int i = 0; i < names.Length; i++)
@@ -620,6 +620,26 @@ namespace BesiegeCustomScene
             {
                 Debug.Log(ex.ToString());
             }
+        }
+
+        public static void PrintMaterial(ref Material mat)
+        {
+            Debug.Log(mat.shaderKeywords.Length);
+            for (int i = 0; i < mat.shaderKeywords.Length; i++)
+            {
+                Debug.Log(mat.shaderKeywords[i]);
+            }
+
+        }
+        public static void PrintShader()
+        {
+            Material[] shaders = GameObject.FindObjectsOfType<Material>();
+            Debug.Log(shaders.Length);
+            for (int i = 0; i < shaders.Length; i++)
+            {
+                Debug.Log(shaders[i].shader.name);
+            }
+
         }
     }
 }

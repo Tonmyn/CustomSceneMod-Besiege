@@ -11,13 +11,16 @@ namespace BesiegeCustomScene
     {
         void Start()
         {
-            WWW iteratorVariable0 = new WWW("file:///" + GeoTools.ShaderPath+"Water.unity3d");
+            WWW iteratorVariable0 = new WWW("file:///" + GeoTools.ShaderPath+"Water.unity3d.dll");
             iteratorVariable1 = iteratorVariable0.assetBundle;
+           /* 
             string[] names = iteratorVariable1.GetAllAssetNames();
             for (int i = 0; i < names.Length; i++)
             {
                 Debug.Log(names[i]);
             }
+            */
+           // GeoTools.PrintShader();
         }
         void OnDisable()
         {
@@ -27,7 +30,25 @@ namespace BesiegeCustomScene
         {
             ClearWater();
         }
+        void FixedUpdate()
+        {
+            if (waterTemp == null)
+            {
+                waterTemp = (GameObject)UnityEngine.Object.Instantiate(GameObject.Find("Water"));
+                Debug.Log(waterTemp.GetComponent<MeshRenderer>().material.shader.name);      
+                waterTemp.name = "waterTemp";
+                 Debug.Log(waterTemp.GetComponent<MeshRenderer>().material.shaderKeywords.Length);
+                for (int i = 0; i < waterTemp.GetComponent<MeshRenderer>().material.shaderKeywords.Length; i++)
+                {
+                    Debug.Log(waterTemp.GetComponent<MeshRenderer>().material.shaderKeywords[i]);
+                }
+                DontDestroyOnLoad(waterTemp);
+                Debug.Log("Get Water Temp Successfully");
+                waterTemp.SetActive(false);
+            }
+        }
         /// ////////////////////////
+        private GameObject waterTemp=null;
         string ScenePath = GeoTools.ScenePath;
         private AssetBundle iteratorVariable1;
         private GameObject[] Mwater;
