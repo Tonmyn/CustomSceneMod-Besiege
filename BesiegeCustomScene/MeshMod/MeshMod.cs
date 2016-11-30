@@ -153,6 +153,8 @@ namespace BesiegeCustomScene
                             else if (chara[2] == "texture")
                             {
                                 meshes[i].GetComponent<MeshRenderer>().material.mainTexture = GeoTools.LoadTexture(chara[3]);
+                              //  Debug.Log(meshes[i].GetComponent<MeshRenderer>().material.GetFloat("_Glossiness"));
+                                meshes[i].GetComponent<MeshRenderer>().material.SetFloat("_Glossiness", 0);
                             }
                             else if (chara[2] == "stexture")
                             {
@@ -177,7 +179,7 @@ namespace BesiegeCustomScene
                             }
                             else if (chara[2] == "settexture")
                             {
-                                meshes[i].GetComponent<MeshRenderer>().material.SetTexture(chara[3], GeoTools.LoadTexture(chara[4]));
+                                meshes[i].GetComponent<MeshRenderer>().material.SetTexture(chara[3], GeoTools.LoadTexture(chara[4]));  
                             }
                             else if (chara[2] == "setcolor")
                             {
