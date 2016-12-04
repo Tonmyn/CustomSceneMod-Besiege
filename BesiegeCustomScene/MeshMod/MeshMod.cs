@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
@@ -24,7 +25,7 @@ namespace BesiegeCustomScene
         string ScenePath = GeoTools.ScenePath;
         private GameObject[] meshes;
         private int MeshSize = 0;
-       public void ReadScene(string SceneName)
+        public void ReadScene(string SceneName)
         {
             try
             {
@@ -48,6 +49,62 @@ namespace BesiegeCustomScene
                             {
                                 this.MeshSize = Convert.ToInt32(chara[2]);
                                 LoadMesh();
+                            }
+                        }
+                        else if (chara[0] == "MeshLargeObj")
+                        {
+                            string[] argus = chara[1].Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
+                            if (argus[0] == "mesh")
+                            {
+                                string[] argus2 = chara[2].Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
+                                string[] argus3 = chara[3].Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
+                                string[] argus4 = chara[4].Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
+                                Vector3 position = new Vector3(Convert.ToInt32(argus3[1]), Convert.ToInt32(argus3[2]), Convert.ToInt32(argus3[3]));
+                                Vector3 scale = new Vector3(Convert.ToInt32(argus4[1]), Convert.ToInt32(argus4[2]), Convert.ToInt32(argus4[3]));
+                                List<Mesh> meshList = GeoTools.MeshFromLargeObj(argus[1], Convert.ToInt32(argus[2]));
+                                if (meshList.Count > 0)
+                                {
+                                    for (int k = 0; k < meshList.Count; k++)
+                                    {
+                                        for (int j = 0; j < meshes.Length; j++)
+                                        {
+                                            Mesh mesh1 = meshes[j].GetComponent<MeshFilter>().mesh;
+                                            if (mesh1 == null || mesh1.vertices.Length <= 0)
+                                            {
+                                                meshes[j].GetComponent<MeshFilter>().mesh = meshList[k];
+                                                meshes[j].transform.position = position;
+                                                meshes[j].transform.localScale = scale;
+                                                meshes[j].GetComponent<MeshRenderer>().material.mainTexture = GeoTools.LoadTexture(argus2[1]);
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            else if (argus[0] == "meshcollider")
+                            {
+                                string[] argus2 = chara[2].Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
+                                string[] argus3 = chara[3].Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
+                                Vector3 position = new Vector3(Convert.ToInt32(argus2[1]), Convert.ToInt32(argus2[2]), Convert.ToInt32(argus2[3]));
+                                Vector3 scale = new Vector3(Convert.ToInt32(argus3[1]), Convert.ToInt32(argus3[2]), Convert.ToInt32(argus3[3]));
+                                List<Mesh> meshList = GeoTools.MeshFromLargeObj(argus[1], Convert.ToInt32(argus[2]));
+                                if (meshList.Count > 0)
+                                {
+                                    for (int k = 0; k < meshList.Count; k++)
+                                    {
+                                        for (int j = 0; j < meshes.Length; j++)
+                                        {
+                                            Mesh mesh1 = meshes[j].GetComponent<MeshCollider>().sharedMesh;
+                                            if (mesh1 == null || mesh1.vertices.Length <= 0)
+                                            {
+                                                meshes[j].GetComponent<MeshCollider>().sharedMesh = meshList[k];
+                                                meshes[j].transform.position = position;
+                                                meshes[j].transform.localScale = scale;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                         else if (chara[0] == "Mesh")
@@ -153,7 +210,7 @@ namespace BesiegeCustomScene
                             else if (chara[2] == "texture")
                             {
                                 meshes[i].GetComponent<MeshRenderer>().material.mainTexture = GeoTools.LoadTexture(chara[3]);
-                              //  Debug.Log(meshes[i].GetComponent<MeshRenderer>().material.GetFloat("_Glossiness"));
+                                //  Debug.Log(meshes[i].GetComponent<MeshRenderer>().material.GetFloat("_Glossiness"));
                                 meshes[i].GetComponent<MeshRenderer>().material.SetFloat("_Glossiness", 0);
                             }
                             else if (chara[2] == "stexture")
@@ -179,7 +236,7 @@ namespace BesiegeCustomScene
                             }
                             else if (chara[2] == "settexture")
                             {
-                                meshes[i].GetComponent<MeshRenderer>().material.SetTexture(chara[3], GeoTools.LoadTexture(chara[4]));  
+                                meshes[i].GetComponent<MeshRenderer>().material.SetTexture(chara[3], GeoTools.LoadTexture(chara[4]));
                             }
                             else if (chara[2] == "setcolor")
                             {
@@ -334,7 +391,7 @@ namespace BesiegeCustomScene
             {
                 ClearMeshes();
                 if (MeshSize > 100) MeshSize = 100;
-                if (MeshSize < 0) MeshSize = 0;
+                if (MeshSize < 0) { MeshSize = 0; return; }
                 if (MeshSize > 0)
                 {
                     meshes = new GameObject[MeshSize];
