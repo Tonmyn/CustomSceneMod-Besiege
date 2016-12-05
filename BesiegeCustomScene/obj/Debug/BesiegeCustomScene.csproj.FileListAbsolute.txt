@@ -4,3 +4,7 @@ D:\我的文档\GitHub\BesiegeCustomScene\BesiegeCustomScene\bin\Debug\Assembly-
 D:\我的文档\GitHub\BesiegeCustomScene\BesiegeCustomScene\bin\Debug\SpaarModLoader.dll
 C:\Users\Administrator\Documents\GitHub\BesiegeCustomScene\BesiegeCustomScene\obj\Debug\BesiegeCustomScene.dll
 C:\Users\Administrator\Documents\GitHub\BesiegeCustomScene\BesiegeCustomScene\obj\Debug\BesiegeCustomScene.pdb
+D:\Program Files (x86)\Besiege0.40\Besiege_Data\Mods\BesiegeCustomScene.dll
+D:\Program Files (x86)\Besiege0.40\Besiege_Data\Mods\BesiegeCustomScene.pdb
+D:\我的文档\GitHub\BesiegeCustomScene\BesiegeCustomScene\obj\Debug\BesiegeCustomScene.dll
+D:\我的文档\GitHub\BesiegeCustomScene\BesiegeCustomScene\obj\Debug\BesiegeCustomScene.pdb

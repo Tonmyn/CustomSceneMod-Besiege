@@ -166,6 +166,8 @@ namespace BesiegeCustomScene
         }
         public void ClearWater()
         {
+            Debug.Log("ClearFloater");
+            ClearFloater();
             if (Mwater == null) return;
             if (Mwater.Length <= 0) return;
             Debug.Log("ClearWater");

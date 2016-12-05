@@ -12,7 +12,7 @@ namespace BesiegeCustomScene
         private bool isSimulating = false;
         //UI
         private int _FontSize = 15;
-        private Rect windowRect = new Rect(15f, Screen.height - 95f, 800f, 50f);
+        private Rect windowRect = new Rect(15f, Screen.height - 95f, 500f, 50f);
         private int windowID = spaar.ModLoader.Util.GetWindowID();
         private bool ShowGUI = true;
         private List<string> _ButtonName = new List<string>();
@@ -25,7 +25,7 @@ namespace BesiegeCustomScene
             _ButtonName.Clear(); _SceneName.Clear();
             _FontSize = 15;
             ShowGUI = true;
-            windowRect = new Rect(15f, Screen.height - 95f, 800f, 50f);
+            windowRect = new Rect(15f, Screen.height - 95f, 500f, 50f);
             _DisplayUI = KeyCode.F9;
             _ReloadUI = KeyCode.F5;
         }
@@ -205,17 +205,33 @@ namespace BesiegeCustomScene
         }
         void ClearScene()
         {
-            this.gameObject.GetComponent<MeshMod>().ClearMeshes();
-            this.gameObject.GetComponent<TriggerMod>().ClearTrigger();
-            this.gameObject.GetComponent<WaterMod>().ClearWater();
-            this.gameObject.GetComponent<CloudMod>().ClearCloud();
+            try
+            {
+                this.gameObject.GetComponent<MeshMod>().ClearMeshes();
+            }
+            catch { }
+            try
+            {
+                this.gameObject.GetComponent<TriggerUI>().ClearTrigger();
+            }
+            catch { }
+            try
+            {
+                this.gameObject.GetComponent<WaterMod>().ClearWater();
+            }
+            catch { }
+            try
+            {
+                this.gameObject.GetComponent<CloudMod>().ClearCloud();
+            }
+            catch { }
         }
         void LoadScene(string SceneName)
         {
             HideFloorBig();
             this.ReadScene(SceneName);
             try { this.gameObject.GetComponent<MeshMod>().ReadScene(SceneName); } catch { }
-            try { this.gameObject.GetComponent<TriggerMod>().ReadScene(SceneName); } catch { }
+            try { this.gameObject.GetComponent<TriggerUI>().ReadScene(SceneName); } catch { }
             try { this.gameObject.GetComponent<WaterMod>().ReadScene(SceneName); } catch { }
             try { this.gameObject.GetComponent<CloudMod>().ReadScene(SceneName); } catch { }
         }
@@ -224,11 +240,11 @@ namespace BesiegeCustomScene
         {
             if (StatMaster.isSimulating && isSimulating == false)
             {
-                isSimulating = true;
+                isSimulating = true;this.ShowGUI = false;
             }
             else if (!StatMaster.isSimulating && isSimulating == true)
             {
-                isSimulating = false;
+                isSimulating = false;this.ShowGUI = true;
             }
         }
         void Update()
@@ -287,7 +303,7 @@ namespace BesiegeCustomScene
         /// </summary>
         private Vector3 fpos = new Vector3();
         private Vector3 gpos = new Vector3();
-        public  void HideFloorBig()
+        public void HideFloorBig()
         {
             try
             {
@@ -312,7 +328,7 @@ namespace BesiegeCustomScene
             }
             catch { }
         }
-        public  void UnhideFloorBig()
+        public void UnhideFloorBig()
         {
             try
             {

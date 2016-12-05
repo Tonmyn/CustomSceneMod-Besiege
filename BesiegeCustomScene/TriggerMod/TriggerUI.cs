@@ -8,10 +8,11 @@ using UnityEngine;
 
 namespace BesiegeCustomScene
 {
-    public class TriggerMod : MonoBehaviour
+    public class TriggerUI : MonoBehaviour
     {
         void Start()
         {
+            ReadUI();
         }
         void OnDisable()
         {
@@ -21,10 +22,177 @@ namespace BesiegeCustomScene
         {
             ClearTrigger();
         }
+        void OnGUI()
+        {
+            if (ShowGUI)
+            {
+                this.windowRect = GUI.Window(this.windowID, this.windowRect, new GUI.WindowFunction(DoWindow), "", GUIStyle.none);
+            }
+        }
+        void DoWindow(int windowID)
+        {
+            GUIStyle style = new GUIStyle
+            {
+                normal = { textColor = Color.white },
+                alignment = TextAnchor.MiddleLeft,
+                active = { background = Texture2D.whiteTexture, textColor = Color.black },
+                margin = { top = 5 },
+                fontSize = _FontSize
+            };
+            GUIStyle style1 = new GUIStyle
+            {
+                normal = { textColor = Color.white },
+                alignment = TextAnchor.MiddleRight,
+                active = { background = Texture2D.whiteTexture, textColor = Color.black },
+                margin = { top = 5 },
+                fontSize = _FontSize
+            };
+            GUILayout.BeginVertical(new GUILayoutOption[0]);
+
+            GUILayout.BeginHorizontal(new GUILayoutOption[0]);
+            if (GUILayout.Button("[碰撞器]", style, new GUILayoutOption[0]))
+            {
+                TriggerIndex = -1; TriggerIndex2 = -1;
+            }
+            if (meshtriggers != null)
+            {
+                GUILayout.Label((TriggerIndex + 1).ToString() + "/" + meshtriggers.Length.ToString(), style1, new GUILayoutOption[0]);
+            }
+            else
+            {
+                GUILayout.Label((TriggerIndex + 1).ToString() + "/0", style1, new GUILayoutOption[0]);
+            }
+            GUILayout.EndHorizontal();
+
+            GUILayout.EndVertical();
+            GUI.DragWindow(new Rect(0f, 0f, this.windowRect.width, this.windowRect.height));
+        }
+        void FixedUpdate()
+        {
+            if (!ShowGUI) return;
+            if (StatMaster.isSimulating)
+            {
+                if ( TriggerIndex == 0&& TriggerIndex2 == -1)
+                {
+                    if (TimeUI._TimerSwith == false)
+                    {
+                        TimeUI._TimerSwith = true;
+                        TimeUI._MStartTime = DateTime.Now;
+                    }
+                }
+                if (TriggerIndex == meshtriggers.Length - 1 && TriggerIndex2 != TriggerIndex)
+                {
+                    TimeUI._TimerSwith = false;
+                }
+                TriggerIndex2 = TriggerIndex;
+            }
+            else
+            {
+                TriggerIndex = -1; TriggerIndex2 = -1;
+            }
+        }
+        void Update()
+        {
+            if (Input.GetKeyDown(_DisplayUI) && Input.GetKey(KeyCode.LeftControl))
+            {
+                ShowGUI = !ShowGUI;
+            }
+            if (Input.GetKeyDown(_ReloadUI) && Input.GetKey(KeyCode.LeftControl))
+            {
+                ReadUI();
+            }
+        }
         ////////////////////////////
         private GameObject[] meshtriggers;
+        public static int TriggerIndex = -1;
+          int TriggerIndex2 = -1;
         private int TriggerSize = 0;
-         string ScenePath = GeoTools.ScenePath;
+        public bool ShowGUI = false;
+        private int _FontSize = 15;
+        KeyCode _DisplayUI = KeyCode.F10;
+        KeyCode _ReloadUI = KeyCode.F5;
+        private int windowID = spaar.ModLoader.Util.GetWindowID();
+        private Rect windowRect = new Rect(15f, 234f, 150f, 50f);
+        void DefaultUI()
+        {
+            _FontSize = 15;
+            ShowGUI = false;
+            windowRect = new Rect(15f, 234f, 150f, 50f);
+            _DisplayUI = KeyCode.F10;
+            _ReloadUI = KeyCode.F5;
+        }
+        void ReadUI()
+        {
+            DefaultUI();
+            //Debug.Log(Screen.currentResolution.ToString());
+            try
+            {
+                StreamReader srd;
+                if (File.Exists(GeoTools.UIPath + "CHN.txt"))
+                {
+                    srd = File.OpenText(GeoTools.UIPath + "CHN.txt");
+                }
+                else
+                {
+                    srd = File.OpenText(GeoTools.UIPath + "EN.txt");
+                }
+                //Debug.Log(Ci + "  " + Screen.width.ToString() + "*" + Screen.height.ToString());
+                while (srd.Peek() != -1)
+                {
+                    string str = srd.ReadLine();
+                    string[] chara = str.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+                    if (chara.Length > 2)
+                    {
+                        if (chara[0] == "_Trigger")
+                        {
+                            if (chara[1] == "display_UI")
+                            {
+                                KeyCode outputkey;
+                                if (GeoTools.StringToKeyCode(chara[2], out outputkey)) _DisplayUI = outputkey;
+                            }
+                            else if (chara[1] == "reload_UI")
+                            {
+                                KeyCode outputkey;
+                                if (GeoTools.StringToKeyCode(chara[2], out outputkey)) _ReloadUI = outputkey;
+                            }
+                        }
+                        else if (chara[0] == Screen.width.ToString() + "*" + Screen.height.ToString() + "_Trigger")
+                        {
+                            if (chara[1] == "fontsize")
+                            {
+                                _FontSize = Convert.ToInt32(chara[2]);
+                            }
+                            else if (chara[1] == "window_poistion")
+                            {
+                                windowRect.x = Convert.ToSingle(chara[2]);
+                                windowRect.y = Convert.ToSingle(chara[3]);
+                            }
+                            else if (chara[1] == "window_scale")
+                            {
+                                windowRect.width = Convert.ToSingle(chara[2]);
+                                windowRect.height = Convert.ToSingle(chara[3]);
+                                windowRect.y += windowRect.height + 10;
+                            }
+                            else if (chara[1] == "show_on_start")
+                            {
+                                if (chara[2] == "0") ShowGUI = false;
+                                else ShowGUI = true;
+                            }
+                        }
+                    }
+                }
+                srd.Close();
+                Debug.Log("TriggerUISetting Completed!");
+            }
+            catch (Exception ex)
+            {
+                Debug.Log("TriggerUISetting Failed!");
+                Debug.Log(ex.ToString());
+                DefaultUI();
+                return;
+            }
+        }
+        string ScenePath = GeoTools.ScenePath;
         public void ReadScene(string SceneName)
         {
             try
@@ -164,7 +332,7 @@ namespace BesiegeCustomScene
                 if (TriggerSize > 100) TriggerSize = 100;
                 if (TriggerSize < 0) TriggerSize = 0;
                 if (TriggerSize > 0)
-                {           
+                {
                     meshtriggers = new GameObject[TriggerSize];
                     for (int i = 0; i < meshtriggers.Length; i++)
                     {
@@ -172,6 +340,7 @@ namespace BesiegeCustomScene
                         meshtriggers[i].GetComponent<MeshCollider>().sharedMesh.Clear();
                         meshtriggers[i].GetComponent<MeshFilter>().mesh.Clear();
                         meshtriggers[i].AddComponent<MTrigger>();
+                        meshtriggers[i].GetComponent<MTrigger>().Index = i;
                         meshtriggers[i].name = "_meshtrigger" + i.ToString();
                     }
                 }

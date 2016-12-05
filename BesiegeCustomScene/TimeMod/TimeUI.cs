@@ -44,7 +44,9 @@ namespace BesiegeCustomScene
         private string MTime = "";
 
         private string _timerUI = "Timer";
-        private DateTime _MStartTime; bool _TimerSwith = false;
+        public static DateTime _MStartTime;
+        //control timer by other component
+        public static bool _TimerSwith = false;
         private string MTimer = "";
 
         void DefaultUI()

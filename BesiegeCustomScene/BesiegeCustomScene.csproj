@@ -64,7 +64,7 @@
     <Compile Include="Global\SceneUI.cs" />
     <Compile Include="Global\BesiegeCustomScene.cs" />
     <Compile Include="TimeMod\TimeUI.cs" />
-    <Compile Include="TriggerMod\TriggerMod.cs" />
+    <Compile Include="TriggerMod\TriggerUI.cs" />
     <Compile Include="WaterMod\WaterMod.cs" />
   </ItemGroup>
   <ItemGroup />

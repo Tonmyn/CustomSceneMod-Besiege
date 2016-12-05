@@ -9,7 +9,6 @@ namespace BesiegeCustomScene
     public class MTrigger : MonoBehaviour
     {
         public int Index = -1;
-        public bool entry = false;
         void Start()
         {
 
@@ -18,8 +17,9 @@ namespace BesiegeCustomScene
         {
             if (StatMaster.isSimulating)
             {
-                entry = true;
+                if(TriggerUI.TriggerIndex== this.Index-1)TriggerUI.TriggerIndex++;
             }
+
         }
     }
 }
