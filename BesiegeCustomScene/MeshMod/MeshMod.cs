@@ -53,12 +53,12 @@ namespace BesiegeCustomScene
                         }
                         else if (chara[0] == "MeshLargeObj")
                         {
-                            string[] argus = chara[1].Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
+                            string[] argus = chara[1].Split(new string[] { "|" }, StringSplitOptions.RemoveEmptyEntries);
                             if (argus[0] == "mesh")
                             {
-                                string[] argus2 = chara[2].Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
-                                string[] argus3 = chara[3].Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
-                                string[] argus4 = chara[4].Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
+                                string[] argus2 = chara[2].Split(new string[] { "|" }, StringSplitOptions.RemoveEmptyEntries);
+                                string[] argus3 = chara[3].Split(new string[] { "|" }, StringSplitOptions.RemoveEmptyEntries);
+                                string[] argus4 = chara[4].Split(new string[] { "|" }, StringSplitOptions.RemoveEmptyEntries);
                                 Vector3 position = new Vector3(Convert.ToInt32(argus3[1]), Convert.ToInt32(argus3[2]), Convert.ToInt32(argus3[3]));
                                 Vector3 scale = new Vector3(Convert.ToInt32(argus4[1]), Convert.ToInt32(argus4[2]), Convert.ToInt32(argus4[3]));
                                 List<Mesh> meshList = GeoTools.MeshFromLargeObj(argus[1], Convert.ToInt32(argus[2]));
@@ -74,6 +74,9 @@ namespace BesiegeCustomScene
                                                 meshes[j].GetComponent<MeshFilter>().mesh = meshList[k];
                                                 meshes[j].transform.position = position;
                                                 meshes[j].transform.localScale = scale;
+                                                if(argus2.Length>=3)  meshes[j].GetComponent<MeshRenderer>().material.shader = Shader.Find(argus2[2]);                         
+                                               // if (argus2.Length >= 4) meshes[j].GetComponent<MeshRenderer>().material.SetFloat("_Mode", Convert.ToSingle(argus2[3]));
+                                               // Debug.Log("meshes" + j.ToString() + " RenderingMode: " + meshes[j].GetComponent<MeshRenderer>().material.GetFloat("_Mode"));
                                                 meshes[j].GetComponent<MeshRenderer>().material.mainTexture = GeoTools.LoadTexture(argus2[1]);
                                                 break;
                                             }
@@ -83,8 +86,8 @@ namespace BesiegeCustomScene
                             }
                             else if (argus[0] == "meshcollider")
                             {
-                                string[] argus2 = chara[2].Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
-                                string[] argus3 = chara[3].Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
+                                string[] argus2 = chara[2].Split(new string[] { "|" }, StringSplitOptions.RemoveEmptyEntries);
+                                string[] argus3 = chara[3].Split(new string[] { "|" }, StringSplitOptions.RemoveEmptyEntries);
                                 Vector3 position = new Vector3(Convert.ToInt32(argus2[1]), Convert.ToInt32(argus2[2]), Convert.ToInt32(argus2[3]));
                                 Vector3 scale = new Vector3(Convert.ToInt32(argus3[1]), Convert.ToInt32(argus3[2]), Convert.ToInt32(argus3[3]));
                                 List<Mesh> meshList = GeoTools.MeshFromLargeObj(argus[1], Convert.ToInt32(argus[2]));

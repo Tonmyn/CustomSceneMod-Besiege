@@ -20,7 +20,7 @@ namespace BesiegeCustomScene
                 Debug.Log(names[i]);
             }
             */
-           // GeoTools.PrintShader();
+          //  GeoTools.PrintShader();
         }
         void OnDisable()
         {
@@ -33,7 +33,7 @@ namespace BesiegeCustomScene
         void FixedUpdate()
         {
             if (waterTemp == null)
-            {
+            {    
                 waterTemp = (GameObject)UnityEngine.Object.Instantiate(GameObject.Find("Water"));
                 Debug.Log(waterTemp.GetComponent<MeshRenderer>().material.shader.name);      
                 waterTemp.name = "waterTemp";
