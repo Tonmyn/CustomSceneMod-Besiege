@@ -23,13 +23,6 @@ namespace BesiegeCustomScene
         }
         void FixedUpdate()
         {
-            if (cloudTemp == null)
-            {
-                cloudTemp = (GameObject)UnityEngine.Object.Instantiate(GameObject.Find("CLoud"));
-                cloudTemp.SetActive(false);
-                DontDestroyOnLoad(cloudTemp);
-                Debug.Log("Get Cloud Temp Successfully");
-            }
             if (clouds != null)
             {
                 if (clouds[0] != null)
@@ -46,7 +39,7 @@ namespace BesiegeCustomScene
         private GameObject[] clouds;
         private Vector3[] axis;
         private int CloudSize = 0;
-        private GameObject cloudTemp;
+     
         private Color CloudsColor = new Color(1f, 1f, 1f, 1);
         private Vector3 cloudScale = new Vector3(1000, 200, 1000);
         public void ReadScene(string SceneName)
@@ -116,7 +109,7 @@ namespace BesiegeCustomScene
             try
             {
                 ClearCloud();
-                if (cloudTemp == null) return;
+                if (this.gameObject.GetComponent<Prop>().cloudTemp == null) return;
                 if (CloudSize < 0) CloudSize = 0;
                 if (CloudSize > 1000) CloudSize = 1000;
                 if (CloudSize == 0) { return; }
@@ -126,7 +119,7 @@ namespace BesiegeCustomScene
                     axis = new Vector3[CloudSize];
                     for (int i = 0; i < clouds.Length; i++)
                     {
-                        clouds[i] = (GameObject)UnityEngine.Object.Instantiate(cloudTemp, new Vector3(
+                        clouds[i] = (GameObject)UnityEngine.Object.Instantiate(this.gameObject.GetComponent<Prop>().cloudTemp, new Vector3(
                             UnityEngine.Random.Range(-cloudScale.x + transform.localPosition.x, cloudScale.x + transform.localPosition.x),
                             UnityEngine.Random.Range(transform.localPosition.y, cloudScale.y + transform.localPosition.y),
                             UnityEngine.Random.Range(-cloudScale.z + transform.localPosition.z, cloudScale.z + transform.localPosition.z)),
@@ -135,9 +128,9 @@ namespace BesiegeCustomScene
                         clouds[i].transform.localScale = new Vector3(15, 15, 15);
                         clouds[i].SetActive(true);
                         clouds[i].GetComponent<ParticleSystem>().startColor = CloudsColor;
-                        clouds[i].GetComponent<ParticleSystem>().startSize = 30;
-                        clouds[i].GetComponent<ParticleSystem>().startLifetime = 6;
-                        clouds[i].GetComponent<ParticleSystem>().startSpeed = 1.6f;
+                        clouds[i].GetComponent<ParticleSystem>().startSize = UnityEngine.Random.Range(26f, 34f);// 30;
+                        clouds[i].GetComponent<ParticleSystem>().startLifetime = UnityEngine.Random.Range(5.6f, 6.4f);//6;
+                        clouds[i].GetComponent<ParticleSystem>().startSpeed = UnityEngine.Random.Range(1.2f, 2f);//1.6f;
                         clouds[i].GetComponent<ParticleSystem>().maxParticles = 18;
                         axis[i] = new Vector3(UnityEngine.Random.Range(-0.1f, 0.1f), 1f, UnityEngine.Random.Range(-0.1f, 0.1f));
                     }
@@ -160,8 +153,7 @@ namespace BesiegeCustomScene
             for (int i = 0; i < clouds.Length; i++)
             {
                 Destroy(clouds[i]);
-            }
-            CloudSize = 0;
+            }   
         }
 
     }

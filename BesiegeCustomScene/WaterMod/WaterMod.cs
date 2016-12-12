@@ -4,24 +4,27 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace BesiegeCustomScene
 {
     class WaterMod: MonoBehaviour
-    {
+    {         
+        // public AssetBundle iteratorVariable1;
         void Start()
         {
-            /*
-            WWW iteratorVariable0 = new WWW("file:///" + GeoTools.ShaderPath+"Water.unity3d.dll");
-            iteratorVariable1 = iteratorVariable0.assetBundle;
-            
-            string[] names = iteratorVariable1.GetAllAssetNames();
-            for (int i = 0; i < names.Length; i++)
-            {
-                Debug.Log(names[i]);
+            try {         
+                // WWW iteratorVariable0 = new WWW("file:///" + Application.dataPath + "/sharedassets4.assets.resS");
+                //   iteratorVariable1 = iteratorVariable0.assetBundle;         
+                // string[] names = iteratorVariable1.GetAllAssetNames();
+                //  for (int i = 0; i < names.Length; i++){Debug.Log(names[i]);}
             }
-            */
-         //  GeoTools.PrintShader();
+            catch (Exception ex)
+            {
+                Debug.Log("assetBundle failed");
+                Debug.Log(ex.ToString());
+            }
+            //  GeoTools.PrintShader();
         }
         void OnDisable()
         {
@@ -30,31 +33,9 @@ namespace BesiegeCustomScene
         void OnDestroy()
         {
             ClearWater();
-        }
-        void FixedUpdate()
-        {
-            if (waterTemp == null)
-            {    
-                waterTemp = (GameObject)UnityEngine.Object.Instantiate(GameObject.Find("Water"));
-                Debug.Log(waterTemp.GetComponent<MeshRenderer>().material.shader.name);      
-                waterTemp.name = "waterTemp";
-                DontDestroyOnLoad(waterTemp);
-                Debug.Log("Get Water Temp Successfully");
-                waterTemp.SetActive(false);
-                /*
-                 Debug.Log(waterTemp.GetComponent<MeshRenderer>().material.shaderKeywords.Length);
-                for (int i = 0; i < waterTemp.GetComponent<MeshRenderer>().material.shaderKeywords.Length; i++)
-                {
-                    Debug.Log(waterTemp.GetComponent<MeshRenderer>().material.shaderKeywords[i]);
-                }
-                */
-
-            }
-        }
-        /// ////////////////////////
-        private GameObject waterTemp=null;
+        }   
+        /// ////////////////////////      
         string ScenePath = GeoTools.ScenePath;
-       // private AssetBundle iteratorVariable1;
         private GameObject[] Mwater;
         private int WaterSize = 0;
         private Vector3 waterScale = new Vector3(0, 1, 0);
@@ -182,8 +163,7 @@ namespace BesiegeCustomScene
                 }
                 catch { }
                 Destroy(Mwater[i]);
-            }
-            WaterSize = 0;
+            }     
         }
         public void LoadFloater()
         {

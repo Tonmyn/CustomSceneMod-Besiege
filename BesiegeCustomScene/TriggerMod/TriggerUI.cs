@@ -69,15 +69,15 @@ namespace BesiegeCustomScene
             {
                 if (TriggerIndex == 0 && TriggerIndex2 == -1)
                 {
-                    if (TimeUI._TimerSwith == false)
+                    if (this.gameObject.GetComponent<TimeUI>()._TimerSwith == false)
                     {
-                        TimeUI._TimerSwith = true;
-                        TimeUI._MStartTime = DateTime.Now;
+                        this.gameObject.GetComponent<TimeUI>()._TimerSwith = true;
+                        this.gameObject.GetComponent<TimeUI>()._MStartTime = DateTime.Now;
                     }
                 }
                 if (TriggerIndex == meshtriggers.Length - 1 && TriggerIndex2 != TriggerIndex)
                 {
-                    TimeUI._TimerSwith = false;
+                    this.gameObject.GetComponent<TimeUI>()._TimerSwith = false;
                 }
                 TriggerIndex2 = TriggerIndex;
             }
@@ -362,7 +362,6 @@ namespace BesiegeCustomScene
             {
                 Destroy(meshtriggers[i]);
             }
-            TriggerSize = 0;
         }
     }
 }

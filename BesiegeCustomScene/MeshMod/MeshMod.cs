@@ -385,8 +385,7 @@ namespace BesiegeCustomScene
             for (int i = 0; i < meshes.Length; i++)
             {
                 UnityEngine.Object.Destroy(meshes[i]);
-            }
-            MeshSize = 0;
+            }    
         }
         public void LoadMesh()
         {

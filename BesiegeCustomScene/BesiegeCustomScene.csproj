@@ -56,6 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CloudMod\CloudMod.cs" />
+    <Compile Include="Global\StaticProp.cs" />
     <Compile Include="MeshMod\MeshMod.cs" />
     <Compile Include="TriggerMod\Trigger.cs" />
     <Compile Include="WaterMod\Floater.cs" />
