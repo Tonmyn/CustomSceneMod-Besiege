@@ -11,16 +11,17 @@ namespace BesiegeCustomScene
     {
         void Start()
         {
+            /*
             WWW iteratorVariable0 = new WWW("file:///" + GeoTools.ShaderPath+"Water.unity3d.dll");
             iteratorVariable1 = iteratorVariable0.assetBundle;
-           /* 
+            
             string[] names = iteratorVariable1.GetAllAssetNames();
             for (int i = 0; i < names.Length; i++)
             {
                 Debug.Log(names[i]);
             }
             */
-          //  GeoTools.PrintShader();
+         //  GeoTools.PrintShader();
         }
         void OnDisable()
         {
@@ -37,20 +38,23 @@ namespace BesiegeCustomScene
                 waterTemp = (GameObject)UnityEngine.Object.Instantiate(GameObject.Find("Water"));
                 Debug.Log(waterTemp.GetComponent<MeshRenderer>().material.shader.name);      
                 waterTemp.name = "waterTemp";
+                DontDestroyOnLoad(waterTemp);
+                Debug.Log("Get Water Temp Successfully");
+                waterTemp.SetActive(false);
+                /*
                  Debug.Log(waterTemp.GetComponent<MeshRenderer>().material.shaderKeywords.Length);
                 for (int i = 0; i < waterTemp.GetComponent<MeshRenderer>().material.shaderKeywords.Length; i++)
                 {
                     Debug.Log(waterTemp.GetComponent<MeshRenderer>().material.shaderKeywords[i]);
                 }
-                DontDestroyOnLoad(waterTemp);
-                Debug.Log("Get Water Temp Successfully");
-                waterTemp.SetActive(false);
+                */
+
             }
         }
         /// ////////////////////////
         private GameObject waterTemp=null;
         string ScenePath = GeoTools.ScenePath;
-        private AssetBundle iteratorVariable1;
+       // private AssetBundle iteratorVariable1;
         private GameObject[] Mwater;
         private int WaterSize = 0;
         private Vector3 waterScale = new Vector3(0, 1, 0);
@@ -135,8 +139,8 @@ namespace BesiegeCustomScene
                 if (waterScale.x > 9) waterScale.x = 9;
                 if (waterScale.z < 0) waterScale.z = 0;
                 if (waterScale.z > 9) waterScale.z = 9;
-                Mwater = new GameObject[((int)waterScale.x * 2 + 1) * ((int)waterScale.z * 2 + 1)];
-                Mwater[0] = (GameObject)Instantiate(iteratorVariable1.LoadAsset("water4example (advanced)",typeof(GameObject)), waterLocation, new Quaternion());             
+                Mwater = new GameObject[((int)waterScale.x * 2 + 1) * ((int)waterScale.z * 2 + 1)];              
+                //Mwater[0] = (GameObject)Instantiate(iteratorVariable1.LoadAsset("water4example (advanced)",typeof(GameObject)), waterLocation, new Quaternion());             
                 Mwater[0].name = "water0";
                //Debug.Log(Mwater[0].GetComponent<WaterBase>().sharedMaterial.name);
                GeoTools.ResetWaterMaterial(ref Mwater[0].GetComponent<WaterBase>().sharedMaterial);
@@ -179,6 +183,7 @@ namespace BesiegeCustomScene
                 catch { }
                 Destroy(Mwater[i]);
             }
+            WaterSize = 0;
         }
         public void LoadFloater()
         {

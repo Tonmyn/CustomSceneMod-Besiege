@@ -49,21 +49,16 @@ namespace BesiegeCustomScene
             };
             GUILayout.BeginVertical(new GUILayoutOption[0]);
 
-            GUILayout.BeginHorizontal(new GUILayoutOption[0]);
-            if (GUILayout.Button("[碰撞器]", style, new GUILayoutOption[0]))
+            if (trigger.Length != 0)
             {
-                TriggerIndex = -1; TriggerIndex2 = -1;
+                GUILayout.BeginHorizontal(new GUILayoutOption[0]);
+                if (GUILayout.Button(trigger, style, new GUILayoutOption[0]))
+                {
+                    TriggerIndex = -1; TriggerIndex2 = -1;
+                }                     
+                GUILayout.Label((TriggerIndex + 1).ToString() + "/"+ TriggerSize.ToString(), style1, new GUILayoutOption[0]);       
+                GUILayout.EndHorizontal();
             }
-            if (meshtriggers != null)
-            {
-                GUILayout.Label((TriggerIndex + 1).ToString() + "/" + meshtriggers.Length.ToString(), style1, new GUILayoutOption[0]);
-            }
-            else
-            {
-                GUILayout.Label((TriggerIndex + 1).ToString() + "/0", style1, new GUILayoutOption[0]);
-            }
-            GUILayout.EndHorizontal();
-
             GUILayout.EndVertical();
             GUI.DragWindow(new Rect(0f, 0f, this.windowRect.width, this.windowRect.height));
         }
@@ -72,7 +67,7 @@ namespace BesiegeCustomScene
             if (!ShowGUI) return;
             if (StatMaster.isSimulating)
             {
-                if ( TriggerIndex == 0&& TriggerIndex2 == -1)
+                if (TriggerIndex == 0 && TriggerIndex2 == -1)
                 {
                     if (TimeUI._TimerSwith == false)
                     {
@@ -105,16 +100,18 @@ namespace BesiegeCustomScene
         ////////////////////////////
         private GameObject[] meshtriggers;
         public static int TriggerIndex = -1;
-          int TriggerIndex2 = -1;
+        int TriggerIndex2 = -1;//record the prevail statement of triggerindex
         private int TriggerSize = 0;
         public bool ShowGUI = false;
         private int _FontSize = 15;
         KeyCode _DisplayUI = KeyCode.F10;
         KeyCode _ReloadUI = KeyCode.F5;
+        string trigger = "[Trigger]";
         private int windowID = spaar.ModLoader.Util.GetWindowID();
         private Rect windowRect = new Rect(15f, 234f, 150f, 50f);
         void DefaultUI()
         {
+            trigger = "[Trigger]";
             _FontSize = 15;
             ShowGUI = false;
             windowRect = new Rect(15f, 234f, 150f, 50f);
@@ -154,6 +151,11 @@ namespace BesiegeCustomScene
                             {
                                 KeyCode outputkey;
                                 if (GeoTools.StringToKeyCode(chara[2], out outputkey)) _ReloadUI = outputkey;
+                            }
+                            else if (chara[1] == "trigger")
+                            {
+                                if (chara[2] == "OFF") trigger = string.Empty;
+                                else trigger = chara[2];
                             }
                         }
                         else if (chara[0] == Screen.width.ToString() + "*" + Screen.height.ToString() + "_Trigger")
@@ -360,6 +362,7 @@ namespace BesiegeCustomScene
             {
                 Destroy(meshtriggers[i]);
             }
+            TriggerSize = 0;
         }
     }
 }

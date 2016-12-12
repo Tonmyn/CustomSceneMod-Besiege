@@ -161,6 +161,7 @@ namespace BesiegeCustomScene
             {
                 Destroy(clouds[i]);
             }
+            CloudSize = 0;
         }
 
     }
