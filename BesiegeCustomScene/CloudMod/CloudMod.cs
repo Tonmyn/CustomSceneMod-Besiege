@@ -128,9 +128,9 @@ namespace BesiegeCustomScene
                         clouds[i].transform.localScale = new Vector3(15, 15, 15);
                         clouds[i].SetActive(true);
                         clouds[i].GetComponent<ParticleSystem>().startColor = CloudsColor;
-                        clouds[i].GetComponent<ParticleSystem>().startSize = UnityEngine.Random.Range(26f, 34f);// 30;
-                        clouds[i].GetComponent<ParticleSystem>().startLifetime = UnityEngine.Random.Range(5.6f, 6.4f);//6;
-                        clouds[i].GetComponent<ParticleSystem>().startSpeed = UnityEngine.Random.Range(1.2f, 2f);//1.6f;
+                        clouds[i].GetComponent<ParticleSystem>().startSize =  30;
+                        clouds[i].GetComponent<ParticleSystem>().startLifetime = 6;
+                        clouds[i].GetComponent<ParticleSystem>().startSpeed = 1.6f;
                         clouds[i].GetComponent<ParticleSystem>().maxParticles = 18;
                         axis[i] = new Vector3(UnityEngine.Random.Range(-0.1f, 0.1f), 1f, UnityEngine.Random.Range(-0.1f, 0.1f));
                     }
