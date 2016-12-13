@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace BesiegeCustomScene
@@ -7,11 +8,12 @@ namespace BesiegeCustomScene
     {
         void Start()
         {
-            Isstart = false;
+            Isstart = 0;
         }
-        bool Isstart = false;
+        int Isstart = 0;
         public  GameObject cloudTemp = null;
         public  GameObject waterTemp = null;
+        public GameObject iceTemp = null;
         public void GetLevelInfo()
         {
             Scene scene1 = SceneManager.GetActiveScene();
@@ -19,45 +21,50 @@ namespace BesiegeCustomScene
             Debug.Log("SceneCount : " + SceneManager.sceneCountInBuildSettings.ToString());
 
         }
-        public GameObject GetObjectInScene(string ObjectName, string Scene)
+        public void OpenScene(string Scene)
         {
-            try
-            {
-                if (SceneManager.GetActiveScene().name != Scene)
+            if (SceneManager.GetActiveScene().name != Scene)
             {
                 SceneManager.LoadScene(Scene, LoadSceneMode.Single);//打开level
-            }      
-                GameObject ObjectTemp = (GameObject)UnityEngine.Object.Instantiate(GameObject.Find(ObjectName));
+            }
+        }
+        public GameObject GetObjectInScene(string ObjectName)
+        {           
+            try
+            {
+                GameObject ObjectTemp = (GameObject)Instantiate(GameObject.Find(ObjectName));
                 ObjectTemp.name = ObjectName + "Temp";
                 UnityEngine.Object.DontDestroyOnLoad(ObjectTemp);
                 Debug.Log("Get " + ObjectName + "Temp Successfully");
                 ObjectTemp.SetActive(false);
                 return ObjectTemp;
             }
-            catch
+            catch(Exception ex)
             {
                 Debug.Log("Error! Get " + ObjectName + "Temp Failed");
+                Debug.Log(ex.ToString());
                 return null;
             }
 
         }
+        string StartedScene = "";
         void FixedUpdate()
         {
-            if (!Isstart)
+            if (Isstart == 0) { StartedScene = SceneManager.GetActiveScene().name; }
+            if (Isstart == 10) { OpenScene("TITLE SCREEN");}
+            if (Isstart == 20) { cloudTemp = GetObjectInScene("CLoud"); }
+            //if (Isstart == 30) { OpenScene("21"); Isstart++; }
+           // if (Isstart == 40) { iceTemp = GetObjectInScene("LargeCrystal");Debug.Log(iceTemp.GetComponent<Renderer>().material.shader.name); }
+            if (Isstart == 30) { OpenScene(StartedScene); }
+            if(Isstart<=100)    Isstart++;
+        }
+        void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Q) && Input.GetKey(KeyCode.LeftControl))
             {
-                Isstart = true;
                 GetLevelInfo();
-                string scene1 = SceneManager.GetActiveScene().name;
-                if (cloudTemp == null)
-                {
-                    cloudTemp=GetObjectInScene("CLoud", "TITLE SCREEN");
-                }
-                if (waterTemp == null)
-                {
-                    waterTemp = GetObjectInScene("Water", "TITLE SCREEN");
-                }
-                if(scene1 != SceneManager.GetActiveScene().name)SceneManager.LoadScene(scene1, LoadSceneMode.Single);
             }
+           
         }
     }
 }

@@ -179,7 +179,7 @@ namespace BesiegeCustomScene
             }
             catch (Exception ex)
             {
-                Debug.Log("TimerUISetting Failed!");
+                Debug.Log("Error! TimerUISetting Failed!");
                 Debug.Log(ex.ToString());
                 DefaultUI();
                 return;

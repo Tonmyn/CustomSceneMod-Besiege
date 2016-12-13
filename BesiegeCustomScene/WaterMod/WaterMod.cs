@@ -21,7 +21,7 @@ namespace BesiegeCustomScene
             }
             catch (Exception ex)
             {
-                Debug.Log("assetBundle failed");
+                Debug.Log("Error! assetBundle failed");
                 Debug.Log(ex.ToString());
             }
             //  GeoTools.PrintShader();
@@ -46,10 +46,10 @@ namespace BesiegeCustomScene
         {
             try
             {
-                Debug.Log(Application.dataPath);
+              //  Debug.Log(Application.dataPath);
                 if (!File.Exists(ScenePath + SceneName + ".txt"))
                 {
-                    Debug.Log("Scene File not exists!");
+                    Debug.Log("Error! Scene File not exists!");
                     return;
                 }
                 StreamReader srd = File.OpenText(ScenePath + SceneName + ".txt");
@@ -105,7 +105,7 @@ namespace BesiegeCustomScene
             }
             catch (Exception ex)
             {
-                Debug.Log("ReadMeshWater Failed!");
+                Debug.Log("Error! ReadMeshWater Failed!");
                 Debug.Log(ex.ToString());
                 return;
             }
@@ -180,7 +180,7 @@ namespace BesiegeCustomScene
             }
             catch
             {
-                Debug.Log("LoadFloater Failed");
+                Debug.Log("Error! LoadFloater Failed");
             }
         }
         public void ClearFloater()
@@ -198,7 +198,7 @@ namespace BesiegeCustomScene
             }
             catch
             {
-                Debug.Log("ClearFloater Failed");
+                Debug.Log("Error! ClearFloater Failed");
             }
         }
     }

@@ -29,10 +29,10 @@ namespace BesiegeCustomScene
         {
             try
             {
-                Debug.Log(Application.dataPath);
+                //Debug.Log(Application.dataPath);
                 if (!File.Exists(ScenePath + SceneName + ".txt"))
                 {
-                    Debug.Log("Scene File not exists!");
+                    Debug.Log("Error! Scene File not exists!");
                     return;
                 }
                 StreamReader srd = File.OpenText(ScenePath + SceneName + ".txt");
@@ -124,7 +124,7 @@ namespace BesiegeCustomScene
                             else if (chara[2] == "emesh")
                             {
                                 meshes[i].GetComponent<MeshFilter>().mesh = GeoTools.EMeshFromObj(chara[3]);
-                            }
+                            }                        
                             else if (chara[2] == "heightmapmesh")
                             {
                                 Mesh mesh = GeoTools.LoadHeightMap(
@@ -229,7 +229,7 @@ namespace BesiegeCustomScene
                                 }
                                 catch (Exception ex)
                                 {
-                                    Debug.Log("MaterialCopy Failed");
+                                    Debug.Log("Error! MaterialCopy Failed");
                                     Debug.Log(ex.ToString());
                                 }
                             }
@@ -372,7 +372,7 @@ namespace BesiegeCustomScene
             }
             catch (Exception ex)
             {
-                Debug.Log("ReadMeshObj Failed!");
+                Debug.Log("Error! ReadMeshObj Failed!");
                 Debug.Log(ex.ToString());
                 return;
             }
@@ -408,7 +408,7 @@ namespace BesiegeCustomScene
             }
             catch (System.Exception ex)
             {
-                Debug.Log("LoadMesh Failed!");
+                Debug.Log("Error! LoadMesh Failed!");
                 Debug.Log(ex.ToString());
             }
         }

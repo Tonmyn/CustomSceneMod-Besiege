@@ -202,7 +202,7 @@ namespace BesiegeCustomScene
                 Debug.Log(Application.dataPath);
                 if (!File.Exists(ScenePath + SceneName + ".txt"))
                 {
-                    Debug.Log("Scene File not exists!");
+                    Debug.Log("Error! Scene File not exists!");
                     return;
                 }
                 StreamReader srd = File.OpenText(ScenePath + SceneName + ".txt");
@@ -321,7 +321,7 @@ namespace BesiegeCustomScene
             }
             catch (Exception ex)
             {
-                Debug.Log("ReadMeshTrigger Failed!");
+                Debug.Log("Error! ReadMeshTrigger Failed!");
                 Debug.Log(ex.ToString());
                 return;
             }
@@ -349,7 +349,7 @@ namespace BesiegeCustomScene
             }
             catch (System.Exception ex)
             {
-                Debug.Log("LoadTrigger Failed!");
+                Debug.Log("Error! LoadTrigger Failed!");
                 Debug.Log(ex.ToString());
             }
         }
@@ -357,7 +357,7 @@ namespace BesiegeCustomScene
         {
             if (meshtriggers == null) return;
             if (meshtriggers.Length <= 0) return;
-            Debug.Log("ClearMeshTriggers");
+            Debug.Log("ClearTriggers");
             for (int i = 0; i < meshtriggers.Length; i++)
             {
                 Destroy(meshtriggers[i]);

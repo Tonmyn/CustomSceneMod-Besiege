@@ -41,15 +41,14 @@ namespace BesiegeCustomScene
                 StreamReader srd;
                 if (File.Exists(GeoTools.UIPath + "CHN.txt"))
                 {
-                    Debug.Log("zh-CN UI");
+                    Debug.Log("zh-CN UI " + Screen.width.ToString() + "*" + Screen.height.ToString());
                     srd = File.OpenText(GeoTools.UIPath + "CHN.txt");
                 }
                 else
                 {
-                    Debug.Log("en-US UI");
+                    Debug.Log("en-US UI " + Screen.width.ToString() + "*" + Screen.height.ToString());
                     srd = File.OpenText(GeoTools.UIPath + "EN.txt");
                 }
-                Debug.Log(Screen.width.ToString() + "*" + Screen.height.ToString());
                 while (srd.Peek() != -1)
                 {
                     string str = srd.ReadLine();
@@ -114,7 +113,7 @@ namespace BesiegeCustomScene
             }
             catch (Exception ex)
             {
-                Debug.Log("LoadUISetting Failed!");
+                Debug.Log("Error! LoadUISetting Failed!");
                 Debug.Log(ex.ToString());
                 DefaultUI();
                 return;
@@ -124,7 +123,7 @@ namespace BesiegeCustomScene
         {
             try
             {
-                Debug.Log(Application.dataPath);
+                //Debug.Log(Application.dataPath);
                 if (!File.Exists(ScenePath + SceneName + ".txt"))
                 {
                     Debug.Log("Scene File not exists!");
@@ -240,11 +239,11 @@ namespace BesiegeCustomScene
         {
             if (StatMaster.isSimulating && isSimulating == false)
             {
-                isSimulating = true;this.ShowGUI = false;
+                isSimulating = true; this.ShowGUI = false;
             }
             else if (!StatMaster.isSimulating && isSimulating == true)
             {
-                isSimulating = false;this.ShowGUI = true;
+                isSimulating = false; this.ShowGUI = true;
             }
         }
         void Update()
@@ -282,7 +281,6 @@ namespace BesiegeCustomScene
                 fontSize = _FontSize
             };
             GUILayout.BeginHorizontal(new GUILayoutOption[0]);
-            GUILayout.Label("MouseDrag", style, new GUILayoutOption[0]);
             for (int i = 0; i < _SceneName.Count; i++)
             {
                 if (GUILayout.Button(_ButtonName[i], style, new GUILayoutOption[0]) && !StatMaster.isSimulating)

@@ -46,10 +46,10 @@ namespace BesiegeCustomScene
         {
             try
             {
-                Debug.Log(Application.dataPath);
+                //Debug.Log(Application.dataPath);
                 if (!File.Exists(ScenePath + SceneName + ".txt"))
                 {
-                    Debug.Log("Scene File not exists!");
+                    Debug.Log("Error! Scene File not exists!");
                     return;
                 }
                 StreamReader srd = File.OpenText(ScenePath + SceneName + ".txt");
@@ -99,7 +99,7 @@ namespace BesiegeCustomScene
             }
             catch (Exception ex)
             {
-                Debug.Log("ReadCloud Failed!");
+                Debug.Log("Error! ReadCloud Failed!");
                 Debug.Log(ex.ToString());
                 return;
             }
@@ -134,12 +134,12 @@ namespace BesiegeCustomScene
                         clouds[i].GetComponent<ParticleSystem>().maxParticles = 18;
                         axis[i] = new Vector3(UnityEngine.Random.Range(-0.1f, 0.1f), 1f, UnityEngine.Random.Range(-0.1f, 0.1f));
                     }
-                    Debug.Log("LoadCloud Successfully");
+                   // Debug.Log("LoadCloud Successfully");
                 }
             }
             catch (Exception ex)
             {
-                Debug.Log("LoadCloud Failed");
+                Debug.Log("Error! LoadCloud Failed");
                 Debug.Log(ex.ToString());
                 ClearCloud();
             }
