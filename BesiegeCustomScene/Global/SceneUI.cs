@@ -325,6 +325,11 @@ namespace BesiegeCustomScene
                 GameObject.Find("WORLD BOUNDARIES").transform.localScale = new Vector3(0, 0, 0);
             }
             catch { }
+            try
+            {
+                GameObject.Find("STAR SPHERE").GetComponent<MeshRenderer>().material.mainTexture = GeoTools.LoadTexture("colorful");
+            }
+            catch { }
         }
         public void UnhideFloorBig()
         {

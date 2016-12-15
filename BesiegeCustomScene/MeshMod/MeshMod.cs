@@ -211,10 +211,10 @@ namespace BesiegeCustomScene
                                 { meshes[i].GetComponent<MeshRenderer>().receiveShadows = true; }
                             }
                             else if (chara[2] == "texture")
-                            {
+                            {        
                                 meshes[i].GetComponent<MeshRenderer>().material.mainTexture = GeoTools.LoadTexture(chara[3]);
-                                //  Debug.Log(meshes[i].GetComponent<MeshRenderer>().material.GetFloat("_Glossiness"));
-                                meshes[i].GetComponent<MeshRenderer>().material.SetFloat("_Glossiness", 0);
+                                //meshes[i].GetComponent<MeshRenderer>().material.shader = Shader.Find("Standard"); 
+                                //meshes[i].GetComponent<MeshRenderer>().material.SetFloat("_Glossiness", 1);//1是smoothness最高
                             }
                             else if (chara[2] == "stexture")
                             {

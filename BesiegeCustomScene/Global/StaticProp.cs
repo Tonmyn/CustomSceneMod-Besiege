@@ -14,6 +14,7 @@ namespace BesiegeCustomScene
         public  GameObject cloudTemp = null;
         public  GameObject waterTemp = null;
         public GameObject iceTemp = null;
+        public GameObject snowTemp = null;
         public void GetLevelInfo()
         {
             Scene scene1 = SceneManager.GetActiveScene();
@@ -54,8 +55,10 @@ namespace BesiegeCustomScene
             if (Isstart == 10) { OpenScene("TITLE SCREEN");}
             if (Isstart == 20) { cloudTemp = GetObjectInScene("CLoud"); }
             //if (Isstart == 30) { OpenScene("21"); Isstart++; }
-           // if (Isstart == 40) { iceTemp = GetObjectInScene("LargeCrystal");Debug.Log(iceTemp.GetComponent<Renderer>().material.shader.name); }
-            if (Isstart == 30) { OpenScene(StartedScene); }
+            // if (Isstart == 40) { iceTemp = GetObjectInScene("LargeCrystal");Debug.Log(iceTemp.GetComponent<Renderer>().material.shader.name); }
+           // if (Isstart == 30) { OpenScene("37"); Isstart++; }
+           // if (Isstart == 40) { snowTemp = GetObjectInScene("Snow"); }
+            if (Isstart == 50) { OpenScene(StartedScene); }
             if(Isstart<=100)    Isstart++;
         }
         void Update()
