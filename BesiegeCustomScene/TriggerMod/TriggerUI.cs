@@ -65,6 +65,7 @@ namespace BesiegeCustomScene
         void FixedUpdate()
         {
             if (!ShowGUI) return;
+            if (TriggerSize == 0) return;
             if (StatMaster.isSimulating)
             {
                 if (TriggerIndex == 0 && TriggerIndex2 == -1)
