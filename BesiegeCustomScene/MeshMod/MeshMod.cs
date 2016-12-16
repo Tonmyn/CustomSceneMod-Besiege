@@ -74,9 +74,9 @@ namespace BesiegeCustomScene
                                                 meshes[j].GetComponent<MeshFilter>().mesh = meshList[k];
                                                 meshes[j].transform.position = position;
                                                 meshes[j].transform.localScale = scale;
-                                                if(argus2.Length>=3)  meshes[j].GetComponent<MeshRenderer>().material.shader = Shader.Find(argus2[2]);                         
-                                               // if (argus2.Length >= 4) meshes[j].GetComponent<MeshRenderer>().material.SetFloat("_Mode", Convert.ToSingle(argus2[3]));
-                                               // Debug.Log("meshes" + j.ToString() + " RenderingMode: " + meshes[j].GetComponent<MeshRenderer>().material.GetFloat("_Mode"));
+                                                if (argus2.Length >= 3) meshes[j].GetComponent<MeshRenderer>().material.shader = Shader.Find(argus2[2]);
+                                                // if (argus2.Length >= 4) meshes[j].GetComponent<MeshRenderer>().material.SetFloat("_Mode", Convert.ToSingle(argus2[3]));
+                                                // Debug.Log("meshes" + j.ToString() + " RenderingMode: " + meshes[j].GetComponent<MeshRenderer>().material.GetFloat("_Mode"));
                                                 meshes[j].GetComponent<MeshRenderer>().material.mainTexture = GeoTools.LoadTexture(argus2[1]);
                                                 break;
                                             }
@@ -124,7 +124,7 @@ namespace BesiegeCustomScene
                             else if (chara[2] == "emesh")
                             {
                                 meshes[i].GetComponent<MeshFilter>().mesh = GeoTools.EMeshFromObj(chara[3]);
-                            }                        
+                            }
                             else if (chara[2] == "heightmapmesh")
                             {
                                 Mesh mesh = GeoTools.LoadHeightMap(
@@ -211,7 +211,7 @@ namespace BesiegeCustomScene
                                 { meshes[i].GetComponent<MeshRenderer>().receiveShadows = true; }
                             }
                             else if (chara[2] == "texture")
-                            {        
+                            {
                                 meshes[i].GetComponent<MeshRenderer>().material.mainTexture = GeoTools.LoadTexture(chara[3]);
                                 //meshes[i].GetComponent<MeshRenderer>().material.shader = Shader.Find("Standard"); 
                                 //meshes[i].GetComponent<MeshRenderer>().material.SetFloat("_Glossiness", 1);//1是smoothness最高
@@ -230,6 +230,21 @@ namespace BesiegeCustomScene
                                 catch (Exception ex)
                                 {
                                     Debug.Log("Error! MaterialCopy Failed");
+                                    Debug.Log(ex.ToString());
+                                }
+                            }
+                            else if (chara[2] == "materialPropcopy")
+                            {
+                                try
+                                {
+                                    int index = Convert.ToInt32(chara[3]);
+                                    meshes[i].GetComponent<MeshRenderer>().material =
+                                        gameObject.GetComponent<Prop>().MaterialTemp[index].GetComponent<Renderer>().material;
+                                    Debug.Log(meshes[i].GetComponent<MeshRenderer>().material.shader.name);
+                                }
+                                catch (Exception ex)
+                                {
+                                    Debug.Log("Error! MaterialPropCopy Failed");
                                     Debug.Log(ex.ToString());
                                 }
                             }
@@ -385,7 +400,7 @@ namespace BesiegeCustomScene
             for (int i = 0; i < meshes.Length; i++)
             {
                 UnityEngine.Object.Destroy(meshes[i]);
-            }    
+            }
         }
         public void LoadMesh()
         {
@@ -400,6 +415,8 @@ namespace BesiegeCustomScene
                     for (int i = 0; i < meshes.Length; i++)
                     {
                         meshes[i] = GameObject.CreatePrimitive(PrimitiveType.Plane);
+                        Shader diffuse = Shader.Find("Legacy Shaders/Diffuse");
+                        if (diffuse != null) meshes[i].GetComponent<Renderer>().material.shader = diffuse;
                         meshes[i].GetComponent<MeshCollider>().sharedMesh.Clear();
                         meshes[i].GetComponent<MeshFilter>().mesh.Clear();
                         meshes[i].name = "_mesh" + i.ToString();

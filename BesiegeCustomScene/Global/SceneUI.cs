@@ -231,8 +231,9 @@ namespace BesiegeCustomScene
             this.ReadScene(SceneName);
             try { this.gameObject.GetComponent<MeshMod>().ReadScene(SceneName); } catch { }
             try { this.gameObject.GetComponent<TriggerUI>().ReadScene(SceneName); } catch { }
-            try { this.gameObject.GetComponent<WaterMod>().ReadScene(SceneName); } catch { }
+           // try { this.gameObject.GetComponent<WaterMod>().ReadScene(SceneName); } catch { }
             try { this.gameObject.GetComponent<CloudMod>().ReadScene(SceneName); } catch { }
+            try { this.gameObject.GetComponent<SnowMod>().ReadScene(SceneName); } catch { }
         }
         /// ///////////////////////////////////////
         void FixedUpdate()

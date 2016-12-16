@@ -8,16 +8,17 @@ using UnityEngine.SceneManagement;
 
 namespace BesiegeCustomScene
 {
-    class WaterMod: MonoBehaviour
-    {         
-        // public AssetBundle iteratorVariable1;
+    class WaterMod : MonoBehaviour
+    {
+        public AssetBundle iteratorVariable1;
         void Start()
         {
-            try {         
-                // WWW iteratorVariable0 = new WWW("file:///" + Application.dataPath + "/sharedassets4.assets.resS");
-                //   iteratorVariable1 = iteratorVariable0.assetBundle;         
-                // string[] names = iteratorVariable1.GetAllAssetNames();
-                //  for (int i = 0; i < names.Length; i++){Debug.Log(names[i]);}
+            try
+            {
+                WWW iteratorVariable0 = new WWW("file:///" + GeoTools.ShaderPath + "Water.unity3d.dll");
+                iteratorVariable1 = iteratorVariable0.assetBundle;
+                string[] names = iteratorVariable1.GetAllAssetNames();
+                for (int i = 0; i < names.Length; i++) { Debug.Log(names[i]); }
             }
             catch (Exception ex)
             {
@@ -33,7 +34,7 @@ namespace BesiegeCustomScene
         void OnDestroy()
         {
             ClearWater();
-        }   
+        }
         /// ////////////////////////      
         string ScenePath = GeoTools.ScenePath;
         private GameObject[] Mwater;
@@ -46,7 +47,7 @@ namespace BesiegeCustomScene
         {
             try
             {
-              //  Debug.Log(Application.dataPath);
+                //  Debug.Log(Application.dataPath);
                 if (!File.Exists(ScenePath + SceneName + ".txt"))
                 {
                     Debug.Log("Error! Scene File not exists!");
@@ -59,8 +60,8 @@ namespace BesiegeCustomScene
                     string[] chara = str.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
                     if (chara.Length > 2)
                     {
-                       #region Water
-                            if (chara[0] == "Water")
+                        #region Water
+                        if (chara[0] == "Water")
                         {
                             if (chara[1] == "size")
                             {
@@ -113,18 +114,17 @@ namespace BesiegeCustomScene
         public void LoadWater()
         {
             try
-            { 
-                ClearWater();
+            {
+                ClearWater();        
                 if (WaterSize <= 0) return;
                 if (waterScale.x < 0) waterScale.x = 0;
                 if (waterScale.x > 9) waterScale.x = 9;
                 if (waterScale.z < 0) waterScale.z = 0;
                 if (waterScale.z > 9) waterScale.z = 9;
-                Mwater = new GameObject[((int)waterScale.x * 2 + 1) * ((int)waterScale.z * 2 + 1)];              
-                //Mwater[0] = (GameObject)Instantiate(iteratorVariable1.LoadAsset("water4example (advanced)",typeof(GameObject)), waterLocation, new Quaternion());             
+                Mwater = new GameObject[((int)waterScale.x * 2 + 1) * ((int)waterScale.z * 2 + 1)];
+                Mwater[0] = (GameObject)Instantiate(iteratorVariable1.LoadAsset("water4example (advanced)", typeof(GameObject)), waterLocation, new Quaternion());
                 Mwater[0].name = "water0";
-               //Debug.Log(Mwater[0].GetComponent<WaterBase>().sharedMaterial.name);
-               GeoTools.ResetWaterMaterial(ref Mwater[0].GetComponent<WaterBase>().sharedMaterial);
+                GeoTools.ResetWaterMaterial(ref Mwater[0].GetComponent<WaterBase>().sharedMaterial);
                 Mwater[0].transform.localScale = MwaterScale;
                 int index = 1;
                 for (float k = -waterScale.x; k <= waterScale.x; k++)
@@ -158,12 +158,13 @@ namespace BesiegeCustomScene
             Debug.Log("ClearWater");
             for (int i = 0; i < Mwater.Length; i++)
             {
-                try {
+                try
+                {
                     Destroy(GameObject.Find("water" + i.ToString() + "ReflectionMain Camera"));
                 }
                 catch { }
                 Destroy(Mwater[i]);
-            }     
+            }
         }
         public void LoadFloater()
         {
