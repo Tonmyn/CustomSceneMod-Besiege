@@ -44,6 +44,7 @@ namespace BesiegeCustomScene
         private Vector3 cloudScale = new Vector3(1000, 200, 1000);
         public void ReadScene(string SceneName)
         {
+            CloudsColor = new Color(1f, 1f, 1f, 1);
             try
             {
                 //Debug.Log(Application.dataPath);
@@ -145,15 +146,15 @@ namespace BesiegeCustomScene
             }
         }
         public void ClearCloud()
-        {
-            CloudsColor = new Color(1f, 1f, 1f, 1);
+        {         
             if (clouds == null) return;
             if (clouds.Length <= 0) return;
             Debug.Log("ClearCloud");
             for (int i = 0; i < clouds.Length; i++)
             {
                 Destroy(clouds[i]);
-            }   
+            }
+            
         }
 
     }

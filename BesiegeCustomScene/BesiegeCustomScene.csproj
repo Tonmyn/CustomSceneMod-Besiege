@@ -57,17 +57,18 @@
   <ItemGroup>
     <Compile Include="EnvironmentMod\CloudMod.cs" />
     <Compile Include="EnvironmentMod\SnowMod.cs" />
+    <Compile Include="EnvironmentMod\WindMod.cs" />
     <Compile Include="Global\StaticProp.cs" />
     <Compile Include="MeshMod\MeshMod.cs" />
-    <Compile Include="TriggerMod\Trigger.cs" />
-    <Compile Include="WaterMod\Floater.cs" />
+    <Compile Include="MeshMod\Trigger.cs" />
+    <Compile Include="EnvironmentMod\Floater.cs" />
     <Compile Include="Global\GeoTools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Global\SceneUI.cs" />
     <Compile Include="Global\BesiegeCustomScene.cs" />
     <Compile Include="TimeMod\TimeUI.cs" />
-    <Compile Include="TriggerMod\TriggerUI.cs" />
-    <Compile Include="WaterMod\WaterMod.cs" />
+    <Compile Include="MeshMod\TriggerUI.cs" />
+    <Compile Include="EnvironmentMod\WaterMod.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

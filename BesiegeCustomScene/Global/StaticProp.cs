@@ -47,7 +47,6 @@ namespace BesiegeCustomScene
                 Debug.Log(ex.ToString());
                 return null;
             }
-
         }
         string StartedScene = "";
         static double t = 1;
