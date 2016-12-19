@@ -24,8 +24,7 @@ namespace BesiegeCustomScene
             {
                 Debug.Log("Error! assetBundle failed");
                 Debug.Log(ex.ToString());
-            }
-            //  GeoTools.PrintShader();
+            }  
         }
         void OnDisable()
         {

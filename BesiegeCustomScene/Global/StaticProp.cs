@@ -16,13 +16,7 @@ namespace BesiegeCustomScene
         public List<GameObject> MaterialTemp = new List<GameObject>();
         public GameObject iceTemp = null;
         public GameObject snowTemp = null;
-        public void GetLevelInfo()
-        {
-            Scene scene1 = SceneManager.GetActiveScene();
-            Debug.Log("ActiveScene : " + scene1.rootCount.ToString() + "=>" + scene1.name);
-            Debug.Log("SceneCount : " + SceneManager.sceneCountInBuildSettings.ToString());
-
-        }
+      
         public void OpenScene(string Scene)
         {
             if (SceneManager.GetActiveScene().name != Scene)
@@ -66,14 +60,6 @@ namespace BesiegeCustomScene
             if (Isstart == 50 * t) { snowTemp = GetObjectInScene("Snow"); }
             if (Isstart == 60 * t) { OpenScene(StartedScene); }
             if (Isstart <= 100 * t) Isstart++;
-        }
-        void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.Q) && Input.GetKey(KeyCode.LeftControl))
-            {
-                GetLevelInfo();
-            }
-
-        }
+        }     
     }
 }

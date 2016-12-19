@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 
 namespace BesiegeCustomScene
 {
@@ -25,6 +25,9 @@ namespace BesiegeCustomScene
         private ModUnit Unit = ModUnit.kmh;
         KeyCode _DisplayUI = KeyCode.F9;
         KeyCode _ReloadUI = KeyCode.F5;
+        KeyCode _GetCenter = KeyCode.W;
+        KeyCode _GetLevelInfo = KeyCode.Q;
+        KeyCode _GetShader = KeyCode.E;
         private int _FontSize = 15;
         public bool ShowGUI = true;
 
@@ -44,9 +47,9 @@ namespace BesiegeCustomScene
         private string MTime = "";
 
         private string _timerUI = "Timer";
-        public  DateTime _MStartTime;
+        public DateTime _MStartTime;
         //control timer by other component
-        public  bool _TimerSwith = false;
+        public bool _TimerSwith = false;
         private string MTimer = "";
 
         void DefaultUI()
@@ -56,6 +59,9 @@ namespace BesiegeCustomScene
             windowRect = new Rect(15f, 100f, 150f, 150f);
             _DisplayUI = KeyCode.F9;
             _ReloadUI = KeyCode.F5;
+            _GetCenter = KeyCode.W;
+            _GetLevelInfo = KeyCode.Q;
+            _GetShader = KeyCode.E;
             Unit = 0;
 
             _TimerSwith = false;
@@ -146,6 +152,21 @@ namespace BesiegeCustomScene
                                 KeyCode outputkey;
                                 if (GeoTools.StringToKeyCode(chara[2], out outputkey)) _ReloadUI = outputkey;
                             }
+                            else if (chara[1] == "Get_Center")
+                            {
+                                KeyCode outputkey;
+                                if (GeoTools.StringToKeyCode(chara[2], out outputkey)) _GetCenter = outputkey;
+                            }
+                            else if (chara[1] == "Get_LevelInfo")
+                            {
+                                KeyCode outputkey;
+                                if (GeoTools.StringToKeyCode(chara[2], out outputkey)) _GetLevelInfo = outputkey;
+                            }
+                            else if (chara[1] == "Get_Shader")
+                            {
+                                KeyCode outputkey;
+                                if (GeoTools.StringToKeyCode(chara[2], out outputkey)) _GetShader = outputkey;
+                            }
                         }
                         else if (chara[0] == Screen.width.ToString() + "*" + Screen.height.ToString() + "_Timer")
                         {
@@ -185,35 +206,46 @@ namespace BesiegeCustomScene
                 return;
             }
         }
+        private string GetCenter()
+        {
+            try
+            {
+                MyBlockInfo[] infoArray = UnityEngine.Object.FindObjectsOfType<MyBlockInfo>();
+                Vector3 center = new Vector3(0, 0, 0);
+                float _weight = 0;
+                //List<Transform> list = new List<Transform>();
+                foreach (MyBlockInfo info in infoArray)
+                {
+                    Vector3 v = info.gameObject.GetComponent<Rigidbody>().worldCenterOfMass;
+                    float t = info.gameObject.GetComponent<Rigidbody>().mass;
+                    center.x = v.x;// * t;
+                    center.y = v.y;// * t;
+                    center.z = v.z; // * t;
+                    _weight += t;
+                }
+                center.x /= infoArray.Length;
+                center.y /= infoArray.Length;
+                center.z /= infoArray.Length;
+                return "Center:" + center.x.ToString() + "/" + center.y.ToString() + "/" + center.z.ToString() + " Weight:" + _weight.ToString();
+            }
+            catch
+            {
+                return "Could not get Center";
+            }
+        }
+        public void GetLevelInfo()
+        {
+            Scene scene1 = SceneManager.GetActiveScene();
+            Debug.Log("ActiveScene : " + scene1.rootCount.ToString() + "=>" + scene1.name);
+            Debug.Log("SceneCount : " + SceneManager.sceneCountInBuildSettings.ToString());
+
+        }
         void Start()
         {
             ReadUI();
             Commands.RegisterCommand("VP_GetCenter", delegate (string[] args, IDictionary<string, string> notUses)
             {
-                try
-                {
-                    MyBlockInfo[] infoArray = UnityEngine.Object.FindObjectsOfType<MyBlockInfo>();
-                    Vector3 center = new Vector3(0, 0, 0);
-                    float _weight = 0;
-                    //List<Transform> list = new List<Transform>();
-                    foreach (MyBlockInfo info in infoArray)
-                    {
-                        Vector3 v = info.gameObject.GetComponent<Rigidbody>().worldCenterOfMass;
-                        float t = info.gameObject.GetComponent<Rigidbody>().mass;
-                        center.x = v.x;// * t;
-                        center.y = v.y;// * t;
-                        center.z = v.z; // * t;
-                        _weight += t;
-                    }
-                    center.x /= infoArray.Length;
-                    center.y /= infoArray.Length;
-                    center.z /= infoArray.Length;
-                    return "Center:" + center.x.ToString() + "/" + center.y.ToString() + "/" + center.z.ToString() + " Weight:" + _weight.ToString();
-                }
-                catch
-                {
-                    return "Could not get Center";
-                }
+                return GetCenter();
             }, "Get Machine Center");
         }
         void DoWindow(int windowID)
@@ -304,6 +336,18 @@ namespace BesiegeCustomScene
             if (Input.GetKeyDown(_ReloadUI) && Input.GetKey(KeyCode.LeftControl))
             {
                 ReadUI();
+            }
+            if (Input.GetKeyDown(_GetLevelInfo) && Input.GetKey(KeyCode.LeftControl))
+            {
+                GetLevelInfo();
+            }
+            if (Input.GetKeyDown(_GetCenter) && Input.GetKey(KeyCode.LeftControl))
+            {
+                Debug.Log(GetCenter());
+            }
+            if (Input.GetKeyDown(_GetShader) && Input.GetKey(KeyCode.LeftControl))
+            {
+                GeoTools.PrintShader();
             }
         }
         bool LoadBlock()
@@ -441,7 +485,7 @@ namespace BesiegeCustomScene
             if (_timerUI.Length != 0)
             {
                 if (_accstep == 7 || _accstep == 14 || _accstep == 21 || _accstep == 28 || _accstep == 35 || _accstep == 42 || _accstep == 49)
-                {              
+                {
                     if (_TimerSwith)
                     {
                         TimeSpan span = DateTime.Now - _MStartTime;
