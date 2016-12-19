@@ -51,7 +51,6 @@ namespace BesiegeCustomScene
         //control timer by other component
         public bool _TimerSwith = false;
         private string MTimer = "";
-
         void DefaultUI()
         {
             _FontSize = 15;

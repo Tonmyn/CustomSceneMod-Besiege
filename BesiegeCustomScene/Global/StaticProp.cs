@@ -11,7 +11,7 @@ namespace BesiegeCustomScene
         {
             Isstart = 0;
         }
-        int Isstart = 0;
+        private int Isstart = 0;
         public GameObject cloudTemp = null;
         public List<GameObject> MaterialTemp = new List<GameObject>();
         public GameObject iceTemp = null;
@@ -42,8 +42,8 @@ namespace BesiegeCustomScene
                 return null;
             }
         }
-        string StartedScene = "";
-        static double t = 1;
+        private string StartedScene = "";
+        public static double t = 2;
         void FixedUpdate()
         {
             if (Isstart == 0) { StartedScene = SceneManager.GetActiveScene().name; }
@@ -59,7 +59,7 @@ namespace BesiegeCustomScene
             if (Isstart == 40 * t) { OpenScene("36"); Isstart++; }
             if (Isstart == 50 * t) { snowTemp = GetObjectInScene("Snow"); }
             if (Isstart == 60 * t) { OpenScene(StartedScene); }
-            if (Isstart <= 100 * t) Isstart++;
+            if (Isstart <= 70 * t) Isstart++;
         }     
     }
 }
