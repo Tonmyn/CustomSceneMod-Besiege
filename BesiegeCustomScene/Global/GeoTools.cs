@@ -386,7 +386,9 @@ namespace BesiegeCustomScene
                                 int a = Convert.ToInt32(chara[1].Split('/')[0]);
                                 int b = Convert.ToInt32(chara[2].Split('/')[0]);
                                 int c = Convert.ToInt32(chara[3].Split('/')[0]);
-
+                                triangleslist.Add(a - 1);
+                                triangleslist.Add(b - 1);
+                                triangleslist.Add(c - 1);
                             }
                             if (chara.Length == 5)
                             {
@@ -410,9 +412,9 @@ namespace BesiegeCustomScene
                 mesh.normals = newNormals.ToArray();
                 Debug.Log("ReadFile " + Objname + " Completed!" + "Vertices:" + newVertices.Count.ToString());
                 srd.Close();
-                mesh.RecalculateBounds();
-                mesh.RecalculateNormals();
-                mesh.Optimize();
+              //  mesh.RecalculateBounds();
+              //  mesh.RecalculateNormals();
+              //  mesh.Optimize();
             }
             catch (Exception ex)
             {
