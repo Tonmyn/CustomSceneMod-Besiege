@@ -86,12 +86,9 @@ namespace BesiegeCustomScene
             mesh.RecalculateNormals();
             return mesh;
         }
-        public static Mesh EMeshFromObj(string Objname)
+        public static Mesh EMeshFromObj(string Objpath)
         {
-            List<Vector3> Normals = new List<Vector3>();
-            List<Vector2> UV = new List<Vector2>();
             List<Vector3> newVertices = new List<Vector3>();
-            List<Vector3> Vertices = new List<Vector3>();
             List<Vector2> newUV = new List<Vector2>();
             List<int> triangleslist = new List<int>();
             List<Vector3> newNormals = new List<Vector3>();
@@ -99,11 +96,11 @@ namespace BesiegeCustomScene
             StreamReader srd;
             try
             {
-                srd = File.OpenText(MeshPath + Objname + ".obj");
+                srd = File.OpenText(Objpath);
             }
             catch
             {
-                Debug.Log("Open " + Objname + " failed");
+                Debug.Log("File open failed");
                 return null;
             }
             try
@@ -120,7 +117,7 @@ namespace BesiegeCustomScene
                               Convert.ToSingle(chara[1]),
                               Convert.ToSingle(chara[2]),
                               Convert.ToSingle(chara[3]));
-                            Vertices.Add(v1);
+                            newVertices.Add(v1);
                         }
                         else if (chara[0] == "vt")
                         {
@@ -128,7 +125,7 @@ namespace BesiegeCustomScene
                               Convert.ToSingle(chara[1]),
                               Convert.ToSingle(chara[2]));
 
-                            UV.Add(uv1);
+                            newUV.Add(uv1);
                         }
                         else if (chara[0] == "vn")
                         {
@@ -137,7 +134,7 @@ namespace BesiegeCustomScene
                               Convert.ToSingle(chara[2]),
                               Convert.ToSingle(chara[3]));
 
-                            Normals.Add(v2);
+                            newNormals.Add(v2);
                         }
                         else if (chara[0] == "f")
                         {
@@ -146,18 +143,9 @@ namespace BesiegeCustomScene
                                 int a = Convert.ToInt32(chara[1].Split('/')[0]);
                                 int b = Convert.ToInt32(chara[2].Split('/')[0]);
                                 int c = Convert.ToInt32(chara[3].Split('/')[0]);
-                                triangleslist.Add(newVertices.Count);
-                                triangleslist.Add(newVertices.Count + 1);
-                                triangleslist.Add(newVertices.Count + 2);
-                                newVertices.Add(Vertices[a - 1]);
-                                newVertices.Add(Vertices[b - 1]);
-                                newVertices.Add(Vertices[c - 1]);
-                                newNormals.Add(Normals[Convert.ToInt32(chara[1].Split('/')[2]) - 1]);
-                                newNormals.Add(Normals[Convert.ToInt32(chara[2].Split('/')[2]) - 1]);
-                                newNormals.Add(Normals[Convert.ToInt32(chara[3].Split('/')[2]) - 1]);
-                                newUV.Add(UV[Convert.ToInt32(chara[1].Split('/')[1]) - 1]);
-                                newUV.Add(UV[Convert.ToInt32(chara[2].Split('/')[1]) - 1]);
-                                newUV.Add(UV[Convert.ToInt32(chara[3].Split('/')[1]) - 1]);
+                                triangleslist.Add(a - 1);
+                                triangleslist.Add(b - 1);
+                                triangleslist.Add(c - 1);
                             }
                             if (chara.Length == 5)
                             {
@@ -165,24 +153,12 @@ namespace BesiegeCustomScene
                                 int b = Convert.ToInt32(chara[2].Split('/')[0]);
                                 int c = Convert.ToInt32(chara[3].Split('/')[0]);
                                 int d = Convert.ToInt32(chara[4].Split('/')[0]);
-                                triangleslist.Add(newVertices.Count);
-                                triangleslist.Add(newVertices.Count + 1);
-                                triangleslist.Add(newVertices.Count + 2);
-                                triangleslist.Add(newVertices.Count);
-                                triangleslist.Add(newVertices.Count + 2);
-                                triangleslist.Add(newVertices.Count + 3);
-                                newVertices.Add(Vertices[a - 1]);
-                                newVertices.Add(Vertices[b - 1]);
-                                newVertices.Add(Vertices[c - 1]);
-                                newVertices.Add(Vertices[d - 1]);
-                                newNormals.Add(Normals[Convert.ToInt32(chara[1].Split('/')[2]) - 1]);
-                                newNormals.Add(Normals[Convert.ToInt32(chara[2].Split('/')[2]) - 1]);
-                                newNormals.Add(Normals[Convert.ToInt32(chara[3].Split('/')[2]) - 1]);
-                                newNormals.Add(Normals[Convert.ToInt32(chara[4].Split('/')[2]) - 1]);
-                                newUV.Add(UV[Convert.ToInt32(chara[1].Split('/')[1]) - 1]);
-                                newUV.Add(UV[Convert.ToInt32(chara[2].Split('/')[1]) - 1]);
-                                newUV.Add(UV[Convert.ToInt32(chara[3].Split('/')[1]) - 1]);
-                                newUV.Add(UV[Convert.ToInt32(chara[4].Split('/')[1]) - 1]);
+                                triangleslist.Add(a - 1);
+                                triangleslist.Add(b - 1);
+                                triangleslist.Add(c - 1);
+                                triangleslist.Add(a - 1);
+                                triangleslist.Add(c - 1);
+                                triangleslist.Add(d - 1);
                             }
                         }
                     }
@@ -191,15 +167,15 @@ namespace BesiegeCustomScene
                 mesh.uv = newUV.ToArray();
                 mesh.triangles = triangleslist.ToArray();
                 mesh.normals = newNormals.ToArray();
-                Debug.Log("ReadFile " + Objname + " Completed!" + "Vertices:" + newVertices.Count.ToString());
+                Debug.Log("ReadFile " + Objpath + " Completed!" + "Vertices:" + newVertices.Count.ToString());
                 srd.Close();
-                mesh.RecalculateBounds();
-                mesh.RecalculateNormals();
-                // mesh.Optimize();
+                //  mesh.RecalculateBounds();
+                //  mesh.RecalculateNormals();
+                //  mesh.Optimize();
             }
             catch (Exception ex)
             {
-                Debug.Log("Obj model " + Objname + " error!");
+                Debug.Log("Obj model " + Objpath + " error!");
                 Debug.Log("newUV==>" + newUV.Count.ToString());
                 Debug.Log("triangleslist==>" + triangleslist.Count.ToString());
                 Debug.Log("newNormals==>" + newNormals.Count.ToString());
@@ -330,7 +306,6 @@ namespace BesiegeCustomScene
         }
         public static Mesh WMeshFromObj(string Objname)
         {
-
             List<Vector3> newVertices = new List<Vector3>();
             List<Vector2> newUV = new List<Vector2>();
             List<int> triangleslist = new List<int>();
@@ -412,9 +387,9 @@ namespace BesiegeCustomScene
                 mesh.normals = newNormals.ToArray();
                 Debug.Log("ReadFile " + Objname + " Completed!" + "Vertices:" + newVertices.Count.ToString());
                 srd.Close();
-              //  mesh.RecalculateBounds();
-              //  mesh.RecalculateNormals();
-              //  mesh.Optimize();
+                //  mesh.RecalculateBounds();
+                //  mesh.RecalculateNormals();
+                //  mesh.Optimize();
             }
             catch (Exception ex)
             {
@@ -425,6 +400,27 @@ namespace BesiegeCustomScene
                 Debug.Log(ex.ToString());
             }
             return mesh;
+        }
+        public static Texture ELoadTexture(string TexturePath)
+        {
+            try
+            {
+                WWW jpg = new WWW("File:///"+TexturePath);
+                if (jpg.size > 5)
+                {
+                    return jpg.texture;
+                }
+                else
+                {
+                    Debug.Log("No image in folder or image could not be used!");
+                    return GameObject.Find("FloorBig").GetComponent<Renderer>().material.mainTexture;
+                }
+            }
+            catch
+            {
+                Debug.Log("No image in folder,use white image instead !");
+                return GameObject.Find("FloorBig").GetComponent<Renderer>().material.mainTexture;
+            }
         }
         public static Texture LoadTexture(string TextureName)
         {
@@ -800,6 +796,6 @@ namespace BesiegeCustomScene
             }
 
         }
-       
+
     }
 }

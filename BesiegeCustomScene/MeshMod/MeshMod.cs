@@ -216,6 +216,12 @@ namespace BesiegeCustomScene
                                 //meshes[i].GetComponent<MeshRenderer>().material.shader = Shader.Find("Standard"); 
                                 //meshes[i].GetComponent<MeshRenderer>().material.SetFloat("_Glossiness", 1);//1是smoothness最高
                             }
+                            else if (chara[2] == "etexture")
+                            {
+                                meshes[i].GetComponent<MeshRenderer>().material.mainTexture = GeoTools.ELoadTexture(chara[3]);
+                                //meshes[i].GetComponent<MeshRenderer>().material.shader = Shader.Find("Standard"); 
+                                //meshes[i].GetComponent<MeshRenderer>().material.SetFloat("_Glossiness", 1);//1是smoothness最高
+                            }
                             else if (chara[2] == "stexture")
                             {
                                 meshes[i].GetComponent<MeshRenderer>().sharedMaterial.mainTexture = GeoTools.LoadTexture(chara[3]);
@@ -279,12 +285,14 @@ namespace BesiegeCustomScene
                             else if (chara[2] == "meshcollider")
                             {
                                 meshes[i].GetComponent<MeshCollider>().sharedMesh = GeoTools.MeshFromObj(chara[3]);
-
                             }
                             else if (chara[2] == "wmeshcollider")
                             {
                                 meshes[i].GetComponent<MeshCollider>().sharedMesh = GeoTools.WMeshFromObj(chara[3]);
-
+                            }
+                            else if (chara[2] == "emeshcollider")
+                            {
+                                meshes[i].GetComponent<MeshCollider>().sharedMesh = GeoTools.EMeshFromObj(chara[3]);
                             }
                             else if (chara[2] == "dynamicFriction")
                             {
