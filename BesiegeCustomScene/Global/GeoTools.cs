@@ -169,9 +169,9 @@ namespace BesiegeCustomScene
                 mesh.normals = newNormals.ToArray();
                 Debug.Log("ReadFile " + Objpath + " Completed!" + "Vertices:" + newVertices.Count.ToString());
                 srd.Close();
-                //  mesh.RecalculateBounds();
-                //  mesh.RecalculateNormals();
-                //  mesh.Optimize();
+                mesh.RecalculateBounds();
+                mesh.RecalculateNormals();
+                mesh.Optimize();
             }
             catch (Exception ex)
             {
