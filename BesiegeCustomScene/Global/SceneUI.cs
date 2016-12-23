@@ -12,7 +12,7 @@ namespace BesiegeCustomScene
         private bool isSimulating = false;
         //UI
         private int _FontSize = 15;
-        private Rect windowRect = new Rect(15f, Screen.height - 95f, 500f, 50f);
+        private Rect windowRect = new Rect(15f, Screen.height - 95f, 585f, 50f);
         private int windowID = spaar.ModLoader.Util.GetWindowID();
         private bool ShowGUI = true;
         private List<string> _ButtonName = new List<string>();
@@ -25,7 +25,7 @@ namespace BesiegeCustomScene
             _ButtonName.Clear(); _SceneName.Clear();
             _FontSize = 15;
             ShowGUI = true;
-            windowRect = new Rect(15f, Screen.height - 95f, 500f, 50f);
+            windowRect = new Rect(15f, Screen.height - 95f, 585f, 50f);
             _DisplayUI = KeyCode.F9;
             _ReloadUI = KeyCode.F5;
         }
@@ -100,7 +100,12 @@ namespace BesiegeCustomScene
                         }
                     }
                 }
-                srd.Close();
+                srd.Close(); string str2 = "";
+                for (int i=0;i< _ButtonName.Count; i++)
+                {
+                    str2 += _ButtonName[i];
+                }
+                windowRect.width = (int)(_FontSize * (str2.Length - _ButtonName.Count*0.8f));
                 if (_ButtonName.Count != _SceneName.Count || _ButtonName.Count < 0)
                 {
                     Debug.Log("LoadUISetting Failed!Button Error!");

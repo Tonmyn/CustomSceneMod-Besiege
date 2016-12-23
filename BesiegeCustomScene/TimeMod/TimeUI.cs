@@ -237,7 +237,6 @@ namespace BesiegeCustomScene
             Scene scene1 = SceneManager.GetActiveScene();
             Debug.Log("ActiveScene : " + scene1.rootCount.ToString() + "=>" + scene1.name);
             Debug.Log("SceneCount : " + SceneManager.sceneCountInBuildSettings.ToString());
-
         }
         void Start()
         {

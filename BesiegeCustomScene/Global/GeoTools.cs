@@ -90,6 +90,7 @@ namespace BesiegeCustomScene
         {
             List<Vector3> newVertices = new List<Vector3>();
             List<Vector2> newUV = new List<Vector2>();
+            List<Vector2> newUV2 = new List<Vector2>();
             List<int> triangleslist = new List<int>();
             List<Vector3> newNormals = new List<Vector3>();
             Mesh mesh = new Mesh();
@@ -126,6 +127,7 @@ namespace BesiegeCustomScene
                               Convert.ToSingle(chara[2]));
 
                             newUV.Add(uv1);
+                            newUV2.Add(uv1);
                         }
                         else if (chara[0] == "vn")
                         {
@@ -164,7 +166,7 @@ namespace BesiegeCustomScene
                     }
                 }
                 mesh.vertices = newVertices.ToArray();
-                mesh.uv = newUV.ToArray();
+                mesh.uv = newUV.ToArray(); mesh.uv2 = newUV.ToArray();
                 mesh.triangles = triangleslist.ToArray();
                 mesh.normals = newNormals.ToArray();
                 Debug.Log("ReadFile " + Objpath + " Completed!" + "Vertices:" + newVertices.Count.ToString());

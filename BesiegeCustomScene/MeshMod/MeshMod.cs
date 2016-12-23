@@ -239,6 +239,18 @@ namespace BesiegeCustomScene
                                     Debug.Log(ex.ToString());
                                 }
                             }
+                            else if (chara[2] == "smaterialcopy")
+                            {
+                                try
+                                {
+                                    meshes[i].GetComponent<MeshRenderer>().sharedMaterial = new Material(GameObject.Find(chara[3]).GetComponent<Renderer>().sharedMaterial);   
+                                }
+                                catch (Exception ex)
+                                {
+                                    Debug.Log("Error! MaterialCopy Failed");
+                                    Debug.Log(ex.ToString());
+                                }
+                            }
                             else if (chara[2] == "materialPropcopy")
                             {
                                 try
