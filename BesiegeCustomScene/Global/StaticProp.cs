@@ -46,20 +46,39 @@ namespace BesiegeCustomScene
         public static double t = 2;
         void FixedUpdate()
         {
-            if (Isstart == 0) { StartedScene = SceneManager.GetActiveScene().name; }
-            if (Isstart == 10 * t) { OpenScene("TITLE SCREEN"); }
-            if (Isstart == 20 * t) { cloudTemp = GetObjectInScene("CLoud"); }
-            if (Isstart == 30 * t)
+            try
             {
-                GameObject matTemp = GetObjectInScene("Water");
-                if (matTemp != null) this.MaterialTemp.Add(matTemp);
+                if (Isstart == 1) { StartedScene = SceneManager.GetActiveScene().name; }
+                if (Isstart == 10 * t) { OpenScene("TITLE SCREEN"); }
+                if (Isstart == 20 * t) { cloudTemp = GetObjectInScene("CLoud"); }
+                if (Isstart == 30 * t)
+                {
+                    GameObject matTemp = GetObjectInScene("Water");
+                    if (matTemp != null) this.MaterialTemp.Add(matTemp);
+                }
+                //if (Isstart == 30) { OpenScene("21"); Isstart++; }
+                // if (Isstart == 40) { iceTemp = GetObjectInScene("LargeCrystal");Debug.Log(iceTemp.GetComponent<Renderer>().material.shader.name); }
+                if (Isstart == 40 * t) { OpenScene("36"); }
+                if (Isstart == 50 * t) { snowTemp = GetObjectInScene("Snow"); }
+                if (Isstart == 60 * t) { OpenScene(StartedScene); }
+                if (Isstart == 80 * t)
+                {
+                    GameObject WM = GameObject.CreatePrimitive(PrimitiveType.Plane);
+                    WM.GetComponent<Renderer>().material.shader = Shader.Find("Standard");
+                    WM.GetComponent<Renderer>().material.SetFloat("_Glossiness", 1);
+                    WM.GetComponent<Renderer>().material.mainTexture = GeoTools.LoadTexture("WM1");
+                    WM.name = "WMTemp";
+                    UnityEngine.Object.DontDestroyOnLoad(WM);
+                    Debug.Log("Get " + WM.name + "Temp Successfully");
+                    WM.SetActive(false);
+                    this.MaterialTemp.Add(WM);
+                }
             }
-            //if (Isstart == 30) { OpenScene("21"); Isstart++; }
-            // if (Isstart == 40) { iceTemp = GetObjectInScene("LargeCrystal");Debug.Log(iceTemp.GetComponent<Renderer>().material.shader.name); }
-            if (Isstart == 40 * t) { OpenScene("36"); Isstart++; }
-            if (Isstart == 50 * t) { snowTemp = GetObjectInScene("Snow"); }
-            if (Isstart == 60 * t) { OpenScene(StartedScene); }
-            if (Isstart <= 70 * t) Isstart++;
+            catch(Exception ex)
+            {
+                Debug.Log(ex.ToString());
+            }
+            if (Isstart <= 90 * t) Isstart++;
         }     
     }
 }
