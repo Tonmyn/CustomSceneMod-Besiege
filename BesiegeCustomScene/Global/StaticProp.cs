@@ -16,14 +16,6 @@ namespace BesiegeCustomScene
         public List<GameObject> MaterialTemp = new List<GameObject>();
         public GameObject iceTemp = null;
         public GameObject snowTemp = null;
-      
-        public void OpenScene(string Scene)
-        {
-            if (SceneManager.GetActiveScene().name != Scene)
-            {
-                SceneManager.LoadScene(Scene, LoadSceneMode.Single);//打开level
-            }
-        }
         public GameObject GetObjectInScene(string ObjectName)
         {
             try
@@ -48,20 +40,19 @@ namespace BesiegeCustomScene
         {
             try
             {
-                if (Isstart == 1) { StartedScene = SceneManager.GetActiveScene().name; }
-                if (Isstart == 10 * t) { OpenScene("TITLE SCREEN"); }
-                if (Isstart == 20 * t) { cloudTemp = GetObjectInScene("CLoud"); }
-                if (Isstart == 30 * t)
-                {
+                if (Isstart == 1) {
+                    StartedScene = SceneManager.GetActiveScene().name;
+                    GeoTools.OpenScene("TITLE SCREEN");
+                    cloudTemp = GetObjectInScene("CLoud");
                     GameObject matTemp = GetObjectInScene("Water");
                     if (matTemp != null) this.MaterialTemp.Add(matTemp);
                 }
                 //if (Isstart == 30) { OpenScene("21"); Isstart++; }
                 // if (Isstart == 40) { iceTemp = GetObjectInScene("LargeCrystal");Debug.Log(iceTemp.GetComponent<Renderer>().material.shader.name); }
-                if (Isstart == 40 * t) { OpenScene("36"); }
-                if (Isstart == 50 * t) { snowTemp = GetObjectInScene("Snow"); }
-                if (Isstart == 60 * t) { OpenScene(StartedScene); }
-                if (Isstart == 80 * t)
+                if (Isstart == 5 * t) { GeoTools.OpenScene("36"); }
+                if (Isstart == 10 * t) { snowTemp = GetObjectInScene("Snow"); }
+                if (Isstart == 20 * t) { GeoTools.OpenScene(StartedScene); }
+                if (Isstart == 30 * t)
                 {
                     GameObject WM = GameObject.CreatePrimitive(PrimitiveType.Plane);
                     WM.GetComponent<Renderer>().material.shader = Shader.Find("Standard");
@@ -74,11 +65,11 @@ namespace BesiegeCustomScene
                     this.MaterialTemp.Add(WM);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Debug.Log(ex.ToString());
             }
             if (Isstart <= 90 * t) Isstart++;
-        }     
+        }
     }
 }

@@ -1,9 +1,12 @@
 ﻿//using System.Threading.Tasks;
 using spaar;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace BesiegeCustomScene
 {
@@ -23,9 +26,9 @@ namespace BesiegeCustomScene
         void DefaultUI()
         {
             _ButtonName.Clear(); _SceneName.Clear();
-            _FontSize = 15;
+            _FontSize = (int)(Screen.width * 0.005 + 8);
             ShowGUI = true;
-            windowRect = new Rect(15f, Screen.height - 95f, 585f, 50f);
+            windowRect = new Rect(35f, Screen.height - 95f, 585f, 50f);
             _DisplayUI = KeyCode.F9;
             _ReloadUI = KeyCode.F5;
         }
@@ -75,37 +78,24 @@ namespace BesiegeCustomScene
                                 KeyCode outputkey;
                                 if (GeoTools.StringToKeyCode(chara[2], out outputkey)) _ReloadUI = outputkey;
                             }
-                        }
-                        else if (chara[0] == Screen.width.ToString() + "*" + Screen.height.ToString() + "_Scene")
-                        {
-                            if (chara[1] == "fontsize")
-                            {
-                                _FontSize = Convert.ToInt32(chara[2]);
-                            }
-                            else if (chara[1] == "window_poistion")
-                            {
-                                windowRect.x = Convert.ToSingle(chara[2]);
-                                windowRect.y = Convert.ToSingle(chara[3]);
-                            }
-                            else if (chara[1] == "window_scale")
-                            {
-                                windowRect.width = Convert.ToSingle(chara[2]);
-                                windowRect.height = Convert.ToSingle(chara[3]);
-                            }
                             else if (chara[1] == "show_on_start")
                             {
-                                if (chara[2] == "0") ShowGUI = false;
+                                if (chara[2] == "0" || chara[2] == "OFF") ShowGUI = false;
                                 else ShowGUI = true;
                             }
                         }
+                        else if (chara[0] == Screen.width.ToString() + "*" + Screen.height.ToString() + "_Scene")
+                        {
+                            if (chara[1] == "window_poistion")
+                            {
+                                windowRect.x = Convert.ToSingle(chara[2]);
+                                windowRect.y = Convert.ToSingle(chara[3]);
+                            }                     
+                        }
                     }
                 }
-                srd.Close(); string str2 = "";
-                for (int i=0;i< _ButtonName.Count; i++)
-                {
-                    str2 += _ButtonName[i];
-                }
-                windowRect.width = (int)(_FontSize * (str2.Length - _ButtonName.Count*0.8f));
+                srd.Close();
+                filtUI();
                 if (_ButtonName.Count != _SceneName.Count || _ButtonName.Count < 0)
                 {
                     Debug.Log("LoadUISetting Failed!Button Error!");
@@ -123,6 +113,25 @@ namespace BesiegeCustomScene
                 DefaultUI();
                 return;
             }
+        }
+        private void filtUI()
+        {
+
+            string str2 = ""; double str2width = 0;
+            for (int i = 0; i < _ButtonName.Count; i++)
+            {
+                str2 += _ButtonName[i];
+            }
+            for (int i = 0; i < str2.Length; i++)
+            {
+                if (str2[i] >= 0x4e00 && str2[i] <= 0x9fbb) { str2width += 0.8; }
+                else
+                {
+                    str2width += 0.4;
+                }
+            }
+            windowRect.width = (int)(_FontSize * (str2width + (_ButtonName.Count - 1)));
+            windowRect.height = (int)(_FontSize * 2);
         }
         public void ReadScene(string SceneName)
         {
@@ -232,13 +241,20 @@ namespace BesiegeCustomScene
         }
         void LoadScene(string SceneName)
         {
-            HideFloorBig();
-            this.ReadScene(SceneName);
-            try { this.gameObject.GetComponent<MeshMod>().ReadScene(SceneName); } catch { }
-            try { this.gameObject.GetComponent<TriggerUI>().ReadScene(SceneName); } catch { }
-           // try { this.gameObject.GetComponent<WaterMod>().ReadScene(SceneName); } catch { }
-            try { this.gameObject.GetComponent<CloudMod>().ReadScene(SceneName); } catch { }
-            try { this.gameObject.GetComponent<SnowMod>().ReadScene(SceneName); } catch { }
+            if (SceneManager.GetActiveScene().name != "2")
+            {
+                SceneManager.LoadScene("2", LoadSceneMode.Single);//打开level  
+            }
+            else
+            {
+                HideFloorBig();
+                this.ReadScene(SceneName);
+                try { this.gameObject.GetComponent<MeshMod>().ReadScene(SceneName); } catch { }
+                try { this.gameObject.GetComponent<TriggerUI>().ReadScene(SceneName); } catch { }
+                // try { this.gameObject.GetComponent<WaterMod>().ReadScene(SceneName); } catch { }
+                try { this.gameObject.GetComponent<CloudMod>().ReadScene(SceneName); } catch { }
+                try { this.gameObject.GetComponent<SnowMod>().ReadScene(SceneName); } catch { }
+            }
         }
         /// ///////////////////////////////////////
         void FixedUpdate()

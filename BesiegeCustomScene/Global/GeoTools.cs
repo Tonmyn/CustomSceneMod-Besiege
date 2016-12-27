@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -798,6 +799,63 @@ namespace BesiegeCustomScene
             }
 
         }
-
+        public static void PrintAssetBundle(string name)
+        {
+            try
+            {
+                WWW iteratorVariable0 = new WWW("file:///" + GeoTools.ShaderPath + name);
+                AssetBundle iteratorVariable1 = iteratorVariable0.assetBundle;
+                string[] names = iteratorVariable1.GetAllAssetNames();
+                for (int i = 0; i < names.Length; i++) { Debug.Log(names[i]); }
+            }
+            catch (Exception ex)
+            {
+                Debug.Log("Error! assetBundle failed");
+                Debug.Log(ex.ToString());
+            }
+        }
+        public static void GetCenter()
+        {
+            string stroutput = "";
+            try
+            {
+                MyBlockInfo[] infoArray = UnityEngine.Object.FindObjectsOfType<MyBlockInfo>();
+                Vector3 center = new Vector3(0, 0, 0);
+                float _weight = 0;
+                //List<Transform> list = new List<Transform>();
+                foreach (MyBlockInfo info in infoArray)
+                {
+                    Vector3 v = info.gameObject.GetComponent<Rigidbody>().worldCenterOfMass;
+                    float t = info.gameObject.GetComponent<Rigidbody>().mass;
+                    center.x = v.x;// * t;
+                    center.y = v.y;// * t;
+                    center.z = v.z; // * t;
+                    _weight += t;
+                }
+                center.x /= infoArray.Length;
+                center.y /= infoArray.Length;
+                center.z /= infoArray.Length;
+                stroutput= "Center:" + center.x.ToString() + "/" + center.y.ToString() + "/" + center.z.ToString() + " Weight:" + _weight.ToString();
+            }
+            catch(Exception ex)
+            {
+                Debug.Log(ex.ToString());
+                stroutput= "Could not get Center";
+            }
+            Debug.Log(stroutput);
+        }
+        public static void GetLevelInfo()
+        {
+            Scene scene1 = SceneManager.GetActiveScene();
+            Debug.Log("ActiveScene : " + scene1.rootCount.ToString() + "=>" + scene1.name);
+            Debug.Log("SceneCount : " + SceneManager.sceneCountInBuildSettings.ToString());
+        }
+        public static void OpenScene(string Scene)
+        {
+            if (SceneManager.GetActiveScene().name != Scene)
+            {
+                SceneManager.LoadScene(Scene, LoadSceneMode.Single);//打开level  
+            }
+        }
     }
 }

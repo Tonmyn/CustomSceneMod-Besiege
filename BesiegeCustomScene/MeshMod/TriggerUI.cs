@@ -55,8 +55,8 @@ namespace BesiegeCustomScene
                 if (GUILayout.Button(trigger, style, new GUILayoutOption[0]))
                 {
                     TriggerIndex = -1; TriggerIndex2 = -1;
-                }                     
-                GUILayout.Label((TriggerIndex + 1).ToString() + "/"+ TriggerSize.ToString(), style1, new GUILayoutOption[0]);       
+                }
+                GUILayout.Label((TriggerIndex + 1).ToString() + "/" + TriggerSize.ToString(), style1, new GUILayoutOption[0]);
                 GUILayout.EndHorizontal();
             }
             GUILayout.EndVertical();
@@ -113,7 +113,7 @@ namespace BesiegeCustomScene
         void DefaultUI()
         {
             trigger = "[Trigger]";
-            _FontSize = 15;
+            _FontSize = (int)(Screen.width * 0.005 + 8);
             ShowGUI = false;
             windowRect = new Rect(15f, 234f, 150f, 50f);
             _DisplayUI = KeyCode.F10;
@@ -158,14 +158,16 @@ namespace BesiegeCustomScene
                                 if (chara[2] == "OFF") trigger = string.Empty;
                                 else trigger = chara[2];
                             }
+                            else if (chara[1] == "show_on_start")
+                            {
+                                if (chara[2] == "0" || chara[2] == "OFF") ShowGUI = false;         
+                                else ShowGUI = true;
+                            }
                         }
                         else if (chara[0] == Screen.width.ToString() + "*" + Screen.height.ToString() + "_Trigger")
                         {
-                            if (chara[1] == "fontsize")
-                            {
-                                _FontSize = Convert.ToInt32(chara[2]);
-                            }
-                            else if (chara[1] == "window_poistion")
+
+                            if (chara[1] == "window_poistion")
                             {
                                 windowRect.x = Convert.ToSingle(chara[2]);
                                 windowRect.y = Convert.ToSingle(chara[3]);
@@ -175,16 +177,12 @@ namespace BesiegeCustomScene
                                 windowRect.width = Convert.ToSingle(chara[2]);
                                 windowRect.height = Convert.ToSingle(chara[3]);
                                 windowRect.y += windowRect.height + 10;
-                            }
-                            else if (chara[1] == "show_on_start")
-                            {
-                                if (chara[2] == "0") ShowGUI = false;
-                                else ShowGUI = true;
-                            }
+                            }                         
                         }
                     }
                 }
                 srd.Close();
+                filtUI();
                 Debug.Log("TriggerUISetting Completed!");
             }
             catch (Exception ex)
@@ -194,6 +192,11 @@ namespace BesiegeCustomScene
                 DefaultUI();
                 return;
             }
+        }
+        private void filtUI()
+        {
+            windowRect.height = (int)(_FontSize);
+            windowRect.width = (int)(_FontSize * 12);
         }
         string ScenePath = GeoTools.ScenePath;
         public void ReadScene(string SceneName)

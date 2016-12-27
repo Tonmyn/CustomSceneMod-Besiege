@@ -20,7 +20,6 @@ namespace BesiegeCustomScene
         private int windowID = spaar.ModLoader.Util.GetWindowID();
         private int _accstep = 1;
         //private bool _mode = false;
-
         private Rect windowRect = new Rect(15f, 100f, 150f, 150f);
         private ModUnit Unit = ModUnit.kmh;
         KeyCode _DisplayUI = KeyCode.F9;
@@ -30,22 +29,17 @@ namespace BesiegeCustomScene
         KeyCode _GetShader = KeyCode.E;
         private int _FontSize = 15;
         public bool ShowGUI = true;
-
+        public bool EnableCommond = false;
         private string _overloadUI = "Overload";
         private string Overload = "0"; private Vector3 _V = new Vector3(0, 0, 0);
-
         private string _coordinatesUI = "Coordinates";
         private string X = "0"; private string Y = "0"; private string Z = "0";
-
         private string _velocityUI = "Velocity(km/h)";
         private string V = "0";
-
         private string _distanceUI = "Distance";
         private float _Distance = 0; private string Distance = "0"; private Vector3 _Position = new Vector3(0, 0, 0);
-
         private string _timeUI = "Time";
         private string MTime = "";
-
         private string _timerUI = "Timer";
         public DateTime _MStartTime;
         //control timer by other component
@@ -53,7 +47,7 @@ namespace BesiegeCustomScene
         private string MTimer = "";
         void DefaultUI()
         {
-            _FontSize = 15;
+            _FontSize = (int)(Screen.width * 0.005 + 8);
             ShowGUI = true;
             windowRect = new Rect(15f, 100f, 150f, 150f);
             _DisplayUI = KeyCode.F9;
@@ -166,27 +160,19 @@ namespace BesiegeCustomScene
                                 KeyCode outputkey;
                                 if (GeoTools.StringToKeyCode(chara[2], out outputkey)) _GetShader = outputkey;
                             }
+                            else if (chara[1] == "show_on_start")
+                            {
+                                if (chara[2] == "0" || chara[2] == "OFF") ShowGUI = false;
+                                else ShowGUI = true;
+                            }
                         }
                         else if (chara[0] == Screen.width.ToString() + "*" + Screen.height.ToString() + "_Timer")
                         {
-                            if (chara[1] == "fontsize")
-                            {
-                                _FontSize = Convert.ToInt32(chara[2]);
-                            }
-                            else if (chara[1] == "window_poistion")
+
+                            if (chara[1] == "window_poistion")
                             {
                                 windowRect.x = Convert.ToSingle(chara[2]);
                                 windowRect.y = Convert.ToSingle(chara[3]);
-                            }
-                            else if (chara[1] == "window_scale")
-                            {
-                                windowRect.width = Convert.ToSingle(chara[2]);
-                                windowRect.height = Convert.ToSingle(chara[3]);
-                            }
-                            else if (chara[1] == "show_on_start")
-                            {
-                                if (chara[2] == "0") ShowGUI = false;
-                                else ShowGUI = true;
                             }
                         }
                     }
@@ -195,6 +181,7 @@ namespace BesiegeCustomScene
                 if (Unit == ModUnit.kmh) { _velocityUI += "(km/h)"; }
                 else if (Unit == ModUnit.ms) { _velocityUI += "(m/s)"; }
                 else if (Unit == ModUnit.mach) { _velocityUI += "(mach)"; }
+                filtUI();
                 Debug.Log("TimerUISetting Completed!");
             }
             catch (Exception ex)
@@ -205,46 +192,63 @@ namespace BesiegeCustomScene
                 return;
             }
         }
-        private string GetCenter()
+        private void filtUI()
         {
-            try
+            string str2 = ""; double str2width = 0, str2height = 0;
+            if (_distanceUI.Length != 0) { str2height++; if (_distanceUI.Length > str2.Length) str2 = _distanceUI; }
+            if (_coordinatesUI.Length != 0) { str2height++; if (_coordinatesUI.Length > str2.Length) str2 = _coordinatesUI; }
+            if (_velocityUI.Length != 0) { str2height++; if (_velocityUI.Length > str2.Length) str2 = _velocityUI; }
+            if (_timeUI.Length != 0) { str2height++; if (_timeUI.Length > str2.Length) str2 = _timeUI; }
+            if (_timerUI.Length != 0) { str2height++; if (_timerUI.Length > str2.Length) str2 = _timerUI; }
+            if (_overloadUI.Length != 0) { str2height++; if (_overloadUI.Length > str2.Length) str2 = _overloadUI; }
+            for (int i = 0; i < str2.Length; i++)
             {
-                MyBlockInfo[] infoArray = UnityEngine.Object.FindObjectsOfType<MyBlockInfo>();
-                Vector3 center = new Vector3(0, 0, 0);
-                float _weight = 0;
-                //List<Transform> list = new List<Transform>();
-                foreach (MyBlockInfo info in infoArray)
+                if (str2[i] >= 0x4e00 && str2[i] <= 0x9fbb) { str2width += 0.8; }
+                else
                 {
-                    Vector3 v = info.gameObject.GetComponent<Rigidbody>().worldCenterOfMass;
-                    float t = info.gameObject.GetComponent<Rigidbody>().mass;
-                    center.x = v.x;// * t;
-                    center.y = v.y;// * t;
-                    center.z = v.z; // * t;
-                    _weight += t;
+                    str2width += 0.4;
                 }
-                center.x /= infoArray.Length;
-                center.y /= infoArray.Length;
-                center.z /= infoArray.Length;
-                return "Center:" + center.x.ToString() + "/" + center.y.ToString() + "/" + center.z.ToString() + " Weight:" + _weight.ToString();
             }
-            catch
-            {
-                return "Could not get Center";
-            }
-        }
-        public void GetLevelInfo()
-        {
-            Scene scene1 = SceneManager.GetActiveScene();
-            Debug.Log("ActiveScene : " + scene1.rootCount.ToString() + "=>" + scene1.name);
-            Debug.Log("SceneCount : " + SceneManager.sceneCountInBuildSettings.ToString());
+            windowRect.height = (int)(_FontSize * str2height + _FontSize * (str2height - 1) * 0.7f);
+            windowRect.width = (int)(_FontSize * str2width * 3);
         }
         void Start()
         {
             ReadUI();
+            if (!EnableCommond) return;
+            Commands.RegisterCommand("VP_Help", (args, notUses) =>
+             {
+                 Debug.Log("VP_Help");
+                 Debug.Log("VP_GetCenter");
+                 Debug.Log("VP_GetAssets name");
+                 Debug.Log("VP_GetLevelInfo");
+                 Debug.Log("VP_GetShader");
+                 return "\n";
+             }, "Get Help");
+            Commands.RegisterCommand("VP_GetLevelInfo", (args, notUses) =>
+            {
+                GeoTools.GetLevelInfo();
+                return "\n";
+            }, "Get Level Info");
+            Commands.RegisterCommand("VP_GetShader", (args, notUses) =>
+            {
+                GeoTools.PrintShader();
+                return "\n";
+            }, "Get Shader");
             Commands.RegisterCommand("VP_GetCenter", delegate (string[] args, IDictionary<string, string> notUses)
             {
-                return GetCenter();
+                GeoTools.GetCenter();
+                return "\n";
             }, "Get Machine Center");
+            Commands.RegisterCommand("VP_GetAssets", delegate (string[] args, IDictionary<string, string> notUses)
+            {
+                if (args.Length > 0)
+                {
+                    Debug.Log("AssetBundleName:" + args[0]);
+                    GeoTools.PrintAssetBundle(args[0]);
+                }
+                return "\n";
+            }, "Get Assets Names");
         }
         void DoWindow(int windowID)
         {
@@ -264,12 +268,16 @@ namespace BesiegeCustomScene
                 margin = { top = 5 },
                 fontSize = _FontSize
             };
+
             GUILayout.BeginVertical(new GUILayoutOption[0]);
 
             if (_coordinatesUI.Length != 0)
             {
                 GUILayout.BeginHorizontal(new GUILayoutOption[0]);
-                GUILayout.Label(_coordinatesUI, style, new GUILayoutOption[0]);
+                if ((X.Length + Y.Length + Z.Length) < 13)
+                {
+                    GUILayout.Label(_coordinatesUI, style, new GUILayoutOption[0]);
+                }
                 GUILayout.Label(X + " / " + Y + " / " + Z, style1, new GUILayoutOption[0]);
                 GUILayout.EndHorizontal();
             }
@@ -337,11 +345,11 @@ namespace BesiegeCustomScene
             }
             if (Input.GetKeyDown(_GetLevelInfo) && Input.GetKey(KeyCode.LeftControl))
             {
-                GetLevelInfo();
+                GeoTools.GetLevelInfo();
             }
             if (Input.GetKeyDown(_GetCenter) && Input.GetKey(KeyCode.LeftControl))
             {
-                Debug.Log(GetCenter());
+                GeoTools.GetCenter();
             }
             if (Input.GetKeyDown(_GetShader) && Input.GetKey(KeyCode.LeftControl))
             {
