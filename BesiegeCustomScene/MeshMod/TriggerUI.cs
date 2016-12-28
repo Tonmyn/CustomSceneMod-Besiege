@@ -195,7 +195,7 @@ namespace BesiegeCustomScene
         }
         private void filtUI()
         {
-            windowRect.height = (int)(_FontSize);
+            windowRect.height = (int)(_FontSize*1.5f);
             windowRect.width = (int)(_FontSize * 12);
         }
         string ScenePath = GeoTools.ScenePath;
