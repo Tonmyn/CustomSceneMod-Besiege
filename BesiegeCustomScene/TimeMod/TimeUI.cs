@@ -29,7 +29,7 @@ namespace BesiegeCustomScene
         KeyCode _GetShader = KeyCode.E;
         private int _FontSize = 15;
         public bool ShowGUI = true;
-        public bool EnableCommond = false;
+        public bool EnableCommond = true;
         private string _overloadUI = "Overload";
         private string Overload = "0"; private Vector3 _V = new Vector3(0, 0, 0);
         private string _coordinatesUI = "Coordinates";

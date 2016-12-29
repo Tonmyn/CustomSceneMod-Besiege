@@ -11,20 +11,25 @@ namespace BesiegeCustomScene
     class WaterMod : MonoBehaviour
     {
         public AssetBundle iteratorVariable1;
+        GameObject go = new GameObject();
         void Start()
         {
             try
             {
-                WWW iteratorVariable0 = new WWW("file:///" + GeoTools.ShaderPath + "Water.unity3d.dll");
+                WWW iteratorVariable0 = new WWW("file:///" + GeoTools.ShaderPath + "water0");
                 iteratorVariable1 = iteratorVariable0.assetBundle;
                 string[] names = iteratorVariable1.GetAllAssetNames();
                 for (int i = 0; i < names.Length; i++) { Debug.Log(names[i]); }
+                
+               // go = (GameObject)Instantiate(iteratorVariable1.LoadAsset(
+               //             "assets/standard assets/environment/water/water4/prefabs/water4advanced.prefab",
+               //             typeof(GameObject)), waterLocation, new Quaternion());
             }
             catch (Exception ex)
             {
                 Debug.Log("Error! assetBundle failed");
                 Debug.Log(ex.ToString());
-            }  
+            }
         }
         void OnDisable()
         {
@@ -114,16 +119,17 @@ namespace BesiegeCustomScene
         {
             try
             {
-                ClearWater();        
+                ClearWater();
                 if (WaterSize <= 0) return;
                 if (waterScale.x < 0) waterScale.x = 0;
                 if (waterScale.x > 9) waterScale.x = 9;
                 if (waterScale.z < 0) waterScale.z = 0;
                 if (waterScale.z > 9) waterScale.z = 9;
                 Mwater = new GameObject[((int)waterScale.x * 2 + 1) * ((int)waterScale.z * 2 + 1)];
-                Mwater[0] = (GameObject)Instantiate(iteratorVariable1.LoadAsset("water4example (advanced)", typeof(GameObject)), waterLocation, new Quaternion());
+                Mwater[0] = (GameObject)Instantiate(iteratorVariable1.LoadAsset(
+                    "assets/standard assets/environment/water/water4/prefabs/water4advanced.prefab", typeof(GameObject)), waterLocation, new Quaternion());
                 Mwater[0].name = "water0";
-                GeoTools.ResetWaterMaterial(ref Mwater[0].GetComponent<WaterBase>().sharedMaterial);
+                //  GeoTools.ResetWaterMaterial(ref Mwater[0].GetComponent<WaterBase>().sharedMaterial);
                 Mwater[0].transform.localScale = MwaterScale;
                 int index = 1;
                 for (float k = -waterScale.x; k <= waterScale.x; k++)

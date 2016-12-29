@@ -64,6 +64,10 @@ namespace BesiegeCustomScene
                     WM.SetActive(false);
                     this.MaterialTemp.Add(WM);
                 }
+                if (Isstart == 60 * t)
+                {
+                  
+                }
             }
             catch (Exception ex)
             {

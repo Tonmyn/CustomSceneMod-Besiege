@@ -251,7 +251,7 @@ namespace BesiegeCustomScene
                 this.ReadScene(SceneName);
                 try { this.gameObject.GetComponent<MeshMod>().ReadScene(SceneName); } catch { }
                 try { this.gameObject.GetComponent<TriggerUI>().ReadScene(SceneName); } catch { }
-                // try { this.gameObject.GetComponent<WaterMod>().ReadScene(SceneName); } catch { }
+                try { this.gameObject.GetComponent<WaterMod>().ReadScene(SceneName); } catch { }
                 try { this.gameObject.GetComponent<CloudMod>().ReadScene(SceneName); } catch { }
                 try { this.gameObject.GetComponent<SnowMod>().ReadScene(SceneName); } catch { }
             }
@@ -345,13 +345,16 @@ namespace BesiegeCustomScene
             try
             {
                 GameObject.Find("WORLD BOUNDARIES").transform.localScale = new Vector3(0, 0, 0);
+                GameObject.Find("WorldBounds_Back").transform.localScale = new Vector3(0, 0, 0);
+                GameObject.Find("WorldBounds_Front").transform.localScale = new Vector3(0, 0, 0);
+                GameObject.Find("WorldBounds_Left").transform.localScale = new Vector3(0, 0, 0);
+                GameObject.Find("WorldBounds_Right").transform.localScale = new Vector3(0, 0, 0);
+                GameObject.Find("WorldBoundaryBack").transform.GetChild(0).GetComponent<Renderer>().enabled = false;
+                GameObject.Find("WorldBoundaryFront").transform.GetChild(0).GetComponent<Renderer>().enabled = false;
+                GameObject.Find("WorldBoundaryLeft").transform.GetChild(0).GetComponent<Renderer>().enabled = false;
+                GameObject.Find("WorldBoundaryRight").transform.GetChild(0).GetComponent<Renderer>().enabled = false;
             }
-            catch { }
-            try
-            {
-                GameObject.Find("STAR SPHERE").GetComponent<MeshRenderer>().material.mainTexture = GeoTools.LoadTexture("colorful");
-            }
-            catch { }
+            catch { }     
         }
         public void UnhideFloorBig()
         {
