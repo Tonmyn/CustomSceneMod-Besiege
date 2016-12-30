@@ -16,14 +16,21 @@ namespace BesiegeCustomScene
         {
             try
             {
-                WWW iteratorVariable0 = new WWW("file:///" + GeoTools.ShaderPath + "water0");
+                WWW iteratorVariable0 = new WWW("file:///" + GeoTools.ShaderPath + "water4");
                 iteratorVariable1 = iteratorVariable0.assetBundle;
                 string[] names = iteratorVariable1.GetAllAssetNames();
                 for (int i = 0; i < names.Length; i++) { Debug.Log(names[i]); }
-                
-               // go = (GameObject)Instantiate(iteratorVariable1.LoadAsset(
-               //             "assets/standard assets/environment/water/water4/prefabs/water4advanced.prefab",
-               //             typeof(GameObject)), waterLocation, new Quaternion());
+
+                // go = (GameObject)Instantiate(iteratorVariable1.LoadAsset(
+                //             "assets/standard assets/environment/water/water4/prefabs/water4advanced.prefab",
+                //             typeof(GameObject)), waterLocation, new Quaternion());
+                //  ParticleSystem[] ABs=Resources.FindObjectsOfTypeAll<ParticleSystem>();
+                //   for (int i = 0; i < ABs.Length; i++) { Debug.Log(ABs[i].name); }
+                if (iteratorVariable1 != null)
+                {
+                  Shader[] shader=  iteratorVariable1.LoadAllAssets<Shader>();
+                    for (int i = 0; i < shader.Length; i++) { Debug.Log(shader[i].name); }
+                }
             }
             catch (Exception ex)
             {

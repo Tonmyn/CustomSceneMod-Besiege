@@ -356,9 +356,16 @@ namespace BesiegeCustomScene
                 GeoTools.PrintShader();
             }
         }
+        GameObject Dlight = null;
         bool LoadBlock()
         {
-            startingBlock = GameObject.Find("StartingBlock");
+            try
+            {
+                startingBlock = GameObject.Find("StartingBlock");
+                Dlight = GameObject.Find("Directional light");
+            }
+            catch { }
+           
             if (startingBlock == null)
             {
                 startingBlock = GameObject.Find("bgeL0");
@@ -446,6 +453,30 @@ namespace BesiegeCustomScene
             }
             if (_distanceUI.Length != 0)
             {
+                if (_accstep == 50 && Dlight!=null)
+                {
+                    float d2 = _Position.magnitude;
+                    if (d2 <= 2500)
+                    {
+                        if (Dlight.GetComponent<Light>().shadowBias != 0.15f) Dlight.GetComponent<Light>().shadowBias = 0.15f;
+                    }
+                    if (d2 > 2500 && d2 <= 3500)
+                    {
+                        if (Dlight.GetComponent<Light>().shadowBias != 0.35f) Dlight.GetComponent<Light>().shadowBias = 0.35f;
+                    }
+                    else if (d2 > 3500 && d2 <= 4500)
+                    {
+                        if (Dlight.GetComponent<Light>().shadowBias != 0.55f) Dlight.GetComponent<Light>().shadowBias = 0.55f;
+                    }
+                    if (d2 > 4500 && d2 <= 5500)
+                    {
+                        if (Dlight.GetComponent<Light>().shadowBias != 0.75f) Dlight.GetComponent<Light>().shadowBias = 0.75f;
+                    }
+                    else if (d2 > 5500)
+                    {
+                        if (Dlight.GetComponent<Light>().shadowBias != 0.95f) Dlight.GetComponent<Light>().shadowBias = 0.95f;
+                    }
+                }
                 if (_accstep == 10 || _accstep == 20 || _accstep == 30 || _accstep == 40 || _accstep == 50)
                 {
                     if (validBlock)
@@ -499,8 +530,9 @@ namespace BesiegeCustomScene
                         MTimer = n.ToString("mm:ss:ff");
                     }
                 }
+
             }
-            if (_accstep >= 50) _accstep = 0;
+            if (_accstep >= 50) { _accstep = 0; }
             _accstep++;
         }
     }
