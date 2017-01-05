@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 
 namespace BesiegeCustomScene
@@ -11,25 +12,19 @@ namespace BesiegeCustomScene
     class WaterMod : MonoBehaviour
     {
         public AssetBundle iteratorVariable1;
-        GameObject go = new GameObject();
+        public GameObject Tile;
         void Start()
         {
             try
             {
                 WWW iteratorVariable0 = new WWW("file:///" + GeoTools.ShaderPath + "water4");
                 iteratorVariable1 = iteratorVariable0.assetBundle;
-                string[] names = iteratorVariable1.GetAllAssetNames();
-                for (int i = 0; i < names.Length; i++) { Debug.Log(names[i]); }
-
-                // go = (GameObject)Instantiate(iteratorVariable1.LoadAsset(
-                //             "assets/standard assets/environment/water/water4/prefabs/water4advanced.prefab",
-                //             typeof(GameObject)), waterLocation, new Quaternion());
-                //  ParticleSystem[] ABs=Resources.FindObjectsOfTypeAll<ParticleSystem>();
-                //   for (int i = 0; i < ABs.Length; i++) { Debug.Log(ABs[i].name); }
                 if (iteratorVariable1 != null)
                 {
-                  Shader[] shader=  iteratorVariable1.LoadAllAssets<Shader>();
-                    for (int i = 0; i < shader.Length; i++) { Debug.Log(shader[i].name); }
+                    string[] names = iteratorVariable1.GetAllAssetNames();
+                    for (int i = 0; i < names.Length; i++) { Debug.Log(names[i]); }
+                    //  Shader[] shader=  iteratorVariable1.LoadAllAssets<Shader>();
+                    //  for (int i = 0; i < shader.Length; i++) { Debug.Log(shader[i].name); }
                 }
             }
             catch (Exception ex)
@@ -51,7 +46,7 @@ namespace BesiegeCustomScene
         private GameObject[] Mwater;
         private int WaterSize = 0;
         private Vector3 waterScale = new Vector3(0, 1, 0);
-        private Vector3 MwaterScale = new Vector3(30, 1, 30);
+        private Vector3 MwaterScale = new Vector3(1, 1, 1);
         private Vector3 waterLocation = new Vector3(0, 0, 0);
         private Quaternion waterRotation = new Quaternion(0, 0, 0, 1);
         public void ReadScene(string SceneName)
@@ -124,6 +119,20 @@ namespace BesiegeCustomScene
         }
         public void LoadWater()
         {
+            if (Tile == null)
+            {
+                Tile = GameObject.CreatePrimitive(PrimitiveType.Plane);
+                Tile.AddComponent<WaterTile>();
+                Tile.GetComponent<MeshRenderer>().receiveShadows = false;
+                Tile.GetComponent<MeshRenderer>().motionVectors = true;
+                Tile.GetComponent<MeshRenderer>().shadowCastingMode = ShadowCastingMode.Off;
+                Tile.GetComponent<MeshFilter>().mesh = GeoTools.MeshFromPoints(10, 10, 5, 5);
+                Tile.name = "Tile";
+                Tile.transform.localScale = MwaterScale;
+                DontDestroyOnLoad(Tile);
+                Tile.SetActive(false);
+                Shader shader1 = iteratorVariable1.LoadAllAssets<Shader>()[0];
+            }
             try
             {
                 ClearWater();
@@ -133,27 +142,23 @@ namespace BesiegeCustomScene
                 if (waterScale.z < 0) waterScale.z = 0;
                 if (waterScale.z > 9) waterScale.z = 9;
                 Mwater = new GameObject[((int)waterScale.x * 2 + 1) * ((int)waterScale.z * 2 + 1)];
-                Mwater[0] = (GameObject)Instantiate(iteratorVariable1.LoadAsset(
-                    "assets/standard assets/environment/water/water4/prefabs/water4advanced.prefab", typeof(GameObject)), waterLocation, new Quaternion());
-                Mwater[0].name = "water0";
                 //  GeoTools.ResetWaterMaterial(ref Mwater[0].GetComponent<WaterBase>().sharedMaterial);
-                Mwater[0].transform.localScale = MwaterScale;
-                int index = 1;
+                // Mwater[0] = (GameObject)Instantiate(iteratorVariable1.LoadAsset(
+                //      "assets/standard assets/environment/water/water4/prefabs/water4advanced.prefab", typeof(GameObject)), waterLocation, new Quaternion());
+                int index = 0;
                 for (float k = -waterScale.x; k <= waterScale.x; k++)
                 {
                     for (float i = -waterScale.z; i <= waterScale.z; i++)
-                    {
-                        if ((k != 0) || (i != 0))
-                        {
-                            Mwater[index] = Instantiate(Mwater[0]);
+                    { 
+                            Mwater[index] = Instantiate(Tile);
                             Mwater[index].name = "water" + index.ToString();
-                            Mwater[index].transform.position = new Vector3((float)(k * 50 * Mwater[0].transform.localScale.x) + waterLocation.x,
-                                waterLocation.y, (float)(i * 50 * Mwater[0].transform.localScale.z) + waterLocation.z);
-                            index++;
-                        }
+                            Mwater[index].transform.position = new Vector3((float)(k * 50 * Tile.transform.localScale.x) + waterLocation.x,
+                                waterLocation.y, (float)(i * 50 * Tile.transform.localScale.z) + waterLocation.z);
+                            Mwater[index].SetActive(true);
+                            index++;    
                     }
                 }
-                if (Mwater.Length == 1) Mwater[0].transform.rotation = this.waterRotation;
+                if (Mwater.Length == 1) Tile.transform.rotation = this.waterRotation;
             }
             catch (Exception ex)
             {

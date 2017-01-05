@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace BesiegeCustomScene
 {
@@ -49,6 +50,11 @@ namespace BesiegeCustomScene
                             {
                                 this.MeshSize = Convert.ToInt32(chara[2]);
                                 LoadMesh();
+                            }
+                            if (chara[1] == "NoShadow"|| chara[1] == "noShadow")
+                            {
+                                this.MeshSize = Convert.ToInt32(chara[2]);
+                                LoadMeshWithOutCastShadow();//对于带烘焙贴图的和模型过大的这项必须取消
                             }
                         }
                         else if (chara[0] == "MeshLargeObj")
@@ -437,6 +443,34 @@ namespace BesiegeCustomScene
                         meshes[i] = GameObject.CreatePrimitive(PrimitiveType.Plane);
                         Shader diffuse = Shader.Find("Legacy Shaders/Diffuse");
                         if (diffuse != null) meshes[i].GetComponent<Renderer>().material.shader = diffuse;
+                        meshes[i].GetComponent<MeshCollider>().sharedMesh.Clear();
+                        meshes[i].GetComponent<MeshFilter>().mesh.Clear();
+                        meshes[i].name = "_mesh" + i.ToString();
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Debug.Log("Error! LoadMesh Failed!");
+                Debug.Log(ex.ToString());
+            }
+        }
+        public void LoadMeshWithOutCastShadow()
+        {
+            try
+            {
+                ClearMeshes();
+                if (MeshSize > 100) MeshSize = 100;
+                if (MeshSize < 0) { MeshSize = 0; return; }
+                if (MeshSize > 0)
+                {
+                    meshes = new GameObject[MeshSize];
+                    for (int i = 0; i < meshes.Length; i++)
+                    {
+                        meshes[i] = GameObject.CreatePrimitive(PrimitiveType.Plane);
+                        Shader diffuse = Shader.Find("Legacy Shaders/Diffuse");
+                        if (diffuse != null) meshes[i].GetComponent<Renderer>().material.shader = diffuse;
+                        meshes[i].GetComponent<Renderer>().shadowCastingMode = ShadowCastingMode.Off;
                         meshes[i].GetComponent<MeshCollider>().sharedMesh.Clear();
                         meshes[i].GetComponent<MeshFilter>().mesh.Clear();
                         meshes[i].name = "_mesh" + i.ToString();

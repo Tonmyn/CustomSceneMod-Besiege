@@ -356,16 +356,16 @@ namespace BesiegeCustomScene
                 GeoTools.PrintShader();
             }
         }
-        GameObject Dlight = null;
+        //  GameObject Dlight = null;
         bool LoadBlock()
         {
             try
             {
                 startingBlock = GameObject.Find("StartingBlock");
-                Dlight = GameObject.Find("Directional light");
+                // Dlight = GameObject.Find("Directional light");
             }
             catch { }
-           
+
             if (startingBlock == null)
             {
                 startingBlock = GameObject.Find("bgeL0");
@@ -453,6 +453,7 @@ namespace BesiegeCustomScene
             }
             if (_distanceUI.Length != 0)
             {
+                /*
                 if (_accstep == 50 && Dlight!=null)
                 {
                     float d2 = _Position.magnitude;
@@ -477,6 +478,7 @@ namespace BesiegeCustomScene
                         if (Dlight.GetComponent<Light>().shadowBias != 0.95f) Dlight.GetComponent<Light>().shadowBias = 0.95f;
                     }
                 }
+                */
                 if (_accstep == 10 || _accstep == 20 || _accstep == 30 || _accstep == 40 || _accstep == 50)
                 {
                     if (validBlock)
