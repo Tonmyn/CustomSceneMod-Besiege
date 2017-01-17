@@ -32,29 +32,29 @@
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
       <HintPath>..\..\..\..\Program Files (x86)\Besiege0.40\Besiege_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Assembly-CSharp-firstpass">
       <HintPath>..\..\..\..\Program Files (x86)\Besiege0.40\Besiege_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Assembly-UnityScript">
       <HintPath>..\..\..\..\Program Files (x86)\Besiege0.40\Besiege_Data\Managed\Assembly-UnityScript.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="SpaarModLoader, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Program Files (x86)\Besiege0.40\Besiege_Data\Mods\SpaarModLoader.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-    <Reference Include="UnityEditor">
-      <HintPath>..\..\..\..\Program Files (x86)\Besiege0.40\Besiege_Data\Mods\BesiegeCustomScene\Shader\UnityEditor.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEngine">
       <HintPath>..\..\..\..\Program Files (x86)\Besiege0.40\Besiege_Data\Managed\UnityEngine.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -72,6 +72,14 @@
     <Compile Include="TimeMod\TimeUI.cs" />
     <Compile Include="MeshMod\TriggerUI.cs" />
     <Compile Include="EnvironmentMod\WaterMod.cs" />
+    <Compile Include="Water4\Displace.cs" />
+    <Compile Include="Water4\GerstnerDisplace.cs" />
+    <Compile Include="Water4\MeshContainer.cs" />
+    <Compile Include="Water4\PlanarReflection.cs" />
+    <Compile Include="Water4\SpecularLighting.cs" />
+    <Compile Include="Water4\Water.cs" />
+    <Compile Include="Water4\WaterBase.cs" />
+    <Compile Include="Water4\WaterTile.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
