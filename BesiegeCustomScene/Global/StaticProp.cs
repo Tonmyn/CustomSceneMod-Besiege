@@ -93,14 +93,15 @@ namespace BesiegeCustomScene
                     WaterTemp.AddComponent<SpecularLighting>();
                     WaterTemp.AddComponent<PlanarReflection>();
                     WaterTemp.AddComponent<GerstnerDisplace>();
-
+                    
                     TileTemp = iteratorVariable1.LoadAsset<GameObject>(
                  "assets/standard assets/environment/water/water4/prefabs/tileonly.prefab");
                     TileTemp.AddComponent<WaterTile>();
                     TileTemp.GetComponent<WaterTile>().reflection = WaterTemp.GetComponent<PlanarReflection>();
                     TileTemp.GetComponent<WaterTile>().waterBase = WaterTemp.GetComponent<WaterBase>();
-                    Material mat = TileTemp.GetComponent<Renderer>().material;          
-                    mat.SetColor("_SpecularColor", Color.black);                   
+                   
+                    Material mat = TileTemp.GetComponent<Renderer>().material;
+                    GeoTools.ResetWaterMaterial(ref mat);               
                     UnityEngine.Object.DontDestroyOnLoad(TileTemp);    
                     TileTemp.SetActive(false);
                 

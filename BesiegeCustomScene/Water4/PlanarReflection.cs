@@ -9,15 +9,15 @@ namespace BesiegeCustomScene
     public class PlanarReflection : MonoBehaviour
     {
         public LayerMask reflectionMask;
-        public bool reflectSkybox = true;
+        public bool reflectSkybox = false;
         public Color clearColor = Color.white;
         public String reflectionSampler = "_ReflectionTex";
         public float clipPlaneOffset = 0.07F;
 
 
-        Vector3 m_Oldpos;
-        Camera m_ReflectionCamera;
-        Material m_SharedMaterial;
+         Vector3 m_Oldpos;
+        public Camera m_ReflectionCamera;
+        public Material m_SharedMaterial;
         Dictionary<Camera, bool> m_HelperCameras;
 
 
@@ -146,7 +146,7 @@ namespace BesiegeCustomScene
                 return;
             }
 
-            reflectCamera.cullingMask = reflectionMask & ~(1 << LayerMask.NameToLayer("Water"));
+           // reflectCamera.cullingMask = reflectionMask & ~(1 << LayerMask.NameToLayer("Water"));
 
             SaneCameraSettings(reflectCamera);
 

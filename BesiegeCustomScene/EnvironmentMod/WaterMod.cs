@@ -97,7 +97,6 @@ namespace BesiegeCustomScene
         }
         public void LoadWater()
         {
-
             try
             {
                 ClearWater();
@@ -108,7 +107,7 @@ namespace BesiegeCustomScene
                 if (waterRepeat.z > 9) waterRepeat.z = 9;
                 Mwater = new GameObject[((int)waterRepeat.x * 2 + 1) * ((int)waterRepeat.z * 2 + 1)];
 
-                gameObject.GetComponent<Prop>().WaterTemp.SetActive(true);
+                //gameObject.GetComponent<Prop>().WaterTemp.SetActive(true);
                 int index = 0;
                 for (float k = -waterRepeat.x; k <= waterRepeat.x; k++)
                 {
@@ -123,6 +122,9 @@ namespace BesiegeCustomScene
                         index++;
                     }
                 }
+
+               // Mwater[0].AddComponent<PlanarReflection>();
+              //  Mwater[0].GetComponent<PlanarReflection>().m_ReflectionCamera = Camera.current;
             }
             catch (Exception ex)
             {

@@ -51,7 +51,7 @@ namespace BesiegeCustomScene
                                 this.MeshSize = Convert.ToInt32(chara[2]);
                                 LoadMesh();
                             }
-                            if (chara[1] == "NoShadow"|| chara[1] == "noShadow")
+                            if (chara[1] == "NoShadow" || chara[1] == "noShadow")
                             {
                                 this.MeshSize = Convert.ToInt32(chara[2]);
                                 LoadMeshWithOutCastShadow();//对于带烘焙贴图的和模型过大的这项必须取消
@@ -209,12 +209,27 @@ namespace BesiegeCustomScene
                                 Convert.ToSingle(chara[5]),
                                 Convert.ToSingle(chara[6]));
                             }
-                            else if (chara[2] == "shadow")
+                            else if (chara[2] == "receiveshadow")
                             {
                                 if (Convert.ToInt32(chara[3]) == 0)
-                                { meshes[i].GetComponent<MeshRenderer>().receiveShadows = false; }
+                                {
+                                    meshes[i].GetComponent<Renderer>().receiveShadows = false;
+                                }
                                 else
-                                { meshes[i].GetComponent<MeshRenderer>().receiveShadows = true; }
+                                {
+                                    meshes[i].GetComponent<Renderer>().receiveShadows = true;
+                                }
+                            }
+                            else if (chara[2] == "castshadow" || chara[2] == "shadow")
+                            {
+                                if (Convert.ToInt32(chara[3]) == 0)
+                                {
+                                    meshes[i].GetComponent<Renderer>().shadowCastingMode = ShadowCastingMode.Off;
+                                }
+                                else
+                                {
+                                    meshes[i].GetComponent<Renderer>().shadowCastingMode = ShadowCastingMode.On;
+                                }
                             }
                             else if (chara[2] == "texture")
                             {
@@ -249,7 +264,7 @@ namespace BesiegeCustomScene
                             {
                                 try
                                 {
-                                    meshes[i].GetComponent<MeshRenderer>().sharedMaterial = new Material(GameObject.Find(chara[3]).GetComponent<Renderer>().sharedMaterial);   
+                                    meshes[i].GetComponent<MeshRenderer>().sharedMaterial = new Material(GameObject.Find(chara[3]).GetComponent<Renderer>().sharedMaterial);
                                 }
                                 catch (Exception ex)
                                 {

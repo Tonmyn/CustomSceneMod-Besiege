@@ -558,60 +558,23 @@ namespace BesiegeCustomScene
         public static void ResetWaterMaterial(ref Material mat)
         {
             try
-            {/*
-    _ReflectionTex ("Internal reflection", 2D) = "white" {}
-	
-	_MainTex ("Fallback texture", 2D) = "black" {}
-	_ShoreTex ("Shore & Foam texture ", 2D) = "black" {}
-	_BumpMap ("Normals ", 2D) = "bump" {}
-	
-	_DistortParams ("Distortions (Bump waves, Reflection, Fresnel power, Fresnel bias)", Vector) = (1.0 ,1.0, 2.0, 1.15)
-	_InvFadeParemeter ("Auto blend parameter (Edge, Shore, Distance scale)", Vector) = (0.15 ,0.15, 0.5, 1.0)
-	
-	_AnimationTiling ("Animation Tiling (Displacement)", Vector) = (2.2 ,2.2, -1.1, -1.1)
-	_AnimationDirection ("Animation Direction (displacement)", Vector) = (1.0 ,1.0, 1.0, 1.0)
-
-	_BumpTiling ("Bump Tiling", Vector) = (1.0 ,1.0, -2.0, 3.0)
-	_BumpDirection ("Bump Direction & Speed", Vector) = (1.0 ,1.0, -1.0, 1.0)
-	
-	_FresnelScale ("FresnelScale", Range (0.15, 4.0)) = 0.75
-
-	_BaseColor ("Base color", COLOR)  = ( .54, .95, .99, 0.5)
-	_ReflectionColor ("Reflection color", COLOR)  = ( .54, .95, .99, 0.5)
-	_SpecularColor ("Specular color", COLOR)  = ( .72, .72, .72, 1)
-	
-	_WorldLightDir ("Specular light direction", Vector) = (0.0, 0.1, -0.5, 0.0)
-	_Shininess ("Shininess", Range (2.0, 500.0)) = 200.0
-	
-	_Foam ("Foam (intensity, cutoff)", Vector) = (0.1, 0.375, 0.0, 0.0)
-	
-	_GerstnerIntensity("Per vertex displacement", Float) = 1.0
-	_GAmplitude ("Wave Amplitude", Vector) = (0.3 ,0.35, 0.25, 0.25)
-	_GFrequency ("Wave Frequency", Vector) = (1.3, 1.35, 1.25, 1.25)
-	_GSteepness ("Wave Steepness", Vector) = (1.0, 1.0, 1.0, 1.0)
-	_GSpeed ("Wave Speed", Vector) = (1.2, 1.375, 1.1, 1.5)
-	_GDirectionAB ("Wave Direction", Vector) = (0.3 ,0.85, 0.85, 0.25)
-	_GDirectionCD ("Wave Direction", Vector) = (0.1 ,0.9, 0.5, 0.5)
-    */
+            {
                 // mat.SetTexture("_BumpMap", LoadTexture("SimpleFoam"));
                 // mat.SetTexture("_ShoreTex", LoadTexture("SmallWaves"));
                 // mat.SetTextureScale("_BumpMap", new Vector2(300, 300));
                 // mat.SetTextureScale("_ShoreTex", new Vector2(300, 300));
-
-                mat.SetFloat("_Shininess", 500);
-                mat.SetFloat("_FresnelScale", 2f);
+                mat.SetFloat("_Shininess", 200);
+                mat.SetFloat("_FresnelScale", 0.75f);
                 mat.SetColor("_SpecularColor", Color.black);
-
-
                 mat.SetVector("_DistortParams", new Vector4(0.144f, 1.1428571f, 1.853064f, -0.5314285f));
-                //mat.SetVector("_InvFadeParemeter", new Vector4(0.2189655f, 0.1594483f, 0.04310345f, 0f));
-                //mat.SetVector("_AnimationTiling", new Vector4(2.2f, 2.2f, -1.1f, -1.1f));
-                //mat.SetVector("_AnimationDirection", new Vector4(1.0f, 1.0f, 1.0f, 1.0f));
-                //mat.SetVector("_BumpTiling", new Vector4(0.12f, 0.07f, 0.08f, 0.06f));
-                //mat.SetVector("_BumpDirection", new Vector4(1.0f, 1.0f, -1.0f, 1.0f));
-                //mat.SetVector("_Foam", new Vector4(0.4266667f, 0.4866667f, 0f, 0.0f));
-                //mat.SetFloat("_GerstnerIntensity", 2);
-                //mat.SetVector("_GAmplitude", new Vector4(0.14f, 0.76f, 0.175f, 0.225f));
+                mat.SetVector("_InvFadeParemeter", new Vector4(0.2189655f, 0.1594483f, 0.04310345f, 0f));
+                mat.SetVector("_AnimationTiling", new Vector4(2.2f, 2.2f, -1.1f, -1.1f));
+                mat.SetVector("_AnimationDirection", new Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+                mat.SetVector("_BumpTiling", new Vector4(0.12f, 0.07f, 0.08f, 0.06f));
+                mat.SetVector("_BumpDirection", new Vector4(1.0f, 1.0f, -1.0f, 1.0f));
+                mat.SetVector("_Foam", new Vector4(0.4266667f, 0.4866667f, 0f, 0.0f));
+                mat.SetFloat("_GerstnerIntensity", 2);
+                mat.SetVector("_GAmplitude", new Vector4(0.14f, 0.76f, 0.175f, 0.225f));
                 mat.SetVector("_GFrequency", new Vector4(0.15f, 0.138f, 0.159f, 0.6f));
                 mat.SetVector("_GSteepness", new Vector4(9f, 9f, 9f, 9f));
                 mat.SetVector("_GSpeed", new Vector4(-0.13f, 0.12f, 0.11f, 0.3f));
