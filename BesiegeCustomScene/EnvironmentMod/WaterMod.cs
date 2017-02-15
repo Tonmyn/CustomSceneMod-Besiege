@@ -121,6 +121,7 @@ namespace BesiegeCustomScene
             try
             {
                 ClearWater();
+                if (this.gameObject.GetComponent<Prop>().TileTemp == null) return;
                 if (WaterSize <= 0) return;
                 Mwater = new GameObject[WaterSize];       
                 for (int i=0;i<Mwater.Length;i++)
