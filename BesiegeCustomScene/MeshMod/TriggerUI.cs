@@ -203,7 +203,7 @@ namespace BesiegeCustomScene
         {
             try
             {
-                Debug.Log(Application.dataPath);
+                //Debug.Log(Application.dataPath);
                 if (!File.Exists(ScenePath + SceneName + ".txt"))
                 {
                     Debug.Log("Error! Scene File not exists!");

@@ -46,7 +46,7 @@ namespace BesiegeCustomScene
                     if (chara.Length > 2)
                     {
                         #region Water
-                        if (chara[0] == "MWater"|| chara[0] == "Mwater")
+                        if (chara[0] == "MWater" || chara[0] == "Mwater")
                         {
                             if (chara[1] == "size")
                             {
@@ -123,12 +123,12 @@ namespace BesiegeCustomScene
                 ClearWater();
                 if (this.gameObject.GetComponent<Prop>().TileTemp == null) return;
                 if (WaterSize <= 0) return;
-                Mwater = new GameObject[WaterSize];       
-                for (int i=0;i<Mwater.Length;i++)
-                {                
-                        Mwater[i] = Instantiate(gameObject.GetComponent<Prop>().TileTemp);
-                        Mwater[i].name = "water" + i.ToString();       
-                        Mwater[i].SetActive(true);
+                Mwater = new GameObject[WaterSize];
+                for (int i = 0; i < Mwater.Length; i++)
+                {
+                    Mwater[i] = Instantiate(gameObject.GetComponent<Prop>().TileTemp);
+                    Mwater[i].name = "water" + i.ToString();
+                    Mwater[i].SetActive(true);
                     Mwater[i].transform.localScale = new Vector3(1, 1, 1);
                     Mwater[i].transform.localPosition = new Vector3(0, 0, 0);
                 }
@@ -141,7 +141,7 @@ namespace BesiegeCustomScene
         }
         public void ClearWater()
         {
-            Debug.Log("ClearFloater");
+
             ClearFloater();
             if (Mwater == null) return;
             if (Mwater.Length <= 0) return;
@@ -179,14 +179,17 @@ namespace BesiegeCustomScene
         {
             try
             {
+                bool sign = false;
                 MyBlockInfo[] infoArray = UnityEngine.Object.FindObjectsOfType<MyBlockInfo>();
                 foreach (MyBlockInfo info in infoArray)
                 {
                     if (info.gameObject.GetComponent<Floater>() != null)
                     {
                         Destroy(info.gameObject.GetComponent<Floater>());
+                        sign = true;
                     }
                 }
+                if (sign) Debug.Log("ClearFloater");
             }
             catch
             {

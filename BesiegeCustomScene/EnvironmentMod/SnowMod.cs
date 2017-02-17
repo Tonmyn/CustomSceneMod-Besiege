@@ -48,51 +48,51 @@ namespace BesiegeCustomScene
                                 this.SnowSize = Convert.ToInt32(chara[2]);
                                 LoadSnow();
                             }
-                            else if (chara[0] == "Snow")
-                            {
-                                int i = Convert.ToInt32(chara[1]);
-
-                                if (chara[2] == "scale")
-                                {
-                                    MSnow[i].transform.localScale = new Vector3(
-                                    Convert.ToSingle(chara[3]),
-                                    Convert.ToSingle(chara[4]),
-                                    Convert.ToSingle(chara[5]));
-                                }
-                                else if (chara[2] == "location")
-                                {
-                                    MSnow[i].transform.localPosition = new Vector3(
-                                    Convert.ToSingle(chara[3]),
-                                    Convert.ToSingle(chara[4]),
-                                    Convert.ToSingle(chara[5]));
-                                }
-                                else if (chara[2] == "color"|| chara[2] == "startColor")
-                                {
-                                    MSnow[i].GetComponent<ParticleSystem>().startColor = new Color(
-                                    Convert.ToSingle(chara[3]),
-                                    Convert.ToSingle(chara[4]),
-                                    Convert.ToSingle(chara[5]),
-                                    Convert.ToSingle(chara[6]));
-                                }
-                                else if (chara[2] == "Size" || chara[2] == "startSize")
-                                {
-                                    MSnow[i].GetComponent<ParticleSystem>().startSize = Convert.ToSingle(chara[3]);     
-                                }
-                                else if (chara[2] == "Speed" || chara[2] == "startSpeed")
-                                {
-                                    MSnow[i].GetComponent<ParticleSystem>().startSpeed = Convert.ToSingle(chara[3]);                    
-                                }
-                                else if (chara[2] == "maxParticles")
-                                {
-                                    MSnow[i].GetComponent<ParticleSystem>().maxParticles = Convert.ToInt32(chara[3]);
-                                }
-                            }
-                            #endregion
                         }
+                        else if (chara[0] == "Snow")
+                        {
+                            int i = Convert.ToInt32(chara[1]);
+
+                            if (chara[2] == "scale")
+                            {
+                                MSnow[i].transform.localScale = new Vector3(
+                                Convert.ToSingle(chara[3]),
+                                Convert.ToSingle(chara[4]),
+                                Convert.ToSingle(chara[5]));
+                            }
+                            else if (chara[2] == "location")
+                            {
+                                MSnow[i].transform.localPosition = new Vector3(
+                                Convert.ToSingle(chara[3]),
+                                Convert.ToSingle(chara[4]),
+                                Convert.ToSingle(chara[5]));
+                            }
+                            else if (chara[2] == "color" || chara[2] == "startColor")
+                            {
+                                MSnow[i].GetComponent<ParticleSystem>().startColor = new Color(
+                                Convert.ToSingle(chara[3]),
+                                Convert.ToSingle(chara[4]),
+                                Convert.ToSingle(chara[5]),
+                                Convert.ToSingle(chara[6]));
+                            }
+                            else if (chara[2] == "Size" || chara[2] == "startSize")
+                            {
+                                MSnow[i].GetComponent<ParticleSystem>().startSize = Convert.ToSingle(chara[3]);
+                            }
+                            else if (chara[2] == "Speed" || chara[2] == "startSpeed")
+                            {
+                                MSnow[i].GetComponent<ParticleSystem>().startSpeed = Convert.ToSingle(chara[3]);
+                            }
+                            else if (chara[2] == "maxParticles")
+                            {
+                                MSnow[i].GetComponent<ParticleSystem>().maxParticles = Convert.ToInt32(chara[3]);
+                            }
+                        }
+                        #endregion
                     }
-                    srd.Close();
-                    Debug.Log("ReadSnow Completed!");
                 }
+                srd.Close();
+                Debug.Log("ReadSnow Completed!");
             }
             catch (Exception ex)
             {
