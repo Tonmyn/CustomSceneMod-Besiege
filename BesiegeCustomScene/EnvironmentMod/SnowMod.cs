@@ -106,12 +106,12 @@ namespace BesiegeCustomScene
             try
             {
                 ClearSnow();
-                if (this.gameObject.GetComponent<Prop>().snowTemp == null) return;
+                if (this.gameObject.GetComponent<Prop>().SnowTemp == null) return;
                 if (SnowSize <= 0) return;
                 MSnow = new GameObject[SnowSize];
                 for (int i = 0; i <= MSnow.Length; i++)
                 {
-                    MSnow[i] = (GameObject)Instantiate(gameObject.GetComponent<Prop>().snowTemp);
+                    MSnow[i] = (GameObject)Instantiate(gameObject.GetComponent<Prop>().SnowTemp);
                     MSnow[i].name = "snow" + i.ToString();
                     MSnow[i].SetActive(true);
                     MSnow[i].transform.localScale = new Vector3(1, 1, 1);

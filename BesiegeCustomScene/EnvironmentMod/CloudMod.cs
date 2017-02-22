@@ -21,17 +21,19 @@ namespace BesiegeCustomScene
         {
             ClearCloud();
         }
+        
         void FixedUpdate()
         {
+            
             if (clouds != null)
             {
                 if (clouds[0] != null)
-                {
-                    for (int i = 0; i < clouds.Length; i++)
-                    {
-                        clouds[i].transform.RotateAround(this.transform.localPosition, axis[i], Time.deltaTime);
-                        clouds[i].GetComponent<ParticleSystem>().startSize = UnityEngine.Random.Range(30, 200);
-                    }
+                {             
+                        for (int i = 0; i < clouds.Length; i++)
+                        {
+                            clouds[i].transform.RotateAround(this.transform.localPosition, axis[i], Time.deltaTime * 0.3f);
+                            clouds[i].GetComponent<ParticleSystem>().startSize = UnityEngine.Random.Range(30, 200);
+                        }          
                 }
             }
         }
@@ -39,12 +41,13 @@ namespace BesiegeCustomScene
         private GameObject[] clouds;
         private Vector3[] axis;
         private int CloudSize = 0;
-     
-        private Color CloudsColor = new Color(1f, 1f, 1f, 1);
+        private int cloudstep = 1200;
+     //   private int step = 0;
+        private Color CloudsColor = new Color(0.92f, 0.92f, 0.92f, 0.5f);
         private Vector3 cloudScale = new Vector3(1000, 200, 1000);
         public void ReadScene(string SceneName)
         {
-            CloudsColor = new Color(1f, 1f, 1f, 1);
+            CloudsColor = new Color(0.9f, 0.9f, 0.9f, 0.6f);
             try
             {
                 //Debug.Log(Application.dataPath);
@@ -68,6 +71,10 @@ namespace BesiegeCustomScene
                             {
                                 this.CloudSize = Convert.ToInt32(chara[2]);
                                 LoadCloud();
+                            }
+                            if (chara[1] == "step")
+                            {
+                                this.cloudstep = Convert.ToInt32(chara[2]);             
                             }
                             else if (chara[1] == "floorScale" || chara[1] == "cloudScale")
                             {
@@ -110,7 +117,7 @@ namespace BesiegeCustomScene
             try
             {
                 ClearCloud();
-                if (this.gameObject.GetComponent<Prop>().cloudTemp == null) return;
+                if (this.gameObject.GetComponent<Prop>().CloudTemp == null) return;
                 if (CloudSize < 0) CloudSize = 0;
                 if (CloudSize > 1000) CloudSize = 1000;
                 if (CloudSize == 0) { return; }
@@ -120,19 +127,16 @@ namespace BesiegeCustomScene
                     axis = new Vector3[CloudSize];
                     for (int i = 0; i < clouds.Length; i++)
                     {
-                        clouds[i] = (GameObject)UnityEngine.Object.Instantiate(this.gameObject.GetComponent<Prop>().cloudTemp, new Vector3(
+                        clouds[i] = (GameObject)Instantiate(this.gameObject.GetComponent<Prop>().CloudTemp, new Vector3(
                             UnityEngine.Random.Range(-cloudScale.x + transform.localPosition.x, cloudScale.x + transform.localPosition.x),
                             UnityEngine.Random.Range(transform.localPosition.y, cloudScale.y + transform.localPosition.y),
                             UnityEngine.Random.Range(-cloudScale.z + transform.localPosition.z, cloudScale.z + transform.localPosition.z)),
                             new Quaternion(0, 0, 0, 0));
                         clouds[i].transform.SetParent(this.transform);
-                        clouds[i].transform.localScale = new Vector3(15, 15, 15);
+                        clouds[i].transform.localScale = new Vector3(100, 100, 100);
                         clouds[i].SetActive(true);
-                        clouds[i].GetComponent<ParticleSystem>().startColor = CloudsColor;
-                        clouds[i].GetComponent<ParticleSystem>().startSize =  30;
-                        clouds[i].GetComponent<ParticleSystem>().startLifetime = 6;
-                        clouds[i].GetComponent<ParticleSystem>().startSpeed = 1.6f;
-                        clouds[i].GetComponent<ParticleSystem>().maxParticles = 18;
+                        ParticleSystem ps = clouds[i].GetComponent<ParticleSystem>();
+                        ps.startColor = CloudsColor;
                         axis[i] = new Vector3(UnityEngine.Random.Range(-0.1f, 0.1f), 1f, UnityEngine.Random.Range(-0.1f, 0.1f));
                     }
                    // Debug.Log("LoadCloud Successfully");
@@ -146,7 +150,8 @@ namespace BesiegeCustomScene
             }
         }
         public void ClearCloud()
-        {         
+        {
+           // step = 0;
             if (clouds == null) return;
             if (clouds.Length <= 0) return;
             Debug.Log("ClearCloud");
