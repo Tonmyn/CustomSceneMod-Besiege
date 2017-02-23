@@ -795,10 +795,10 @@ namespace BesiegeCustomScene
                     center.z = v.z; // * t;
                     _weight += t;
                 }
-                center.x /= infoArray.Length;
-                center.y /= infoArray.Length;
-                center.z /= infoArray.Length;
-                stroutput= "Center:" + center.x.ToString() + "/" + center.y.ToString() + "/" + center.z.ToString() + " Weight:" + _weight.ToString();
+               // center.x /= infoArray.Length;
+               // center.y /= infoArray.Length;
+               // center.z /= infoArray.Length;
+                stroutput= "Mirror:" + center.x.ToString() + "/" + center.y.ToString() + "/" + center.z.ToString() + " Weight:" + _weight.ToString();
             }
             catch(Exception ex)
             {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using spaar;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,7 +12,28 @@ namespace BesiegeCustomScene
     {
         void Start()
         {
-
+            Commands.RegisterCommand("CloudSize", (args, notUses) =>
+            {
+                if (args.Length < 1)
+                {
+                    return "ERROR!";
+                }
+                try
+                {
+                    int cloudSize = int.Parse(args[0]);
+                    if (cloudSize < 0 || cloudSize > 3000) { return "Your cloud amount is not available. "; }
+                    else
+                    {
+                        CloudSize = cloudSize;
+                        LoadCloud();
+                    }
+                }
+                catch
+                {
+                    return "Could not parse " + args[0] + "to cloud amount";
+                }
+                return "There will be " + CloudSize.ToString() + " clouds" + "\n";
+            }, "Set CloudSize.No bigger than 80 and no less than 10.");
         }
         void OnDisable()
         {
@@ -21,19 +43,21 @@ namespace BesiegeCustomScene
         {
             ClearCloud();
         }
-        
+        int time = 0;
         void FixedUpdate()
         {
-            
+
             if (clouds != null)
             {
                 if (clouds[0] != null)
-                {             
-                        for (int i = 0; i < clouds.Length; i++)
-                        {
-                            clouds[i].transform.RotateAround(this.transform.localPosition, axis[i], Time.deltaTime * 0.3f);
-                            clouds[i].GetComponent<ParticleSystem>().startSize = UnityEngine.Random.Range(30, 200);
-                        }          
+                {
+                    for (int i = 0; i < clouds.Length; i++)
+                    {
+                        clouds[i].transform.RotateAround(this.transform.localPosition, axis[i], Time.deltaTime * 0.3f);
+                        if (time == 20) clouds[i].GetComponent<ParticleSystem>().startSize = UnityEngine.Random.Range(30, 200);
+                    }
+                    time++;
+                    if (time > 20) time = 0;
                 }
             }
         }
@@ -42,7 +66,7 @@ namespace BesiegeCustomScene
         private Vector3[] axis;
         private int CloudSize = 0;
         private int cloudstep = 1200;
-     //   private int step = 0;
+        //   private int step = 0;
         private Color CloudsColor = new Color(0.92f, 0.92f, 0.92f, 0.5f);
         private Vector3 cloudScale = new Vector3(1000, 200, 1000);
         public void ReadScene(string SceneName)
@@ -74,7 +98,7 @@ namespace BesiegeCustomScene
                             }
                             if (chara[1] == "step")
                             {
-                                this.cloudstep = Convert.ToInt32(chara[2]);             
+                                this.cloudstep = Convert.ToInt32(chara[2]);
                             }
                             else if (chara[1] == "floorScale" || chara[1] == "cloudScale")
                             {
@@ -139,7 +163,7 @@ namespace BesiegeCustomScene
                         ps.startColor = CloudsColor;
                         axis[i] = new Vector3(UnityEngine.Random.Range(-0.1f, 0.1f), 1f, UnityEngine.Random.Range(-0.1f, 0.1f));
                     }
-                   // Debug.Log("LoadCloud Successfully");
+                    // Debug.Log("LoadCloud Successfully");
                 }
             }
             catch (Exception ex)
@@ -151,7 +175,7 @@ namespace BesiegeCustomScene
         }
         public void ClearCloud()
         {
-           // step = 0;
+            // step = 0;
             if (clouds == null) return;
             if (clouds.Length <= 0) return;
             Debug.Log("ClearCloud");
@@ -159,7 +183,7 @@ namespace BesiegeCustomScene
             {
                 Destroy(clouds[i]);
             }
-            
+
         }
 
     }
