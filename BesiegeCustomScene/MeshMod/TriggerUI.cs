@@ -157,12 +157,7 @@ namespace BesiegeCustomScene
                             {
                                 if (chara[2] == "OFF") trigger = string.Empty;
                                 else trigger = chara[2];
-                            }
-                            else if (chara[1] == "show_on_start")
-                            {
-                                if (chara[2] == "0" || chara[2] == "OFF") ShowGUI = false;         
-                                else ShowGUI = true;
-                            }
+                            }                      
                         }
                         else if (chara[0] == Screen.width.ToString() + "*" + Screen.height.ToString() + "_Trigger")
                         {
@@ -335,10 +330,16 @@ namespace BesiegeCustomScene
             try
             {
                 ClearTrigger();
-                if (TriggerSize > 100) TriggerSize = 100;
-                if (TriggerSize < 0) TriggerSize = 0;
+                if (TriggerSize <= 0)
+                {
+                    this.ShowGUI = false;
+                    return;
+                }
+
+                if (TriggerSize > 100) TriggerSize = 100;              
                 if (TriggerSize > 0)
                 {
+                    this.ShowGUI = true;
                     meshtriggers = new GameObject[TriggerSize];
                     for (int i = 0; i < meshtriggers.Length; i++)
                     {

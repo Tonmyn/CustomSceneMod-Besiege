@@ -107,11 +107,11 @@ namespace BesiegeCustomScene
                     }
                 }
                 srd.Close();
-                Debug.Log("ReadMeshWater Completed!");
+                Debug.Log("ReadWater Completed!");
             }
             catch (Exception ex)
             {
-                Debug.Log("Error! ReadMeshWater Failed!");
+                Debug.Log("Error! ReadWater Failed!");
                 Debug.Log(ex.ToString());
                 return;
             }
@@ -121,8 +121,8 @@ namespace BesiegeCustomScene
             try
             {
                 ClearWater();
-                if (this.gameObject.GetComponent<Prop>().TileTemp == null) return;
                 if (WaterSize <= 0) return;
+                if (this.gameObject.GetComponent<Prop>().TileTemp == null) return;              
                 Mwater = new GameObject[WaterSize];
                 for (int i = 0; i < Mwater.Length; i++)
                 {

@@ -15,7 +15,7 @@ namespace BesiegeCustomScene
         private bool isSimulating = false;
         //UI
         private int _FontSize = 15;
-        private Rect windowRect = new Rect(15f, Screen.height - 95f, 585f, 50f);
+        private Rect windowRect = new Rect(Screen.width *0.05f, Screen.height *0.908f, 585f, 50f);
         private int windowID = spaar.ModLoader.Util.GetWindowID();
         private bool ShowGUI = true;
         private List<string> _ButtonName = new List<string>();
@@ -28,7 +28,7 @@ namespace BesiegeCustomScene
             _ButtonName.Clear(); _SceneName.Clear();
             _FontSize = (int)(Screen.width * 0.005 + 8);
             ShowGUI = true;
-            windowRect = new Rect(35f, Screen.height - 95f, 585f, 50f);
+            windowRect = new Rect(Screen.width * 0.05f, Screen.height*0.908f, 585f, 50f);
             _DisplayUI = KeyCode.F9;
             _ReloadUI = KeyCode.F5;
         }

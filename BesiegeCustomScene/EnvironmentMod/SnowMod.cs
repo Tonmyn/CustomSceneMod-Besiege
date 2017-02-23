@@ -106,8 +106,8 @@ namespace BesiegeCustomScene
             try
             {
                 ClearSnow();
-                if (this.gameObject.GetComponent<Prop>().SnowTemp == null) return;
                 if (SnowSize <= 0) return;
+                if (this.gameObject.GetComponent<Prop>().SnowTemp == null) return;                
                 MSnow = new GameObject[SnowSize];
                 for (int i = 0; i <= MSnow.Length; i++)
                 {
@@ -117,7 +117,6 @@ namespace BesiegeCustomScene
                     MSnow[i].transform.localScale = new Vector3(1, 1, 1);
                     MSnow[i].transform.localPosition = new Vector3(0, 0, 0);
                 }
-
             }
             catch (Exception ex)
             {

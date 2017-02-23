@@ -85,11 +85,10 @@ namespace BesiegeCustomScene
                 }           
                 if (Isstart == 3 * t)
                 {
-                    GameObject WM0 = iteratorVariable1.LoadAsset<GameObject>(
-                                          "assets/standard assets/particlesystems/prefabs/new prefab.prefab");
+                    GameObject WM0 = GameObject.CreatePrimitive(PrimitiveType.Plane);
+                    WM0.GetComponent<Renderer>().material.shader = Shader.Find("Standard");
                     WM0.GetComponent<Renderer>().material.SetFloat("_Glossiness", 1);
                     WM0.GetComponent<Renderer>().material.mainTexture = GeoTools.LoadTexture("WM0");
-                    WM0.GetComponent<Renderer>().material.SetTexture("_BumpMap", GeoTools.LoadTexture("WM0_Normal"));
                     WM0.name = "WM0Temp";
                     DontDestroyOnLoad(WM0);
                     WM0.SetActive(false);
