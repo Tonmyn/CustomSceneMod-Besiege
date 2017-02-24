@@ -17,7 +17,7 @@ namespace BesiegeCustomScene
         {
             if (StatMaster.isSimulating)
             {
-                if(TriggerUI.TriggerIndex== this.Index-1)TriggerUI.TriggerIndex++;
+                if(TimeUI.TriggerIndex== this.Index-1) TimeUI.TriggerIndex++;
             }
 
         }

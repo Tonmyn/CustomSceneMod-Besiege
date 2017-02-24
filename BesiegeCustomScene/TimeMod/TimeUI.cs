@@ -22,7 +22,7 @@ namespace BesiegeCustomScene
         //private bool _mode = false;
         private Rect windowRect = new Rect(15f, 100f, 150f, 150f);
         private ModUnit Unit = ModUnit.kmh;
-        KeyCode _DisplayUI = KeyCode.F9;
+        KeyCode _DisplayUI = KeyCode.F8;
         KeyCode _ReloadUI = KeyCode.F5;
         KeyCode _GetCenter = KeyCode.W;
         KeyCode _GetLevelInfo = KeyCode.Q;
@@ -40,17 +40,22 @@ namespace BesiegeCustomScene
         private float _Distance = 0; private string Distance = "0"; private Vector3 _Position = new Vector3(0, 0, 0);
         private string _timeUI = "Time";
         private string MTime = "";
-        private string _timerUI = "Timer";
+        private string _timerUI = "[Timer]";
         public DateTime _MStartTime;
         //control timer by other component
         public bool _TimerSwith = false;
         private string MTimer = "";
+
+        private string _triggerUI = "Trigger";
+        public static int TriggerIndex = -1;
+        private int TriggerIndex2 = -1;//record the prevail statement of triggerindex
+        public int TriggerSize = 0;
         void DefaultUI()
         {
             _FontSize = (int)(Screen.width * 0.005 + 8);
             ShowGUI = true;
             windowRect = new Rect(15f, 100f, 150f, 150f);
-            _DisplayUI = KeyCode.F9;
+            _DisplayUI = KeyCode.F8;
             _ReloadUI = KeyCode.F5;
             _GetCenter = KeyCode.W;
             _GetLevelInfo = KeyCode.Q;
@@ -73,7 +78,11 @@ namespace BesiegeCustomScene
             _velocityUI = "Velocity";
             _distanceUI = "Distance";
             _overloadUI = "Overload";
-            _timerUI = "Timer";
+            _timerUI = "[Timer]";
+            _triggerUI = "Trigger";
+
+            TriggerIndex = -1;
+            TriggerIndex2 = -1;
         }
         void ReadUI()
         {
@@ -135,6 +144,11 @@ namespace BesiegeCustomScene
                                 if (chara[2] == "OFF") _distanceUI = string.Empty;
                                 else _distanceUI = chara[2];
                             }
+                            else if (chara[1] == "trigger")
+                            {
+                                if (chara[2] == "OFF") _triggerUI = string.Empty;
+                                else _triggerUI = chara[2];
+                            }
                             else if (chara[1] == "display_UI")
                             {
                                 KeyCode outputkey;
@@ -165,6 +179,7 @@ namespace BesiegeCustomScene
                                 if (chara[2] == "0" || chara[2] == "OFF") ShowGUI = false;
                                 else ShowGUI = true;
                             }
+
                         }
                         else if (chara[0] == Screen.width.ToString() + "*" + Screen.height.ToString() + "_Timer")
                         {
@@ -201,6 +216,7 @@ namespace BesiegeCustomScene
             if (_timeUI.Length != 0) { str2height++; if (_timeUI.Length > str2.Length) str2 = _timeUI; }
             if (_timerUI.Length != 0) { str2height++; if (_timerUI.Length > str2.Length) str2 = _timerUI; }
             if (_overloadUI.Length != 0) { str2height++; if (_overloadUI.Length > str2.Length) str2 = _overloadUI; }
+            if (_triggerUI.Length != 0) { str2height++; if (_triggerUI.Length > str2.Length) str2 = _triggerUI; }
             for (int i = 0; i < str2.Length; i++)
             {
                 if (str2[i] >= 0x4e00 && str2[i] <= 0x9fbb) { str2width += 0.8; }
@@ -323,6 +339,17 @@ namespace BesiegeCustomScene
                 }
                 GUILayout.EndHorizontal();
             }
+            if (_triggerUI.Length != 0 && this.TriggerSize > 0)
+            {
+                GUILayout.BeginHorizontal(new GUILayoutOption[0]);
+                GUILayout.Label(_triggerUI, style, new GUILayoutOption[0]);
+                if (GUILayout.Button("["+(TriggerIndex + 1).ToString() + "/" + TriggerSize.ToString()+"]", style1, new GUILayoutOption[0]))
+                {
+                    TriggerIndex = -1;
+                    TriggerIndex2 = -1;
+                }
+                GUILayout.EndHorizontal();
+            }
             GUILayout.EndVertical();
             GUI.DragWindow(new Rect(0f, 0f, this.windowRect.width, this.windowRect.height));
         }
@@ -404,6 +431,9 @@ namespace BesiegeCustomScene
                 if (validBlock) { _Position = startingBlock.GetComponent<Rigidbody>().position; }
                 else { _Position = new Vector3(0, 0, 0); }
                 isSimulating = true;
+                TriggerIndex = -1;
+                TriggerIndex2 = -1;
+                MTimer = "00:00:00";
                 Debug.Log("isSimulating:" + validBlock.ToString());
             }
             else if (!StatMaster.isSimulating && isSimulating == true)
@@ -415,8 +445,8 @@ namespace BesiegeCustomScene
                 Distance = "0";
                 Overload = "0";
                 isSimulating = false;
-                validBlock = false;
-
+                validBlock = false;               
+                _TimerSwith = false;
             }
             if (_coordinatesUI.Length != 0)
             {
@@ -453,32 +483,6 @@ namespace BesiegeCustomScene
             }
             if (_distanceUI.Length != 0)
             {
-                /*
-                if (_accstep == 50 && Dlight!=null)
-                {
-                    float d2 = _Position.magnitude;
-                    if (d2 <= 2500)
-                    {
-                        if (Dlight.GetComponent<Light>().shadowBias != 0.15f) Dlight.GetComponent<Light>().shadowBias = 0.15f;
-                    }
-                    if (d2 > 2500 && d2 <= 3500)
-                    {
-                        if (Dlight.GetComponent<Light>().shadowBias != 0.35f) Dlight.GetComponent<Light>().shadowBias = 0.35f;
-                    }
-                    else if (d2 > 3500 && d2 <= 4500)
-                    {
-                        if (Dlight.GetComponent<Light>().shadowBias != 0.55f) Dlight.GetComponent<Light>().shadowBias = 0.55f;
-                    }
-                    if (d2 > 4500 && d2 <= 5500)
-                    {
-                        if (Dlight.GetComponent<Light>().shadowBias != 0.75f) Dlight.GetComponent<Light>().shadowBias = 0.75f;
-                    }
-                    else if (d2 > 5500)
-                    {
-                        if (Dlight.GetComponent<Light>().shadowBias != 0.95f) Dlight.GetComponent<Light>().shadowBias = 0.95f;
-                    }
-                }
-                */
                 if (_accstep == 10 || _accstep == 20 || _accstep == 30 || _accstep == 40 || _accstep == 50)
                 {
                     if (validBlock)
@@ -532,7 +536,23 @@ namespace BesiegeCustomScene
                         MTimer = n.ToString("mm:ss:ff");
                     }
                 }
+            }
+            if (_triggerUI.Length != 0 && this.TriggerSize > 0)
+            {
 
+                if (TriggerIndex == 0 && TriggerIndex2 == -1)
+                {
+                    if (_TimerSwith == false)
+                    {
+                        _TimerSwith = true;
+                        _MStartTime = DateTime.Now;
+                    }
+                }
+                if (TriggerIndex == TriggerSize - 1 && TriggerIndex2 != TriggerIndex)
+                {
+                    _TimerSwith = false;
+                }
+                TriggerIndex2 = TriggerIndex;
             }
             if (_accstep >= 50) { _accstep = 0; }
             _accstep++;

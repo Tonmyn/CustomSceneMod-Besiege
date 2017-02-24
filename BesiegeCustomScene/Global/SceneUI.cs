@@ -258,7 +258,7 @@ namespace BesiegeCustomScene
         }
         /// ///////////////////////////////////////
         void FixedUpdate()
-        {
+        {        
             if (StatMaster.isSimulating && isSimulating == false)
             {
                 isSimulating = true; this.ShowGUI = false;

@@ -424,6 +424,10 @@ namespace BesiegeCustomScene
                     }
                 }
                 srd.Close();
+                for(int i = 0; i < this.meshes.Length; i++)
+                {
+                    GeoTools.MeshFilt(ref this.meshes[i]);
+                }
                 Debug.Log("ReadMeshObj Completed!");
             }
             catch (Exception ex)

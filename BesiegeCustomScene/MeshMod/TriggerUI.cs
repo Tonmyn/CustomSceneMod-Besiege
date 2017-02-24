@@ -12,7 +12,7 @@ namespace BesiegeCustomScene
     {
         void Start()
         {
-            ReadUI();
+          
         }
         void OnDisable()
         {
@@ -21,178 +21,10 @@ namespace BesiegeCustomScene
         void OnDestroy()
         {
             ClearTrigger();
-        }
-        void OnGUI()
-        {
-            if (ShowGUI)
-            {
-                this.windowRect = GUI.Window(this.windowID, this.windowRect, new GUI.WindowFunction(DoWindow), "", GUIStyle.none);
-            }
-        }
-        void DoWindow(int windowID)
-        {
-            GUIStyle style = new GUIStyle
-            {
-                normal = { textColor = Color.white },
-                alignment = TextAnchor.MiddleLeft,
-                active = { background = Texture2D.whiteTexture, textColor = Color.black },
-                margin = { top = 5 },
-                fontSize = _FontSize
-            };
-            GUIStyle style1 = new GUIStyle
-            {
-                normal = { textColor = Color.white },
-                alignment = TextAnchor.MiddleRight,
-                active = { background = Texture2D.whiteTexture, textColor = Color.black },
-                margin = { top = 5 },
-                fontSize = _FontSize
-            };
-            GUILayout.BeginVertical(new GUILayoutOption[0]);
-
-            if (trigger.Length != 0)
-            {
-                GUILayout.BeginHorizontal(new GUILayoutOption[0]);
-                if (GUILayout.Button(trigger, style, new GUILayoutOption[0]))
-                {
-                    TriggerIndex = -1; TriggerIndex2 = -1;
-                }
-                GUILayout.Label((TriggerIndex + 1).ToString() + "/" + TriggerSize.ToString(), style1, new GUILayoutOption[0]);
-                GUILayout.EndHorizontal();
-            }
-            GUILayout.EndVertical();
-            GUI.DragWindow(new Rect(0f, 0f, this.windowRect.width, this.windowRect.height));
-        }
-        void FixedUpdate()
-        {
-            if (!ShowGUI) return;
-            if (TriggerSize == 0) return;
-            if (StatMaster.isSimulating)
-            {
-                if (TriggerIndex == 0 && TriggerIndex2 == -1)
-                {
-                    if (this.gameObject.GetComponent<TimeUI>()._TimerSwith == false)
-                    {
-                        this.gameObject.GetComponent<TimeUI>()._TimerSwith = true;
-                        this.gameObject.GetComponent<TimeUI>()._MStartTime = DateTime.Now;
-                    }
-                }
-                if (TriggerIndex == meshtriggers.Length - 1 && TriggerIndex2 != TriggerIndex)
-                {
-                    this.gameObject.GetComponent<TimeUI>()._TimerSwith = false;
-                }
-                TriggerIndex2 = TriggerIndex;
-            }
-            else
-            {
-                TriggerIndex = -1; TriggerIndex2 = -1;
-            }
-        }
-        void Update()
-        {
-            if (Input.GetKeyDown(_DisplayUI) && Input.GetKey(KeyCode.LeftControl))
-            {
-                ShowGUI = !ShowGUI;
-            }
-            if (Input.GetKeyDown(_ReloadUI) && Input.GetKey(KeyCode.LeftControl))
-            {
-                ReadUI();
-            }
-        }
+        }  
         ////////////////////////////
-        private GameObject[] meshtriggers;
-        public static int TriggerIndex = -1;
-        int TriggerIndex2 = -1;//record the prevail statement of triggerindex
+        private GameObject[] meshtriggers;     
         private int TriggerSize = 0;
-        public bool ShowGUI = false;
-        private int _FontSize = 15;
-        KeyCode _DisplayUI = KeyCode.F10;
-        KeyCode _ReloadUI = KeyCode.F5;
-        string trigger = "[Trigger]";
-        private int windowID = spaar.ModLoader.Util.GetWindowID();
-        private Rect windowRect = new Rect(15f, 234f, 150f, 50f);
-        void DefaultUI()
-        {
-            trigger = "[Trigger]";
-            _FontSize = (int)(Screen.width * 0.005 + 8);
-            ShowGUI = false;
-            windowRect = new Rect(15f, 234f, 150f, 50f);
-            _DisplayUI = KeyCode.F10;
-            _ReloadUI = KeyCode.F5;
-        }
-        void ReadUI()
-        {
-            DefaultUI();
-            //Debug.Log(Screen.currentResolution.ToString());
-            try
-            {
-                StreamReader srd;
-                if (File.Exists(GeoTools.UIPath + "CHN.txt"))
-                {
-                    srd = File.OpenText(GeoTools.UIPath + "CHN.txt");
-                }
-                else
-                {
-                    srd = File.OpenText(GeoTools.UIPath + "EN.txt");
-                }
-                //Debug.Log(Ci + "  " + Screen.width.ToString() + "*" + Screen.height.ToString());
-                while (srd.Peek() != -1)
-                {
-                    string str = srd.ReadLine();
-                    string[] chara = str.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-                    if (chara.Length > 2)
-                    {
-                        if (chara[0] == "_Trigger")
-                        {
-                            if (chara[1] == "display_UI")
-                            {
-                                KeyCode outputkey;
-                                if (GeoTools.StringToKeyCode(chara[2], out outputkey)) _DisplayUI = outputkey;
-                            }
-                            else if (chara[1] == "reload_UI")
-                            {
-                                KeyCode outputkey;
-                                if (GeoTools.StringToKeyCode(chara[2], out outputkey)) _ReloadUI = outputkey;
-                            }
-                            else if (chara[1] == "trigger")
-                            {
-                                if (chara[2] == "OFF") trigger = string.Empty;
-                                else trigger = chara[2];
-                            }                      
-                        }
-                        else if (chara[0] == Screen.width.ToString() + "*" + Screen.height.ToString() + "_Trigger")
-                        {
-
-                            if (chara[1] == "window_poistion")
-                            {
-                                windowRect.x = Convert.ToSingle(chara[2]);
-                                windowRect.y = Convert.ToSingle(chara[3]);
-                            }
-                            else if (chara[1] == "window_scale")
-                            {
-                                windowRect.width = Convert.ToSingle(chara[2]);
-                                windowRect.height = Convert.ToSingle(chara[3]);
-                                windowRect.y += windowRect.height + 10;
-                            }                         
-                        }
-                    }
-                }
-                srd.Close();
-                filtUI();
-                Debug.Log("TriggerUISetting Completed!");
-            }
-            catch (Exception ex)
-            {
-                Debug.Log("TriggerUISetting Failed!");
-                Debug.Log(ex.ToString());
-                DefaultUI();
-                return;
-            }
-        }
-        private void filtUI()
-        {
-            windowRect.height = (int)(_FontSize*1.5f);
-            windowRect.width = (int)(_FontSize * 12);
-        }
         string ScenePath = GeoTools.ScenePath;
         public void ReadScene(string SceneName)
         {
@@ -217,6 +49,7 @@ namespace BesiegeCustomScene
                             if (chara[1] == "size")
                             {
                                 this.TriggerSize = Convert.ToInt32(chara[2]);
+                                this.gameObject.GetComponent<TimeUI>().TriggerSize = TriggerSize;
                                 LoadTrigger();
                             }
                         }
@@ -331,15 +164,12 @@ namespace BesiegeCustomScene
             {
                 ClearTrigger();
                 if (TriggerSize <= 0)
-                {
-                    this.ShowGUI = false;
+                {         
                     return;
                 }
-
                 if (TriggerSize > 100) TriggerSize = 100;              
                 if (TriggerSize > 0)
                 {
-                    this.ShowGUI = true;
                     meshtriggers = new GameObject[TriggerSize];
                     for (int i = 0; i < meshtriggers.Length; i++)
                     {

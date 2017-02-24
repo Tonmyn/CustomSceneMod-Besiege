@@ -172,9 +172,9 @@ namespace BesiegeCustomScene
                 mesh.normals = newNormals.ToArray();
                 Debug.Log("ReadFile " + Objpath + " Completed!" + "Vertices:" + newVertices.Count.ToString());
                 srd.Close();
-               // mesh.RecalculateBounds();
-               // mesh.RecalculateNormals();
-               // mesh.Optimize();
+                // mesh.RecalculateBounds();
+                // mesh.RecalculateNormals();
+                // mesh.Optimize();
             }
             catch (Exception ex)
             {
@@ -404,11 +404,39 @@ namespace BesiegeCustomScene
             }
             return mesh;
         }
+        public static Mesh MeshScale(Mesh mesh, Vector3 v)
+        {
+            for (int i = 0; i < mesh.vertices.Length; i++)
+            {
+                mesh.vertices[i].Scale(v);
+            }
+            return mesh;
+        }
+        public static void MeshFilt(ref GameObject obj)
+        {
+            try
+            {
+                if (obj.GetComponent<Transform>().localScale == new Vector3(1, 1, 1))
+                {           
+                    return;
+                }
+                obj.GetComponent<MeshFilter>().mesh = MeshScale(
+                    obj.GetComponent<MeshFilter>().mesh, obj.GetComponent<Transform>().localScale);
+                obj.GetComponent<MeshCollider>().sharedMesh = MeshScale(
+                  obj.GetComponent<MeshCollider>().sharedMesh, obj.GetComponent<Transform>().localScale);
+                obj.GetComponent<Transform>().localScale = new Vector3(1, 1, 1);
+                Debug.Log("MeshFilt Completed!");
+            }
+            catch
+            {
+                Debug.Log("MeshFilt Error!");
+            }
+        }
         public static Texture ELoadTexture(string TexturePath)
         {
             try
             {
-                WWW jpg = new WWW("File:///"+TexturePath);
+                WWW jpg = new WWW("File:///" + TexturePath);
                 if (jpg.size > 5)
                 {
                     return jpg.texture;
@@ -795,15 +823,15 @@ namespace BesiegeCustomScene
                     center.z = v.z; // * t;
                     _weight += t;
                 }
-               // center.x /= infoArray.Length;
-               // center.y /= infoArray.Length;
-               // center.z /= infoArray.Length;
-                stroutput= "Mirror:" + center.x.ToString() + "/" + center.y.ToString() + "/" + center.z.ToString() + " Weight:" + _weight.ToString();
+                // center.x /= infoArray.Length;
+                // center.y /= infoArray.Length;
+                // center.z /= infoArray.Length;
+                stroutput = "Mirror:" + center.x.ToString() + "/" + center.y.ToString() + "/" + center.z.ToString() + " Weight:" + _weight.ToString();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Debug.Log(ex.ToString());
-                stroutput= "Could not get Center";
+                stroutput = "Could not get Center";
             }
             Debug.Log(stroutput);
         }
