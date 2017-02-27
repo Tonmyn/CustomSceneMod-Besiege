@@ -406,6 +406,7 @@ namespace BesiegeCustomScene
         }
         public static Mesh MeshScale(Mesh mesh, Vector3 v)
         {
+            //无法产生任何效果
             for (int i = 0; i < mesh.vertices.Length; i++)
             {
                 mesh.vertices[i].Scale(v);
@@ -414,31 +415,36 @@ namespace BesiegeCustomScene
         }
         public static Mesh MeshTranslate(Mesh mesh, Vector3 v)
         {
+            //无法产生任何效果
             for (int i = 0; i < mesh.vertices.Length; i++)
             {
-                mesh.vertices[i] = mesh.vertices[i] + v;
+                mesh.vertices[i] += v;
             }
             return mesh;
         }
         public static void MeshFilt(ref GameObject obj)
         {
+            //无法产生任何效果
             try
             {
-                if (obj.transform.localScale == new Vector3(1, 1, 1) && obj.transform.localPosition == new Vector3(0, 0, 0))
+                if (obj.transform.localScale != new Vector3(1, 1, 1))
                 {
-                    return;
+                    obj.GetComponent<MeshFilter>().mesh = MeshScale(
+                 obj.GetComponent<MeshFilter>().mesh, obj.GetComponent<Transform>().localScale);
+                    obj.GetComponent<MeshCollider>().sharedMesh = MeshScale(
+                        obj.GetComponent<MeshCollider>().sharedMesh, obj.GetComponent<Transform>().localScale);
+                    obj.transform.localScale = new Vector3(1, 1, 1);
+                    Debug.Log("MeshFilt Scale Completed!");
                 }
-                obj.GetComponent<MeshFilter>().mesh = MeshScale(
-                    obj.GetComponent<MeshFilter>().mesh, obj.GetComponent<Transform>().localScale);
-                obj.GetComponent<MeshCollider>().sharedMesh = MeshScale(
-                    obj.GetComponent<MeshCollider>().sharedMesh, obj.GetComponent<Transform>().localScale);
-                obj.GetComponent<MeshFilter>().mesh = MeshTranslate(
-                  obj.GetComponent<MeshFilter>().mesh, obj.GetComponent<Transform>().localPosition);
-                obj.GetComponent<MeshCollider>().sharedMesh = MeshTranslate(
-                  obj.GetComponent<MeshCollider>().sharedMesh, obj.GetComponent<Transform>().localPosition);
-                obj.transform.localScale = new Vector3(1, 1, 1);
-                obj.transform.localPosition = new Vector3(0, 0, 0);
-                Debug.Log("MeshFilt Completed!");
+                if (obj.transform.localPosition != new Vector3(0, 0, 0))
+                {
+                    obj.GetComponent<MeshFilter>().mesh = MeshTranslate(
+                      obj.GetComponent<MeshFilter>().mesh, obj.GetComponent<Transform>().localPosition);
+                    obj.GetComponent<MeshCollider>().sharedMesh = MeshTranslate(
+                      obj.GetComponent<MeshCollider>().sharedMesh, obj.GetComponent<Transform>().localPosition);
+                    obj.transform.localPosition = new Vector3(0, 0, 0);
+                    Debug.Log("MeshFilt Translate Completed!");
+                }              
             }
             catch
             {
@@ -523,17 +529,17 @@ namespace BesiegeCustomScene
         public static List<Mesh> LoadHeightMap(int width, int height, Vector3 scale, Vector2 texturescale, string HeightMap)
         {
             List<Mesh> _meshes = new List<Mesh>();
-            Texture2D te2 = (Texture2D)LoadTexture(HeightMap);    
-            for (int j = 0; j < te2.height; j+=height)
+            Texture2D te2 = (Texture2D)LoadTexture(HeightMap);
+            for (int j = 0; j < te2.height; j += height)
             {
-                for (int i = 0; i < te2.width; i+=width)
+                for (int i = 0; i < te2.width; i += width)
                 {
                     Rect area = new Rect(i, j, width, height);
                     _meshes.Add(LoadHeightMap(area, scale, texturescale, te2));
                 }
             }
             Debug.Log("LoadHeightMap Completed! MeshCount: " + _meshes.Count.ToString());
-            return _meshes;       
+            return _meshes;
         }
         public static Mesh LoadHeightMap(float uscale, float vscale, int u, int v, int heightscale, float texturescale, string HeightMap)
         {
@@ -555,7 +561,7 @@ namespace BesiegeCustomScene
                 Texture2D te2 = (Texture2D)LoadTexture(HeightMap);
                 if (te2.width < u || te2.height < v)
                 {
-                    Debug.Log("ResetBigFloor Failed ! Need a larger Height map！");
+                    Debug.Log("LoadHeightMap Failed !");
                     u = te2.width; v = te2.height;
                 }
                 List<Vector3> newVertices = new List<Vector3>();
@@ -598,29 +604,29 @@ namespace BesiegeCustomScene
             Mesh mesh = new Mesh();
             try
             {
-                if (te2.width < area.xMax || te2.height < area.yMax)
-                {
-                    Debug.Log("ResetBigFloor Failed ! Need a larger Height map！");
-                    area.xMax = te2.width;
-                    area.yMax = te2.height;
-                }
+                if ((te2.width-2) < area.xMax) area.xMax = te2.width - 2;
+                if ((te2.height - 2) < area.yMax) area.yMax = te2.height - 2;
+                if (area.xMin < 2) area.xMin = 2;
+                if (area.yMin < 2) area.yMin = 2;
                 List<Vector3> newVertices = new List<Vector3>();
                 List<Vector2> newUV = new List<Vector2>();
                 List<int> triangleslist = new List<int>();
-                for (float j = area.yMin; j <= area.yMax; j++)
+                int v = (int)area.height+1;int u = (int)area.width+1;
+                for (int j = 0; j < v; j++)
                 {
-                    for (float i = area.xMin; i <= area.xMax; i++)
+                    for (int i = 0; i < u; i++)
                     {
-                        newVertices.Add(new Vector3(i * scale.x, te2.GetPixel((int)i, (int)j).grayscale * scale.y, j * scale.z));
-                        newUV.Add(new Vector2(i / area.x * texturescale.x, j / area.y * texturescale.y));
+                        float deepth = (te2.GetPixel(i+(int)area.xMin, j+(int)area.yMin).grayscale-0.5f) * scale.y;
+                        newVertices.Add(new Vector3((i + (int)area.xMin) * scale.x, deepth, (j + (int)area.yMin) * scale.z));
+                        newUV.Add(new Vector2((float)i / (float)u * texturescale.x, (float)j / (float)v * texturescale.y));
                         if (i > 0 && j > 0)
                         {
-                            triangleslist.Add(((int)j - 1) * (int)(area.x) + (int)i - 1);
-                            triangleslist.Add((int)j * (int)(area.x) + (int)i);
-                            triangleslist.Add(((int)j - 1) * (int)(area.x) + (int)i);
-                            triangleslist.Add(((int)j - 1) * (int)(area.x) + (int)i - 1);
-                            triangleslist.Add((int)j * (int)(area.x) + (int)i - 1);
-                            triangleslist.Add((int)j * (int)(area.x) + (int)i);
+                            triangleslist.Add((j - 1) * u + i - 1);
+                            triangleslist.Add((j) * u + i);
+                            triangleslist.Add((j - 1) * u + i);
+                            triangleslist.Add((j - 1) * u + i - 1);
+                            triangleslist.Add((j) * u + i - 1);
+                            triangleslist.Add((j) * u + i);
                         }
                     }
                 }
@@ -828,7 +834,7 @@ namespace BesiegeCustomScene
                 mesh.Optimize();
                 meshes.Add(mesh);
                 Debug.Log("Vertices:" + newVertices.Count.ToString());
-                Debug.Log("MeshFromLargeObj Completed! MeshCount: "+meshes.Count.ToString());
+                Debug.Log("MeshFromLargeObj Completed! MeshCount: " + meshes.Count.ToString());
             }
             catch (Exception ex)
             {

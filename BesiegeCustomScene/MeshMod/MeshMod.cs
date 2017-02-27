@@ -63,23 +63,28 @@ namespace BesiegeCustomScene
                             int end = Convert.ToInt32(chara[2]);
                             if (chara[3] == "largeobj")
                             {
+                                int index = 0;
                                 // Meshseries,start,end,largeobjcollider,Name,faceCount
                                 List<Mesh> _meshes = GeoTools.MeshFromLargeObj(chara[4], Convert.ToInt32(chara[5]));
                                 for (int i = start; i <= end; i++)
                                 {
-                                    meshes[i].GetComponent<MeshFilter>().mesh = _meshes[i];
+                                    meshes[i].GetComponent<MeshFilter>().mesh = _meshes[index];
+                                    index++;
                                 }
                             }
                             else if (chara[3] == "largeobjcollider")
                             {
+                                int index = 0;
                                 List<Mesh> _meshes = GeoTools.MeshFromLargeObj(chara[4], Convert.ToInt32(chara[5]));
                                 for (int i = start; i <= end; i++)
                                 {
-                                    meshes[i].GetComponent<MeshCollider>().sharedMesh = _meshes[i];
+                                    meshes[i].GetComponent<MeshCollider>().sharedMesh = _meshes[index];
+                                    index++;
                                 }
                             }
                             else if (chara[3] == "heightmapmesh")
                             {
+                                int index = 0;
                                 int _width = Convert.ToInt32(chara[4]);
                                 int _height = Convert.ToInt32(chara[5]);
                                 Vector3 scale = new Vector3(
@@ -92,8 +97,9 @@ namespace BesiegeCustomScene
                                 List<Mesh> _meshes = GeoTools.LoadHeightMap(_width, _height, scale, texturescale, chara[11]);
                                 for (int i = start; i <= end; i++)
                                 {
-                                    meshes[i].GetComponent<MeshFilter>().mesh = _meshes[i];
-                                    meshes[i].GetComponent<MeshCollider>().sharedMesh = _meshes[i];
+                                    meshes[i].GetComponent<MeshFilter>().mesh = _meshes[index];
+                                    meshes[i].GetComponent<MeshCollider>().sharedMesh = _meshes[index];
+                                    index++;
                                 }
                             }
                             else if (chara[3] == "color")
@@ -105,6 +111,20 @@ namespace BesiegeCustomScene
                                  Convert.ToSingle(chara[5]),
                                  Convert.ToSingle(chara[6]),
                                  Convert.ToSingle(chara[7]));
+                                }
+                            }
+                            else if (chara[3] == "shader")
+                            {
+                                for (int i = start; i <= end; i++)
+                                {
+                                    meshes[i].GetComponent<MeshRenderer>().material.shader = Shader.Find(chara[4]);
+                                }
+                            }
+                            else if (chara[3] == "setfloat")
+                            {
+                                for (int i = start; i <= end; i++)
+                                {
+                                    meshes[i].GetComponent<MeshRenderer>().material.SetFloat(chara[4], Convert.ToSingle(chara[5]));
                                 }
                             }
                             else if (chara[3] == "texture")
@@ -506,10 +526,7 @@ namespace BesiegeCustomScene
                     }
                 }
                 srd.Close();
-                for (int i = 0; i < this.meshes.Length; i++)
-                {
-                    GeoTools.MeshFilt(ref this.meshes[i]);
-                }
+             //   for (int i = 0; i < this.meshes.Length; i++){GeoTools.MeshFilt(ref this.meshes[i]);}
                 Debug.Log("ReadMeshObj Completed!");
             }
             catch (Exception ex)
