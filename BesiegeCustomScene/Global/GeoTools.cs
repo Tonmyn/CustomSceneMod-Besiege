@@ -412,19 +412,32 @@ namespace BesiegeCustomScene
             }
             return mesh;
         }
+        public static Mesh MeshTranslate(Mesh mesh, Vector3 v)
+        {
+            for (int i = 0; i < mesh.vertices.Length; i++)
+            {
+                mesh.vertices[i] = mesh.vertices[i] + v;
+            }
+            return mesh;
+        }
         public static void MeshFilt(ref GameObject obj)
         {
             try
             {
-                if (obj.GetComponent<Transform>().localScale == new Vector3(1, 1, 1))
-                {           
+                if (obj.transform.localScale == new Vector3(1, 1, 1) && obj.transform.localPosition == new Vector3(0, 0, 0))
+                {
                     return;
                 }
                 obj.GetComponent<MeshFilter>().mesh = MeshScale(
                     obj.GetComponent<MeshFilter>().mesh, obj.GetComponent<Transform>().localScale);
                 obj.GetComponent<MeshCollider>().sharedMesh = MeshScale(
-                  obj.GetComponent<MeshCollider>().sharedMesh, obj.GetComponent<Transform>().localScale);
-                obj.GetComponent<Transform>().localScale = new Vector3(1, 1, 1);
+                    obj.GetComponent<MeshCollider>().sharedMesh, obj.GetComponent<Transform>().localScale);
+                obj.GetComponent<MeshFilter>().mesh = MeshTranslate(
+                  obj.GetComponent<MeshFilter>().mesh, obj.GetComponent<Transform>().localPosition);
+                obj.GetComponent<MeshCollider>().sharedMesh = MeshTranslate(
+                  obj.GetComponent<MeshCollider>().sharedMesh, obj.GetComponent<Transform>().localPosition);
+                obj.transform.localScale = new Vector3(1, 1, 1);
+                obj.transform.localPosition = new Vector3(0, 0, 0);
                 Debug.Log("MeshFilt Completed!");
             }
             catch
@@ -507,6 +520,21 @@ namespace BesiegeCustomScene
             }
 
         }
+        public static List<Mesh> LoadHeightMap(int width, int height, Vector3 scale, Vector2 texturescale, string HeightMap)
+        {
+            List<Mesh> _meshes = new List<Mesh>();
+            Texture2D te2 = (Texture2D)LoadTexture(HeightMap);    
+            for (int j = 0; j < te2.height; j+=height)
+            {
+                for (int i = 0; i < te2.width; i+=width)
+                {
+                    Rect area = new Rect(i, j, width, height);
+                    _meshes.Add(LoadHeightMap(area, scale, texturescale, te2));
+                }
+            }
+            Debug.Log("LoadHeightMap Completed! MeshCount: " + _meshes.Count.ToString());
+            return _meshes;       
+        }
         public static Mesh LoadHeightMap(float uscale, float vscale, int u, int v, int heightscale, float texturescale, string HeightMap)
         {
             if (uscale < 1) uscale = 1;
@@ -560,7 +588,54 @@ namespace BesiegeCustomScene
             }
             catch (System.Exception ex)
             {
-                Debug.Log("ResetBigFloor Failed ! Please Open dev to search your FloorBig！");
+                Debug.Log("LoadHeightMap Failed !");
+                Debug.Log(ex.ToString());
+                return null;
+            }
+        }
+        public static Mesh LoadHeightMap(Rect area, Vector3 scale, Vector2 texturescale, Texture2D te2)
+        {
+            Mesh mesh = new Mesh();
+            try
+            {
+                if (te2.width < area.xMax || te2.height < area.yMax)
+                {
+                    Debug.Log("ResetBigFloor Failed ! Need a larger Height map！");
+                    area.xMax = te2.width;
+                    area.yMax = te2.height;
+                }
+                List<Vector3> newVertices = new List<Vector3>();
+                List<Vector2> newUV = new List<Vector2>();
+                List<int> triangleslist = new List<int>();
+                for (float j = area.yMin; j <= area.yMax; j++)
+                {
+                    for (float i = area.xMin; i <= area.xMax; i++)
+                    {
+                        newVertices.Add(new Vector3(i * scale.x, te2.GetPixel((int)i, (int)j).grayscale * scale.y, j * scale.z));
+                        newUV.Add(new Vector2(i / area.x * texturescale.x, j / area.y * texturescale.y));
+                        if (i > 0 && j > 0)
+                        {
+                            triangleslist.Add(((int)j - 1) * (int)(area.x) + (int)i - 1);
+                            triangleslist.Add((int)j * (int)(area.x) + (int)i);
+                            triangleslist.Add(((int)j - 1) * (int)(area.x) + (int)i);
+                            triangleslist.Add(((int)j - 1) * (int)(area.x) + (int)i - 1);
+                            triangleslist.Add((int)j * (int)(area.x) + (int)i - 1);
+                            triangleslist.Add((int)j * (int)(area.x) + (int)i);
+                        }
+                    }
+                }
+                mesh.vertices = newVertices.ToArray();
+                mesh.uv = newUV.ToArray();
+                mesh.triangles = triangleslist.ToArray();
+                mesh.RecalculateBounds();
+                mesh.RecalculateNormals();
+                mesh.Optimize();
+                Debug.Log("Vertices:" + newVertices.Count.ToString());
+                return mesh;
+            }
+            catch (System.Exception ex)
+            {
+                Debug.Log("LoadHeightMap Failed !");
                 Debug.Log(ex.ToString());
                 return null;
             }
@@ -639,7 +714,6 @@ namespace BesiegeCustomScene
             {
                 int index = 0;
                 Mesh mesh = new Mesh();
-
                 while (srd.Peek() != -1)
                 {
                     string str = srd.ReadLine();
@@ -740,25 +814,21 @@ namespace BesiegeCustomScene
                                 meshes.Add(mesh);
                                 Debug.Log("Vertices:" + newVertices.Count.ToString());
                             }
-
                         }
                     }
                 }
                 srd.Close();
-
                 index = 0;
                 mesh.vertices = newVertices.ToArray();
                 mesh.uv = newUV.ToArray();
                 mesh.triangles = triangleslist.ToArray();
                 mesh.normals = newNormals.ToArray();
-
                 mesh.RecalculateBounds();
                 mesh.RecalculateNormals();
                 mesh.Optimize();
                 meshes.Add(mesh);
                 Debug.Log("Vertices:" + newVertices.Count.ToString());
-
-                Debug.Log("ReadFile " + Objname + " Completed!");
+                Debug.Log("MeshFromLargeObj Completed! MeshCount: "+meshes.Count.ToString());
             }
             catch (Exception ex)
             {
@@ -768,7 +838,6 @@ namespace BesiegeCustomScene
                 Debug.Log("newNormals==>" + newNormals.Count.ToString());
                 Debug.Log(ex.ToString());
             }
-
             return meshes;
         }
         public static void PrintMaterial(ref Material mat)
@@ -818,14 +887,14 @@ namespace BesiegeCustomScene
                 {
                     Vector3 v = info.gameObject.GetComponent<Rigidbody>().worldCenterOfMass;
                     float t = info.gameObject.GetComponent<Rigidbody>().mass;
-                    center.x = v.x;// * t;
-                    center.y = v.y;// * t;
-                    center.z = v.z; // * t;
+                    center.x += v.x;// * t;
+                    center.y += v.y;// * t;
+                    center.z += v.z; // * t;
                     _weight += t;
                 }
-                // center.x /= infoArray.Length;
-                // center.y /= infoArray.Length;
-                // center.z /= infoArray.Length;
+                center.x /= infoArray.Length;
+                center.y /= infoArray.Length;
+                center.z /= infoArray.Length;
                 stroutput = "Mirror:" + center.x.ToString() + "/" + center.y.ToString() + "/" + center.z.ToString() + " Weight:" + _weight.ToString();
             }
             catch (Exception ex)

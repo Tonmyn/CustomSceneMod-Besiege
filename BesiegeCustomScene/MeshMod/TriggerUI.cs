@@ -178,6 +178,8 @@ namespace BesiegeCustomScene
                         meshtriggers[i].GetComponent<MeshFilter>().mesh.Clear();
                         meshtriggers[i].AddComponent<MTrigger>();
                         meshtriggers[i].GetComponent<MTrigger>().Index = i;
+                        meshtriggers[i].transform.localScale = new Vector3(1, 1, 1);
+                        meshtriggers[i].transform.localPosition = new Vector3(0, 0, 0);
                         meshtriggers[i].name = "_meshtrigger" + i.ToString();
                     }
                 }

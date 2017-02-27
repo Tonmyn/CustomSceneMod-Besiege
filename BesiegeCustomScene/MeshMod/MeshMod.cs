@@ -46,73 +46,155 @@ namespace BesiegeCustomScene
                         #region Meshes
                         if (chara[0] == "Meshes")
                         {
-                            if (chara[1] == "size")
+                            if (chara[1] == "size" || chara[1] == "Size")
                             {
                                 this.MeshSize = Convert.ToInt32(chara[2]);
                                 LoadMesh();
                             }
-                            if (chara[1] == "NoShadow" || chara[1] == "noShadow")
+                            else if (chara[1] == "noshadow" || chara[1] == "noShadow" || chara[1] == "NoShadow")
                             {
                                 this.MeshSize = Convert.ToInt32(chara[2]);
                                 LoadMeshWithOutCastShadow();//对于带烘焙贴图的和模型过大的这项必须取消
                             }
                         }
-                        else if (chara[0] == "MeshLargeObj")
+                        else if (chara[0] == "Meshseries")
                         {
-                            string[] argus = chara[1].Split(new string[] { "|" }, StringSplitOptions.RemoveEmptyEntries);
-                            if (argus[0] == "mesh")
+                            int start = Convert.ToInt32(chara[1]);
+                            int end = Convert.ToInt32(chara[2]);
+                            if (chara[3] == "largeobj")
                             {
-                                string[] argus2 = chara[2].Split(new string[] { "|" }, StringSplitOptions.RemoveEmptyEntries);
-                                string[] argus3 = chara[3].Split(new string[] { "|" }, StringSplitOptions.RemoveEmptyEntries);
-                                string[] argus4 = chara[4].Split(new string[] { "|" }, StringSplitOptions.RemoveEmptyEntries);
-                                Vector3 position = new Vector3(Convert.ToInt32(argus3[1]), Convert.ToInt32(argus3[2]), Convert.ToInt32(argus3[3]));
-                                Vector3 scale = new Vector3(Convert.ToInt32(argus4[1]), Convert.ToInt32(argus4[2]), Convert.ToInt32(argus4[3]));
-                                List<Mesh> meshList = GeoTools.MeshFromLargeObj(argus[1], Convert.ToInt32(argus[2]));
-                                if (meshList.Count > 0)
+                                // Meshseries,start,end,largeobjcollider,Name,faceCount
+                                List<Mesh> _meshes = GeoTools.MeshFromLargeObj(chara[4], Convert.ToInt32(chara[5]));
+                                for (int i = start; i <= end; i++)
                                 {
-                                    for (int k = 0; k < meshList.Count; k++)
+                                    meshes[i].GetComponent<MeshFilter>().mesh = _meshes[i];
+                                }
+                            }
+                            else if (chara[3] == "largeobjcollider")
+                            {
+                                List<Mesh> _meshes = GeoTools.MeshFromLargeObj(chara[4], Convert.ToInt32(chara[5]));
+                                for (int i = start; i <= end; i++)
+                                {
+                                    meshes[i].GetComponent<MeshCollider>().sharedMesh = _meshes[i];
+                                }
+                            }
+                            else if (chara[3] == "heightmapmesh")
+                            {
+                                int _width = Convert.ToInt32(chara[4]);
+                                int _height = Convert.ToInt32(chara[5]);
+                                Vector3 scale = new Vector3(
+                                    Convert.ToInt32(chara[6]),
+                                    Convert.ToInt32(chara[7]),
+                                    Convert.ToInt32(chara[8]));
+                                Vector2 texturescale = new Vector3(
+                                    Convert.ToInt32(chara[9]),
+                                    Convert.ToInt32(chara[10]));
+                                List<Mesh> _meshes = GeoTools.LoadHeightMap(_width, _height, scale, texturescale, chara[11]);
+                                for (int i = start; i <= end; i++)
+                                {
+                                    meshes[i].GetComponent<MeshFilter>().mesh = _meshes[i];
+                                    meshes[i].GetComponent<MeshCollider>().sharedMesh = _meshes[i];
+                                }
+                            }
+                            else if (chara[3] == "color")
+                            {
+                                for (int i = start; i <= end; i++)
+                                {
+                                    meshes[i].GetComponent<MeshRenderer>().material.color = new Color(
+                                 Convert.ToSingle(chara[4]),
+                                 Convert.ToSingle(chara[5]),
+                                 Convert.ToSingle(chara[6]),
+                                 Convert.ToSingle(chara[7]));
+                                }
+                            }
+                            else if (chara[3] == "texture")
+                            {
+                                for (int i = start; i <= end; i++)
+                                {
+                                    meshes[i].GetComponent<MeshRenderer>().material.mainTexture = GeoTools.LoadTexture(chara[4]);
+                                }
+                            }
+                            else if (chara[3] == "materialcopy")
+                            {
+                                try
+                                {
+                                    for (int i = start; i <= end; i++)
                                     {
-                                        for (int j = 0; j < meshes.Length; j++)
-                                        {
-                                            Mesh mesh1 = meshes[j].GetComponent<MeshFilter>().mesh;
-                                            if (mesh1 == null || mesh1.vertices.Length <= 0)
-                                            {
-                                                meshes[j].GetComponent<MeshFilter>().mesh = meshList[k];
-                                                meshes[j].transform.position = position;
-                                                meshes[j].transform.localScale = scale;
-                                                if (argus2.Length >= 3) meshes[j].GetComponent<MeshRenderer>().material.shader = Shader.Find(argus2[2]);
-                                                // if (argus2.Length >= 4) meshes[j].GetComponent<MeshRenderer>().material.SetFloat("_Mode", Convert.ToSingle(argus2[3]));
-                                                // Debug.Log("meshes" + j.ToString() + " RenderingMode: " + meshes[j].GetComponent<MeshRenderer>().material.GetFloat("_Mode"));
-                                                meshes[j].GetComponent<MeshRenderer>().material.mainTexture = GeoTools.LoadTexture(argus2[1]);
-                                                break;
-                                            }
-                                        }
+                                        meshes[i].GetComponent<MeshRenderer>().material = new Material(GameObject.Find(chara[4]).GetComponent<Renderer>().material);
+                                        Debug.Log(meshes[i].GetComponent<MeshRenderer>().material.shader.name);
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    Debug.Log("Error! MaterialCopy Failed");
+                                    Debug.Log(ex.ToString());
+                                }
+                            }
+                            else if (chara[3] == "materialPropcopy")
+                            {
+                                try
+                                {
+                                    for (int i = start; i <= end; i++)
+                                    {
+                                        int index = Convert.ToInt32(chara[4]);
+                                        meshes[i].GetComponent<MeshRenderer>().material =
+                                            gameObject.GetComponent<Prop>().MaterialTemp[index].GetComponent<Renderer>().material;
+                                        Debug.Log(meshes[i].GetComponent<MeshRenderer>().material.shader.name);
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    Debug.Log("Error! MaterialPropCopy Failed");
+                                    Debug.Log(ex.ToString());
+                                }
+                            }
+                            else if (chara[3] == "castshadow" || chara[2] == "shadow")
+                            {
+                                for (int i = start; i <= end; i++)
+                                {
+                                    if (Convert.ToInt32(chara[4]) == 0)
+                                    {
+                                        meshes[i].GetComponent<Renderer>().shadowCastingMode = ShadowCastingMode.Off;
+                                    }
+                                    else
+                                    {
+                                        meshes[i].GetComponent<Renderer>().shadowCastingMode = ShadowCastingMode.On;
+                                    }
+                                }
+
+                            }
+                            else if (chara[3] == "receiveshadow")
+                            {
+                                for (int i = start; i <= end; i++)
+                                {
+                                    if (Convert.ToInt32(chara[4]) == 0)
+                                    {
+                                        meshes[i].GetComponent<Renderer>().receiveShadows = false;
+                                    }
+                                    else
+                                    {
+                                        meshes[i].GetComponent<Renderer>().receiveShadows = true;
                                     }
                                 }
                             }
-                            else if (argus[0] == "meshcollider")
+                            else if (chara[3] == "location")
                             {
-                                string[] argus2 = chara[2].Split(new string[] { "|" }, StringSplitOptions.RemoveEmptyEntries);
-                                string[] argus3 = chara[3].Split(new string[] { "|" }, StringSplitOptions.RemoveEmptyEntries);
-                                Vector3 position = new Vector3(Convert.ToInt32(argus2[1]), Convert.ToInt32(argus2[2]), Convert.ToInt32(argus2[3]));
-                                Vector3 scale = new Vector3(Convert.ToInt32(argus3[1]), Convert.ToInt32(argus3[2]), Convert.ToInt32(argus3[3]));
-                                List<Mesh> meshList = GeoTools.MeshFromLargeObj(argus[1], Convert.ToInt32(argus[2]));
-                                if (meshList.Count > 0)
+                                for (int i = start; i <= end; i++)
                                 {
-                                    for (int k = 0; k < meshList.Count; k++)
-                                    {
-                                        for (int j = 0; j < meshes.Length; j++)
-                                        {
-                                            Mesh mesh1 = meshes[j].GetComponent<MeshCollider>().sharedMesh;
-                                            if (mesh1 == null || mesh1.vertices.Length <= 0)
-                                            {
-                                                meshes[j].GetComponent<MeshCollider>().sharedMesh = meshList[k];
-                                                meshes[j].transform.position = position;
-                                                meshes[j].transform.localScale = scale;
-                                                break;
-                                            }
-                                        }
-                                    }
+                                    meshes[i].transform.localPosition = new Vector3(
+                                Convert.ToSingle(chara[4]),
+                                Convert.ToSingle(chara[5]),
+                                Convert.ToSingle(chara[6]));
+                                }
+                            }
+                            else if (chara[3] == "scale")
+                            {
+                                for (int i = start; i <= end; i++)
+                                {
+                                    meshes[i].transform.localScale = new Vector3(
+                                Convert.ToSingle(chara[4]),
+                                Convert.ToSingle(chara[5]),
+                                Convert.ToSingle(chara[6]));
                                 }
                             }
                         }
@@ -424,7 +506,7 @@ namespace BesiegeCustomScene
                     }
                 }
                 srd.Close();
-                for(int i = 0; i < this.meshes.Length; i++)
+                for (int i = 0; i < this.meshes.Length; i++)
                 {
                     GeoTools.MeshFilt(ref this.meshes[i]);
                 }
@@ -464,6 +546,8 @@ namespace BesiegeCustomScene
                         if (diffuse != null) meshes[i].GetComponent<Renderer>().material.shader = diffuse;
                         meshes[i].GetComponent<MeshCollider>().sharedMesh.Clear();
                         meshes[i].GetComponent<MeshFilter>().mesh.Clear();
+                        meshes[i].transform.localScale = new Vector3(1, 1, 1);
+                        meshes[i].transform.localPosition = new Vector3(0, 0, 0);
                         meshes[i].name = "_mesh" + i.ToString();
                     }
                 }
