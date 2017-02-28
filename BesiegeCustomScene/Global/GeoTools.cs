@@ -197,17 +197,10 @@ namespace BesiegeCustomScene
             List<Vector3> newNormals = new List<Vector3>();
             Mesh mesh = new Mesh();
             StreamReader srd;
+            if (!File.Exists(MeshPath + Objname + ".obj")) return Prop.MeshFormBundle(Objname);
             try
             {
                 srd = File.OpenText(MeshPath + Objname + ".obj");
-            }
-            catch
-            {
-                Debug.Log("Open " + Objname + " failed");
-                return null;
-            }
-            try
-            {
                 while (srd.Peek() != -1)
                 {
                     string str = srd.ReadLine();
@@ -315,17 +308,10 @@ namespace BesiegeCustomScene
             List<Vector3> newNormals = new List<Vector3>();
             Mesh mesh = new Mesh();
             StreamReader srd;
+            if (!File.Exists(MeshPath + Objname + ".obj")) return Prop.MeshFormBundle(Objname);
             try
             {
                 srd = File.OpenText(MeshPath + Objname + ".obj");
-            }
-            catch
-            {
-                Debug.Log("File open failed");
-                return null;
-            }
-            try
-            {
                 while (srd.Peek() != -1)
                 {
                     string str = srd.ReadLine();
@@ -403,53 +389,6 @@ namespace BesiegeCustomScene
                 Debug.Log(ex.ToString());
             }
             return mesh;
-        }
-        public static Mesh MeshScale(Mesh mesh, Vector3 v)
-        {
-            //无法产生任何效果
-            for (int i = 0; i < mesh.vertices.Length; i++)
-            {
-                mesh.vertices[i].Scale(v);
-            }
-            return mesh;
-        }
-        public static Mesh MeshTranslate(Mesh mesh, Vector3 v)
-        {
-            //无法产生任何效果
-            for (int i = 0; i < mesh.vertices.Length; i++)
-            {
-                mesh.vertices[i] += v;
-            }
-            return mesh;
-        }
-        public static void MeshFilt(ref GameObject obj)
-        {
-            //无法产生任何效果
-            try
-            {
-                if (obj.transform.localScale != new Vector3(1, 1, 1))
-                {
-                    obj.GetComponent<MeshFilter>().mesh = MeshScale(
-                 obj.GetComponent<MeshFilter>().mesh, obj.GetComponent<Transform>().localScale);
-                    obj.GetComponent<MeshCollider>().sharedMesh = MeshScale(
-                        obj.GetComponent<MeshCollider>().sharedMesh, obj.GetComponent<Transform>().localScale);
-                    obj.transform.localScale = new Vector3(1, 1, 1);
-                    Debug.Log("MeshFilt Scale Completed!");
-                }
-                if (obj.transform.localPosition != new Vector3(0, 0, 0))
-                {
-                    obj.GetComponent<MeshFilter>().mesh = MeshTranslate(
-                      obj.GetComponent<MeshFilter>().mesh, obj.GetComponent<Transform>().localPosition);
-                    obj.GetComponent<MeshCollider>().sharedMesh = MeshTranslate(
-                      obj.GetComponent<MeshCollider>().sharedMesh, obj.GetComponent<Transform>().localPosition);
-                    obj.transform.localPosition = new Vector3(0, 0, 0);
-                    Debug.Log("MeshFilt Translate Completed!");
-                }              
-            }
-            catch
-            {
-                Debug.Log("MeshFilt Error!");
-            }
         }
         public static Texture ELoadTexture(string TexturePath)
         {
@@ -604,19 +543,19 @@ namespace BesiegeCustomScene
             Mesh mesh = new Mesh();
             try
             {
-                if ((te2.width-2) < area.xMax) area.xMax = te2.width - 2;
+                if ((te2.width - 2) < area.xMax) area.xMax = te2.width - 2;
                 if ((te2.height - 2) < area.yMax) area.yMax = te2.height - 2;
                 if (area.xMin < 2) area.xMin = 2;
                 if (area.yMin < 2) area.yMin = 2;
                 List<Vector3> newVertices = new List<Vector3>();
                 List<Vector2> newUV = new List<Vector2>();
                 List<int> triangleslist = new List<int>();
-                int v = (int)area.height+1;int u = (int)area.width+1;
+                int v = (int)area.height + 1; int u = (int)area.width + 1;
                 for (int j = 0; j < v; j++)
                 {
                     for (int i = 0; i < u; i++)
                     {
-                        float deepth = (te2.GetPixel(i+(int)area.xMin, j+(int)area.yMin).grayscale-0.5f) * scale.y;
+                        float deepth = (te2.GetPixel(i + (int)area.xMin, j + (int)area.yMin).grayscale - 0.5f) * scale.y;
                         newVertices.Add(new Vector3((i + (int)area.xMin) * scale.x, deepth, (j + (int)area.yMin) * scale.z));
                         newUV.Add(new Vector2((float)i / (float)u * texturescale.x, (float)j / (float)v * texturescale.y));
                         if (i > 0 && j > 0)
@@ -923,5 +862,54 @@ namespace BesiegeCustomScene
                 SceneManager.LoadScene(Scene, LoadSceneMode.Single);//打开level  
             }
         }
+        /*无用函数
+        public static Mesh MeshScale(Mesh mesh, Vector3 v)
+        {
+            //无法产生任何效果
+            for (int i = 0; i < mesh.vertices.Length; i++)
+            {
+                mesh.vertices[i].Scale(v);
+            }
+            return mesh;
+        }
+        public static Mesh MeshTranslate(Mesh mesh, Vector3 v)
+        {
+            //无法产生任何效果
+            for (int i = 0; i < mesh.vertices.Length; i++)
+            {
+                mesh.vertices[i] += v;
+            }
+            return mesh;
+        }
+        public static void MeshFilt(ref GameObject obj)
+        {
+            //无法产生任何效果
+            try
+            {
+                if (obj.transform.localScale != new Vector3(1, 1, 1))
+                {
+                    obj.GetComponent<MeshFilter>().mesh = MeshScale(
+                 obj.GetComponent<MeshFilter>().mesh, obj.GetComponent<Transform>().localScale);
+                    obj.GetComponent<MeshCollider>().sharedMesh = MeshScale(
+                        obj.GetComponent<MeshCollider>().sharedMesh, obj.GetComponent<Transform>().localScale);
+                    obj.transform.localScale = new Vector3(1, 1, 1);
+                    Debug.Log("MeshFilt Scale Completed!");
+                }
+                if (obj.transform.localPosition != new Vector3(0, 0, 0))
+                {
+                    obj.GetComponent<MeshFilter>().mesh = MeshTranslate(
+                      obj.GetComponent<MeshFilter>().mesh, obj.GetComponent<Transform>().localPosition);
+                    obj.GetComponent<MeshCollider>().sharedMesh = MeshTranslate(
+                      obj.GetComponent<MeshCollider>().sharedMesh, obj.GetComponent<Transform>().localPosition);
+                    obj.transform.localPosition = new Vector3(0, 0, 0);
+                    Debug.Log("MeshFilt Translate Completed!");
+                }
+            }
+            catch
+            {
+                Debug.Log("MeshFilt Error!");
+            }
+        }
+        */
     }
 }

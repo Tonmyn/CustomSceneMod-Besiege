@@ -13,13 +13,18 @@ namespace BesiegeCustomScene
             Isstart = 0;
         }
         private int Isstart = 0;
-        public AssetBundle iteratorVariable1;
+        public static AssetBundle iteratorVariable1;
         public GameObject TileTemp = null;
         public GameObject WaterTemp = null;
         public GameObject CloudTemp = null;
         public GameObject IceTemp = null;
         public GameObject SnowTemp = null;
         public List<GameObject> MaterialTemp = new List<GameObject>();
+        public static string BundlePath = "assets/standard assets/besiegecustomscene/mesh/";
+        public static Mesh MeshFormBundle(string Objname)
+        {
+            return  iteratorVariable1.LoadAsset<Mesh>(BundlePath+Objname+".obj");
+        }
         public GameObject GetObjectInScene(string ObjectName)
         {
             try
@@ -53,8 +58,8 @@ namespace BesiegeCustomScene
                         iteratorVariable1 = iteratorVariable0.assetBundle;
                         if (iteratorVariable1 != null)
                         {
-                            string[] names = iteratorVariable1.GetAllAssetNames();
-                            for (int i = 0; i < names.Length; i++) { Debug.Log(names[i]); }
+                          //  string[] names = iteratorVariable1.GetAllAssetNames();
+                          //  for (int i = 0; i < names.Length; i++) { Debug.Log(names[i]); }
                         }
                     }
                     catch (Exception ex)
