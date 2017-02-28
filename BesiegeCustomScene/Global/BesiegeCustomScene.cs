@@ -13,12 +13,12 @@ namespace BesiegeCustomScene
         public override string DisplayName { get { return "BesiegeCustomScene"; } }
         public override string BesiegeVersion { get { return "v0.42"; } }
         public override string Author { get { return "zian1"; } }
-        public override Version Version { get { return new Version("9.8"); } }
+        public override Version Version { get { return new Version("10.1"); } }
         public override bool CanBeUnloaded { get { return true; } }
         public GameObject temp;
         public override void OnLoad()
         {         
-            temp = new GameObject(); temp.name = "BesiegeCustomScene_v9";
+            temp = new GameObject(); temp.name = "BesiegeCustomScene_v10";
             temp.AddComponent<SceneUI>();
             temp.AddComponent<TimeUI>();
             temp.AddComponent<MeshMod>();

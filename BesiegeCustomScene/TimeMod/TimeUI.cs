@@ -265,6 +265,16 @@ namespace BesiegeCustomScene
                 }
                 return "\n";
             }, "Get Assets Names");
+            Commands.RegisterCommand("VP_GetTexture", delegate (string[] args, IDictionary<string, string> notUses)
+            {
+                if (args.Length > 0)
+                {
+                    Debug.Log("VPGetTexture:" + args[0]);
+                    Texture te = GeoTools.LoadTexture(args[0]);
+                    Debug.Log(te.width.ToString() + "," + te.height.ToString());
+                }
+                return "\n";
+            }, "Get Assets Names");
         }
         void DoWindow(int windowID)
         {
@@ -343,7 +353,7 @@ namespace BesiegeCustomScene
             {
                 GUILayout.BeginHorizontal(new GUILayoutOption[0]);
                 GUILayout.Label(_triggerUI, style, new GUILayoutOption[0]);
-                if (GUILayout.Button("["+(TriggerIndex + 1).ToString() + "/" + TriggerSize.ToString()+"]", style1, new GUILayoutOption[0]))
+                if (GUILayout.Button("[" + (TriggerIndex + 1).ToString() + "/" + TriggerSize.ToString() + "]", style1, new GUILayoutOption[0]))
                 {
                     TriggerIndex = -1;
                     TriggerIndex2 = -1;
@@ -445,7 +455,7 @@ namespace BesiegeCustomScene
                 Distance = "0";
                 Overload = "0";
                 isSimulating = false;
-                validBlock = false;               
+                validBlock = false;
                 _TimerSwith = false;
             }
             if (_coordinatesUI.Length != 0)

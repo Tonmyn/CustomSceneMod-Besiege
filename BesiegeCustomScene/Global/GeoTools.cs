@@ -415,20 +415,27 @@ namespace BesiegeCustomScene
         {
             try
             {
-                WWW png = new WWW("File:///" + TexturePath + TextureName + ".png");
-                WWW jpg = new WWW("File:///" + TexturePath + TextureName + ".jpg");
-                if (png.size > 5)
+                if (File.Exists(TexturePath + TextureName + ".png") || File.Exists(TexturePath + TextureName + ".jpg"))
                 {
-                    return png.texture;
-                }
-                else if (jpg.size > 5)
-                {
-                    return jpg.texture;
+                    WWW png = new WWW("File:///" + TexturePath + TextureName + ".png");
+                    WWW jpg = new WWW("File:///" + TexturePath + TextureName + ".jpg");
+                    if (png.size > 5)
+                    {
+                        return png.texture;
+                    }
+                    else if (jpg.size > 5)
+                    {
+                        return jpg.texture;
+                    }
+                    else
+                    {
+                        Debug.Log("No image in folder or image could not be used!");
+                        return GameObject.Find("FloorBig").GetComponent<Renderer>().material.mainTexture;
+                    }
                 }
                 else
                 {
-                    Debug.Log("No image in folder or image could not be used!");
-                    return GameObject.Find("FloorBig").GetComponent<Renderer>().material.mainTexture;
+                    return Prop.TextureFormBundle(TextureName);
                 }
             }
             catch

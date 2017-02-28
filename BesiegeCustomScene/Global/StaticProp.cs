@@ -20,10 +20,16 @@ namespace BesiegeCustomScene
         public GameObject IceTemp = null;
         public GameObject SnowTemp = null;
         public List<GameObject> MaterialTemp = new List<GameObject>();
-        public static string BundlePath = "assets/standard assets/besiegecustomscene/mesh/";
+        public static string BundlePath = "assets/standard assets/besiegecustomscene/";
         public static Mesh MeshFormBundle(string Objname)
         {
-            return  iteratorVariable1.LoadAsset<Mesh>(BundlePath+Objname+".obj");
+            return  iteratorVariable1.LoadAsset<Mesh>(BundlePath+"Mesh/"+ Objname +".obj");
+        }
+        public static Texture TextureFormBundle(string Objname)
+        {
+            Texture te= iteratorVariable1.LoadAsset<Texture>(BundlePath + "Texture/" + Objname + ".jpg");
+            if(te==null)te= iteratorVariable1.LoadAsset<Texture>(BundlePath + "Texture/" + Objname + ".png");
+            return te;
         }
         public GameObject GetObjectInScene(string ObjectName)
         {
@@ -76,7 +82,8 @@ namespace BesiegeCustomScene
                     CloudTemp = GetObjectInScene("CLoud");             
                     ParticleSystemRenderer psr = CloudTemp.GetComponent<ParticleSystemRenderer>();
                     psr.receiveShadows = false;
-                    psr.sharedMaterial.mainTexture = GeoTools.LoadTexture("ParticleCloudWhite");
+                    psr.sharedMaterial.mainTexture = iteratorVariable1.LoadAsset<Texture>(
+                        "Assets/Standard Assets/ParticleSystems/Textures/ParticleCloudWhite.png");
                     psr.shadowCastingMode = ShadowCastingMode.Off;
                     ParticleSystem ps = CloudTemp.GetComponent<ParticleSystem>();
                     ps.startSize = 30;
