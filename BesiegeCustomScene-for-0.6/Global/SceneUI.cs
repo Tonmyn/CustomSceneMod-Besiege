@@ -548,6 +548,26 @@ namespace BesiegeCustomScene
 
         }
 
+        //加载地图多人模式下
+        IEnumerator ILoadScene_Multiplayer(ScenePack sp)
+        {
+            //if (SceneManager.GetActiveScene().name != "2")
+            //{
+            //    SceneManager.LoadScene("2", LoadSceneMode.Single);//打开level  
+            //}
+            yield return null;
+
+            HideFloorBig();
+            ReadScene(sp);
+            try { GetComponent<MeshMod>().ReadScene(sp); } catch { }
+            try { GetComponent<TriggerMod>().ReadScene(sp); } catch { }
+            try { GetComponent<CubeMod>().ReadScene(sp); } catch { }
+            try { GetComponent<WaterMod>().ReadScene(sp); } catch { }
+            try { GetComponent<CloudMod>().ReadScene(sp); } catch { }
+            try { GetComponent<SnowMod>().ReadScene(sp); } catch { }
+
+        }
+
         void FixedUpdate()
         {
             if (StatMaster.levelSimulating && isSimulating == false)
@@ -612,7 +632,15 @@ namespace BesiegeCustomScene
                 {
                     //LoadScene(_SceneName[i]);
                     //StartCoroutine(ILoadScene(_SceneName[i]));
-                    StartCoroutine(ILoadScene(SPs[i]));
+                    if (BesiegeNetworkManager.Instance.isActiveAndEnabled && BesiegeNetworkManager.Instance.isServer)
+                    {
+                        StartCoroutine(ILoadScene_Multiplayer(SPs[i]));
+                    }
+                    else
+                    {
+                        StartCoroutine(ILoadScene(SPs[i]));
+                    }          
+
                 }
             }
             GUILayout.EndHorizontal();
