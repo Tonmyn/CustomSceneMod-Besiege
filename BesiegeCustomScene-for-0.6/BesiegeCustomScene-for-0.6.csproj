@@ -7,7 +7,7 @@
     <ProjectGuid>{6A16F1F7-31C2-4CAE-9FD3-0C56BBD29757}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BesiegeCustomScene_for_0._6</RootNamespace>
+    <RootNamespace>BesiegeCustomScene</RootNamespace>
     <AssemblyName>BesiegeCustomScene-for-0.6</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

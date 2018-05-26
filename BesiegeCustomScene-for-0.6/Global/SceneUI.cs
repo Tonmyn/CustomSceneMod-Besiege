@@ -448,6 +448,8 @@ namespace BesiegeCustomScene
         {
             DirectoryInfo TheFolder = new DirectoryInfo(GeoTools.ScenesPackPath);
 
+            SPs.Clear();
+
             //遍历文件夹
             foreach (DirectoryInfo NextFolder in TheFolder.GetDirectories())
             {
@@ -566,6 +568,7 @@ namespace BesiegeCustomScene
             try { GetComponent<CloudMod>().ReadScene(sp); } catch { }
             try { GetComponent<SnowMod>().ReadScene(sp); } catch { }
 
+           
         }
 
         void FixedUpdate()
@@ -600,7 +603,13 @@ namespace BesiegeCustomScene
             ReadScenePacks();
             ReadUI(SPs);
 
-            SceneManager.sceneLoaded += (Scene s,LoadSceneMode lsm)=>{ HideFloorBig_ExceptDownFloor(); BesiegeConsoleController.ShowMessage("加载地图后事件"); };
+            SceneManager.sceneLoaded += (Scene s,LoadSceneMode lsm)=>
+            {
+                HideFloorBig_ExceptDownFloor();
+#if DEBUG
+                GeoTools.Log("加载地图后事件");
+#endif
+            };
 
         }
 
@@ -632,14 +641,30 @@ namespace BesiegeCustomScene
                 {
                     //LoadScene(_SceneName[i]);
                     //StartCoroutine(ILoadScene(_SceneName[i]));
-                    if (BesiegeNetworkManager.Instance.isActiveAndEnabled && BesiegeNetworkManager.Instance.isServer)
+#if DEBUG
+                    GeoTools.Log("load scene");
+#endif
+                    if (BesiegeNetworkManager.Instance == null)
                     {
-                        StartCoroutine(ILoadScene_Multiplayer(SPs[i]));
-                    }
-                    else
-                    {
+#if DEBUG
+                        GeoTools.Log("load scene not in multiplayers");
+#endif
                         StartCoroutine(ILoadScene(SPs[i]));
-                    }          
+                        return;
+
+                    }
+
+
+                    if (BesiegeNetworkManager.Instance.isActiveAndEnabled && BesiegeNetworkManager.Instance.isConnected)
+                    {
+#if DEBUG
+                        GeoTools.Log("load scene in multiplayers");
+#endif
+                        StartCoroutine(ILoadScene_Multiplayer(SPs[i]));
+                        return;
+                    }
+
+
 
                 }
             }
@@ -656,7 +681,7 @@ namespace BesiegeCustomScene
             }
         }
 
-        #region 隐藏/显示地面
+#region 隐藏/显示地面
         private Vector3 fpos = new Vector3();
         private Vector3 gpos = new Vector3();
 
@@ -736,7 +761,7 @@ namespace BesiegeCustomScene
             }
             catch { }
         }
-        #endregion
+#endregion
 
     }
 }

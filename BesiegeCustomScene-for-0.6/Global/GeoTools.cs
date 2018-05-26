@@ -107,7 +107,7 @@ namespace BesiegeCustomScene
             }
             catch
             {
-                Debug.Log("File open failed");
+                GeoTools.Log("File open failed");
                 return null;
             }
             try
@@ -175,7 +175,7 @@ namespace BesiegeCustomScene
                 mesh.uv = newUV.ToArray(); mesh.uv2 = newUV.ToArray();
                 mesh.triangles = triangleslist.ToArray();
                 mesh.normals = newNormals.ToArray();
-                Debug.Log("ReadFile " + Objpath + " Completed!" + "Vertices:" + newVertices.Count.ToString());
+                GeoTools.Log("ReadFile " + Objpath + " Completed!" + "Vertices:" + newVertices.Count.ToString());
                 srd.Close();
                 // mesh.RecalculateBounds();
                 // mesh.RecalculateNormals();
@@ -183,11 +183,11 @@ namespace BesiegeCustomScene
             }
             catch (Exception ex)
             {
-                Debug.Log("Obj model " + Objpath + " error!");
-                Debug.Log("newUV==>" + newUV.Count.ToString());
-                Debug.Log("triangleslist==>" + triangleslist.Count.ToString());
-                Debug.Log("newNormals==>" + newNormals.Count.ToString());
-                Debug.Log(ex.ToString());
+                GeoTools.Log("Obj model " + Objpath + " error!");
+                GeoTools.Log("newUV==>" + newUV.Count.ToString());
+                GeoTools.Log("triangleslist==>" + triangleslist.Count.ToString());
+                GeoTools.Log("newNormals==>" + newNormals.Count.ToString());
+                GeoTools.Log(ex.ToString());
             }
             return mesh;
         }
@@ -289,7 +289,7 @@ namespace BesiegeCustomScene
                 mesh.uv = newUV.ToArray();
                 mesh.triangles = triangleslist.ToArray();
                 mesh.normals = newNormals.ToArray();
-                Debug.Log("ReadFile " + Objname + " Completed!" + "Vertices:" + newVertices.Count.ToString());
+                GeoTools.Log("ReadFile " + Objname + " Completed!" + "Vertices:" + newVertices.Count.ToString());
                 srd.Close();
                 mesh.RecalculateBounds();
                 mesh.RecalculateNormals();
@@ -297,11 +297,11 @@ namespace BesiegeCustomScene
             }
             catch (Exception ex)
             {
-                Debug.Log("Obj model " + Objname + " error!");
-                Debug.Log("newUV==>" + newUV.Count.ToString());
-                Debug.Log("triangleslist==>" + triangleslist.Count.ToString());
-                Debug.Log("newNormals==>" + newNormals.Count.ToString());
-                Debug.Log(ex.ToString());
+                GeoTools.Log("Obj model " + Objname + " error!");
+                GeoTools.Log("newUV==>" + newUV.Count.ToString());
+                GeoTools.Log("triangleslist==>" + triangleslist.Count.ToString());
+                GeoTools.Log("newNormals==>" + newNormals.Count.ToString());
+                GeoTools.Log(ex.ToString());
             }
             return mesh;
         }
@@ -379,7 +379,7 @@ namespace BesiegeCustomScene
                 mesh.uv = newUV.ToArray();
                 mesh.triangles = triangleslist.ToArray();
                 mesh.normals = newNormals.ToArray();
-                Debug.Log("ReadFile " + Objname + " Completed!" + "Vertices:" + newVertices.Count.ToString());
+                GeoTools.Log("ReadFile " + Objname + " Completed!" + "Vertices:" + newVertices.Count.ToString());
                 srd.Close();
                 //  mesh.RecalculateBounds();
                 //  mesh.RecalculateNormals();
@@ -387,11 +387,11 @@ namespace BesiegeCustomScene
             }
             catch (Exception ex)
             {
-                Debug.Log("Obj model " + Objname + " error!");
-                Debug.Log("newUV==>" + newUV.Count.ToString());
-                Debug.Log("triangleslist==>" + triangleslist.Count.ToString());
-                Debug.Log("newNormals==>" + newNormals.Count.ToString());
-                Debug.Log(ex.ToString());
+                GeoTools.Log("Obj model " + Objname + " error!");
+                GeoTools.Log("newUV==>" + newUV.Count.ToString());
+                GeoTools.Log("triangleslist==>" + triangleslist.Count.ToString());
+                GeoTools.Log("newNormals==>" + newNormals.Count.ToString());
+                GeoTools.Log(ex.ToString());
             }
             return mesh;
         }
@@ -406,13 +406,13 @@ namespace BesiegeCustomScene
                 }
                 else
                 {
-                    Debug.Log("No image in folder or image could not be used!");
+                    GeoTools.Log("No image in folder or image could not be used!");
                     return GameObject.Find("FloorBig").GetComponent<Renderer>().material.mainTexture;
                 }
             }
             catch
             {
-                Debug.Log("No image in folder,use white image instead !");
+                GeoTools.Log("No image in folder,use white image instead !");
                 return GameObject.Find("FloorBig").GetComponent<Renderer>().material.mainTexture;
             }
         }
@@ -434,7 +434,7 @@ namespace BesiegeCustomScene
                     }
                     else
                     {
-                        Debug.Log("No image in folder or image could not be used!");
+                        GeoTools.Log("No image in folder or image could not be used!");
                         return GameObject.Find("FloorBig").GetComponent<Renderer>().material.mainTexture;
                     }
                 }
@@ -445,7 +445,7 @@ namespace BesiegeCustomScene
             }
             catch
             {
-                Debug.Log("No image in folder,use white image instead !");
+                GeoTools.Log("No image in folder,use white image instead !");
                 return GameObject.Find("FloorBig").GetComponent<Renderer>().material.mainTexture;
             }
         }
@@ -461,7 +461,7 @@ namespace BesiegeCustomScene
             }
             catch (Exception ex)
             {
-                Debug.Log(ex.ToString());
+                GeoTools.Log(ex.ToString());
             }
 
         }
@@ -473,7 +473,7 @@ namespace BesiegeCustomScene
             }
             catch (Exception ex)
             {
-                Debug.Log(ex.ToString());
+                GeoTools.Log(ex.ToString());
             }
 
         }
@@ -489,7 +489,7 @@ namespace BesiegeCustomScene
                     _meshes.Add(LoadHeightMap(area, scale, texturescale, te2));
                 }
             }
-            Debug.Log("LoadHeightMap Completed! MeshCount: " + _meshes.Count.ToString());
+            GeoTools.Log("LoadHeightMap Completed! MeshCount: " + _meshes.Count.ToString());
             return _meshes;
         }
         public static Mesh LoadHeightMap(float uscale, float vscale, int u, int v, int heightscale, float texturescale, string HeightMap)
@@ -512,7 +512,7 @@ namespace BesiegeCustomScene
                 Texture2D te2 = (Texture2D)LoadTexture(HeightMap);
                 if (te2.width < u || te2.height < v)
                 {
-                    Debug.Log("LoadHeightMap Failed !");
+                    GeoTools.Log("LoadHeightMap Failed !");
                     u = te2.width; v = te2.height;
                 }
                 List<Vector3> newVertices = new List<Vector3>();
@@ -545,8 +545,8 @@ namespace BesiegeCustomScene
             }
             catch (System.Exception ex)
             {
-                Debug.Log("LoadHeightMap Failed !");
-                Debug.Log(ex.ToString());
+                GeoTools.Log("LoadHeightMap Failed !");
+                GeoTools.Log(ex.ToString());
                 return null;
             }
         }
@@ -588,14 +588,14 @@ namespace BesiegeCustomScene
                 mesh.RecalculateNormals();
                 mesh.Optimize();
 #if DEBUG
-                Debug.Log("Vertices:" + newVertices.Count.ToString());
+                GeoTools.Log("Vertices:" + newVertices.Count.ToString());
 #endif
                 return mesh;
             }
             catch (System.Exception ex)
             {
-                Debug.Log("LoadHeightMap Failed !");
-                Debug.Log(ex.ToString());
+                GeoTools.Log("LoadHeightMap Failed !");
+                GeoTools.Log(ex.ToString());
                 return null;
             }
         }
@@ -609,14 +609,14 @@ namespace BesiegeCustomScene
                 for (int i = 0; i < names.Length; i++)
                 {
 
-                    Debug.Log(names[i]);
+                    GeoTools.Log(names[i]);
 
                 }
                 iteratorVariable1.Unload(true);
             }
             catch (System.Exception ex)
             {
-                Debug.Log(ex.ToString());
+                GeoTools.Log(ex.ToString());
             }
         }
         public static void ResetWaterMaterial(ref Material mat)
@@ -647,7 +647,7 @@ namespace BesiegeCustomScene
             }
             catch (System.Exception ex)
             {
-                Debug.Log(ex.ToString());
+                GeoTools.Log(ex.ToString());
             }
         }
         public static List<Mesh> MeshFromLargeObj(string Objname, int FaceCount)
@@ -668,7 +668,7 @@ namespace BesiegeCustomScene
             }
             catch
             {
-                Debug.Log("Open " + Objname + " failed");
+                GeoTools.Log("Open " + Objname + " failed");
                 return null;
             }
             try
@@ -773,7 +773,7 @@ namespace BesiegeCustomScene
                                 mesh.RecalculateNormals();
                                 mesh.Optimize();
                                 meshes.Add(mesh);
-                                Debug.Log("Vertices:" + newVertices.Count.ToString());
+                                GeoTools.Log("Vertices:" + newVertices.Count.ToString());
                             }
                         }
                     }
@@ -788,35 +788,35 @@ namespace BesiegeCustomScene
                 mesh.RecalculateNormals();
                 mesh.Optimize();
                 meshes.Add(mesh);
-                Debug.Log("Vertices:" + newVertices.Count.ToString());
-                Debug.Log("MeshFromLargeObj Completed! MeshCount: " + meshes.Count.ToString());
+                GeoTools.Log("Vertices:" + newVertices.Count.ToString());
+                GeoTools.Log("MeshFromLargeObj Completed! MeshCount: " + meshes.Count.ToString());
             }
             catch (Exception ex)
             {
-                Debug.Log("Obj model " + Objname + " error!");
-                Debug.Log("newUV==>" + newUV.Count.ToString());
-                Debug.Log("triangleslist==>" + triangleslist.Count.ToString());
-                Debug.Log("newNormals==>" + newNormals.Count.ToString());
-                Debug.Log(ex.ToString());
+                GeoTools.Log("Obj model " + Objname + " error!");
+                GeoTools.Log("newUV==>" + newUV.Count.ToString());
+                GeoTools.Log("triangleslist==>" + triangleslist.Count.ToString());
+                GeoTools.Log("newNormals==>" + newNormals.Count.ToString());
+                GeoTools.Log(ex.ToString());
             }
             return meshes;
         }
         public static void PrintMaterial(ref Material mat)
         {
-            Debug.Log(mat.shaderKeywords.Length);
+            GeoTools.Log(mat.shaderKeywords.Length);
             for (int i = 0; i < mat.shaderKeywords.Length; i++)
             {
-                Debug.Log(mat.shaderKeywords[i]);
+                GeoTools.Log(mat.shaderKeywords[i]);
             }
 
         }
         public static void PrintShader()
         {
             Material[] shaders = GameObject.FindObjectsOfType<Material>();
-            Debug.Log(shaders.Length);
+            GeoTools.Log(shaders.Length);
             for (int i = 0; i < shaders.Length; i++)
             {
-                Debug.Log(shaders[i].shader.name);
+                GeoTools.Log(shaders[i].shader.name);
             }
 
         }
@@ -829,20 +829,20 @@ namespace BesiegeCustomScene
                 string[] names = iteratorVariable1.GetAllAssetNames();
                 for (int i = 0; i < names.Length; i++)
                 {
-                    Debug.Log(names[i]);
+                    GeoTools.Log(names[i]);
                 }
             }
             catch (Exception ex)
             {
-                Debug.Log("Error! assetBundle failed");
-                Debug.Log(ex.ToString());
+                GeoTools.Log("Error! assetBundle failed");
+                GeoTools.Log(ex.ToString());
             }
         }
         public static void GetCenter()
         {
             if (StatMaster.levelSimulating)
             {
-                Debug.Log("The method will not work if is simulating!");
+                GeoTools.Log("The method will not work if is simulating!");
                 return;
             }
             string stroutput = "";
@@ -865,7 +865,7 @@ namespace BesiegeCustomScene
                     }
                     else
                     {
-                        Debug.Log("Skipped an invalid block!");
+                        GeoTools.Log("Skipped an invalid block!");
                     }
                 }
                 center.x /= infoArray.Length;
@@ -875,16 +875,16 @@ namespace BesiegeCustomScene
             }
             catch (Exception ex)
             {
-                Debug.Log(ex.ToString());
+                GeoTools.Log(ex.ToString());
                 stroutput = "Could not get Center";
             }
-            Debug.Log(stroutput);
+            GeoTools.Log(stroutput);
         }
         public static void GetLevelInfo()
         {
             Scene scene1 = SceneManager.GetActiveScene();
-            Debug.Log("ActiveScene : " + scene1.rootCount.ToString() + "=>" + scene1.name);
-            Debug.Log("SceneCount : " + SceneManager.sceneCountInBuildSettings.ToString());
+            GeoTools.Log("ActiveScene : " + scene1.rootCount.ToString() + "=>" + scene1.name);
+            GeoTools.Log("SceneCount : " + SceneManager.sceneCountInBuildSettings.ToString());
         }
         public static void OpenScene(string Scene)
         {
@@ -927,7 +927,7 @@ namespace BesiegeCustomScene
                     obj.GetComponent<MeshCollider>().sharedMesh = MeshScale(
                         obj.GetComponent<MeshCollider>().sharedMesh, obj.GetComponent<Transform>().localScale);
                     obj.transform.localScale = new Vector3(1, 1, 1);
-                    Debug.Log("MeshFilt Scale Completed!");
+                    GeoTools.Log("MeshFilt Scale Completed!");
                 }
                 if (obj.transform.localPosition != new Vector3(0, 0, 0))
                 {
@@ -936,12 +936,12 @@ namespace BesiegeCustomScene
                     obj.GetComponent<MeshCollider>().sharedMesh = MeshTranslate(
                       obj.GetComponent<MeshCollider>().sharedMesh, obj.GetComponent<Transform>().localPosition);
                     obj.transform.localPosition = new Vector3(0, 0, 0);
-                    Debug.Log("MeshFilt Translate Completed!");
+                    GeoTools.Log("MeshFilt Translate Completed!");
                 }
             }
             catch
             {
-                Debug.Log("MeshFilt Error!");
+                GeoTools.Log("MeshFilt Error!");
             }
         }
         */
@@ -1048,7 +1048,7 @@ namespace BesiegeCustomScene
                 mesh.triangles = triangleslist.ToArray();
                 mesh.normals = newNormals.ToArray();
 #if DEBUG
-                Debug.Log("ReadFile " + Objname + " Completed!" + "Vertices:" + newVertices.Count.ToString());
+                GeoTools.Log("ReadFile " + Objname + " Completed!" + "Vertices:" + newVertices.Count.ToString());
 #endif
                 srd.Close();
                 mesh.RecalculateBounds();
@@ -1057,11 +1057,11 @@ namespace BesiegeCustomScene
             }
             catch (Exception ex)
             {
-                Debug.Log("Obj model " + Objname + " error!");
-                Debug.Log("newUV==>" + newUV.Count.ToString());
-                Debug.Log("triangleslist==>" + triangleslist.Count.ToString());
-                Debug.Log("newNormals==>" + newNormals.Count.ToString());
-                Debug.Log(ex.ToString());
+                GeoTools.Log("Obj model " + Objname + " error!");
+                GeoTools.Log("newUV==>" + newUV.Count.ToString());
+                GeoTools.Log("triangleslist==>" + triangleslist.Count.ToString());
+                GeoTools.Log("newNormals==>" + newNormals.Count.ToString());
+                GeoTools.Log(ex.ToString());
             }
             return mesh;
         }
@@ -1086,7 +1086,7 @@ namespace BesiegeCustomScene
             }
             catch
             {
-                Debug.Log("Open " + Objname + " failed");
+                GeoTools.Log("Open " + Objname + " failed");
                 return null;
             }
             try
@@ -1192,7 +1192,7 @@ namespace BesiegeCustomScene
                                 mesh.Optimize();
                                 meshes.Add(mesh);
 #if DEBUG
-                                Debug.Log("Vertices:" + newVertices.Count.ToString());
+                                GeoTools.Log("Vertices:" + newVertices.Count.ToString());
 #endif
                             }
                         }
@@ -1209,17 +1209,17 @@ namespace BesiegeCustomScene
                 mesh.Optimize();
                 meshes.Add(mesh);
 #if DEBUG
-                Debug.Log("Vertices:" + newVertices.Count.ToString());
-                Debug.Log("MeshFromLargeObj Completed! MeshCount: " + meshes.Count.ToString());
+                GeoTools.Log("Vertices:" + newVertices.Count.ToString());
+                GeoTools.Log("MeshFromLargeObj Completed! MeshCount: " + meshes.Count.ToString());
 #endif
             }
             catch (Exception ex)
             {
-                Debug.Log("Obj model " + Objname + " error!");
-                Debug.Log("newUV==>" + newUV.Count.ToString());
-                Debug.Log("triangleslist==>" + triangleslist.Count.ToString());
-                Debug.Log("newNormals==>" + newNormals.Count.ToString());
-                Debug.Log(ex.ToString());
+                GeoTools.Log("Obj model " + Objname + " error!");
+                GeoTools.Log("newUV==>" + newUV.Count.ToString());
+                GeoTools.Log("triangleslist==>" + triangleslist.Count.ToString());
+                GeoTools.Log("newNormals==>" + newNormals.Count.ToString());
+                GeoTools.Log(ex.ToString());
             }
             return meshes;
         }
@@ -1236,7 +1236,7 @@ namespace BesiegeCustomScene
                     _meshes.Add(LoadHeightMap(area, scale, texturescale, te2));
                 }
             }
-            Debug.Log("LoadHeightMap Completed! MeshCount: " + _meshes.Count.ToString());
+            GeoTools.Log("LoadHeightMap Completed! MeshCount: " + _meshes.Count.ToString());
             return _meshes;
         }
 
@@ -1260,7 +1260,7 @@ namespace BesiegeCustomScene
                 Texture2D te2 = (Texture2D)LoadTexture(HeightMap,scenePack);
                 if (te2.width < u || te2.height < v)
                 {
-                    Debug.Log("LoadHeightMap Failed !");
+                    GeoTools.Log("LoadHeightMap Failed !");
                     u = te2.width; v = te2.height;
                 }
                 List<Vector3> newVertices = new List<Vector3>();
@@ -1293,8 +1293,8 @@ namespace BesiegeCustomScene
             }
             catch (System.Exception ex)
             {
-                Debug.Log("LoadHeightMap Failed !");
-                Debug.Log(ex.ToString());
+                GeoTools.Log("LoadHeightMap Failed !");
+                GeoTools.Log(ex.ToString());
                 return null;
             }
         }
@@ -1318,7 +1318,7 @@ namespace BesiegeCustomScene
                     }
                     else
                     {
-                        Debug.Log("No image in folder or image could not be used!");
+                        GeoTools.Log("No image in folder or image could not be used!");
                         return GameObject.Find("FloorBig").GetComponent<Renderer>().material.mainTexture;
                     }
                 }
@@ -1329,7 +1329,7 @@ namespace BesiegeCustomScene
             }
             catch
             {
-                Debug.Log("No image in folder,use white image instead !");
+                GeoTools.Log("No image in folder,use white image instead !");
                 return GameObject.Find("FloorBig").GetComponent<Renderer>().material.mainTexture;
             }
         }
@@ -1412,7 +1412,7 @@ namespace BesiegeCustomScene
                 mesh.triangles = triangleslist.ToArray();
                 mesh.normals = newNormals.ToArray();
 #if DEBUG
-                Debug.Log("ReadFile " + Objname + " Completed!" + "Vertices:" + newVertices.Count.ToString());
+                GeoTools.Log("ReadFile " + Objname + " Completed!" + "Vertices:" + newVertices.Count.ToString());
 #endif
                 srd.Close();
                 //  mesh.RecalculateBounds();
@@ -1421,20 +1421,32 @@ namespace BesiegeCustomScene
             }
             catch (Exception ex)
             {
-                Debug.Log("Obj model " + Objname + " error!");
-                Debug.Log("newUV==>" + newUV.Count.ToString());
-                Debug.Log("triangleslist==>" + triangleslist.Count.ToString());
-                Debug.Log("newNormals==>" + newNormals.Count.ToString());
-                Debug.Log(ex.ToString());
+                GeoTools.Log("Obj model " + Objname + " error!");
+                GeoTools.Log("newUV==>" + newUV.Count.ToString());
+                GeoTools.Log("triangleslist==>" + triangleslist.Count.ToString());
+                GeoTools.Log("newNormals==>" + newNormals.Count.ToString());
+                GeoTools.Log(ex.ToString());
             }
             return mesh;
         }
 
         private static int currentWindowID = int.MaxValue;
+
         public static int GetWindowID()
         {
             return currentWindowID--;
         }
+
+        public static void Log(string message)
+        {
+            BesiegeConsoleController.ShowMessage(message);
+        }
+
+        public static void Log(int message)
+        {
+            BesiegeConsoleController.ShowMessage(message.ToString());
+        }
+
 
     }
 }

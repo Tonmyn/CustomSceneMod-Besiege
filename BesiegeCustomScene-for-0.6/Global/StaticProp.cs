@@ -41,15 +41,15 @@ namespace BesiegeCustomScene
                 ObjectTemp.name = ObjectName + "Temp";
                 UnityEngine.Object.DontDestroyOnLoad(ObjectTemp);
 #if DEBUG
-                Debug.Log("Get " + ObjectName + "Temp Successfully");
+                GeoTools.Log("Get " + ObjectName + "Temp Successfully");
 #endif
                 ObjectTemp.SetActive(false);
                 return ObjectTemp;
             }
             catch (Exception ex)
             {
-                Debug.Log("Error! Get " + ObjectName + "Temp Failed");
-                Debug.Log(ex.ToString());
+                GeoTools.Log("Error! Get " + ObjectName + "Temp Failed");
+                GeoTools.Log(ex.ToString());
                 return null;
             }
         }
@@ -72,22 +72,26 @@ namespace BesiegeCustomScene
                               for (int i = 0; i < names.Length; i++)
                             {
 #if DEBUG
-                                Debug.Log(names[i]);
+                                GeoTools.Log(names[i]);
 #endif
                             }
                         }
                     }
                     catch (Exception ex)
                     {
-                        Debug.Log("Error! assetBundle failed");
-                        Debug.Log(ex.ToString());
+                        GeoTools.Log("Error! assetBundle failed");
+                        GeoTools.Log(ex.ToString());
                     }
 
                 }
                 if (Isstart == 2 * t)
                 {
                     StartedScene = SceneManager.GetActiveScene().name;
-                    GeoTools.OpenScene("TITLE SCREEN");
+                    if (StartedScene != "TITLE SCREEN")
+                    {
+                        return;
+                    }
+                    //GeoTools.OpenScene("TITLE SCREEN");
                     CloudTemp = GetObjectInScene("CLoud");
                     ParticleSystemRenderer psr = CloudTemp.GetComponent<ParticleSystemRenderer>();
                     psr.receiveShadows = false;
@@ -103,7 +107,7 @@ namespace BesiegeCustomScene
                     DontDestroyOnLoad(CloudTemp);
                     CloudTemp.SetActive(false);
 #if DEBUG
-                    Debug.Log("Get " + CloudTemp.name + " Successfully");
+                    GeoTools.Log("Get " + CloudTemp.name + " Successfully");
 #endif
                 }
                 if (Isstart == 3 * t)
@@ -121,7 +125,7 @@ namespace BesiegeCustomScene
 //                        WMTemp.SetActive(false);
 //                        this.MaterialTemp.Add(WMTemp);
 //#if DEBUG
-//                        Debug.Log("Get " + WMTemp.name + " Successfully");
+//                        GeoTools.Log("Get " + WMTemp.name + " Successfully");
 //#endif
 //                    }
                 }
@@ -148,7 +152,7 @@ namespace BesiegeCustomScene
                     WaterTemp.name = "WaterTemp";
                     WaterTemp.SetActive(false);
 #if DEBUG
-                    Debug.Log("Get " + TileTemp.name + " Successfully");
+                    GeoTools.Log("Get " + TileTemp.name + " Successfully");
 #endif
                 }
                 if (Isstart == 5 * t)
@@ -159,15 +163,15 @@ namespace BesiegeCustomScene
                     SnowTemp.SetActive(false);
                     UnityEngine.Object.DontDestroyOnLoad(SnowTemp);
 #if DEBUG
-                    Debug.Log("Get " + SnowTemp.name + " Successfully");
+                    GeoTools.Log("Get " + SnowTemp.name + " Successfully");
 #endif
                 }
             }
             catch (Exception ex)
             {
-                Debug.Log(ex.ToString());
+                GeoTools.Log(ex.ToString());
             }
-            if (Isstart <= 6 * t) Isstart++;
+            if (Isstart < 6 * t) Isstart++;
         }
     }
 }
