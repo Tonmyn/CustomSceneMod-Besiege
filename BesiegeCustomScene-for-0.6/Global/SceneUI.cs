@@ -48,12 +48,12 @@ namespace BesiegeCustomScene
                 StreamReader srd;
                 if (File.Exists(GeoTools.UIPath + "CHN.txt"))
                 {
-                    Debug.Log("zh-CN UI " + Screen.width.ToString() + "*" + Screen.height.ToString());
+                    GeoTools.Log("zh-CN UI " + Screen.width.ToString() + "*" + Screen.height.ToString());
                     srd = File.OpenText(GeoTools.UIPath + "CHN.txt");
                 }
                 else
                 {
-                    Debug.Log("en-US UI " + Screen.width.ToString() + "*" + Screen.height.ToString());
+                    GeoTools.Log("en-US UI " + Screen.width.ToString() + "*" + Screen.height.ToString());
                     srd = File.OpenText(GeoTools.UIPath + "EN.txt");
                 }
                 while (srd.Peek() != -1)
@@ -102,19 +102,19 @@ namespace BesiegeCustomScene
                 filtUI();
                 if (_ButtonName.Count != _SceneName.Count || _ButtonName.Count < 0)
                 {
-                    Debug.Log("LoadUISetting Failed!Button Error!");
+                    GeoTools.Log("LoadUISetting Failed!Button Error!");
                     DefaultItem();
                 }
                 else
                 {
-                    Debug.Log("LoadUISetting Completed!");
+                    GeoTools.Log("LoadUISetting Completed!");
                 }
 
             }
             catch (Exception ex)
             {
-                Debug.Log("Error! LoadUISetting Failed!");
-                Debug.Log(ex.ToString());
+                GeoTools.Log("Error! LoadUISetting Failed!");
+                GeoTools.Log(ex.ToString());
                 DefaultUI();
                 return;
             }
@@ -128,12 +128,12 @@ namespace BesiegeCustomScene
                 StreamReader srd;
                 if (File.Exists(GeoTools.UIPath + "CHN.txt"))
                 {
-                    Debug.Log("zh-CN UI " + Screen.width.ToString() + "*" + Screen.height.ToString());
+                    GeoTools.Log("zh-CN UI " + Screen.width.ToString() + "*" + Screen.height.ToString());
                     srd = File.OpenText(GeoTools.UIPath + "CHN.txt");
                 }
                 else
                 {
-                    Debug.Log("en-US UI " + Screen.width.ToString() + "*" + Screen.height.ToString());
+                    GeoTools.Log("en-US UI " + Screen.width.ToString() + "*" + Screen.height.ToString());
                     srd = File.OpenText(GeoTools.UIPath + "EN.txt");
                 }
                 while (srd.Peek() != -1)
@@ -187,19 +187,19 @@ namespace BesiegeCustomScene
 
                 if (_ButtonName.Count != _SceneName.Count || _ButtonName.Count < 0)
                 {
-                    Debug.Log("LoadUISetting Failed!Button Error!");
+                    GeoTools.Log("LoadUISetting Failed!Button Error!");
                     DefaultItem();
                 }
                 else
                 {
-                    Debug.Log("LoadUISetting Completed!");
+                    GeoTools.Log("LoadUISetting Completed!");
                 }
 
             }
             catch (Exception ex)
             {
-                Debug.Log("Error! LoadUISetting Failed!");
-                Debug.Log(ex.ToString());
+                GeoTools.Log("Error! LoadUISetting Failed!");
+                GeoTools.Log(ex.ToString());
                 DefaultUI();
                 return;
             }
@@ -235,11 +235,11 @@ namespace BesiegeCustomScene
             try
             {
 #if DEBUG
-                Debug.Log(Application.dataPath);
+                GeoTools.Log(Application.dataPath);
 #endif
                 if (!File.Exists(ScenePath + SceneName + ".txt"))
                 {
-                    Debug.Log("Scene File not exists!");
+                    GeoTools.Log("Scene File not exists!");
                     return;
                 }
                 StreamReader srd = File.OpenText(ScenePath + SceneName + ".txt");
@@ -260,8 +260,8 @@ namespace BesiegeCustomScene
                                 }
                                 catch (Exception ex)
                                 {
-                                    Debug.Log("farClipPlane Error");
-                                    Debug.Log(ex.ToString());
+                                    GeoTools.Log("farClipPlane Error");
+                                    GeoTools.Log(ex.ToString());
                                 }
                             }
                             else if (chara[1] == "focusLerpSmooth")
@@ -279,8 +279,8 @@ namespace BesiegeCustomScene
                                 }
                                 catch (Exception ex)
                                 {
-                                    Debug.Log("focusLerpSmooth Error");
-                                    Debug.Log(ex.ToString());
+                                    GeoTools.Log("focusLerpSmooth Error");
+                                    GeoTools.Log(ex.ToString());
                                 }
                             }
                             else if (chara[1] == "fog")
@@ -297,7 +297,7 @@ namespace BesiegeCustomScene
                                     }
                                     catch
                                     {
-                                        Debug.Log("fog error");
+                                        GeoTools.Log("fog error");
                                     }
                                 }
                             }
@@ -305,13 +305,13 @@ namespace BesiegeCustomScene
                             {
                                 //if (chara[2] == "OFF" )
                                 //{
-                                //    Debug.Log("SSAO OFF");
+                                //    GeoTools.Log("SSAO OFF");
                                 //    OptionsMaster.SSAO = true;
                                 //    FindObjectOfType<ToggleAO>().Set();
                                 //}
                                 //else if (chara[2] == "ON"  )
                                 //{
-                                //    Debug.Log("SSAO ON");
+                                //    GeoTools.Log("SSAO ON");
                                 //    OptionsMaster.SSAO = false;
                                 //    FindObjectOfType<ToggleAO>().Set();
                                 //}
@@ -323,12 +323,12 @@ namespace BesiegeCustomScene
                     }
                 }
                 srd.Close();
-                Debug.Log("ReadSceneUI Completed!");
+                GeoTools.Log("ReadSceneUI Completed!");
             }
             catch (Exception ex)
             {
-                Debug.Log("ReadSceneUI Failed!");
-                Debug.Log(ex.ToString());
+                GeoTools.Log("ReadSceneUI Failed!");
+                GeoTools.Log(ex.ToString());
                 return;
             }
         }   
@@ -340,11 +340,11 @@ namespace BesiegeCustomScene
             try
             {
 #if DEBUG
-                Debug.Log(Application.dataPath);
+                GeoTools.Log(Application.dataPath);
 #endif
                 if (!File.Exists(sp.SettingFilePath))
                 {
-                    Debug.Log("Error! Scene File not exists!");
+                    GeoTools.Log("Error! Scene File not exists!");
                     return;
                 }
 
@@ -369,8 +369,8 @@ namespace BesiegeCustomScene
                                 }
                                 catch (Exception ex)
                                 {
-                                    Debug.Log("farClipPlane Error");
-                                    Debug.Log(ex.ToString());
+                                    GeoTools.Log("farClipPlane Error");
+                                    GeoTools.Log(ex.ToString());
                                 }
                             }
                             else if (chara[1] == "focusLerpSmooth")
@@ -388,8 +388,8 @@ namespace BesiegeCustomScene
                                 }
                                 catch (Exception ex)
                                 {
-                                    Debug.Log("focusLerpSmooth Error");
-                                    Debug.Log(ex.ToString());
+                                    GeoTools.Log("focusLerpSmooth Error");
+                                    GeoTools.Log(ex.ToString());
                                 }
                             }
                             else if (chara[1] == "fog")
@@ -406,7 +406,7 @@ namespace BesiegeCustomScene
                                     }
                                     catch
                                     {
-                                        Debug.Log("fog error");
+                                        GeoTools.Log("fog error");
                                     }
                                 }
                             }
@@ -414,13 +414,13 @@ namespace BesiegeCustomScene
                             {
                                 //if (chara[2] == "OFF")
                                 //{
-                                //    Debug.Log("SSAO OFF");
+                                //    GeoTools.Log("SSAO OFF");
                                 //    OptionsMaster.SSAO = true;
                                 //    FindObjectOfType<ToggleAO>().Set();
                                 //}
                                 //else if (chara[2] == "ON")
                                 //{
-                                //    Debug.Log("SSAO ON");
+                                //    GeoTools.Log("SSAO ON");
                                 //    OptionsMaster.SSAO = false;
                                 //    FindObjectOfType<ToggleAO>().Set();
                                 //}
@@ -433,12 +433,12 @@ namespace BesiegeCustomScene
                 }
                 srd.Close();
 
-                Debug.Log("ReadSceneUI Completed!");
+                GeoTools.Log("ReadSceneUI Completed!");
             }
             catch (Exception ex)
             {
-                Debug.Log("ReadSceneUI Failed!");
-                Debug.Log(ex.ToString());
+                GeoTools.Log("ReadSceneUI Failed!");
+                GeoTools.Log(ex.ToString());
                 return;
             }
         }
@@ -454,7 +454,7 @@ namespace BesiegeCustomScene
             foreach (DirectoryInfo NextFolder in TheFolder.GetDirectories())
             {
                 SPs.Add(new ScenePack(NextFolder));
-                //Debug.Log(NextFolder.Name);
+                //GeoTools.Log(NextFolder.Name);
             }
                 
             

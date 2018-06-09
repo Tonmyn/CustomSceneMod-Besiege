@@ -25,10 +25,10 @@ namespace BesiegeCustomScene
         {
             try
             {
-                //Debug.Log(Application.dataPath);
+                //GeoTools.Log(Application.dataPath);
                 if (!File.Exists(GeoTools.ScenePath + SceneName + ".txt"))
                 {
-                    Debug.Log("Error! Scene File not exists!");
+                    GeoTools.Log("Error! Scene File not exists!");
                     return;
                 }
                 StreamReader srd = File.OpenText(GeoTools.ScenePath + SceneName + ".txt");
@@ -91,12 +91,12 @@ namespace BesiegeCustomScene
                     }
                 }
                 srd.Close();
-                Debug.Log("ReadSnow Completed!");
+                GeoTools.Log("ReadSnow Completed!");
             }
             catch (Exception ex)
             {
-                Debug.Log("Error! ReadSnow Failed!");
-                Debug.Log(ex.ToString());
+                GeoTools.Log("Error! ReadSnow Failed!");
+                GeoTools.Log(ex.ToString());
                 return;
             }
         }
@@ -108,7 +108,7 @@ namespace BesiegeCustomScene
 
                 if (!File.Exists(scenePack.SettingFilePath))
                 {
-                    Debug.Log("Error! Scene File not exists!");
+                    GeoTools.Log("Error! Scene File not exists!");
                     return;
                 }
 
@@ -175,12 +175,12 @@ namespace BesiegeCustomScene
                     }
                 }
                 srd.Close();
-                Debug.Log("ReadSnow Completed!");
+                GeoTools.Log("ReadSnow Completed!");
             }
             catch (Exception ex)
             {
-                Debug.Log("Error! ReadSnow Failed!");
-                Debug.Log(ex.ToString());
+                GeoTools.Log("Error! ReadSnow Failed!");
+                GeoTools.Log(ex.ToString());
                 return;
             }
         }
@@ -204,8 +204,8 @@ namespace BesiegeCustomScene
             }
             catch (Exception ex)
             {
-                Debug.Log("Error! LoadSnow Failed");
-                Debug.Log(ex.ToString());
+                GeoTools.Log("Error! LoadSnow Failed");
+                GeoTools.Log(ex.ToString());
                 ClearSnow();
             }
         }
@@ -213,7 +213,7 @@ namespace BesiegeCustomScene
         {
             if (MSnow == null) return;
             if (MSnow.Length <= 0) return;
-           if(SnowSize>0) Debug.Log("ClearSnow");
+           if(SnowSize>0) GeoTools.Log("ClearSnow");
             for (int i = 0; i < MSnow.Length; i++)
             {
                 Destroy(MSnow[i]);

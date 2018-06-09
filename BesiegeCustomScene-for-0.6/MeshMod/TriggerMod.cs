@@ -30,10 +30,10 @@ namespace BesiegeCustomScene
         {
             try
             {
-                //Debug.Log(Application.dataPath);
+                //GeoTools.Log(Application.dataPath);
                 if (!File.Exists(ScenePath + SceneName + ".txt"))
                 {
-                    Debug.Log("Error! Scene File not exists!");
+                    GeoTools.Log("Error! Scene File not exists!");
                     return;
                 }
                 StreamReader srd = File.OpenText(ScenePath + SceneName + ".txt");
@@ -149,12 +149,12 @@ namespace BesiegeCustomScene
                     }
                 }
                 srd.Close();
-                Debug.Log("ReadMeshTrigger Completed!");
+                GeoTools.Log("ReadMeshTrigger Completed!");
             }
             catch (Exception ex)
             {
-                Debug.Log("Error! ReadMeshTrigger Failed!");
-                Debug.Log(ex.ToString());
+                GeoTools.Log("Error! ReadMeshTrigger Failed!");
+                GeoTools.Log(ex.ToString());
                 return;
             }
         }
@@ -167,7 +167,7 @@ namespace BesiegeCustomScene
 
                 if (!File.Exists(scenePack.SettingFilePath))
                 {
-                    Debug.Log("Error! Scene File not exists!");
+                    GeoTools.Log("Error! Scene File not exists!");
                     return;
                 }
 
@@ -287,12 +287,12 @@ namespace BesiegeCustomScene
                     }
                 }
                 srd.Close();
-                Debug.Log("ReadMeshTrigger Completed!");
+                GeoTools.Log("ReadMeshTrigger Completed!");
             }
             catch (Exception ex)
             {
-                Debug.Log("Error! ReadMeshTrigger Failed!");
-                Debug.Log(ex.ToString());
+                GeoTools.Log("Error! ReadMeshTrigger Failed!");
+                GeoTools.Log(ex.ToString());
                 return;
             }
         }
@@ -325,8 +325,8 @@ namespace BesiegeCustomScene
             }
             catch (System.Exception ex)
             {
-                Debug.Log("Error! LoadTrigger Failed!");
-                Debug.Log(ex.ToString());
+                GeoTools.Log("Error! LoadTrigger Failed!");
+                GeoTools.Log(ex.ToString());
             }
         }
 
@@ -335,7 +335,7 @@ namespace BesiegeCustomScene
 
             if (meshtriggers == null) return;
             if (meshtriggers.Length <= 0) return;
-            if (TriggerSize > 0) Debug.Log("ClearTriggers");
+            if (TriggerSize > 0) GeoTools.Log("ClearTriggers");
             for (int i = 0; i < meshtriggers.Length; i++)
             {
                 Destroy(meshtriggers[i]);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
@@ -84,7 +85,7 @@ namespace BesiegeCustomScene
         void ReadUI()
         {
             DefaultUI();
-            //Debug.Log(Screen.currentResolution.ToString());
+            //GeoTools.Log(Screen.currentResolution.ToString());
             try
             {
                 StreamReader srd;
@@ -96,7 +97,7 @@ namespace BesiegeCustomScene
                 {
                     srd = File.OpenText(GeoTools.UIPath + "EN.txt");
                 }
-                //Debug.Log(Ci + "  " + Screen.width.ToString() + "*" + Screen.height.ToString());
+                //GeoTools.Log(Ci + "  " + Screen.width.ToString() + "*" + Screen.height.ToString());
                 while (srd.Peek() != -1)
                 {
                     string str = srd.ReadLine();
@@ -194,12 +195,12 @@ namespace BesiegeCustomScene
                 else if (Unit == ModUnit.ms) { _velocityUI += "(m/s)"; }
                 else if (Unit == ModUnit.mach) { _velocityUI += "(mach)"; }
                 filtUI();
-                Debug.Log("TimerUISetting Completed!");
+                GeoTools.Log("TimerUISetting Completed!");
             }
             catch (Exception ex)
             {
-                Debug.Log("Error! TimerUISetting Failed!");
-                Debug.Log(ex.ToString());
+                GeoTools.Log("Error! TimerUISetting Failed!");
+                GeoTools.Log(ex.ToString());
                 DefaultUI();
                 return;
             }
@@ -229,50 +230,50 @@ namespace BesiegeCustomScene
         {
             ReadUI();
             if (!EnableCommond) return;
-            //Commands.RegisterCommand("VP_Help", (args, notUses) =>
-            // {
-            //     Debug.Log("VP_GetCenter");
-            //     Debug.Log("VP_GetAssets");
-            //     Debug.Log("VP_GetLevelInfo");
-            //     Debug.Log("VP_GetShader");
-            //     Debug.Log("VP_GetTexture");
-            //     Debug.Log("VP_CloudSize");
-            //     return "\n";
-            // }, "Get Help");
-            //Commands.RegisterCommand("VP_GetLevelInfo", (args, notUses) =>
-            //{
-            //    GeoTools.GetLevelInfo();
-            //    return "\n";
-            //}, "Get Level Info");
-            //Commands.RegisterCommand("VP_GetShader", (args, notUses) =>
-            //{
-            //    GeoTools.PrintShader();
-            //    return "\n";
-            //}, "Get Shader");
-            //Commands.RegisterCommand("VP_GetCenter", delegate (string[] args, IDictionary<string, string> notUses)
-            //{
-            //    GeoTools.GetCenter();
-            //    return "\n";
-            //}, "Get Machine Center");
-            //Commands.RegisterCommand("VP_GetAssets", delegate (string[] args, IDictionary<string, string> notUses)
-            //{
-            //    if (args.Length > 0)
-            //    {
-            //        Debug.Log("AssetBundleName:" + args[0]);
-            //        GeoTools.PrintAssetBundle(args[0]);
-            //    }
-            //    return "\n";
-            //}, "Get Assets Names");
-            //Commands.RegisterCommand("VP_GetTexture", delegate (string[] args, IDictionary<string, string> notUses)
-            //{
-            //    if (args.Length > 0)
-            //    {
-            //        Debug.Log("VPGetTexture:" + args[0]);
-            //        Texture te = GeoTools.LoadTexture(args[0]);
-            //        Debug.Log(te.width.ToString() + "," + te.height.ToString());
-            //    }
-            //    return "\n";
-            //}, "Get Assets Names");
+            new CommandRegistration("VP_Help", (string[] args) =>
+             {
+                 GeoTools.Log("VP_GetCenter");
+                 GeoTools.Log("VP_GetAssets");
+                 GeoTools.Log("VP_GetLevelInfo");
+                 GeoTools.Log("VP_GetShader");
+                 GeoTools.Log("VP_GetTexture");
+                 GeoTools.Log("VP_CloudSize");
+                 GeoTools.Log("\n");
+             }, "Get Help");
+            new CommandRegistration("VP_GetLevelInfo", (string[] args) =>
+            {
+                GeoTools.GetLevelInfo();
+                GeoTools.Log("\n");
+            }, "Get Level Info");
+            new CommandRegistration("VP_GetShader", (string[] args) =>
+            {
+                GeoTools.PrintShader();
+                GeoTools.Log("\n");
+            }, "Get Shader");
+            new CommandRegistration("VP_GetCenter", (string[] args)=>
+            {
+                GeoTools.GetCenter();
+                GeoTools.Log("\n");
+            }, "Get Machine Center");
+            new CommandRegistration("VP_GetAssets", (string[] args)=>
+            {
+                if (args.Length > 0)
+                {
+                    GeoTools.Log("AssetBundleName:" + args[0]);
+                    GeoTools.PrintAssetBundle(args[0]);
+                }
+                GeoTools.Log("\n");
+            }, "Get Assets Names");
+            new CommandRegistration("VP_GetTexture", (string[] args)=>
+            {
+                if (args.Length > 0)
+                {
+                    GeoTools.Log("VPGetTexture:" + args[0]);
+                    Texture te = GeoTools.LoadTexture(args[0]);
+                    GeoTools.Log(te.width.ToString() + "," + te.height.ToString());
+                }
+                GeoTools.Log("\n");
+            }, "Get Assets Names");
         }
         void DoWindow(int windowID)
         {
@@ -443,7 +444,7 @@ namespace BesiegeCustomScene
                 TriggerIndex2 = -1;
                 MTimer = "00:00:00";
 #if DEBUG
-                Debug.Log("isSimulating:" + validBlock.ToString());
+                GeoTools.Log("isSimulating:" + validBlock.ToString());
 #endif
             }
             else if (!StatMaster.levelSimulating && isSimulating == true)

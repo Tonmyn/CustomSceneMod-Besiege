@@ -8,29 +8,30 @@ namespace BesiegeCustomScene
     public class CloudMod : MonoBehaviour
     {
         void Start()
-        {
-            //Commands.RegisterCommand("VP_CloudSize", (args, notUses) =>
-            //{
-            //    if (args.Length < 1)
-            //    {
-            //        return "ERROR!";
-            //    }
-            //    try
-            //    {
-            //        int cloudSize = int.Parse(args[0]);
-            //        if (cloudSize < 0 || cloudSize > 3000) { return "Your cloud amount is not available. "; }
-            //        else
-            //        {
-            //            CloudSize = cloudSize;
-            //            LoadCloud();
-            //        }
-            //    }
-            //    catch
-            //    {
-            //        return "Could not parse " + args[0] + "to cloud amount";
-            //    }
-            //    return "There will be " + CloudSize.ToString() + " clouds" + "\n";
-            //}, "Set CloudSize.No bigger than 80 and no less than 10.");
+        {          
+            new CommandRegistration("VP_CloudSize", (string[] args) =>
+            {
+                if (args.Length < 1)
+                {
+                    GeoTools.Log("ERROR!");
+                }
+                try
+                {
+                    int cloudSize = int.Parse(args[0]);
+                    if (cloudSize < 0 || cloudSize > 3000) { GeoTools.Log("Your cloud amount is not available. "); }
+                    else
+                    {
+                        CloudSize = cloudSize;
+                        LoadCloud();
+                    }
+                }
+                catch
+                {
+                    GeoTools.Log("Could not parse " + args[0] + "to cloud amount");
+                }
+                GeoTools.Log("There will be " + CloudSize.ToString() + " clouds" + "\n");
+            }, "Set CloudSize.No bigger than 80 and no less than 10.");
+
         }
         void OnDisable()
         {
@@ -78,10 +79,10 @@ namespace BesiegeCustomScene
             CloudsColor = new Color(0.9f, 0.9f, 0.9f, 0.6f);
             try
             {
-                //Debug.Log(Application.dataPath);
+                //GeoTools.Log(Application.dataPath);
                 if (!File.Exists(ScenePath + SceneName + ".txt"))
                 {
-                    Debug.Log("Error! Scene File not exists!");
+                    GeoTools.Log("Error! Scene File not exists!");
                     return;
                 }
                 StreamReader srd = File.OpenText(ScenePath + SceneName + ".txt");
@@ -131,12 +132,12 @@ namespace BesiegeCustomScene
                     }
                 }
                 srd.Close();
-                Debug.Log("ReadCloud Completed!");
+                GeoTools.Log("ReadCloud Completed!");
             }
             catch (Exception ex)
             {
-                Debug.Log("Error! ReadCloud Failed!");
-                Debug.Log(ex.ToString());
+                GeoTools.Log("Error! ReadCloud Failed!");
+                GeoTools.Log(ex.ToString());
                 return;
             }
         }
@@ -150,7 +151,7 @@ namespace BesiegeCustomScene
 
                 if (!File.Exists(scenePack.SettingFilePath))
                 {
-                    Debug.Log("Error! Scene File not exists!");
+                    GeoTools.Log("Error! Scene File not exists!");
                     return;
                 }
 
@@ -206,13 +207,13 @@ namespace BesiegeCustomScene
                 srd.Close();
 
 #if DEBUG
-                Debug.Log("ReadCloud Completed!");
+                GeoTools.Log("ReadCloud Completed!");
 #endif
             }
             catch (Exception ex)
             {
-                Debug.Log("Error! ReadCloud Failed!");
-                Debug.Log(ex.ToString());
+                GeoTools.Log("Error! ReadCloud Failed!");
+                GeoTools.Log(ex.ToString());
                 return;
             }
         }
@@ -245,13 +246,13 @@ namespace BesiegeCustomScene
                         clouds[i].AddComponent<CloudScript>();
                         //axis[i] = new Vector3(UnityEngine.Random.Range(-0.1f, 0.1f), 1f, UnityEngine.Random.Range(-0.1f, 0.1f));
                     }
-                     Debug.Log("LoadCloud Successfully");
+                     GeoTools.Log("LoadCloud Successfully");
                 }
             }
             catch (Exception ex)
             {
-                Debug.Log("Error! LoadCloud Failed");
-                Debug.Log(ex.ToString());
+                GeoTools.Log("Error! LoadCloud Failed");
+                GeoTools.Log(ex.ToString());
                 ClearCloud();
             }
         }
@@ -261,7 +262,7 @@ namespace BesiegeCustomScene
             // step = 0;
             if (clouds == null) return;
             if (clouds.Length <= 0) return;
-            if (CloudSize > 0) Debug.Log("ClearCloud");
+            if (CloudSize > 0) GeoTools.Log("ClearCloud");
             for (int i = 0; i < clouds.Length; i++)
             {
                 Destroy(clouds[i]);

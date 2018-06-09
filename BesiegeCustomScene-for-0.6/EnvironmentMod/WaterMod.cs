@@ -29,10 +29,10 @@ namespace BesiegeCustomScene
             WaterSize = 0;
             try
             {
-                //  Debug.Log(Application.dataPath);
+                //  GeoTools.Log(Application.dataPath);
                 if (!File.Exists(GeoTools.ScenePath + SceneName + ".txt"))
                 {
-                    Debug.Log("Error! Scene File not exists!");
+                    GeoTools.Log("Error! Scene File not exists!");
                     return;
                 }
                 StreamReader srd = File.OpenText(GeoTools.ScenePath + SceneName + ".txt");
@@ -104,12 +104,12 @@ namespace BesiegeCustomScene
                     }
                 }
                 srd.Close();
-                Debug.Log("ReadWater Completed!");
+                GeoTools.Log("ReadWater Completed!");
             }
             catch (Exception ex)
             {
-                Debug.Log("Error! ReadWater Failed!");
-                Debug.Log(ex.ToString());
+                GeoTools.Log("Error! ReadWater Failed!");
+                GeoTools.Log(ex.ToString());
                 return;
             }
         }
@@ -122,7 +122,7 @@ namespace BesiegeCustomScene
 
                 if (!File.Exists(scenePack.SettingFilePath))
                 {
-                    Debug.Log("Error! Scene File not exists!");
+                    GeoTools.Log("Error! Scene File not exists!");
                     return;
                 }
 
@@ -198,12 +198,12 @@ namespace BesiegeCustomScene
                     }
                 }
                 srd.Close();
-                Debug.Log("ReadWater Completed!");
+                GeoTools.Log("ReadWater Completed!");
             }
             catch (Exception ex)
             {
-                Debug.Log("Error! ReadWater Failed!");
-                Debug.Log(ex.ToString());
+                GeoTools.Log("Error! ReadWater Failed!");
+                GeoTools.Log(ex.ToString());
                 return;
             }
         }
@@ -226,8 +226,8 @@ namespace BesiegeCustomScene
             }
             catch (Exception ex)
             {
-                Debug.Log("LoadWater Failed");
-                Debug.Log(ex.ToString());
+                GeoTools.Log("LoadWater Failed");
+                GeoTools.Log(ex.ToString());
             }
         }
         public void ClearWater()
@@ -235,7 +235,7 @@ namespace BesiegeCustomScene
             ClearFloater();
             if (Mwater == null) return;
             if (Mwater.Length <= 0) return;
-            if (WaterSize > 0) Debug.Log("ClearWater");
+            if (WaterSize > 0) GeoTools.Log("ClearWater");
             gameObject.GetComponent<Prop>().WaterTemp.SetActive(false);
             try
             {
@@ -265,7 +265,7 @@ namespace BesiegeCustomScene
             }
             catch
             {
-                Debug.Log("Error! LoadFloater Failed");
+                GeoTools.Log("Error! LoadFloater Failed");
             }
         }
         public void ClearFloater()
@@ -282,11 +282,11 @@ namespace BesiegeCustomScene
                         sign = true;
                     }
                 }
-                if (sign) Debug.Log("ClearFloater");
+                if (sign) GeoTools.Log("ClearFloater");
             }
             catch
             {
-                Debug.Log("Error! ClearFloater Failed");
+                GeoTools.Log("Error! ClearFloater Failed");
             }
         }
     }
@@ -433,7 +433,7 @@ namespace BesiegeCustomScene
             }
             catch (Exception exception)
             {
-                Debug.Log(exception.ToString());
+                GeoTools.Log(exception.ToString());
                 UnityEngine.Object.Destroy(this);
             }
         }

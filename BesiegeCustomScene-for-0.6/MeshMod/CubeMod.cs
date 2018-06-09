@@ -34,7 +34,7 @@ namespace BesiegeCustomScene
 
                 if (!File.Exists(ScenePath + SceneName + ".txt"))
                 {
-                    Debug.Log("Error! Scene File not exists!");
+                    GeoTools.Log("Error! Scene File not exists!");
                     return;
                 }
 
@@ -181,12 +181,12 @@ namespace BesiegeCustomScene
 
                 srd.Close();
 
-                Debug.Log("Read Cube Completed! CubeAmount:" + CubeAmount);
+                GeoTools.Log("Read Cube Completed! CubeAmount:" + CubeAmount);
             }
             catch (Exception ex)
             {
-                Debug.Log("Error! Read Cube Failed!");
-                Debug.Log(ex.ToString());
+                GeoTools.Log("Error! Read Cube Failed!");
+                GeoTools.Log(ex.ToString());
                 return;
             }
         }
@@ -199,7 +199,7 @@ namespace BesiegeCustomScene
 
                 if (!File.Exists(scenePack.SettingFilePath))
                 {
-                    Debug.Log("Error! Scene File not exists!");
+                    GeoTools.Log("Error! Scene File not exists!");
                     return;
                 }
 
@@ -339,13 +339,13 @@ namespace BesiegeCustomScene
 
                 srd.Close();
 #if DEBUG
-                Debug.Log("Read Cube Completed! CubeAmount:" + CubeAmount);
+                GeoTools.Log("Read Cube Completed! CubeAmount:" + CubeAmount);
 #endif
             }
             catch (Exception ex)
             {
-                Debug.Log("Error! Read Cube Failed!");
-                Debug.Log(ex.ToString());
+                GeoTools.Log("Error! Read Cube Failed!");
+                GeoTools.Log(ex.ToString());
                 return;
             }
         }
@@ -380,12 +380,12 @@ namespace BesiegeCustomScene
             }
             catch (System.Exception ex)
             {
-                Debug.Log("Error! Load Cube Failed!");
-                Debug.Log(ex.ToString());
+                GeoTools.Log("Error! Load Cube Failed!");
+                GeoTools.Log(ex.ToString());
             }
 
 #if DEBUG
-            Debug.Log("加载方块");
+            GeoTools.Log("加载方块");
 #endif
 
         }
@@ -397,7 +397,7 @@ namespace BesiegeCustomScene
 
             if (meshCubes.Length <= 0) return;
 #if DEBUG
-            Debug.Log("ClearCubes Amount: " + meshCubes.Length);
+            GeoTools.Log("ClearCubes Amount: " + meshCubes.Length);
 #endif
             for (int i = 0; i < meshCubes.Length; i++)
             {
