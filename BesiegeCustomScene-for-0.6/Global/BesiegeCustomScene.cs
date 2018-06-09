@@ -31,6 +31,7 @@ namespace BesiegeCustomScene
             Scene.AddComponent<SnowMod>();
             Scene.AddComponent<CloudMod>();
             Scene.AddComponent<WaterMod>();
+            Scene.AddComponent<SkyMod>();
             Scene.AddComponent<Prop>();
             UnityEngine.Object.DontDestroyOnLoad(Scene);
 

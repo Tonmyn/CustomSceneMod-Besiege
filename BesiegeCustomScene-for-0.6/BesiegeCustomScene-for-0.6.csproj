@@ -30,6 +30,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="EnvironmentMod\SkyMod.cs" />
     <Compile Include="Global\BesiegeCustomScene.cs" />
     <Compile Include="EnvironmentMod\CloudMod.cs" />
     <Compile Include="MeshMod\CubeMod.cs" />

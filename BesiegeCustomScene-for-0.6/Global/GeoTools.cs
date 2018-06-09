@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -1446,7 +1447,6 @@ namespace BesiegeCustomScene
         {
             BesiegeConsoleController.ShowMessage(message.ToString());
         }
-
 
     }
 }
