@@ -19,7 +19,7 @@ namespace BesiegeCustomScene
         public static string UIPath = Application.dataPath + "/Mods/BesiegeCustomScene/UI/";
         public static string ShaderPath = Application.dataPath + "/Mods/BesiegeCustomScene/Shader/";
         /// <summary>地图包路径</summary>
-        public static string ScenesPackPath = Application.dataPath + "/Mods/BesiegeCustomScene/Scenes";
+        public static string ScenePackPath = Application.dataPath + "/Mods/BesiegeCustomScene/Scenes";
 
         public static bool StringToKeyCode(string str, out KeyCode output)
         {

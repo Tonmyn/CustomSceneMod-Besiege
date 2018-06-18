@@ -7,38 +7,53 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
 namespace BesiegeCustomScene
 {
     public class SceneUI : MonoBehaviour
     {
-        private bool isSimulating = false;
+        //private bool isSimulating = false;
         //UI
-        private int _FontSize = 15;
-        private Rect windowRect = new Rect(Screen.width * 0.05f, Screen.height * 0.908f, 585f, 50f);
+        private int _FontSize = 15 ;
+        private Rect windowRect;
         private int windowID = GeoTools.GetWindowID();//spaar.ModLoader.Util.GetWindowID();
-        private bool ShowGUI = true;
-        private List<string> _ButtonName = new List<string>();
-        private List<string> _SceneName = new List<string>();
+        private bool ShowGUI;
+        private List<string> _ButtonName;
+        private List<string> _SceneName;
+        [Obsolete]
         private string ScenePath = GeoTools.ScenePath;
-        KeyCode _DisplayUI = KeyCode.F9;
-        KeyCode _ReloadUI = KeyCode.F5;
-        /// <summary>地图包列表</summary>
-        List<ScenePack> SPs = new List<ScenePack>();
+        private string ScenePackPath = GeoTools.ScenePackPath;
 
+        KeyCode _DisplayUI;
+        KeyCode _ReloadUI;
+
+        /// <summary>地图包列表</summary>
+        List<ScenePack> ScenePacks = new List<ScenePack>();
+
+        /// <summary>
+        /// 默认界面
+        /// </summary>
         void DefaultUI()
         {
-            _ButtonName.Clear(); _SceneName.Clear();
+            DefaultItem();
+
             _FontSize = (int)(Screen.width * 0.005 + 8);
             ShowGUI = true;
+
             windowRect = new Rect(Screen.width * 0.05f, Screen.height * 0.908f, 585f, 50f);
             _DisplayUI = KeyCode.F9;
             _ReloadUI = KeyCode.F5;
         }
 
+        /// <summary>
+        /// 默认按钮项目
+        /// </summary>
         void DefaultItem()
         {
-            _ButtonName.Clear(); _SceneName.Clear();
+            _ButtonName = new List<string>();
+            _SceneName = new List<string>();
         }
+
         [Obsolete]
         void ReadUI()
         {
@@ -120,9 +135,15 @@ namespace BesiegeCustomScene
             }
         }
 
-        void ReadUI(List<ScenePack> sp)
+        /// <summary>
+        /// 读取UI参数 带地图包数据
+        /// </summary>
+        /// <param name="scenePacks">地图包</param>
+        void ReadUI(List<ScenePack> scenePacks)
         {
+
             DefaultUI();
+
             try
             {
                 StreamReader srd;
@@ -173,7 +194,7 @@ namespace BesiegeCustomScene
                 }
                 srd.Close();
 
-                foreach (ScenePack _sp in SPs)
+                foreach (ScenePack _sp in scenePacks)
                 {
                     if (_sp.Type == ScenePack.SceneType.Enabled)
                     {
@@ -332,8 +353,8 @@ namespace BesiegeCustomScene
                 return;
             }
         }   
-        //读取地图 参数:地图包
-        public void ReadScene(ScenePack sp)
+        //读取地图地图设定 参数:地图包
+        public void ReadSceneSetting(ScenePack scenePack)
         {
             Resources.UnloadUnusedAssets();
 
@@ -342,13 +363,13 @@ namespace BesiegeCustomScene
 #if DEBUG
                 GeoTools.Log(Application.dataPath);
 #endif
-                if (!File.Exists(sp.SettingFilePath))
+                if (!File.Exists(scenePack.SettingFilePath))
                 {
                     GeoTools.Log("Error! Scene File not exists!");
                     return;
                 }
 
-                FileStream fs = new FileStream(sp.SettingFilePath, FileMode.Open);
+                FileStream fs = new FileStream(scenePack.SettingFilePath, FileMode.Open);
                 //打开数据文件
                 StreamReader srd = new StreamReader(fs, Encoding.Default);
 
@@ -444,20 +465,19 @@ namespace BesiegeCustomScene
         }
 
         //读取Scenes文件夹下所有地图包
-        public void ReadScenePacks()
+        public List<ScenePack> ReadScenePacks(string scenesPackPath)
         {
-            DirectoryInfo TheFolder = new DirectoryInfo(GeoTools.ScenesPackPath);
+            List<ScenePack> SPs = new List<ScenePack>();
 
-            SPs.Clear();
+            DirectoryInfo TheFolder = new DirectoryInfo(scenesPackPath);
 
             //遍历文件夹
             foreach (DirectoryInfo NextFolder in TheFolder.GetDirectories())
             {
                 SPs.Add(new ScenePack(NextFolder));
-                //GeoTools.Log(NextFolder.Name);
             }
-                
-            
+
+            return SPs;
         }
         
         //清除地图
@@ -531,7 +551,7 @@ namespace BesiegeCustomScene
 
         }
         //加载地图
-        IEnumerator ILoadScene(ScenePack sp)
+        IEnumerator ILoadScene(ScenePack scenePack)
         {
             if (SceneManager.GetActiveScene().name != "2")
             {
@@ -540,76 +560,76 @@ namespace BesiegeCustomScene
             yield return null;
 
             HideFloorBig();      
-            ReadScene(sp);
-            try { GetComponent<MeshMod>().ReadScene(sp); } catch { }
-            try { GetComponent<TriggerMod>().ReadScene(sp); } catch { }
-            try { GetComponent<CubeMod>().ReadScene(sp); } catch { }
-            try { GetComponent<WaterMod>().ReadScene(sp); } catch { }
-            try { GetComponent<CloudMod>().ReadScene(sp); } catch { }
-            try { GetComponent<SnowMod>().ReadScene(sp); } catch { }
+            ReadSceneSetting(scenePack);
+            try { GetComponent<MeshMod>().ReadScene(scenePack); } catch { }
+            try { GetComponent<TriggerMod>().ReadScene(scenePack); } catch { }
+            try { GetComponent<CubeMod>().ReadScene(scenePack); } catch { }
+            try { GetComponent<WaterMod>().ReadScene(scenePack); } catch { }
+            try { GetComponent<CloudMod>().ReadScene(scenePack); } catch { }
+            try { GetComponent<SnowMod>().ReadScene(scenePack); } catch { }
 
         }
 
         //加载地图多人模式下
-        IEnumerator ILoadScene_Multiplayer(ScenePack sp)
+        IEnumerator ILoadScene_Multiplayer(ScenePack scenePack)
         {
-            //if (SceneManager.GetActiveScene().name != "2")
-            //{
-            //    SceneManager.LoadScene("2", LoadSceneMode.Single);//打开level  
-            //}
+
             yield return null;
 
             HideFloorBig();
-            ReadScene(sp);
-            try { GetComponent<MeshMod>().ReadScene(sp); } catch { }
-            try { GetComponent<TriggerMod>().ReadScene(sp); } catch { }
-            try { GetComponent<CubeMod>().ReadScene(sp); } catch { }
-            try { GetComponent<WaterMod>().ReadScene(sp); } catch { }
-            try { GetComponent<CloudMod>().ReadScene(sp); } catch { }
-            try { GetComponent<SnowMod>().ReadScene(sp); } catch { }
-
-           
+            ReadSceneSetting(scenePack);
+            try { GetComponent<MeshMod>().ReadScene(scenePack); } catch { }
+            try { GetComponent<TriggerMod>().ReadScene(scenePack); } catch { }
+            try { GetComponent<CubeMod>().ReadScene(scenePack); } catch { }
+            try { GetComponent<WaterMod>().ReadScene(scenePack); } catch { }
+            try { GetComponent<CloudMod>().ReadScene(scenePack); } catch { }
+            try { GetComponent<SnowMod>().ReadScene(scenePack); } catch { }
+         
         }
 
-        void FixedUpdate()
-        {
-            if (StatMaster.levelSimulating && isSimulating == false)
-            {
-                isSimulating = true; this.ShowGUI = false;
-            }
-            else if (!StatMaster.levelSimulating && isSimulating == true)
-            {
-                isSimulating = false; this.ShowGUI = true;
-            }
-        }
+        //void FixedUpdate()
+        //{
+        //    if (StatMaster.levelSimulating && isSimulating == false)
+        //    {
+        //        isSimulating = true; this.ShowGUI = false;
+        //    }
+        //    else if (!StatMaster.levelSimulating && isSimulating == true)
+        //    {
+        //        isSimulating = false; this.ShowGUI = true;
+        //    }
+        //}
 
         void Update()
         {
             if (Input.GetKeyDown(_ReloadUI) && Input.GetKey(KeyCode.LeftControl))
             {
-                //ReadUI();
-                ReadScenePacks();
-                ReadUI(SPs);
+                ReloadScenes();
             }
             if (Input.GetKeyDown(_DisplayUI) && Input.GetKey(KeyCode.LeftControl))
             {
                 ShowGUI = !ShowGUI;
-            }         
+            }
+
+            //ReloadScenes();
+
+
         }
 
         void Start()
         {
             //ReadUI();
-            ReadScenePacks();
-            ReadUI(SPs);
 
-            SceneManager.sceneLoaded += (Scene s,LoadSceneMode lsm)=>
-            {
-                HideFloorBig_ExceptDownFloor();
-#if DEBUG
-                GeoTools.Log("加载地图后事件");
-#endif
-            };
+            ReloadScenes();
+
+            GetComponent<UI.SceneSettingUI>().scenePacks = ScenePacks;
+
+//            SceneManager.sceneLoaded += (Scene s,LoadSceneMode lsm)=>
+//            {
+//                HideFloorBig_ExceptDownFloor();
+//#if DEBUG
+//                GeoTools.Log("加载地图后事件");
+//#endif
+//            };
 
         }
 
@@ -623,6 +643,13 @@ namespace BesiegeCustomScene
             ClearScene();
         }
 
+        void ReloadScenes()
+        {
+            //读取地图包信息
+            ScenePacks = ReadScenePacks(ScenePackPath);
+            //读取地图界面
+            ReadUI(ScenePacks);
+        }
         
         public void DoWindow(int windowID)
         {
@@ -649,7 +676,7 @@ namespace BesiegeCustomScene
 #if DEBUG
                         GeoTools.Log("load scene not in multiplayers");
 #endif
-                        StartCoroutine(ILoadScene(SPs[i]));
+                        StartCoroutine(ILoadScene(ScenePacks[i]));
                         return;
 
                     }
@@ -660,7 +687,7 @@ namespace BesiegeCustomScene
 #if DEBUG
                         GeoTools.Log("load scene in multiplayers");
 #endif
-                        StartCoroutine(ILoadScene_Multiplayer(SPs[i]));
+                        StartCoroutine(ILoadScene_Multiplayer(ScenePacks[i]));
                         return;
                     }
 
@@ -685,6 +712,9 @@ namespace BesiegeCustomScene
         private Vector3 fpos = new Vector3();
         private Vector3 gpos = new Vector3();
 
+        /// <summary>
+        /// 隐藏地面
+        /// </summary>
         public void HideFloorBig()
         {
             try
@@ -704,29 +734,15 @@ namespace BesiegeCustomScene
                 GameObject.Find("FloorBig").transform.localScale = new Vector3(0, 0, 0);
             }
             catch { }
-            try
-            {
-                GameObject.Find("WORLD BOUNDARIES").transform.localScale = new Vector3(0, 0, 0);
-                GameObject.Find("WorldBounds_Back").transform.localScale = new Vector3(0, 0, 0);
-                GameObject.Find("WorldBounds_Front").transform.localScale = new Vector3(0, 0, 0);
-                GameObject.Find("WorldBounds_Left").transform.localScale = new Vector3(0, 0, 0);
-                GameObject.Find("WorldBounds_Right").transform.localScale = new Vector3(0, 0, 0);
-                GameObject.Find("WorldBoundaryBack").transform.GetChild(0).GetComponent<Renderer>().enabled = false;
-                GameObject.Find("WorldBoundaryFront").transform.GetChild(0).GetComponent<Renderer>().enabled = false;
-                GameObject.Find("WorldBoundaryLeft").transform.GetChild(0).GetComponent<Renderer>().enabled = false;
-                GameObject.Find("WorldBoundaryRight").transform.GetChild(0).GetComponent<Renderer>().enabled = false;
-            }
-            catch { }
+
+            HideFloorBig_ExceptDownFloor();
         }
 
+        /// <summary>
+        /// 隐藏空气墙
+        /// </summary>
         public void HideFloorBig_ExceptDownFloor()
         {
-            //try
-            //{
-            //    if (GameObject.Find("FloorGrid").transform.localScale != Vector3.zero) gpos = GameObject.Find("FloorGrid").transform.localScale;
-            //    GameObject.Find("FloorGrid").transform.localScale = new Vector3(0, 0, 0);
-            //}
-            //catch { }
 
             try
             {
@@ -743,6 +759,9 @@ namespace BesiegeCustomScene
             catch { }
         }
 
+        /// <summary>
+        /// 还原FloorBig
+        /// </summary>
         public void UnhideFloorBig()
         {
             try

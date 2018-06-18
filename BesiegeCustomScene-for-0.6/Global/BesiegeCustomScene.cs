@@ -5,15 +5,15 @@ namespace BesiegeCustomScene
 {
 
     [OnGameInit]
-    public class SceneMod : MonoBehaviour
+    public class CustomSceneMod : MonoBehaviour
     {
-        public GameObject Scene;
+        public GameObject SceneMod;
 
         string DisplayName = "Besiege Custom Scene";
 
         string Version = "1.10.7";
 
-        public SceneMod() { }
+        public CustomSceneMod() { }
 
         private void Start()   
         {
@@ -21,19 +21,23 @@ namespace BesiegeCustomScene
             //添加MOD更新推送功能
             //new GameObject("Mod更新组件").AddComponent<Updater>().SetUrl("XultimateX", Name);
 
-            Scene = new GameObject();
-            Scene.name = string.Format("{0} {1}", DisplayName, Version);
-            Scene.AddComponent<SceneUI>();
-            Scene.AddComponent<TimeUI>();
-            Scene.AddComponent<MeshMod>();
-            Scene.AddComponent<CubeMod>();
-            Scene.AddComponent<TriggerMod>();
-            Scene.AddComponent<SnowMod>();
-            Scene.AddComponent<CloudMod>();
-            Scene.AddComponent<WaterMod>();
-            Scene.AddComponent<SkyMod>();
-            Scene.AddComponent<Prop>();
-            UnityEngine.Object.DontDestroyOnLoad(Scene);
+            SceneMod = new GameObject();
+            SceneMod.name = string.Format("{0} {1}", DisplayName, Version);
+            SceneMod.AddComponent<SceneMod>();
+            SceneMod.AddComponent<SceneUI>();
+            SceneMod.AddComponent<TimeUI>();
+            SceneMod.AddComponent<MeshMod>();
+            SceneMod.AddComponent<CubeMod>();
+            SceneMod.AddComponent<TriggerMod>();
+            SceneMod.AddComponent<SnowMod>();
+            SceneMod.AddComponent<CloudMod>();
+            SceneMod.AddComponent<WaterMod>();
+            SceneMod.AddComponent<SkyMod>();
+            SceneMod.AddComponent<Prop>();
+
+            UnityEngine.Object.DontDestroyOnLoad(SceneMod);
+
+            
 
         }
     }
