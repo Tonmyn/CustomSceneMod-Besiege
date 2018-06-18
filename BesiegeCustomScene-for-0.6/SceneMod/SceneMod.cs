@@ -19,6 +19,12 @@ namespace BesiegeCustomScene
         /// <summary>地图包设置参数</summary>
         public SceneSetting Camera;
 
+        public bool WorldBoundariesEnable = true;
+
+        public bool FloorBigEnable = true;
+
+        public bool FogEnable = true;
+
         /// <summary>
         /// 地图包设置参数结构体
         /// </summary>
@@ -116,7 +122,16 @@ namespace BesiegeCustomScene
 
             sUI.OnFloorButtonClick += HideFloorBig;
 
-            sUI.OnWorldBoundsButtonClick += HideFloorBig_ExceptDownFloor;
+            sUI.OnWorldBoundsButtonClick += HideWorldBoundaries;
+
+            SceneManager.sceneLoaded += (Scene s, LoadSceneMode lsm) =>
+            {
+                WorldBoundariesEnable = true;
+
+                FloorBigEnable = true;
+
+                FogEnable = true;
+            };
         }
 
         void OnDisable()
@@ -138,7 +153,13 @@ namespace BesiegeCustomScene
         /// <returns></returns>
         public List<ScenePack> ReadScenePacks(string scenesPackPath)
         {
-            List<ScenePack> SPs = new List<ScenePack>();
+            List<ScenePack> SPs = new List<ScenePack>() { };
+
+            if (!Directory.Exists(scenesPackPath))
+            {
+                GeoTools.Log("Error! Scenes Path Directory not exists!");
+                return SPs;
+            }
 
             DirectoryInfo TheFolder = new DirectoryInfo(scenesPackPath);
 
@@ -388,12 +409,33 @@ namespace BesiegeCustomScene
         /// 加载地图包
         /// </summary>
         /// <param name="ScenePack">地图包</param>
-        public IEnumerator LoadScenePack(ScenePack scenePack)
+        public IEnumerator ILoadScenePack(ScenePack scenePack)
         {
             if (SceneManager.GetActiveScene().name != "2")
             {
                 SceneManager.LoadScene("2", LoadSceneMode.Single);//打开level  
             }
+            yield return null;
+
+            HideFloorBig();
+            ReadSceneSetting(scenePack);
+            try { GetComponent<MeshMod>().ReadScene(scenePack); } catch { }
+            try { GetComponent<TriggerMod>().ReadScene(scenePack); } catch { }
+            try { GetComponent<CubeMod>().ReadScene(scenePack); } catch { }
+            try { GetComponent<WaterMod>().ReadScene(scenePack); } catch { }
+            try { GetComponent<CloudMod>().ReadScene(scenePack); } catch { }
+            try { GetComponent<SnowMod>().ReadScene(scenePack); } catch { }
+
+        }
+
+
+        /// <summary>
+        /// 加载地图包 多人模式下
+        /// </summary>
+        /// <param name="ScenePack">地图包</param>
+        IEnumerator ILoadScenePack_Multiplayer(ScenePack scenePack)
+        {
+
             yield return null;
 
             HideFloorBig();
@@ -413,7 +455,30 @@ namespace BesiegeCustomScene
         /// <param name="ScenePack">地图包列表序号</param>
         public void LoadScenePack(int index)
         {
-            StartCoroutine(LoadScenePack(ScenePacks[index]));
+#if DEBUG
+            GeoTools.Log("load scene pack");
+#endif
+            if (BesiegeNetworkManager.Instance == null)
+            {
+#if DEBUG
+                GeoTools.Log("load scene pack not in multiplayers");
+#endif
+                StartCoroutine(ILoadScenePack(ScenePacks[index]));
+                return;
+
+            }
+
+
+            if (BesiegeNetworkManager.Instance.isActiveAndEnabled && BesiegeNetworkManager.Instance.isConnected)
+            {
+#if DEBUG
+                GeoTools.Log("load scene pack in multiplayers");
+#endif
+                StartCoroutine(ILoadScenePack_Multiplayer(ScenePacks[index]));
+                return;
+            }
+
+            //StartCoroutine(ILoadScenePack(ScenePacks[index]));
         }
 
         //清除地图
@@ -458,46 +523,97 @@ namespace BesiegeCustomScene
         /// </summary>
         public void HideFloorBig()
         {
+
+            if (!FloorBigEnable)
+            {
+                UnhideFloorBig();
+                return;
+            }
             try
             {
                 if (GameObject.Find("FloorGrid").transform.localScale != Vector3.zero) gpos = GameObject.Find("FloorGrid").transform.localScale;
                 GameObject.Find("FloorGrid").transform.localScale = new Vector3(0, 0, 0);
+                FloorBigEnable = false;
             }
             catch { }
             try
             {
                 GameObject.Find("Main Camera").GetComponent<Camera>().farClipPlane = 2500;
+                FloorBigEnable = false;
             }
             catch { }
             try
             {
                 if (GameObject.Find("FloorBig").transform.localScale != Vector3.zero) fpos = GameObject.Find("FloorBig").transform.localScale;
                 GameObject.Find("FloorBig").transform.localScale = new Vector3(0, 0, 0);
+                FloorBigEnable = false;
             }
             catch { }
 
-            HideFloorBig_ExceptDownFloor();
         }
 
         /// <summary>
         /// 隐藏空气墙
         /// </summary>
-        public void HideFloorBig_ExceptDownFloor()
+        public void HideWorldBoundaries()
         {
 
             try
             {
-                GameObject.Find("WORLD BOUNDARIES").transform.localScale = new Vector3(0, 0, 0);
-                GameObject.Find("WorldBounds_Back").transform.localScale = new Vector3(0, 0, 0);
-                GameObject.Find("WorldBounds_Front").transform.localScale = new Vector3(0, 0, 0);
-                GameObject.Find("WorldBounds_Left").transform.localScale = new Vector3(0, 0, 0);
-                GameObject.Find("WorldBounds_Right").transform.localScale = new Vector3(0, 0, 0);
-                GameObject.Find("WorldBoundaryBack").transform.GetChild(0).GetComponent<Renderer>().enabled = false;
-                GameObject.Find("WorldBoundaryFront").transform.GetChild(0).GetComponent<Renderer>().enabled = false;
-                GameObject.Find("WorldBoundaryLeft").transform.GetChild(0).GetComponent<Renderer>().enabled = false;
-                GameObject.Find("WorldBoundaryRight").transform.GetChild(0).GetComponent<Renderer>().enabled = false;
+                //GameObject.Find("WORLD BOUNDARIES").transform.localScale = new Vector3(0, 0, 0);
+                //GameObject.Find("WorldBounds_Back").transform.localScale = new Vector3(0, 0, 0);
+                //GameObject.Find("WorldBounds_Front").transform.localScale = new Vector3(0, 0, 0);
+                //GameObject.Find("WorldBounds_Left").transform.localScale = new Vector3(0, 0, 0);
+                //GameObject.Find("WorldBounds_Right").transform.localScale = new Vector3(0, 0, 0);
+                //GameObject.Find("WorldBoundaryBack").transform.GetChild(0).GetComponent<Renderer>().enabled = false;
+                //GameObject.Find("WorldBoundaryFront").transform.GetChild(0).GetComponent<Renderer>().enabled = false;
+                //GameObject.Find("WorldBoundaryLeft").transform.GetChild(0).GetComponent<Renderer>().enabled = false;
+                //GameObject.Find("WorldBoundaryRight").transform.GetChild(0).GetComponent<Renderer>().enabled = false;
+
+
+                //单人模式下
+                GameObject WorldBoundaries_Large = GameObject.Find("WORLD BOUNDARIES_LARGE");
+
+                Set_WorldBoundaries(WorldBoundaries_Large);
+
             }
-            catch { }
+            catch (Exception e)
+            {
+                GeoTools.Log(e.Message);
+                WorldBoundariesEnable = !WorldBoundariesEnable;
+            }
+
+            try
+            {
+                //多人模式下
+                GameObject WorldBoundaries = GameObject.Find("WORLD BOUNDARIES");
+
+                Set_WorldBoundaries(WorldBoundaries);
+
+            }
+            catch(Exception e)
+            {
+                GeoTools.Log(e.Message);
+                WorldBoundariesEnable = !WorldBoundariesEnable;
+            }
+
+            void Set_WorldBoundaries(GameObject WorldBoundaries)
+            {
+                WorldBoundariesEnable = !WorldBoundariesEnable;
+
+                foreach (BoxCollider BC in WorldBoundaries.GetComponentsInChildren<BoxCollider>())
+                {
+                    BC.isTrigger = !WorldBoundariesEnable;
+                }
+
+                foreach (MeshRenderer MR in WorldBoundaries.GetComponentsInChildren<MeshRenderer>())
+                {
+                    MR.enabled = WorldBoundariesEnable;
+                }
+                
+            }
+         
+
         }
 
         /// <summary>
@@ -508,23 +624,49 @@ namespace BesiegeCustomScene
             try
             {
                 if (fpos != Vector3.zero) GameObject.Find("FloorBig").transform.localScale = fpos;
+                FloorBigEnable = true;
             }
             catch { }
             try
             {
                 if (fpos != Vector3.zero) GameObject.Find("FloorGrid").transform.localScale = gpos;
+                FloorBigEnable = true;
             }
             catch { }
             try
             {
                 GameObject.Find("Main Camera").GetComponent<Camera>().farClipPlane = 1500;
+                FloorBigEnable = true;
             }
             catch { }
         }
 
+        /// <summary>
+        /// 隐藏雾
+        /// </summary>
         void HideFog()
         {
+            FogEnable = !FogEnable;
 
+            if (FogEnable)
+            {
+                GameObject.Find("Main Camera").GetComponent<Camera>().farClipPlane -= 100;
+            }
+            else
+            {
+                GameObject.Find("Main Camera").GetComponent<Camera>().farClipPlane += 100;
+            }
+            
+            GameObject.Find("Main Camera").GetComponent<ColorfulFog>().enabled = FogEnable;
+
+            try
+            {
+                GameObject.Find("Fog Volume").GetComponent<MeshRenderer>().enabled = FogEnable;
+            }
+            catch (Exception e)
+            {
+                GeoTools.Log(e.Message);
+            }
 
         }
         #endregion

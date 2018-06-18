@@ -68,8 +68,8 @@ namespace BesiegeCustomScene.UI
 
         private void OnGUI()
         {
-
-            if (!StatMaster.levelSimulating && ShowGUI)
+            
+            if (!StatMaster.levelSimulating && ShowGUI && GeoTools.isBuilding() && !StatMaster.inMenu)
             {
                 windowRect = GUI.Window(windowID, windowRect, new GUI.WindowFunction(SceneWindow), "地图设置");
             }
@@ -177,7 +177,7 @@ namespace BesiegeCustomScene.UI
         /// <summary>隐藏空气墙</summary>
         void HideWorldBounds()
         {
-            GetComponent<SceneMod>().HideFloorBig_ExceptDownFloor();
+            GetComponent<SceneMod>().HideWorldBoundaries();
         }
     
     }

@@ -1448,5 +1448,23 @@ namespace BesiegeCustomScene
             BesiegeConsoleController.ShowMessage(message.ToString());
         }
 
+        static public bool isBuilding()
+        {
+            List<string> scene = new List<string> { "INITIALISER","TITLE SCREEN", "LevelSelect", "LevelSelect1", "LevelSelect2", "LevelSelect3" };
+
+            if (SceneManager.GetActiveScene().isLoaded)
+            {
+
+                if (!scene.Exists(match => match == SceneManager.GetActiveScene().name))
+                {
+                    return true;
+                }
+                return false;
+            }
+
+            return false;
+
+        }
+
     }
 }
