@@ -11,8 +11,6 @@ namespace BesiegeCustomScene
     public static class GeoTools
     {
 
-        
-
         public static string MeshPath = Application.dataPath + "/Mods/BesiegeCustomScene/Mesh/";
         public static string TexturePath = Application.dataPath + "/Mods/BesiegeCustomScene/Texture/";
         public static string ScenePath = Application.dataPath + "/Mods/BesiegeCustomScene/Scene/";
