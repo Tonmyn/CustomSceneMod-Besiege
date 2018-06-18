@@ -1,19 +1,12 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 namespace BesiegeCustomScene.UI
 {
     class SceneSettingUI : MonoBehaviour
     {
         /// <summary>地图包列表</summary>
-        public List<ScenePack> scenePacks;
+        public List<SceneMod.ScenePack> scenePacks;
 
         public bool ShowGUI = true;
 
@@ -130,8 +123,8 @@ namespace BesiegeCustomScene.UI
 
             GUILayout.BeginHorizontal();
             if (GUI.Button(new Rect(10, 20, 80, 20), "去雾")) { OnFogButtonClick(); }
-            if (GUI.Button(new Rect(100, 20, 80, 20), "去空气墙")) { HideWorldBounds(); }
-            if (GUI.Button(new Rect(190, 20, 80, 20), "去地板")) { HideFloorGrid(); }
+            if (GUI.Button(new Rect(100, 20, 80, 20), "去空气墙")) { OnWorldBoundsButtonClick(); }
+            if (GUI.Button(new Rect(190, 20, 80, 20), "去地板")) { OnFloorButtonClick(); }
             GUILayout.EndHorizontal();           
             
             GUILayout.BeginVertical();
@@ -143,7 +136,7 @@ namespace BesiegeCustomScene.UI
             {
                 if (GUILayout.Button(scenePacks[i].Name, GUILayout.Width(230), GUILayout.Height(20)))
                 {
-                    LoadScene(i);
+                    //LoadScene(i);
                     OnSceneButtonClick(i); 
                 }
             }

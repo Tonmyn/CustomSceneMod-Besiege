@@ -32,6 +32,73 @@ namespace BesiegeCustomScene
             //public static SceneSetting None { get; } = new SceneSetting { farClipPlane = 3000, focusLerpSmooth = 100, fog = Vector3.one, SSAO = false };
         }
 
+        /// <summary>地图包类</summary>
+        public class ScenePack
+        {
+
+            /// <summary>
+            /// 地图路径
+            /// </summary>
+            public string Path;
+
+            /// <summary>
+            /// 地图名称
+            /// </summary>
+            public string Name;
+
+            /// <summary>
+            /// 网格文件路径
+            /// </summary>
+            public string MeshsPath;
+
+            /// <summary>
+            /// 贴图文件路径
+            /// </summary>
+            public string TexturesPath;
+
+            /// <summary>
+            /// 设置文件路径
+            /// </summary>
+            public string SettingFilePath;
+
+            /// <summary>
+            /// 地图包类型
+            /// </summary>
+            public enum SceneType
+            {
+                /// <summary>可用</summary>
+                Enabled = 0,
+                /// <summary>不可用</summary>
+                Disable = 1,
+                /// <summary>空</summary>
+                Empty = 3,
+            }
+
+            public SceneType Type;
+
+            public ScenePack(DirectoryInfo folderName)
+            {
+
+                Name = folderName.Name;
+                Path = folderName.FullName;
+                MeshsPath = Path + "/Meshs";
+                TexturesPath = Path + "/Textures";
+                SettingFilePath = string.Format("{0}/setting.txt", Path);
+
+                if (!File.Exists(string.Format("{0}/setting.txt", Path)))
+                {
+                    Type = SceneType.Empty;
+                }
+                else
+                {
+                    Type = SceneType.Enabled;
+                }
+
+            }
+
+        }
+
+        UI.SceneSettingUI sUI;
 
         void Start()
         {
@@ -39,11 +106,17 @@ namespace BesiegeCustomScene
 
             ScenePacks = ReadScenePacks(ScenePacksPath);
 
-            UI.SceneSettingUI sUI = gameObject.AddComponent<UI.SceneSettingUI>();
+            sUI = gameObject.AddComponent<UI.SceneSettingUI>();
 
             sUI.scenePacks = ScenePacks;
 
             sUI.OnSceneButtonClick += LoadScenePack;
+
+            sUI.OnFogButtonClick += HideFog;
+
+            sUI.OnFloorButtonClick += HideFloorBig;
+
+            sUI.OnWorldBoundsButtonClick += HideFloorBig_ExceptDownFloor;
         }
 
         void OnDisable()
@@ -376,7 +449,7 @@ namespace BesiegeCustomScene
         }
 
 
-        #region 隐藏/显示地面
+        #region 隐藏/显示地面 空气墙 雾
         private Vector3 fpos = new Vector3();
         private Vector3 gpos = new Vector3();
 
@@ -448,73 +521,15 @@ namespace BesiegeCustomScene
             }
             catch { }
         }
+
+        void HideFog()
+        {
+
+
+        }
         #endregion
     }
 
-    /// <summary>地图包类</summary>
-    public class ScenePack
-    {
-
-        /// <summary>
-        /// 地图路径
-        /// </summary>
-        public string Path;
-
-        /// <summary>
-        /// 地图名称
-        /// </summary>
-        public string Name;
-
-        /// <summary>
-        /// 网格文件路径
-        /// </summary>
-        public string MeshsPath;
-
-        /// <summary>
-        /// 贴图文件路径
-        /// </summary>
-        public string TexturesPath;
-
-        /// <summary>
-        /// 设置文件路径
-        /// </summary>
-        public string SettingFilePath;
-
-        /// <summary>
-        /// 地图包类型
-        /// </summary>
-        public enum SceneType
-        {
-            /// <summary>可用</summary>
-            Enabled = 0,
-            /// <summary>不可用</summary>
-            Disable = 1,
-            /// <summary>空</summary>
-            Empty = 3,
-        }
-
-        public SceneType Type;
-
-        public ScenePack(DirectoryInfo folderName)
-        {
-
-            Name = folderName.Name;
-            Path = folderName.FullName;
-            MeshsPath = Path + "/Meshs";
-            TexturesPath = Path + "/Textures";
-            SettingFilePath = string.Format("{0}/setting.txt", Path);
-
-            if (!File.Exists(string.Format("{0}/setting.txt", Path)))
-            {
-                Type = SceneType.Empty;
-            }
-            else
-            {
-                Type = SceneType.Enabled;
-            }
-
-        }
-
-    }
+   
 
 }

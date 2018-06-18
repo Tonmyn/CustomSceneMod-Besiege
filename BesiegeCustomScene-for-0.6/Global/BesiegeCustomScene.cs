@@ -24,7 +24,7 @@ namespace BesiegeCustomScene
             SceneMod = new GameObject();
             SceneMod.name = string.Format("{0} {1}", DisplayName, Version);
             SceneMod.AddComponent<SceneMod>();
-            SceneMod.AddComponent<SceneUI>();
+            //SceneMod.AddComponent<SceneUI>();
             SceneMod.AddComponent<TimeUI>();
             SceneMod.AddComponent<MeshMod>();
             SceneMod.AddComponent<CubeMod>();
