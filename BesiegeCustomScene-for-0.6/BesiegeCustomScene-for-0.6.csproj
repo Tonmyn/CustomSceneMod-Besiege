@@ -31,6 +31,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="CustomSceneMod.cs" />
+    <Compile Include="Global\LanguageManager.cs" />
+    <Compile Include="Global\SettingsManager.cs" />
     <Compile Include="SceneMod\SceneMod.cs" />
     <Compile Include="EnvironmentMod\SkyMod.cs" />
     <Compile Include="EnvironmentMod\CloudMod.cs" />
