@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace BesiegeCustomScene
 {
-    class SettingsManager :MonoBehaviour
+    public class SettingsManager :MonoBehaviour
     {
 
         public Settings settings;
@@ -71,7 +71,7 @@ namespace BesiegeCustomScene
                     {
                         string str = srd.ReadLine();
                         string[] chara = str.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-                        if (chara.Length > 2)
+                        if (chara.Length >= 2)
                         {
                             #region Camera
                             if (chara[0] == "_Scene")
@@ -105,11 +105,11 @@ namespace BesiegeCustomScene
                                     if (chara[2] == "0" || chara[2] == "OFF") settings.timerUI_showOnAwake = false;
                                 }
                             }
-                            else if (chara[0] == "Language")
+                            else if (chara[0] == "_Language")
                             {
-                                if (chara[0] != settings.language)
+                                if (chara[2] != settings.language)
                                 {
-                                    settings.language = chara[1];
+                                    settings.language = chara[2];                                 
                                 }
                             }
                             #endregion
@@ -117,11 +117,11 @@ namespace BesiegeCustomScene
                     }
                     srd.Close();
 
-                    GeoTools.Log("ReadSettings Completed!");
+                    GeoTools.Log("Read Settings Completed!");
                 }
                 catch (Exception ex)
                 {
-                    GeoTools.Log("ReadSettings Failed!");
+                    GeoTools.Log("Read Settings Failed!");
                     GeoTools.Log(ex.ToString());
                     return;
                 }
@@ -131,7 +131,18 @@ namespace BesiegeCustomScene
 
         void Awake()
         {
-            settings = new SettingsFile().settings;            
+            settings = new SettingsFile().settings;
+
+           
+        }
+
+        void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.G))
+            {
+                //new SettingsFile();
+                BesiegeConsoleController.ShowMessage(settings.language);
+            }
         }
 
     }
