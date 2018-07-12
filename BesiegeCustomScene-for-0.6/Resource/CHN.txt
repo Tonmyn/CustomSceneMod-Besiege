@@ -1,0 +1,41 @@
+﻿//Scene Window Title
+100 = "地形设置"
+
+//---Scene Remove Fog Button---//
+101 = "去掉迷雾"
+
+//---Scene Remove World Bounds Button---//
+103 = "去空气墙"
+
+//---Scene Remove Floor Grid Button---//
+103 = "去掉地板"
+
+//---Scene List Scroll---//
+103 = "地形列表"
+
+//---Timer Window Title---//
+200 = "速度计"
+
+//---Timer Velocity Unit Button---//
+201 = "速度单位"
+
+//---Timer Retimer Button---//
+202 = "计时器重置"
+
+//---Timer Overload---//
+203 = "过载"
+
+//---Timer Time---//
+204 = "时间"
+
+//---Timer Position---//
+205 = "位置"
+
+//---Timer Velocity---//
+206 = "速度"
+
+//---Timer Distance---//
+207 = "距离"
+
+//---Timer Timer---//
+208 = "计时器"

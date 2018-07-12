@@ -25,17 +25,17 @@ namespace BesiegeCustomScene
             SceneMod.name = string.Format("{0} {1}", DisplayName, Version);
             SceneMod.AddComponent<SettingsManager>();
             SceneMod.AddComponent<LanguageManager>();
-            //SceneMod.AddComponent<SceneMod>();
-            ////SceneMod.AddComponent<SceneUI>();
-            //SceneMod.AddComponent<TimeUI>();
-            //SceneMod.AddComponent<MeshMod>();
-            //SceneMod.AddComponent<CubeMod>();
-            //SceneMod.AddComponent<TriggerMod>();
-            //SceneMod.AddComponent<SnowMod>();
-            //SceneMod.AddComponent<CloudMod>();
-            //SceneMod.AddComponent<WaterMod>();
-            //SceneMod.AddComponent<SkyMod>();
-            //SceneMod.AddComponent<Prop>();
+            SceneMod.AddComponent<SceneMod>();
+            //SceneMod.AddComponent<SceneUI>();
+            SceneMod.AddComponent<TimeUI>();
+            SceneMod.AddComponent<MeshMod>();
+            SceneMod.AddComponent<CubeMod>();
+            SceneMod.AddComponent<TriggerMod>();
+            SceneMod.AddComponent<SnowMod>();
+            SceneMod.AddComponent<CloudMod>();
+            SceneMod.AddComponent<WaterMod>();
+            SceneMod.AddComponent<SkyMod>();
+            SceneMod.AddComponent<Prop>();
 
             UnityEngine.Object.DontDestroyOnLoad(SceneMod);
 

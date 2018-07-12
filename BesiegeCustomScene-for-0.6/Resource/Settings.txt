@@ -1,0 +1,16 @@
+/////////////////////////////////////////////////
+1920*1080_Scene,window_poistion,95,965,//positon
+1920*1080_Timer,window_poistion,15,100,
+/////////////////////////////////////////////////
+800*600_Scene,window_poistion,35,545
+800*600_Timer,window_poistion,15,40
+////////////////////////////////////////////////
+_Scene,display_UI,F9,//隐藏或显示地形UI
+_Scene,reload_UI,F5,//刷新地形UI
+_Scene,show_on_start,ON
+
+_Timer,display_UI,F8,//隐藏或显示速度计UI
+_Timer,reload_UI,F5,//刷新速度计UI
+_Timer,show_on_start,ON
+
+_Language,currentLanguage,EN

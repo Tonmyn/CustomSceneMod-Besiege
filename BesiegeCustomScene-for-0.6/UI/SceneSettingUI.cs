@@ -32,6 +32,8 @@ namespace BesiegeCustomScene.UI
         /// <summary>地图滑动区域</summary>
         Rect sceneButtonsRect;
 
+        SceneUI_Language sceneUI_Language;
+
         public struct SceneUI_Language
         {
             public string _SceneWindowUI;
@@ -43,9 +45,9 @@ namespace BesiegeCustomScene.UI
             public static SceneUI_Language DefaultLanguage { get; } = new SceneUI_Language
             {
                 _SceneWindowUI = "Scene Setting",
-                _FogUI = "Fog",
-                _WorldBoundsUI = "World Bounds",
-                _FloorGridUI = "Floor Grid",
+                _FogUI = "Remove Fog",
+                _WorldBoundsUI = "Remove World Bounds",
+                _FloorGridUI = "Remove Floor",
                 _SceneList = "Scene List:",
             };
         }
@@ -54,7 +56,19 @@ namespace BesiegeCustomScene.UI
 
         private void Start()
         {
+            LanguageManager.LanguageFile currentLanuage = GetComponent<LanguageManager>().Get_CurretLanguageFile();
+
             sceneButtonsRect = new Rect(0, 0, 200, (scenePacks.Count - 1) * (buttonHeight + 5) + 5);
+            sceneUI_Language = SceneUI_Language.DefaultLanguage;
+            if (currentLanuage != null)
+            {
+                Dictionary<int, string> translation = currentLanuage.dic_Translation;
+                sceneUI_Language._SceneWindowUI = translation[100];
+                sceneUI_Language._FogUI = translation[101];
+                sceneUI_Language._WorldBoundsUI = translation[102];
+                sceneUI_Language._FloorGridUI = translation[103];
+                sceneUI_Language._SceneList = translation[104];
+            }
         }
 
         private void Update()
@@ -71,7 +85,7 @@ namespace BesiegeCustomScene.UI
             
             if (!StatMaster.levelSimulating && ShowGUI && GeoTools.isBuilding() && !StatMaster.inMenu)
             {
-                windowRect = GUI.Window(windowID, windowRect, new GUI.WindowFunction(SceneWindow), "地图设置");
+                windowRect = GUI.Window(windowID, windowRect, new GUI.WindowFunction(SceneWindow), sceneUI_Language._SceneWindowUI);
             }
             
 
@@ -122,13 +136,13 @@ namespace BesiegeCustomScene.UI
         {
 
             GUILayout.BeginHorizontal();
-            if (GUI.Button(new Rect(10, 20, 80, 20), "去雾")) { OnFogButtonClick(); }
-            if (GUI.Button(new Rect(100, 20, 80, 20), "去空气墙")) { OnWorldBoundsButtonClick(); }
-            if (GUI.Button(new Rect(190, 20, 80, 20), "去地板")) { OnFloorButtonClick(); }
+            if (GUI.Button(new Rect(10, 20, 80, 20), sceneUI_Language._FogUI)) { OnFogButtonClick(); }
+            if (GUI.Button(new Rect(100, 20, 80, 20), sceneUI_Language._WorldBoundsUI)) { OnWorldBoundsButtonClick(); }
+            if (GUI.Button(new Rect(190, 20, 80, 20), sceneUI_Language._FloorGridUI)) { OnFloorButtonClick(); }
             GUILayout.EndHorizontal();           
             
             GUILayout.BeginVertical();
-            GUI.Label(new Rect(10,50,280,20), "地图列表:");
+            GUI.Label(new Rect(10,50,280,20), sceneUI_Language._SceneList);
             GUI.Box(new Rect(10,70,260,220),"");
             scrollVector = GUI.BeginScrollView(new Rect(15, 75, 250, 210), scrollVector, sceneButtonsRect);
             GUILayout.BeginArea(new Rect(0, 0, 250, sceneButtonsRect.height));

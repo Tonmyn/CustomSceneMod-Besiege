@@ -53,9 +53,9 @@ namespace BesiegeCustomScene
 
                             if (Regex.IsMatch(id, @"^[0-9]*$") && !string.IsNullOrEmpty(id))
                             {
-                                int index = str.IndexOf(" = ") + 2;
+                                int index = str.IndexOf(" = ") + 3;
                                 string value = str.Substring(index, str.Length - index).Replace("\"", string.Empty);
-                                //dic_Translation.Add(int.Parse(id), value);
+
                                 dic_Translation[int.Parse(id)] = value;
                                 //BesiegeConsoleController.ShowMessage(value);
                             }
@@ -64,6 +64,11 @@ namespace BesiegeCustomScene
                     }
                     
                     srd.Close();
+
+                    //foreach (var v in dic_Translation)
+                    //{
+                    //    BesiegeConsoleController.ShowMessage(v.Key + "|" + v.Value);
+                    //}
 
                     GeoTools.Log("Read Language File Completed!");
                 }
@@ -76,7 +81,7 @@ namespace BesiegeCustomScene
             }
         }
 
-        LanguageFile[] languageFiles;
+        List<LanguageFile> languageFiles;
 
         Dictionary<string, LanguageFile> dic_LanguageFile;
 
@@ -89,7 +94,7 @@ namespace BesiegeCustomScene
         void Awake()
         {
 
-            languageFiles = null;
+            languageFiles = new List<LanguageFile>();
 
             dic_LanguageFile = new Dictionary<string, LanguageFile>();
 
@@ -100,8 +105,9 @@ namespace BesiegeCustomScene
                     string languageName = Enum.GetNames(typeof(Language))[i];
                     Language language = (Language)Enum.Parse(typeof(Language), languageName);
 
-                    languageFiles[i] = new LanguageFile(languageFilePath + languageName + ".txt");
-                    dic_LanguageFile[languageName] = languageFiles[i];
+                    LanguageFile languageFile = new LanguageFile(languageFilePath + languageName + ".txt");
+                    languageFiles.Add(languageFile);
+                    dic_LanguageFile[languageName] = languageFile;
                     //BesiegeConsoleController.ShowMessage("")
                 }
             }
@@ -114,44 +120,85 @@ namespace BesiegeCustomScene
 
             try
 
-            { Set_Language(currentLanguage); }
-            catch(Exception e)
+            {
+                Set_Language(currentLanguage);
+            }
+            catch (Exception e)
             {
                 BesiegeConsoleController.ShowMessage(e.Message);
             }
 
-            
+
         }
 
         void Update()
         {
             if (Input.GetKeyDown(KeyCode.F))
             {
-                //    //for (int i = 0; i < languageFiles[0].dic_Translation.Count; i++)
-                //    //{
-                //    //    BesiegeConsoleController.ShowMessage(languageFiles[0].dic_Translation[i]);
-                //    //}
+                //for (int i = 0; i < languageFiles[0].dic_Translation.Count; i++)
+                //{
+                //    BesiegeConsoleController.ShowMessage(languageFiles[0].dic_Translation[i]);
+                //}
                 //    ConsoleController.ShowMessage("??");
                 //    BesiegeConsoleController.ShowMessage(languageFilePath + Enum.GetNames(typeof(Language))[0] + ".txt");
 
-                //    try
-                //    {
-                //        LanguageFile lf = new LanguageFile(languageFilePath + Enum.GetNames(typeof(Language))[0] + ".txt");
+                //try
+                //{
+                //    LanguageFile lf = new LanguageFile(languageFilePath + Enum.GetNames(typeof(Language))[0] + ".txt");
 
-                //        foreach (var v in lf.dic_Translation)
-                //        {
-                //            BesiegeConsoleController.ShowMessage(v.Key + v.Value);
-                //        }
-                //    }
-                //    catch (Exception e)
+                //    foreach (var v in lf.dic_Translation)
                 //    {
-                //        BesiegeConsoleController.ShowMessage(e.Message);
+                //        BesiegeConsoleController.ShowMessage(v.Key +"|"+ v.Value+"|");
                 //    }
-                foreach (var v in dic_LanguageFile[Language.CHN.ToString()].dic_Translation)
+                //}
+                //catch (Exception e)
+                //{
+                //    BesiegeConsoleController.ShowMessage(e.Message);
+                //}
+                //foreach (var v in dic_LanguageFile[Language.CHN.ToString()].dic_Translation)
+                //{
+                //    BesiegeConsoleController.ShowMessage(v.Key + v.Value);
+                //}
+                //BesiegeConsoleController.ShowMessage(dic_LanguageFile[Language.CHN]);
+
+                //languageFiles = new List<LanguageFile>();
+
+                //dic_LanguageFile = new Dictionary<string, LanguageFile>();
+
+                //try
+                //{
+                //    for (int i = 0; i < Enum.GetNames(typeof(Language)).Length; i++)
+                //    {
+                //        string languageName = Enum.GetNames(typeof(Language))[i];
+                //        Language language = (Language)Enum.Parse(typeof(Language), languageName);
+
+                //        LanguageFile languageFile = new LanguageFile(languageFilePath + languageName + ".txt");
+                //        languageFiles.Add(languageFile);
+                //        dic_LanguageFile[languageName] = languageFile;
+                //        BesiegeConsoleController.ShowMessage("read lanuage " + languageName);
+                //    }
+                //}
+                //catch (Exception e)
+                //{
+                //    ConsoleController.ShowMessage(e.Message);
+                //}
+
+                foreach (var v in Get_CurretLanguageFile().dic_Translation)
                 {
                     BesiegeConsoleController.ShowMessage(v.Key + v.Value);
                 }
-                //BesiegeConsoleController.ShowMessage(dic_LanguageFile[Language.CHN]);
+            }
+            if (Input.GetKeyDown(KeyCode.G))
+            {
+                //foreach (var v in languageFiles[0].dic_Translation)
+                //{
+                //    BesiegeConsoleController.ShowMessage(v.Key + v.Value);
+                //}
+
+                foreach (var v in dic_LanguageFile[Language.EN.ToString()].dic_Translation)
+                {
+                    BesiegeConsoleController.ShowMessage(v.Key + v.Value);
+                }
             }
         }
 
@@ -163,10 +210,6 @@ namespace BesiegeCustomScene
         public void Set_Language(Language language)
         {
             currentLanguageFile = dic_LanguageFile[language.ToString()];
-            foreach (var v in currentLanguageFile.dic_Translation)
-            {
-                BesiegeConsoleController.ShowMessage(v.Key + v.Value);
-            }
         }
 
         public LanguageFile Get_CurretLanguageFile()
