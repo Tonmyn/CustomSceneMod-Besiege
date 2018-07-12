@@ -11,7 +11,7 @@ namespace BesiegeCustomScene
 
         string DisplayName = "Besiege Custom Scene";
 
-        string Version = "1.10.7";
+        string Version = "1.10.8";
 
         public CustomSceneMod() { }
 
