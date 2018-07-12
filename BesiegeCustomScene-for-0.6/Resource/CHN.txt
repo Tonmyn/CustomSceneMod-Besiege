@@ -5,13 +5,13 @@
 101 = "去掉迷雾"
 
 //---Scene Remove World Bounds Button---//
-103 = "去空气墙"
+102 = "去空气墙"
 
 //---Scene Remove Floor Grid Button---//
 103 = "去掉地板"
 
 //---Scene List Scroll---//
-103 = "地形列表"
+104 = "地形列表"
 
 //---Timer Window Title---//
 200 = "速度计"

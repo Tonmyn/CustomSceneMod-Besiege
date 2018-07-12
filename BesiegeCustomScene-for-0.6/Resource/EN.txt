@@ -1,24 +1,41 @@
-_Scene,buttonname,[SteelHill]
-_Scene,scenename,SteelHill
-_Scene,buttonname,[GreenHill]
-_Scene,scenename,GreenHill
-_Scene,buttonname,[WhiteHill]
-_Scene,scenename,WhiteHill
-_Scene,buttonname,[Lake]
-_Scene,scenename,Lake
-_Scene,buttonname,[Yun]
-_Scene,scenename,Yun
-_Scene,buttonname,[Mesa]
-_Scene,scenename,Mesa
-_Scene,buttonname,[Desert]
-_Scene,scenename,GobiDesertRoad
-_Scene,buttonname,[HeightMap]
-_Scene,scenename,HeightMap
-_Scene,buttonname,[Circles1]
-_Scene,scenename,TriggerTest
-_Scene,buttonname,[Circles2]
-_Scene,scenename,TriggerTest2
-_Scene,buttonname,[Minecraft]
-_Scene,scenename,MCVillage
-_Scene,buttonname,[Flat]
-_Scene,scenename,Plannar
+//Scene Window Title
+100 = "Scene Setting"
+
+//---Scene Remove Fog Button---//
+101 = "Fog"
+
+//---Scene Remove World Bounds Button---//
+102 = "Bounds"
+
+//---Scene Remove Floor Grid Button---//
+103 = "Floor"
+
+//---Scene List Scroll---//
+104 = "Scene List"
+
+//---Timer Window Title---//
+200 = "Timer"
+
+//---Timer Velocity Unit Button---//
+201 = "Velocity Unit"
+
+//---Timer Retimer Button---//
+202 = "ReTime"
+
+//---Timer Overload---//
+203 = "Overload"
+
+//---Timer Time---//
+204 = "Time"
+
+//---Timer Position---//
+205 = "Position"
+
+//---Timer Velocity---//
+206 = "Velocity"
+
+//---Timer Distance---//
+207 = "Distance"
+
+//---Timer Timer---//
+208 = "Timer"

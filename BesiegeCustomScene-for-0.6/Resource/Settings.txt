@@ -13,4 +13,4 @@ _Timer,display_UI,F8,//隐藏或显示速度计UI
 _Timer,reload_UI,F5,//刷新速度计UI
 _Timer,show_on_start,ON
 
-_Language,currentLanguage,EN
+_Language,currentLanguage,CHN
