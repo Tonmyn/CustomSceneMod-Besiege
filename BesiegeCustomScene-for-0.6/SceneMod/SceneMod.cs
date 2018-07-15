@@ -606,7 +606,7 @@ namespace BesiegeCustomScene
                     BC.isTrigger = !WorldBoundariesEnable;
                 }
 
-                foreach (MeshRenderer MR in WorldBoundaries.GetComponentsInChildren<MeshRenderer>())
+                foreach (Renderer MR in WorldBoundaries.GetComponentsInChildren<Renderer>())
                 {
                     MR.enabled = WorldBoundariesEnable;
                 }

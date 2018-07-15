@@ -601,14 +601,14 @@ namespace BesiegeCustomScene
 
         void Update()
         {
-            if (Input.GetKeyDown(_ReloadUI) && Input.GetKey(KeyCode.LeftControl))
-            {
-                ReloadScenes();
-            }
-            if (Input.GetKeyDown(_DisplayUI) && Input.GetKey(KeyCode.LeftControl))
-            {
-                ShowGUI = !ShowGUI;
-            }
+            //if (Input.GetKeyDown(_ReloadUI) && Input.GetKey(KeyCode.LeftControl))
+            //{
+            //    ReloadScenes();
+            //}
+            //if (Input.GetKeyDown(_DisplayUI) && Input.GetKey(KeyCode.LeftControl))
+            //{
+            //    ShowGUI = !ShowGUI;
+            //}
 
             //ReloadScenes();
 
@@ -701,6 +701,15 @@ namespace BesiegeCustomScene
 
         private void OnGUI()
         {
+            if (Input.GetKeyDown(_ReloadUI) && Input.GetKey(KeyCode.LeftControl))
+            {
+                ReloadScenes();
+            }
+            if (Input.GetKeyDown(_DisplayUI) && Input.GetKey(KeyCode.LeftControl))
+            {
+                ShowGUI = !ShowGUI;
+            }
+
             if (ShowGUI)
             {
                 this.windowRect = GUI.Window(this.windowID, this.windowRect, new GUI.WindowFunction(DoWindow), "", GUIStyle.none);
