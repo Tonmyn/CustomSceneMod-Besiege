@@ -16,11 +16,8 @@
 //---Timer Window Title---//
 200 = "Timer"
 
-//---Timer Velocity Unit Button---//
-201 = "Velocity Unit"
-
-//---Timer Retimer Button---//
-202 = "ReTime"
+//---Timer Acceleration---//
+201 = "Acceleration"
 
 //---Timer Overload---//
 203 = "Overload"
@@ -39,3 +36,6 @@
 
 //---Timer Timer---//
 208 = "Timer"
+
+//---Timer Trigger---//
+208 = "Trigger"

@@ -87,49 +87,7 @@ namespace BesiegeCustomScene.UI
             {
                 windowRect = GUI.Window(windowID, windowRect, new GUI.WindowFunction(SceneWindow), sceneUI_Language._SceneWindowUI);
             }
-            
-
-            //// Wrap everything in the designated GUI Area
-            //// 在指定的区域中包裹控件
-            //GUILayout.BeginArea(new Rect(0, 0, 200, 200));
-
-            //// Begin the singular Horizontal Group
-            //// 开始单行的水平组
-            //GUILayout.BeginHorizontal();
-
-            //// Place a Button normally
-            //// 放置一个重复按钮
-            //if (GUILayout.RepeatButton("Increase max\nSlider Value"))
-            //{
-            //    maxSliderValue += 3.0 * Time.deltaTime;
-            //}
-
-            //// Arrange two more Controls vertically beside the Button
-            //// 在前一个按钮旁边垂直排列两个或更多控件
-            //GUILayout.BeginVertical();
-            //GUILayout.Box("Slider Value: " + Mathf.Round(sliderValue));
-            //sliderValue = GUILayout.HorizontalSlider(sliderValue, 0.0f, (float)maxSliderValue);
-
-            //// End the Groups and Area
-            //GUILayout.EndVertical();
-            //GUILayout.EndHorizontal();
-            //GUILayout.EndArea();
-
-            //// Make a background box 创建一个背景盒子
-            //GUI.Box(new Rect(10, 10, 100, 90), "Loader Menu");
-
-            //// Make the first button. If it is pressed, Application.Loadlevel (1) will be executed
-            //// 创建第一个按钮，如果按下这个按钮，将执行
-            //if (GUI.Button(new Rect(20, 40, 80, 20), "Level 1"))
-            //{
-            //    Application.LoadLevel(1);
-            //}
-
-            //// Make the second button. 创建第二个按钮
-            //if (GUI.Button(new Rect(20, 70, 80, 20), "Level 2"))
-            //{
-            //    Application.LoadLevel(2);
-            //}
+                    
         }
 
         void SceneWindow(int ID)
@@ -142,20 +100,27 @@ namespace BesiegeCustomScene.UI
             GUILayout.EndHorizontal();           
             
             GUILayout.BeginVertical();
-            GUI.Label(new Rect(10,50,280,20), sceneUI_Language._SceneList);
-            GUI.Box(new Rect(10,70,260,220),"");
-            scrollVector = GUI.BeginScrollView(new Rect(15, 75, 250, 210), scrollVector, sceneButtonsRect);
-            GUILayout.BeginArea(new Rect(0, 0, 250, sceneButtonsRect.height));
-            for (int i = 0; i < scenePacks.Count; i++)
             {
-                if (GUILayout.Button(scenePacks[i].Name, GUILayout.Width(230), GUILayout.Height(20)))
+                GUI.Label(new Rect(10, 50, 280, 20), sceneUI_Language._SceneList);
+                GUI.Box(new Rect(10, 70, 260, 220), "");
+
+                scrollVector = GUI.BeginScrollView(new Rect(15, 75, 250, 210), scrollVector, sceneButtonsRect);
                 {
-                    //LoadScene(i);
-                    OnSceneButtonClick(i); 
+                    GUILayout.BeginArea(new Rect(0, 0, 250, sceneButtonsRect.height));
+                    {
+                        for (int i = 0; i < scenePacks.Count; i++)
+                        {
+                            if (GUILayout.Button(scenePacks[i].Name, GUILayout.Width(230), GUILayout.Height(20)))
+                            {
+                                //LoadScene(i);
+                                OnSceneButtonClick(i);
+                            }
+                        }
+                    }
+                    GUILayout.EndArea();
                 }
+                GUI.EndScrollView();
             }
-            GUILayout.EndArea();
-            GUI.EndScrollView();
             GUILayout.EndVertical();                 
 
             GUI.DragWindow();
@@ -169,30 +134,6 @@ namespace BesiegeCustomScene.UI
             alignment = TextAnchor.UpperLeft,
 
         };
-
-        /// <summary>加载自定义地形</summary>
-        void LoadScene(int i)
-        {
-            GetComponent<SceneMod>().LoadScenePack(i);
-        }
-
-        /// <summary>隐藏雾</summary>
-        void HideFog()
-        {
-
-        }
-
-        /// <summary>隐藏地面</summary>
-        void HideFloorGrid()
-        {
-            GetComponent<SceneMod>().HideFloorBig();
-        }
-
-        /// <summary>隐藏空气墙</summary>
-        void HideWorldBounds()
-        {
-            GetComponent<SceneMod>().HideWorldBoundaries();
-        }
     
     }
 }

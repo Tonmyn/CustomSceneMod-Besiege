@@ -560,16 +560,6 @@ namespace BesiegeCustomScene
 
             try
             {
-                //GameObject.Find("WORLD BOUNDARIES").transform.localScale = new Vector3(0, 0, 0);
-                //GameObject.Find("WorldBounds_Back").transform.localScale = new Vector3(0, 0, 0);
-                //GameObject.Find("WorldBounds_Front").transform.localScale = new Vector3(0, 0, 0);
-                //GameObject.Find("WorldBounds_Left").transform.localScale = new Vector3(0, 0, 0);
-                //GameObject.Find("WorldBounds_Right").transform.localScale = new Vector3(0, 0, 0);
-                //GameObject.Find("WorldBoundaryBack").transform.GetChild(0).GetComponent<Renderer>().enabled = false;
-                //GameObject.Find("WorldBoundaryFront").transform.GetChild(0).GetComponent<Renderer>().enabled = false;
-                //GameObject.Find("WorldBoundaryLeft").transform.GetChild(0).GetComponent<Renderer>().enabled = false;
-                //GameObject.Find("WorldBoundaryRight").transform.GetChild(0).GetComponent<Renderer>().enabled = false;
-
 
                 //单人模式下
                 GameObject WorldBoundaries_Large = GameObject.Find("WORLD BOUNDARIES_LARGE");

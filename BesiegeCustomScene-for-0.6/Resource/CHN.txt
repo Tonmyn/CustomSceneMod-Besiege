@@ -16,26 +16,26 @@
 //---Timer Window Title---//
 200 = "速度计"
 
-//---Timer Velocity Unit Button---//
-201 = "速度单位"
-
-//---Timer Retimer Button---//
-202 = "计时器重置"
+//---Timer Acceleration---//
+201 = "加速度"
 
 //---Timer Overload---//
-203 = "过载"
+202 = "过载"
 
 //---Timer Time---//
-204 = "时间"
+203 = "时间"
 
 //---Timer Position---//
-205 = "位置"
+204 = "位置"
 
 //---Timer Velocity---//
-206 = "速度"
+205 = "速度"
 
 //---Timer Distance---//
-207 = "距离"
+206 = "距离"
 
 //---Timer Timer---//
-208 = "计时器"
+207 = "计时器"
+
+//---Timer Trigger---//
+208 = "触发器"

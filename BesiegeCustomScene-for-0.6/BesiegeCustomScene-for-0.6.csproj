@@ -36,8 +36,11 @@
     <Compile Include="SceneMod\SceneMod.cs" />
     <Compile Include="EnvironmentMod\SkyMod.cs" />
     <Compile Include="EnvironmentMod\CloudMod.cs" />
+    <Compile Include="ToolBoxMod\BlockInformationMod.cs" />
+    <Compile Include="ToolBoxMod\TimerMod.cs" />
     <Compile Include="UI\SceneSettingUI.cs" />
     <Compile Include="MeshMod\CubeMod.cs" />
+    <Compile Include="UI\ToolBoxSettingUI.cs" />
     <Compile Include="Water4\Displace.cs" />
     <Compile Include="Global\GeoTools.cs" />
     <Compile Include="Water4\GerstnerDisplace.cs" />
@@ -49,7 +52,7 @@
     <Compile Include="EnvironmentMod\SnowMod.cs" />
     <Compile Include="Water4\SpecularLighting.cs" />
     <Compile Include="Global\StaticProp.cs" />
-    <Compile Include="TimeMod\TimeUI.cs" />
+    <Compile Include="ToolBoxMod\TimeUI.cs" />
     <Compile Include="MeshMod\TriggerMod.cs" />
     <Compile Include="Water4\Water.cs" />
     <Compile Include="Water4\WaterBase.cs" />
