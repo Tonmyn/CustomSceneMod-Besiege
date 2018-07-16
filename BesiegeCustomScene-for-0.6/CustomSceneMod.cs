@@ -28,13 +28,7 @@ namespace BesiegeCustomScene
             //SceneMod.AddComponent<SceneMod>();
             ////SceneMod.AddComponent<SceneUI>();
             ////SceneMod.AddComponent<TimeUI>();
-            //SceneMod.AddComponent<MeshMod>();
-            //SceneMod.AddComponent<CubeMod>();
-            //SceneMod.AddComponent<TriggerMod>();
-            //SceneMod.AddComponent<SnowMod>();
-            //SceneMod.AddComponent<CloudMod>();
-            //SceneMod.AddComponent<WaterMod>();
-            //SceneMod.AddComponent<SkyMod>();
+ 
             //SceneMod.AddComponent<Prop>();
 
             SceneMod.AddComponent<ToolBoxSettingUI>();

@@ -132,6 +132,14 @@ namespace BesiegeCustomScene
 
                 FogEnable = true;
             };
+
+            gameObject.AddComponent<MeshMod>();
+            gameObject.AddComponent<CubeMod>();
+            gameObject.AddComponent<TriggerMod>();
+            gameObject.AddComponent<SnowMod>();
+            gameObject.AddComponent<CloudMod>();
+            gameObject.AddComponent<WaterMod>();
+            gameObject.AddComponent<SkyMod>();
         }
 
         void OnDisable()
