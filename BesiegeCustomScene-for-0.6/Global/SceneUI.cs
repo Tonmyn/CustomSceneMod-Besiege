@@ -621,7 +621,7 @@ namespace BesiegeCustomScene
 
             ReloadScenes();
 
-            GetComponent<UI.SceneSettingUI>().scenePacks = ScenePacks;
+            GetComponent<SceneMod>().ScenePacks = ScenePacks;
 
 //            SceneManager.sceneLoaded += (Scene s,LoadSceneMode lsm)=>
 //            {

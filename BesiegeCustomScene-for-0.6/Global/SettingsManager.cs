@@ -136,14 +136,14 @@ namespace BesiegeCustomScene
            
         }
 
-        void Update()
-        {
-            //if (Input.GetKeyDown(KeyCode.G))
-            //{
-            //    //new SettingsFile();
-            //    BesiegeConsoleController.ShowMessage(settings.language);
-            //}
-        }
+        //void Update()
+        //{
+        //    //if (Input.GetKeyDown(KeyCode.G))
+        //    //{
+        //    //    //new SettingsFile();
+        //    //    BesiegeConsoleController.ShowMessage(settings.language);
+        //    //}
+        //}
 
     }
 

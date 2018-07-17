@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace BesiegeCustomScene
+namespace BesiegeCustomScene.UI
 {
     class ToolBoxSettingUI : MonoBehaviour
     {
@@ -115,34 +115,34 @@ namespace BesiegeCustomScene
                 }
                 GUILayout.EndHorizontal();
 
-                GUILayout.BeginHorizontal(new GUILayoutOption[0]);
-                {
-                    GUILayout.Label(timerUI_Language._VelocityUI);
-                    GUILayout.Label(targetRigidbody.velocity.magnitude.ToString());
-                }
-                GUILayout.EndHorizontal();
+                //GUILayout.BeginHorizontal(new GUILayoutOption[0]);
+                //{
+                //    GUILayout.Label(timerUI_Language._VelocityUI);
+                //    GUILayout.Label(targetRigidbody.velocity.magnitude.ToString());
+                //}
+                //GUILayout.EndHorizontal();
 
-                GUILayout.BeginHorizontal(new GUILayoutOption[0]);
-                {
-                    GUILayout.Label(timerUI_Language._DistanceUI);
-                    GUILayout.Label(Distance.ToString());
-                }
-                GUILayout.EndHorizontal();
+                //GUILayout.BeginHorizontal(new GUILayoutOption[0]);
+                //{
+                //    GUILayout.Label(timerUI_Language._DistanceUI);
+                //    GUILayout.Label(Distance.ToString());
+                //}
+                //GUILayout.EndHorizontal();
 
 
-                GUILayout.BeginHorizontal(new GUILayoutOption[0]);
-                {
-                    GUILayout.Label(timerUI_Language._OverloadUI + "(g)");
-                    GUILayout.Label(Overload.ToString());
-                }
-                GUILayout.EndHorizontal();
+                //GUILayout.BeginHorizontal(new GUILayoutOption[0]);
+                //{
+                //    GUILayout.Label(timerUI_Language._OverloadUI + "(g)");
+                //    GUILayout.Label(Overload.ToString());
+                //}
+                //GUILayout.EndHorizontal();
 
-                GUILayout.BeginHorizontal(new GUILayoutOption[0]);
-                {
-                    GUILayout.Label(timerUI_Language._TimeUI);
-                    GUILayout.Label(Time);
-                }
-                GUILayout.EndHorizontal();
+                //GUILayout.BeginHorizontal(new GUILayoutOption[0]);
+                //{
+                //    GUILayout.Label(timerUI_Language._TimeUI);
+                //    GUILayout.Label(Time);
+                //}
+                //GUILayout.EndHorizontal();
 
 
                 GUILayout.BeginHorizontal(new GUILayoutOption[0]);
@@ -152,12 +152,12 @@ namespace BesiegeCustomScene
                         //timerSwitch = false; Timer = "00:00:00";
                         RetimeButtonClickEvent();
                     }
-                    if (GUILayout.Button("[" + Timer + "]"))
-                    {
-                        //timerSwitch = !timerSwitch;
-                        //if (timerSwitch && Timer == "00:00:00") { startTime = DateTime.Now; }
-                        TimerButtonClickEvent();
-                    }
+                    //if (GUILayout.Button("[" + Timer + "]"))
+                    //{
+                    //    //timerSwitch = !timerSwitch;
+                    //    //if (timerSwitch && Timer == "00:00:00") { startTime = DateTime.Now; }
+                    //    TimerButtonClickEvent();
+                    //}
                     GUILayout.EndHorizontal();
                 }
 

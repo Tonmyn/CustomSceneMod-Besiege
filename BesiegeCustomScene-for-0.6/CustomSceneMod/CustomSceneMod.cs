@@ -104,25 +104,15 @@ namespace BesiegeCustomScene
 
         }
 
-        UI.SceneSettingUI sUI;
+
+
+        //UI.SceneSettingUI sUI;
 
         void Start()
         {
             ScenePacksPath = GeoTools.ScenePackPath;
 
             ScenePacks = ReadScenePacks(ScenePacksPath);
-
-            sUI = gameObject.AddComponent<UI.SceneSettingUI>();
-
-            sUI.scenePacks = ScenePacks;
-
-            sUI.OnSceneButtonClick += LoadScenePack;
-
-            sUI.OnFogButtonClick += HideFog;
-
-            sUI.OnFloorButtonClick += HideFloorBig;
-
-            sUI.OnWorldBoundsButtonClick += HideWorldBoundaries;
 
             SceneManager.sceneLoaded += (Scene s, LoadSceneMode lsm) =>
             {
@@ -133,13 +123,6 @@ namespace BesiegeCustomScene
                 FogEnable = true;
             };
 
-            gameObject.AddComponent<MeshMod>();
-            gameObject.AddComponent<CubeMod>();
-            gameObject.AddComponent<TriggerMod>();
-            gameObject.AddComponent<SnowMod>();
-            gameObject.AddComponent<CloudMod>();
-            gameObject.AddComponent<WaterMod>();
-            gameObject.AddComponent<SkyMod>();
         }
 
         void OnDisable()
@@ -642,7 +625,7 @@ namespace BesiegeCustomScene
         /// <summary>
         /// 隐藏雾
         /// </summary>
-        void HideFog()
+        public void HideFog()
         {
             FogEnable = !FogEnable;
 

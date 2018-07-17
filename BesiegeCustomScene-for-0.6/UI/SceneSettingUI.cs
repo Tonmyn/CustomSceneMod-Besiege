@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace BesiegeCustomScene.UI
@@ -6,7 +7,9 @@ namespace BesiegeCustomScene.UI
     class SceneSettingUI : MonoBehaviour
     {
         /// <summary>地图包列表</summary>
-        public List<SceneMod.ScenePack> scenePacks;
+        //public List<SceneMod.ScenePack> scenePacks;
+
+        public SceneMod sceneMod;
 
         public bool ShowGUI = true;
 
@@ -54,11 +57,16 @@ namespace BesiegeCustomScene.UI
 
         
 
-        private void Start()
+        void Start()
         {
-            LanguageManager.LanguageFile currentLanuage = GetComponent<LanguageManager>().Get_CurretLanguageFile();
+            LanguageManager.LanguageFile currentLanuage;
+            currentLanuage = GetComponent<LanguageManager>().Get_CurretLanguageFile();
 
-            sceneButtonsRect = new Rect(0, 0, 200, (scenePacks.Count - 1) * (buttonHeight + 5) + 5);
+            initSceneMod();
+
+            float height = (sceneMod.ScenePacks.Count - 1) * (buttonHeight + 5) + 5;
+            sceneButtonsRect = new Rect(0, 0, 200, height);
+
             sceneUI_Language = SceneUI_Language.DefaultLanguage;
             if (currentLanuage != null)
             {
@@ -69,6 +77,20 @@ namespace BesiegeCustomScene.UI
                 sceneUI_Language._FloorGridUI = translation[103];
                 sceneUI_Language._SceneList = translation[104];
             }
+
+        }
+
+        void initSceneMod()
+        {
+            sceneMod = gameObject.GetComponent<SceneMod>();
+
+            OnSceneButtonClick += sceneMod.LoadScenePack;
+
+            OnFogButtonClick += sceneMod.HideFog;
+
+            OnFloorButtonClick += sceneMod.HideFloorBig;
+
+            OnWorldBoundsButtonClick += sceneMod.HideWorldBoundaries;
         }
 
         private void Update()
@@ -77,7 +99,6 @@ namespace BesiegeCustomScene.UI
             {
                 ShowGUI = !ShowGUI;
             }
-
         }
 
         private void OnGUI()
@@ -94,11 +115,13 @@ namespace BesiegeCustomScene.UI
         {
 
             GUILayout.BeginHorizontal();
-            if (GUI.Button(new Rect(10, 20, 80, 20), sceneUI_Language._FogUI)) { OnFogButtonClick(); }
-            if (GUI.Button(new Rect(100, 20, 80, 20), sceneUI_Language._WorldBoundsUI)) { OnWorldBoundsButtonClick(); }
-            if (GUI.Button(new Rect(190, 20, 80, 20), sceneUI_Language._FloorGridUI)) { OnFloorButtonClick(); }
-            GUILayout.EndHorizontal();           
-            
+            {
+                if (GUI.Button(new Rect(10, 20, 80, 20), sceneUI_Language._FogUI)) { OnFogButtonClick(); }
+                if (GUI.Button(new Rect(100, 20, 80, 20), sceneUI_Language._WorldBoundsUI)) { OnWorldBoundsButtonClick(); }
+                if (GUI.Button(new Rect(190, 20, 80, 20), sceneUI_Language._FloorGridUI)) { OnFloorButtonClick(); }
+            }
+            GUILayout.EndHorizontal();
+
             GUILayout.BeginVertical();
             {
                 GUI.Label(new Rect(10, 50, 280, 20), sceneUI_Language._SceneList);
@@ -108,9 +131,9 @@ namespace BesiegeCustomScene.UI
                 {
                     GUILayout.BeginArea(new Rect(0, 0, 250, sceneButtonsRect.height));
                     {
-                        for (int i = 0; i < scenePacks.Count; i++)
+                        for (int i = 0; i < sceneMod.ScenePacks.Count; i++)
                         {
-                            if (GUILayout.Button(scenePacks[i].Name, GUILayout.Width(230), GUILayout.Height(20)))
+                            if (GUILayout.Button(sceneMod.ScenePacks[i].Name, GUILayout.Width(230), GUILayout.Height(20)))
                             {
                                 //LoadScene(i);
                                 OnSceneButtonClick(i);
