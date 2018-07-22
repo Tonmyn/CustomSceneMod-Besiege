@@ -8,7 +8,10 @@ namespace BesiegeCustomScene
 {
     class SkyMod : MonoBehaviour
     {
+        void Awake()
+        {
 
+        }
   
 
     }

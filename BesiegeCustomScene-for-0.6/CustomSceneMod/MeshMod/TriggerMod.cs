@@ -18,7 +18,7 @@ namespace BesiegeCustomScene
         }
 
         public int Size { get { return TriggerSize; } }
-        public int Index { get { return TriggerIndex; } }
+        public int Index { get { return TriggerIndex; } set { TriggerIndex = value; } }
 
 
         private GameObject[] meshtriggers;
@@ -50,7 +50,7 @@ namespace BesiegeCustomScene
                             if (chara[1] == "size")
                             {
                                 this.TriggerSize = Convert.ToInt32(chara[2]);
-                                this.gameObject.GetComponent<TimeUI>().TriggerSize = TriggerSize;
+                                //this.gameObject.GetComponent<TimeUI>().TriggerSize = TriggerSize;
                                 LoadTrigger();
                             }
                         }
@@ -174,7 +174,7 @@ namespace BesiegeCustomScene
 
                 FileStream fs = new FileStream(scenePack.SettingFilePath, FileMode.Open);
                 //打开数据文件
-                StreamReader srd = new StreamReader(fs, Encoding.Default);               
+                StreamReader srd = new StreamReader(fs, Encoding.Default);
 
                 while (srd.Peek() != -1)
                 {
@@ -188,7 +188,7 @@ namespace BesiegeCustomScene
                             if (chara[1] == "size")
                             {
                                 this.TriggerSize = Convert.ToInt32(chara[2]);
-                                this.gameObject.GetComponent<TimeUI>().TriggerSize = TriggerSize;
+                                //this.gameObject.GetComponent<TimeUI>().TriggerSize = TriggerSize;
                                 LoadTrigger();
                             }
                         }
@@ -302,12 +302,12 @@ namespace BesiegeCustomScene
         {
             try
             {
-                
+
                 if (TriggerSize <= 0)
-                {         
+                {
                     return;
                 }
-                if (TriggerSize > 100) TriggerSize = 100;              
+                if (TriggerSize > 100) TriggerSize = 100;
                 if (TriggerSize > 0)
                 {
                     meshtriggers = new GameObject[TriggerSize];
@@ -361,7 +361,11 @@ namespace BesiegeCustomScene
             {
                 if (StatMaster.levelSimulating)
                 {
-                    if (triggerMod.TriggerIndex == Index - 1) TimeUI.TriggerIndex++;
+                    if (triggerMod.TriggerIndex == Index - 1)
+                    {
+                        //TimeUI.TriggerIndex++;
+                        triggerMod.Index++;
+                    }
                 }
             }
         }

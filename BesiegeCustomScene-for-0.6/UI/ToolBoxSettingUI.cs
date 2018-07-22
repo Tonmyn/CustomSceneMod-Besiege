@@ -40,7 +40,7 @@ namespace BesiegeCustomScene.UI
 
         int windowID = GeoTools.GetWindowID();
 
-        Rect windowRect = new Rect(15f, 100f, 180f, 250f);
+        Rect windowRect = new Rect(15f, 100f, 180f, 200f);
 
         ToolBoxUI_Language toolBoxUI_Language;
 
@@ -55,7 +55,7 @@ namespace BesiegeCustomScene.UI
         //int triggerSize;
 
         TimerMod timerMod;
-        TriggerMod triggerMod;
+        //TriggerMod triggerMod;
         BlockInformationMod blockInformationMod;
 
         void Start()
@@ -66,7 +66,7 @@ namespace BesiegeCustomScene.UI
             initEvent();
 
             timerMod = gameObject.AddComponent<TimerMod>();
-            triggerMod = gameObject.AddComponent<TriggerMod>();
+            //triggerMod = gameObject.AddComponent<TriggerMod>();
             blockInformationMod = gameObject.AddComponent<BlockInformationMod>();
         }
 
@@ -200,17 +200,17 @@ namespace BesiegeCustomScene.UI
                     GUILayout.EndHorizontal();
                 }
 
-                GUILayout.BeginHorizontal(new GUILayoutOption[0]);
-                {
-                    GUILayout.Label(toolBoxUI_Language._TriggerUI);
-                    if (GUILayout.Button(string.Format("{0}/{1}", (triggerMod.Index + 1).ToString(), triggerMod.Size)))
-                    {
-                        //triggerIndex = -1;
-                        //TriggerIndex2 = -1;
-                        TriggerButtonClickEvent();
-                    }
-                }
-                GUILayout.EndHorizontal();
+                //GUILayout.BeginHorizontal(new GUILayoutOption[0]);
+                //{
+                //    GUILayout.Label(toolBoxUI_Language._TriggerUI);
+                //    if (GUILayout.Button(string.Format("{0}/{1}", (triggerMod.Index + 1).ToString(), triggerMod.Size)))
+                //    {
+                //        //triggerIndex = -1;
+                //        //TriggerIndex2 = -1;
+                //        TriggerButtonClickEvent();
+                //    }
+                //}
+                //GUILayout.EndHorizontal();
             }
             GUILayout.EndVertical();
 
