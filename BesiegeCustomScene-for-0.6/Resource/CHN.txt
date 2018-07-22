@@ -13,8 +13,8 @@
 //---Scene List Scroll---//
 104 = "地形列表"
 
-//---Timer Window Title---//
-200 = "速度计"
+//---ToolBox Window Title---//
+200 = "工具箱"
 
 //---Timer Acceleration---//
 201 = "加速度"

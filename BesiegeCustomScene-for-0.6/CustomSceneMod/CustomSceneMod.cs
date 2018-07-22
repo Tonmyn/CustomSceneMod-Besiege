@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 
 namespace BesiegeCustomScene
 {
-    public class SceneMod : MonoBehaviour
+    public class CustomSceneMod : MonoBehaviour
     {
     
         /// <summary>地图包路径</summary>
@@ -108,11 +108,27 @@ namespace BesiegeCustomScene
 
         //UI.SceneSettingUI sUI;
 
-        void Start()
+        void Awake()
         {
+
             ScenePacksPath = GeoTools.ScenePackPath;
 
             ScenePacks = ReadScenePacks(ScenePacksPath);
+
+            GameObject customSceneMod = gameObject;
+
+            customSceneMod.AddComponent<MeshMod>();
+            customSceneMod.AddComponent<CubeMod>();
+            //customSceneMod.AddComponent<TriggerMod>();
+            customSceneMod.AddComponent<SnowMod>();
+            customSceneMod.AddComponent<CloudMod>();
+            customSceneMod.AddComponent<WaterMod>();
+            //customSceneMod.AddComponent<SkyMod>();
+            customSceneMod.AddComponent<Prop>();
+        }
+
+        void Start()
+        {
 
             SceneManager.sceneLoaded += (Scene s, LoadSceneMode lsm) =>
             {
@@ -122,7 +138,6 @@ namespace BesiegeCustomScene
 
                 FogEnable = true;
             };
-
         }
 
         void OnDisable()

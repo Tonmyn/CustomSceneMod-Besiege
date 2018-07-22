@@ -9,7 +9,7 @@ namespace BesiegeCustomScene.UI
         /// <summary>地图包列表</summary>
         //public List<SceneMod.ScenePack> scenePacks;
 
-        public SceneMod sceneMod;
+        public CustomSceneMod sceneMod;
 
         public bool ShowGUI = true;
 
@@ -55,14 +55,14 @@ namespace BesiegeCustomScene.UI
             };
         }
 
-        
 
-        void Start()
+
+        void Awake()
         {
+            initSceneMod();
+
             LanguageManager.LanguageFile currentLanuage;
             currentLanuage = GetComponent<LanguageManager>().Get_CurretLanguageFile();
-
-            initSceneMod();
 
             float height = (sceneMod.ScenePacks.Count - 1) * (buttonHeight + 5) + 5;
             sceneButtonsRect = new Rect(0, 0, 200, height);
@@ -82,7 +82,8 @@ namespace BesiegeCustomScene.UI
 
         void initSceneMod()
         {
-            sceneMod = gameObject.GetComponent<SceneMod>();
+
+            sceneMod = gameObject.GetComponent<CustomSceneMod>() ?? gameObject.AddComponent<CustomSceneMod>();
 
             OnSceneButtonClick += sceneMod.LoadScenePack;
 

@@ -16,30 +16,29 @@ namespace BesiegeCustomScene
             mach = 2,
         };
 
-        VelocityUnit velocityUnit;
+        public VelocityUnit velocityUnit;
         GameObject targetBlock;
         bool validBlock = false;
 
-        public string Position { get { return position.ToString(); } }
-        public string Velocity { get { return velocity.ToString(); } }
-        public string Distance { get { return distance.ToString(); } }
-        public string Overload { get { return overload.ToString(); } }
-        public string Acceleration { get { return acceleration.ToString(); } }
+        public Vector3 Position { get { return position; } }
+        public Vector3 Velocity { get { return velocity; } }
+        public float Distance { get { return distance; } }
+        public float Overload { get { return overload; } }
+        public float Acceleration { get { return acceleration; } }
 
         Vector3 position, lastPosition;
         Vector3 velocity, lastVelocity;
         float distance;
         float overload;
-        Vector3 acceleration;
+        float acceleration;
 
         bool isFirstFram;
 
-        void Start()
+        void Awake()
         {
             isFirstFram = false;
             velocityUnit = VelocityUnit.kmh;
-        }
-
+        } 
 
         void FixedUpdate()
         {
@@ -51,9 +50,11 @@ namespace BesiegeCustomScene
 
                     LoadBlock();
 
-                    func_position();
-                    func_velocity();
+                    //func_position();
+                    //func_velocity();
                 }
+                func_position();
+                func_velocity();
                 func_distance();
                 func_overload();
                 func_acceleration();
@@ -76,24 +77,34 @@ namespace BesiegeCustomScene
             velocity = lastVelocity = Vector3.zero;
             distance = 0f;
             overload = 0f;
-            acceleration = Vector3.zero;           
+            acceleration = 0f;           
         }
 
         public void changedVelocityUnit()
         {
-            if (velocityUnit == VelocityUnit.kmh)
+            //if (velocityUnit == VelocityUnit.kmh)
+            //{
+            //    velocityUnit = VelocityUnit.ms;
+            //}
+            //if (velocityUnit == VelocityUnit.ms)
+            //{
+            //    velocityUnit = VelocityUnit.mach;
+            //}
+            //if (velocityUnit == VelocityUnit.mach)
+            //{
+            //    velocityUnit = VelocityUnit.kmh;
+            //}
+            switch (velocityUnit)
             {
-                velocityUnit = VelocityUnit.ms;
+                case VelocityUnit.kmh: { velocityUnit = VelocityUnit.ms; } break;
+                case VelocityUnit.ms: { velocityUnit = VelocityUnit.mach; } break;
+                case VelocityUnit.mach: { velocityUnit = VelocityUnit.kmh; } break;
             }
-            if (velocityUnit == VelocityUnit.ms)
-            {
-                velocityUnit = VelocityUnit.mach;
-            }
-            if (velocityUnit == VelocityUnit.mach)
-            {
-                velocityUnit = VelocityUnit.kmh;
-            }
-            initPropertise();
+                
+            //initPropertise();
+            velocity = Vector3.zero;
+
+            BesiegeConsoleController.ShowMessage(velocityUnit.ToString());
         }
 
         void func_position()
@@ -154,7 +165,7 @@ namespace BesiegeCustomScene
                 Vector3 currentPosition = position;
 
                 Vector3 deltaPosition = currentPosition - lastPosition;
-                distance += deltaPosition.magnitude /1000f;
+                distance += deltaPosition.magnitude;
                 lastPosition = currentPosition;
             }
             else
@@ -196,14 +207,18 @@ namespace BesiegeCustomScene
             if (validBlock)
             {
                 Vector3 currentVelocity = velocity;
+                Vector3 _acceleration = Vector3.zero;
+                int sign = 0;
 
                 Vector3 deltaVelocity = currentVelocity - lastVelocity;
-                acceleration = deltaVelocity / Time.fixedDeltaTime;
+                _acceleration = deltaVelocity / Time.fixedDeltaTime;
+                sign = (Vector3.Dot(_acceleration, currentVelocity) > 0) ? 1 : -1;
+                acceleration = sign * _acceleration.magnitude;
                 lastVelocity = currentVelocity;
             }
             else
             {
-                acceleration = Vector3.zero;
+                acceleration = 0f;
             }
         }
 
@@ -227,24 +242,30 @@ namespace BesiegeCustomScene
                     {
                         targetBlock = info.gameObject;
                     }
-                    if (targetBlock == null)
-                    {
-                        validBlock = false; return;
-                    }
-                    else
-                    {
-                        validBlock = true; return;
-                    }
+                    //if (targetBlock == null)
+                    //{
+                    //    validBlock = false; 
+                    //}
+                    //else
+                    //{
+                    //    validBlock = true;
+                    //}
+
+                    validBlock = (targetBlock == null ? false : true);
                 }
                 else
                 {
-                    validBlock = true; return;
+                    validBlock = true; 
                 }
             }
             else
             {
-                validBlock = true; return;
+                validBlock = true; 
             }
+
+#if DEBUG 
+            ConsoleController.ShowMessage(targetBlock.name);
+#endif
         }
 
 

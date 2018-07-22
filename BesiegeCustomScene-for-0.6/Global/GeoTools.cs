@@ -948,7 +948,7 @@ namespace BesiegeCustomScene
         }
         */
 
-        public static Mesh MeshFromObj(string Objname, SceneMod.ScenePack scenePack)
+        public static Mesh MeshFromObj(string Objname, CustomSceneMod.ScenePack scenePack)
         {
             List<Vector3> Normals = new List<Vector3>();
             List<Vector2> UV = new List<Vector2>();
@@ -1068,7 +1068,7 @@ namespace BesiegeCustomScene
             return mesh;
         }
 
-        public static List<Mesh> MeshFromLargeObj(string Objname, int FaceCount, SceneMod.ScenePack scenePack)
+        public static List<Mesh> MeshFromLargeObj(string Objname, int FaceCount, CustomSceneMod.ScenePack scenePack)
         {/////f必须在最后 只支持犀牛导出obj
             List<Mesh> meshes = new List<Mesh>();
             List<Vector3> Normals = new List<Vector3>();
@@ -1226,7 +1226,7 @@ namespace BesiegeCustomScene
             return meshes;
         }
 
-        public static List<Mesh> LoadHeightMap(int width, int height, Vector3 scale, Vector2 texturescale, string HeightMap, SceneMod.ScenePack scenePack)
+        public static List<Mesh> LoadHeightMap(int width, int height, Vector3 scale, Vector2 texturescale, string HeightMap, CustomSceneMod.ScenePack scenePack)
         {
             List<Mesh> _meshes = new List<Mesh>();
             Texture2D te2 = (Texture2D)LoadTexture(HeightMap, scenePack);
@@ -1242,7 +1242,7 @@ namespace BesiegeCustomScene
             return _meshes;
         }
 
-        public static Mesh LoadHeightMap(float uscale, float vscale, int u, int v, int heightscale, float texturescale, string HeightMap, SceneMod.ScenePack scenePack)
+        public static Mesh LoadHeightMap(float uscale, float vscale, int u, int v, int heightscale, float texturescale, string HeightMap, CustomSceneMod.ScenePack scenePack)
         {
             if (uscale < 1) uscale = 1;
             if (vscale < 1) vscale = 1;
@@ -1301,7 +1301,7 @@ namespace BesiegeCustomScene
             }
         }
 
-        public static Texture LoadTexture(string TextureName, SceneMod.ScenePack scenePack)
+        public static Texture LoadTexture(string TextureName, CustomSceneMod.ScenePack scenePack)
         {
             string texturePath = scenePack.TexturesPath + "/" + TextureName;
             try
@@ -1336,7 +1336,7 @@ namespace BesiegeCustomScene
             }
         }
 
-        public static Mesh WMeshFromObj(string Objname, SceneMod.ScenePack scenePack)
+        public static Mesh WMeshFromObj(string Objname, CustomSceneMod.ScenePack scenePack)
         {
             List<Vector3> newVertices = new List<Vector3>();
             List<Vector2> newUV = new List<Vector2>();

@@ -7,10 +7,7 @@ namespace BesiegeCustomScene
 {
     public class TriggerMod : MonoBehaviour
     {
-        void Start()
-        {
-          
-        }
+
         void OnDisable()
         {
             ClearTrigger();
@@ -18,11 +15,15 @@ namespace BesiegeCustomScene
         void OnDestroy()
         {
             ClearTrigger();
-        }  
+        }
+
+        public int Size { get { return TriggerSize; } }
+        public int Index { get { return TriggerIndex; } }
 
 
         private GameObject[] meshtriggers;
         private int TriggerSize = 0;
+        internal int TriggerIndex = -1;
         [Obsolete]
         string ScenePath = GeoTools.ScenePath;
         [Obsolete]
@@ -159,7 +160,7 @@ namespace BesiegeCustomScene
             }
         }
 
-        public void ReadScene(SceneMod.ScenePack scenePack)
+        public void ReadScene(CustomSceneMod.ScenePack scenePack)
         {
             try
             {
@@ -343,22 +344,29 @@ namespace BesiegeCustomScene
             meshtriggers = null;
             TriggerSize = 0;
         }
-    }
 
-    public class TriggerScript : MonoBehaviour
-    {
-        public int Index = -1;
-        void Start()
-        {
 
-        }
-        void OnTriggerEnter(Collider other)
+        public class TriggerScript : MonoBehaviour
         {
-            if (StatMaster.levelSimulating)
+            public int Index = -1;
+
+            TriggerMod triggerMod;
+
+            void Awake()
             {
-                if (TimeUI.TriggerIndex == this.Index - 1) TimeUI.TriggerIndex++;
+                triggerMod = GetComponent<TriggerMod>();
             }
 
+            void OnTriggerEnter(Collider other)
+            {
+                if (StatMaster.levelSimulating)
+                {
+                    if (triggerMod.TriggerIndex == Index - 1) TimeUI.TriggerIndex++;
+                }
+            }
         }
+
     }
+
+   
 }

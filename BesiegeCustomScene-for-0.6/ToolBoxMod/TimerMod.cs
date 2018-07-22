@@ -13,16 +13,16 @@ namespace BesiegeCustomScene
         string _currentTime;
 
         DateTime _startTime;
-
+        /// <summary>计时器开关</summary>
         public bool TimeSwitch { get; set; }
-
+        /// <summary>当前系统时间</summary>
         public string CurrentSystemTime { get { return DateTime.Now.ToString("HH:mm:ss"); } }
-
+        /// <summary>当前计时器时间</summary>
         public string CurrentTimerTime { get { return _currentTime; }  set { _currentTime = value; } }
-
+        /// <summary>是否在计时</summary>
         bool isTicking;
 
-        void Start()
+        void Awake()
         {
             isTicking = false;
             _currentTime = "00:00:00";
@@ -50,7 +50,7 @@ namespace BesiegeCustomScene
             }
         }
 
-
+        /// <summary>计时器重置</summary>
         public void Retime()
         {
             TimeSwitch = false;

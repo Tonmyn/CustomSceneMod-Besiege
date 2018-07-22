@@ -13,8 +13,8 @@
 //---Scene List Scroll---//
 104 = "Scene List"
 
-//---Timer Window Title---//
-200 = "Timer"
+//---ToolBox Window Title---//
+200 = "Tool Box"
 
 //---Timer Acceleration---//
 201 = "Acceleration"

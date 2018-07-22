@@ -6,7 +6,7 @@ using System.IO;
 using System.Text;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using static BesiegeCustomScene.SceneMod;
+using static BesiegeCustomScene.CustomSceneMod;
 
 namespace BesiegeCustomScene
 {
@@ -621,7 +621,7 @@ namespace BesiegeCustomScene
 
             ReloadScenes();
 
-            GetComponent<SceneMod>().ScenePacks = ScenePacks;
+            GetComponent<CustomSceneMod>().ScenePacks = ScenePacks;
 
 //            SceneManager.sceneLoaded += (Scene s,LoadSceneMode lsm)=>
 //            {
