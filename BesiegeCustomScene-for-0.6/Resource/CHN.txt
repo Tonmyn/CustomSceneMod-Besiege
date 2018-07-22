@@ -1,4 +1,4 @@
-﻿//Scene Window Title
+﻿//---Scene Window Title---//
 100 = "地形设置"
 
 //---Scene Remove Fog Button---//

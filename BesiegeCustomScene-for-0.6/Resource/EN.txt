@@ -1,4 +1,4 @@
-//Scene Window Title
+//---Scene Window Title---//
 100 = "Scene Setting"
 
 //---Scene Remove Fog Button---//
@@ -20,22 +20,22 @@
 201 = "Acceleration"
 
 //---Timer Overload---//
-203 = "Overload"
+202 = "Overload"
 
 //---Timer Time---//
-204 = "Time"
+203 = "Time"
 
 //---Timer Position---//
-205 = "Position"
+204 = "Position"
 
 //---Timer Velocity---//
-206 = "Velocity"
+205 = "Velocity"
 
 //---Timer Distance---//
-207 = "Distance"
+206 = "Distance"
 
 //---Timer Timer---//
-208 = "Timer"
+207 = "Timer"
 
 //---Timer Trigger---//
 208 = "Trigger"
