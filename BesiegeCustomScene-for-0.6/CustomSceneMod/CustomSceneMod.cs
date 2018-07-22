@@ -119,12 +119,11 @@ namespace BesiegeCustomScene
 
             customSceneMod.AddComponent<MeshMod>();
             customSceneMod.AddComponent<CubeMod>();
-            //customSceneMod.AddComponent<TriggerMod>();
             customSceneMod.AddComponent<SnowMod>();
             customSceneMod.AddComponent<CloudMod>();
             customSceneMod.AddComponent<WaterMod>();
-            //customSceneMod.AddComponent<SkyMod>();
-            customSceneMod.AddComponent<Prop>();
+            customSceneMod.AddComponent<SkyMod>();
+            
         }
 
         void Start()
@@ -415,7 +414,7 @@ namespace BesiegeCustomScene
         /// 加载地图包
         /// </summary>
         /// <param name="ScenePack">地图包</param>
-        public IEnumerator ILoadScenePack(ScenePack scenePack)
+        IEnumerator ILoadScenePack(ScenePack scenePack)
         {
             if (SceneManager.GetActiveScene().name != "2")
             {
@@ -423,17 +422,9 @@ namespace BesiegeCustomScene
             }
             yield return null;
 
-            HideFloorBig();
-            ReadSceneSetting(scenePack);
-            try { GetComponent<MeshMod>().ReadScene(scenePack); } catch { }
-            try { GetComponent<TriggerMod>().ReadScene(scenePack); } catch { }
-            try { GetComponent<CubeMod>().ReadScene(scenePack); } catch { }
-            try { GetComponent<WaterMod>().ReadScene(scenePack); } catch { }
-            try { GetComponent<CloudMod>().ReadScene(scenePack); } catch { }
-            try { GetComponent<SnowMod>().ReadScene(scenePack); } catch { }
+            loadScenePack(scenePack);
 
         }
-
 
         /// <summary>
         /// 加载地图包 多人模式下
@@ -444,7 +435,14 @@ namespace BesiegeCustomScene
 
             yield return null;
 
-            HideFloorBig();
+            loadScenePack(scenePack);
+
+        }
+
+        void loadScenePack(ScenePack scenePack)
+        {
+
+            hideFloorBig();
             ReadSceneSetting(scenePack);
             try { GetComponent<MeshMod>().ReadScene(scenePack); } catch { }
             try { GetComponent<TriggerMod>().ReadScene(scenePack); } catch { }
@@ -452,7 +450,7 @@ namespace BesiegeCustomScene
             try { GetComponent<WaterMod>().ReadScene(scenePack); } catch { }
             try { GetComponent<CloudMod>().ReadScene(scenePack); } catch { }
             try { GetComponent<SnowMod>().ReadScene(scenePack); } catch { }
-
+            try { GetComponent<SkyMod>().ReadScene(scenePack); } catch { }
         }
 
         /// <summary>
@@ -521,9 +519,7 @@ namespace BesiegeCustomScene
 
 
         #region 隐藏/显示地面 空气墙 雾
-        private Vector3 fpos = new Vector3();
-        private Vector3 gpos = new Vector3();
-
+ 
         /// <summary>
         /// 隐藏地面
         /// </summary>
@@ -535,24 +531,47 @@ namespace BesiegeCustomScene
                 UnhideFloorBig();
                 return;
             }
+
+            hideFloorBig();
+
+        }
+
+        private void hideFloorBig()
+        {
+
+            GameObject floorBig = GameObject.Find("FloorBig");
+
             try
             {
-                if (GameObject.Find("FloorGrid").transform.localScale != Vector3.zero) gpos = GameObject.Find("FloorGrid").transform.localScale;
-                GameObject.Find("FloorGrid").transform.localScale = new Vector3(0, 0, 0);
+                floorBig.GetComponent<BoxCollider>().enabled = false;
+                floorBig.GetComponent<MeshRenderer>().enabled = false;
+                foreach (var v in floorBig.GetComponentsInChildren<Renderer>())
+                {
+                    v.enabled = false;
+                }
+
                 FloorBigEnable = false;
             }
-            catch { }
+            catch{ }
+        }
+
+        /// <summary>
+        /// 还原FloorBig
+        /// </summary>
+        private void UnhideFloorBig()
+        {
+
+            GameObject floorBig = GameObject.Find("FloorBig");
+
             try
             {
-                GameObject.Find("Main Camera").GetComponent<Camera>().farClipPlane = 2500;
-                FloorBigEnable = false;
-            }
-            catch { }
-            try
-            {
-                if (GameObject.Find("FloorBig").transform.localScale != Vector3.zero) fpos = GameObject.Find("FloorBig").transform.localScale;
-                GameObject.Find("FloorBig").transform.localScale = new Vector3(0, 0, 0);
-                FloorBigEnable = false;
+                floorBig.GetComponent<BoxCollider>().enabled = true;
+                floorBig.GetComponent<MeshRenderer>().enabled = true;
+                foreach (var v in floorBig.GetComponentsInChildren<Renderer>())
+                {
+                    v.enabled = true;
+                }
+                FloorBigEnable = true;
             }
             catch { }
 
@@ -613,42 +632,27 @@ namespace BesiegeCustomScene
         }
 
         /// <summary>
-        /// 还原FloorBig
-        /// </summary>
-        public void UnhideFloorBig()
-        {
-            try
-            {
-                if (fpos != Vector3.zero) GameObject.Find("FloorBig").transform.localScale = fpos;
-                FloorBigEnable = true;
-            }
-            catch { }
-            try
-            {
-                if (fpos != Vector3.zero) GameObject.Find("FloorGrid").transform.localScale = gpos;
-                FloorBigEnable = true;
-            }
-            catch { }
-            try
-            {
-                GameObject.Find("Main Camera").GetComponent<Camera>().farClipPlane = 1500;
-                FloorBigEnable = true;
-            }
-            catch { }
-        }
-
-        /// <summary>
         /// 隐藏雾
         /// </summary>
         public void HideFog()
         {
             FogEnable = !FogEnable;
-            
-            GameObject mainCamera = GameObject.Find("Main Camera");
-            mainCamera.GetComponent<ColorfulFog>().enabled = FogEnable;
-            GameObject fogSPHERE = GameObject.Find("FOG SPHERE");
-            fogSPHERE.GetComponent<MeshRenderer>().enabled = FogEnable;
 
+            //try
+            //{
+            //    GameObject mainCamera = GameObject.Find("Main Camera");
+            //    mainCamera.GetComponent<ColorfulFog>().enabled = FogEnable;
+            //}
+            //catch
+            //{ }
+
+            try
+            {
+                GameObject fogSPHERE = GameObject.Find("FOG SPHERE");
+                fogSPHERE.GetComponent<MeshRenderer>().enabled = FogEnable;
+            }
+            catch
+            { }
 
             try
             {

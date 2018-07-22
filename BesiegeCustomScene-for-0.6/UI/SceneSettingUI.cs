@@ -82,8 +82,11 @@ namespace BesiegeCustomScene.UI
 
         void initSceneMod()
         {
+            sceneMod = new GameObject("Custom Scene Mod").AddComponent<CustomSceneMod>();
 
-            sceneMod = gameObject.GetComponent<CustomSceneMod>() ?? gameObject.AddComponent<CustomSceneMod>();
+            sceneMod.transform.SetParent(transform);
+
+            //sceneMod = gameObject.GetComponent<CustomSceneMod>() ?? gameObject.AddComponent<CustomSceneMod>();
 
             OnSceneButtonClick += sceneMod.LoadScenePack;
 

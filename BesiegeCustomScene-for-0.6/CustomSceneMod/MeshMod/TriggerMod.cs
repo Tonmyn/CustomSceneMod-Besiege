@@ -346,31 +346,32 @@ namespace BesiegeCustomScene
         }
 
 
-        public class TriggerScript : MonoBehaviour
-        {
-            public int Index = -1;
-
-            TriggerMod triggerMod;
-
-            void Awake()
-            {
-                triggerMod = GetComponent<TriggerMod>();
-            }
-
-            void OnTriggerEnter(Collider other)
-            {
-                if (StatMaster.levelSimulating)
-                {
-                    if (triggerMod.TriggerIndex == Index - 1)
-                    {
-                        //TimeUI.TriggerIndex++;
-                        triggerMod.Index++;
-                    }
-                }
-            }
-        }
+       
 
     }
 
-   
+    public class TriggerScript : MonoBehaviour
+    {
+        public int Index = -1;
+
+        TriggerMod triggerMod;
+
+        void Awake()
+        {
+            triggerMod = GetComponent<TriggerMod>();
+        }
+
+        void OnTriggerEnter(Collider other)
+        {
+            if (StatMaster.levelSimulating)
+            {
+                if (triggerMod.TriggerIndex == Index - 1)
+                {
+                    //TimeUI.TriggerIndex++;
+                    triggerMod.Index++;
+                }
+            }
+        }
+    }
+
 }

@@ -48,11 +48,9 @@
     <Compile Include="CustomSceneMod\MeshMod\MeshMod.cs" />
     <Compile Include="CustomSceneMod\Water4\PlanarReflection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Global\SceneUI.cs" />
     <Compile Include="CustomSceneMod\EnvironmentMod\SnowMod.cs" />
     <Compile Include="CustomSceneMod\Water4\SpecularLighting.cs" />
     <Compile Include="Global\StaticProp.cs" />
-    <Compile Include="ToolBoxMod\TimeUI.cs" />
     <Compile Include="CustomSceneMod\MeshMod\TriggerMod.cs" />
     <Compile Include="CustomSceneMod\Water4\Water.cs" />
     <Compile Include="CustomSceneMod\Water4\WaterBase.cs" />
