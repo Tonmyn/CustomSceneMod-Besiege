@@ -643,17 +643,12 @@ namespace BesiegeCustomScene
         public void HideFog()
         {
             FogEnable = !FogEnable;
-
-            if (FogEnable)
-            {
-                GameObject.Find("Main Camera").GetComponent<Camera>().farClipPlane -= 100;
-            }
-            else
-            {
-                GameObject.Find("Main Camera").GetComponent<Camera>().farClipPlane += 100;
-            }
             
-            GameObject.Find("Main Camera").GetComponent<ColorfulFog>().enabled = FogEnable;
+            GameObject mainCamera = GameObject.Find("Main Camera");
+            mainCamera.GetComponent<ColorfulFog>().enabled = FogEnable;
+            GameObject fogSPHERE = GameObject.Find("FOG SPHERE");
+            fogSPHERE.GetComponent<MeshRenderer>().enabled = FogEnable;
+
 
             try
             {
