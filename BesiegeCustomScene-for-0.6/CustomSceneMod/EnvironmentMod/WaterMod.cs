@@ -113,7 +113,7 @@ namespace BesiegeCustomScene
                 return;
             }
         }
-        public void ReadScene(ScenePack scenePack)
+        public void ReadScene(CustomSceneMod.ScenePack scenePack)
         {
             WaterSize = 0;
             try

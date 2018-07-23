@@ -7,10 +7,7 @@ namespace BesiegeCustomScene
 {
     public class TriggerMod : MonoBehaviour
     {
-        void Start()
-        {
-          
-        }
+
         void OnDisable()
         {
             ClearTrigger();
@@ -18,11 +15,15 @@ namespace BesiegeCustomScene
         void OnDestroy()
         {
             ClearTrigger();
-        }  
+        }
+
+        public int Size { get { return TriggerSize; } }
+        public int Index { get { return TriggerIndex; } set { TriggerIndex = value; } }
 
 
         private GameObject[] meshtriggers;
         private int TriggerSize = 0;
+        internal int TriggerIndex = -1;
         [Obsolete]
         string ScenePath = GeoTools.ScenePath;
         [Obsolete]
@@ -49,7 +50,7 @@ namespace BesiegeCustomScene
                             if (chara[1] == "size")
                             {
                                 this.TriggerSize = Convert.ToInt32(chara[2]);
-                                this.gameObject.GetComponent<TimeUI>().TriggerSize = TriggerSize;
+                                //this.gameObject.GetComponent<TimeUI>().TriggerSize = TriggerSize;
                                 LoadTrigger();
                             }
                         }
@@ -159,7 +160,7 @@ namespace BesiegeCustomScene
             }
         }
 
-        public void ReadScene(ScenePack scenePack)
+        public void ReadScene(CustomSceneMod.ScenePack scenePack)
         {
             try
             {
@@ -173,7 +174,7 @@ namespace BesiegeCustomScene
 
                 FileStream fs = new FileStream(scenePack.SettingFilePath, FileMode.Open);
                 //打开数据文件
-                StreamReader srd = new StreamReader(fs, Encoding.Default);               
+                StreamReader srd = new StreamReader(fs, Encoding.Default);
 
                 while (srd.Peek() != -1)
                 {
@@ -187,7 +188,7 @@ namespace BesiegeCustomScene
                             if (chara[1] == "size")
                             {
                                 this.TriggerSize = Convert.ToInt32(chara[2]);
-                                this.gameObject.GetComponent<TimeUI>().TriggerSize = TriggerSize;
+                                //this.gameObject.GetComponent<TimeUI>().TriggerSize = TriggerSize;
                                 LoadTrigger();
                             }
                         }
@@ -301,12 +302,12 @@ namespace BesiegeCustomScene
         {
             try
             {
-                
+
                 if (TriggerSize <= 0)
-                {         
+                {
                     return;
                 }
-                if (TriggerSize > 100) TriggerSize = 100;              
+                if (TriggerSize > 100) TriggerSize = 100;
                 if (TriggerSize > 0)
                 {
                     meshtriggers = new GameObject[TriggerSize];
@@ -343,22 +344,34 @@ namespace BesiegeCustomScene
             meshtriggers = null;
             TriggerSize = 0;
         }
+
+
+       
+
     }
 
     public class TriggerScript : MonoBehaviour
     {
         public int Index = -1;
-        void Start()
-        {
 
+        TriggerMod triggerMod;
+
+        void Awake()
+        {
+            triggerMod = GetComponent<TriggerMod>();
         }
+
         void OnTriggerEnter(Collider other)
         {
             if (StatMaster.levelSimulating)
             {
-                if (TimeUI.TriggerIndex == this.Index - 1) TimeUI.TriggerIndex++;
+                if (triggerMod.TriggerIndex == Index - 1)
+                {
+                    //TimeUI.TriggerIndex++;
+                    triggerMod.Index++;
+                }
             }
-
         }
     }
+
 }

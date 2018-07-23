@@ -574,7 +574,7 @@ namespace BesiegeCustomScene
             }
         }
 
-        public void ReadScene(ScenePack sp)
+        public void ReadScene(CustomSceneMod.ScenePack sp)
         {
             
             try

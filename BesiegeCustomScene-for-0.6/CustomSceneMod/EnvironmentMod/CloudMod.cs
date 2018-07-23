@@ -142,7 +142,7 @@ namespace BesiegeCustomScene
             }
         }
 
-        public void ReadScene(ScenePack scenePack)
+        public void ReadScene(CustomSceneMod.ScenePack scenePack)
         {
 
             try
