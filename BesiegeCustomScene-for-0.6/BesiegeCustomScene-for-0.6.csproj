@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BesiegeCustomScene</RootNamespace>
-    <AssemblyName>BesiegeCustomScene-for-0.6</AssemblyName>
+    <AssemblyName>BesiegeCustomSceneMod</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -17,7 +17,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -36,6 +36,7 @@
     <Compile Include="CustomSceneMod\CustomSceneMod.cs" />
     <Compile Include="CustomSceneMod\EnvironmentMod\SkyMod.cs" />
     <Compile Include="CustomSceneMod\EnvironmentMod\CloudMod.cs" />
+    <Compile Include="test-script.cs" />
     <Compile Include="ToolBoxMod\BlockInformationMod.cs" />
     <Compile Include="ToolBoxMod\TimerMod.cs" />
     <Compile Include="UI\SceneSettingUI.cs" />
@@ -122,14 +123,16 @@
   <ItemGroup>
     <Content Include="Resource\CHN.txt" />
     <Content Include="Resource\EN.txt" />
+    <Content Include="Resource\Mod.xml" />
     <Content Include="Resource\Settings.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy /Y "$(TargetPath)" "%25BESIEGE_LOCATION%25\Plugins\$(TargetName).dll"
-copy /Y "$(ProjectDir)Resource\Settings.txt" "%25BESIEGE_LOCATION%25\Besiege_Data\Mods\BesiegeCustomScene\Settings.txt"
-copy /Y "$(ProjectDir)Resource\CHN.txt" "%25BESIEGE_LOCATION%25\Besiege_Data\Mods\BesiegeCustomScene\UI\CHN.txt"
-copy /Y "$(ProjectDir)Resource\EN.txt" "%25BESIEGE_LOCATION%25\Besiege_Data\Mods\BesiegeCustomScene\UI\EN.txt"</PostBuildEvent>
+    <PostBuildEvent>copy /Y "$(TargetPath)" "%25BESIEGE_LOCATION%25\Besiege_Data\Mods\$(TargetName)\$(TargetName).dll"
+copy /Y "$(ProjectDir)Resource\Settings.txt" "%25BESIEGE_LOCATION%25\Besiege_Data\Mods\$(TargetName)\Settings.txt"
+copy /Y "$(ProjectDir)Resource\CHN.txt" "%25BESIEGE_LOCATION%25\Besiege_Data\Mods\$(TargetName)\UI\CHN.txt"
+copy /Y "$(ProjectDir)Resource\EN.txt" "%25BESIEGE_LOCATION%25\Besiege_Data\Mods\$(TargetName)\UI\EN.txt"
+copy /Y "$(ProjectDir)Resource\Mod.xml" "%25BESIEGE_LOCATION%25\Besiege_Data\Mods\$(TargetName)\Mod.xml"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <StartAction>Program</StartAction>

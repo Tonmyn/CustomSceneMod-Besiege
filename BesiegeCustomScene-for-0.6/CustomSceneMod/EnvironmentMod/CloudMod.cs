@@ -1,5 +1,5 @@
 ﻿using System;
-using System.IO;
+//using System.IO;
 using System.Text;
 using UnityEngine;
 
@@ -77,184 +77,184 @@ namespace BesiegeCustomScene
         public void ReadScene(string SceneName)
         {
             CloudsColor = new Color(0.9f, 0.9f, 0.9f, 0.6f);
-            try
-            {
-                //GeoTools.Log(Application.dataPath);
-                if (!File.Exists(ScenePath + SceneName + ".txt"))
-                {
-                    GeoTools.Log("Error! Scene File not exists!");
-                    return;
-                }
-                StreamReader srd = File.OpenText(ScenePath + SceneName + ".txt");
-                while (srd.Peek() != -1)
-                {
-                    string str = srd.ReadLine();
-                    string[] chara = str.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-                    if (chara.Length > 2)
-                    {
-                        #region Cloud
-                        if (chara[0] == "Cloud")
-                        {
+            //try
+            //{
+            //    //GeoTools.Log(Application.dataPath);
+            //    if (!File.Exists(ScenePath + SceneName + ".txt"))
+            //    {
+            //        GeoTools.Log("Error! Scene File not exists!");
+            //        return;
+            //    }
+            //    StreamReader srd = File.OpenText(ScenePath + SceneName + ".txt");
+            //    while (srd.Peek() != -1)
+            //    {
+            //        string str = srd.ReadLine();
+            //        string[] chara = str.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+            //        if (chara.Length > 2)
+            //        {
+            //            #region Cloud
+            //            if (chara[0] == "Cloud")
+            //            {
 
-                            if (chara[1] == "size")
-                            {
-                                this.CloudSize = Convert.ToInt32(chara[2]);
-                                LoadCloud();
-                            }
-                            if (chara[1] == "step")
-                            {
-                                this.cloudstep = Convert.ToInt32(chara[2]);
-                            }
-                            else if (chara[1] == "floorScale" || chara[1] == "cloudScale")
-                            {
-                                cloudScale = new Vector3(
-                                Convert.ToSingle(chara[2]),
-                                Convert.ToSingle(chara[3]),
-                                Convert.ToSingle(chara[4]));
-                            }
-                            else if (chara[1] == "location")
-                            {
-                                this.transform.localPosition = new Vector3(
-                                Convert.ToSingle(chara[2]),
-                                Convert.ToSingle(chara[3]),
-                                Convert.ToSingle(chara[4]));
-                            }
-                            else if (chara[1] == "color")
-                            {
-                                this.CloudsColor = new Color(
-                                Convert.ToSingle(chara[2]),
-                                Convert.ToSingle(chara[3]),
-                                Convert.ToSingle(chara[4]),
-                                Convert.ToSingle(chara[5]));
-                            }
-                        }
-                        #endregion
-                    }
-                }
-                srd.Close();
-                GeoTools.Log("ReadCloud Completed!");
-            }
-            catch (Exception ex)
-            {
-                GeoTools.Log("Error! ReadCloud Failed!");
-                GeoTools.Log(ex.ToString());
-                return;
-            }
+            //                if (chara[1] == "size")
+            //                {
+            //                    this.CloudSize = Convert.ToInt32(chara[2]);
+            //                    LoadCloud();
+            //                }
+            //                if (chara[1] == "step")
+            //                {
+            //                    this.cloudstep = Convert.ToInt32(chara[2]);
+            //                }
+            //                else if (chara[1] == "floorScale" || chara[1] == "cloudScale")
+            //                {
+            //                    cloudScale = new Vector3(
+            //                    Convert.ToSingle(chara[2]),
+            //                    Convert.ToSingle(chara[3]),
+            //                    Convert.ToSingle(chara[4]));
+            //                }
+            //                else if (chara[1] == "location")
+            //                {
+            //                    this.transform.localPosition = new Vector3(
+            //                    Convert.ToSingle(chara[2]),
+            //                    Convert.ToSingle(chara[3]),
+            //                    Convert.ToSingle(chara[4]));
+            //                }
+            //                else if (chara[1] == "color")
+            //                {
+            //                    this.CloudsColor = new Color(
+            //                    Convert.ToSingle(chara[2]),
+            //                    Convert.ToSingle(chara[3]),
+            //                    Convert.ToSingle(chara[4]),
+            //                    Convert.ToSingle(chara[5]));
+            //                }
+            //            }
+            //            #endregion
+            //        }
+            //    }
+            //    srd.Close();
+            //    GeoTools.Log("ReadCloud Completed!");
+            //}
+            //catch (Exception ex)
+            //{
+            //    GeoTools.Log("Error! ReadCloud Failed!");
+            //    GeoTools.Log(ex.ToString());
+            //    return;
+            //}
         }
 
         public void ReadScene(CustomSceneMod.ScenePack scenePack)
         {
 
-            try
-            {
-                ClearCloud();
+//            try
+//            {
+//                ClearCloud();
 
-                if (!File.Exists(scenePack.SettingFilePath))
-                {
-                    GeoTools.Log("Error! Scene File not exists!");
-                    return;
-                }
+//                if (!File.Exists(scenePack.SettingFilePath))
+//                {
+//                    GeoTools.Log("Error! Scene File not exists!");
+//                    return;
+//                }
 
-                FileStream fs = new FileStream(scenePack.SettingFilePath, FileMode.Open);
-                //打开数据文件
-                StreamReader srd = new StreamReader(fs, Encoding.Default);             
+//                FileStream fs = new FileStream(scenePack.SettingFilePath, FileMode.Open);
+//                //打开数据文件
+//                StreamReader srd = new StreamReader(fs, Encoding.Default);             
 
-                while (srd.Peek() != -1)
-                {
-                    string str = srd.ReadLine();
-                    string[] chara = str.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-                    if (chara.Length > 2)
-                    {
-                        #region Cloud
-                        if (chara[0] == "Cloud")
-                        {
+//                while (srd.Peek() != -1)
+//                {
+//                    string str = srd.ReadLine();
+//                    string[] chara = str.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+//                    if (chara.Length > 2)
+//                    {
+//                        #region Cloud
+//                        if (chara[0] == "Cloud")
+//                        {
 
-                            if (chara[1] == "size")
-                            {
-                                this.CloudSize = Convert.ToInt32(chara[2]);
-                                LoadCloud();
-                            }
-                            if (chara[1] == "step")
-                            {
-                                this.cloudstep = Convert.ToInt32(chara[2]);
-                            }
-                            else if (chara[1] == "floorScale" || chara[1] == "cloudScale")
-                            {
-                                cloudScale = new Vector3(
-                                Convert.ToSingle(chara[2]),
-                                Convert.ToSingle(chara[3]),
-                                Convert.ToSingle(chara[4]));
-                            }
-                            else if (chara[1] == "location")
-                            {
-                                this.transform.localPosition = new Vector3(
-                                Convert.ToSingle(chara[2]),
-                                Convert.ToSingle(chara[3]),
-                                Convert.ToSingle(chara[4]));
-                            }
-                            else if (chara[1] == "color")
-                            {
-                                this.CloudsColor = new Color(
-                                Convert.ToSingle(chara[2]),
-                                Convert.ToSingle(chara[3]),
-                                Convert.ToSingle(chara[4]),
-                                Convert.ToSingle(chara[5]));
-                            }
-                        }
-                        #endregion
-                    }
-                }
-                srd.Close();
+//                            if (chara[1] == "size")
+//                            {
+//                                this.CloudSize = Convert.ToInt32(chara[2]);
+//                                LoadCloud();
+//                            }
+//                            if (chara[1] == "step")
+//                            {
+//                                this.cloudstep = Convert.ToInt32(chara[2]);
+//                            }
+//                            else if (chara[1] == "floorScale" || chara[1] == "cloudScale")
+//                            {
+//                                cloudScale = new Vector3(
+//                                Convert.ToSingle(chara[2]),
+//                                Convert.ToSingle(chara[3]),
+//                                Convert.ToSingle(chara[4]));
+//                            }
+//                            else if (chara[1] == "location")
+//                            {
+//                                this.transform.localPosition = new Vector3(
+//                                Convert.ToSingle(chara[2]),
+//                                Convert.ToSingle(chara[3]),
+//                                Convert.ToSingle(chara[4]));
+//                            }
+//                            else if (chara[1] == "color")
+//                            {
+//                                this.CloudsColor = new Color(
+//                                Convert.ToSingle(chara[2]),
+//                                Convert.ToSingle(chara[3]),
+//                                Convert.ToSingle(chara[4]),
+//                                Convert.ToSingle(chara[5]));
+//                            }
+//                        }
+//                        #endregion
+//                    }
+//                }
+//                srd.Close();
 
-#if DEBUG
-                GeoTools.Log("ReadCloud Completed!");
-#endif
-            }
-            catch (Exception ex)
-            {
-                GeoTools.Log("Error! ReadCloud Failed!");
-                GeoTools.Log(ex.ToString());
-                return;
-            }
+//#if DEBUG
+//                GeoTools.Log("ReadCloud Completed!");
+//#endif
+//            }
+//            catch (Exception ex)
+//            {
+//                GeoTools.Log("Error! ReadCloud Failed!");
+//                GeoTools.Log(ex.ToString());
+//                return;
+//            }
         }
 
         public void LoadCloud()
         {
-            try
-            {
+            //try
+            //{
                 
-                if (gameObject.GetComponent<Prop>().CloudTemp == null) return;
-                if (CloudSize < 0) CloudSize = 0;
-                if (CloudSize > 1000) CloudSize = 1000;
-                if (CloudSize == 0) { return; }
-                else
-                {
-                    clouds = new GameObject[CloudSize];
-                    //axis = new Vector3[CloudSize];
-                    for (int i = 0; i < clouds.Length; i++)
-                    {
-                        clouds[i] = (GameObject)Instantiate(this.gameObject.GetComponent<Prop>().CloudTemp, new Vector3(
-                            UnityEngine.Random.Range(-cloudScale.x + transform.localPosition.x, cloudScale.x + transform.localPosition.x),
-                            UnityEngine.Random.Range(transform.localPosition.y, cloudScale.y + transform.localPosition.y),
-                            UnityEngine.Random.Range(-cloudScale.z + transform.localPosition.z, cloudScale.z + transform.localPosition.z)),
-                            new Quaternion(0, 0, 0, 0));
-                        clouds[i].transform.SetParent(transform);
-                        clouds[i].transform.localScale = new Vector3(100, 100, 100);
-                        clouds[i].SetActive(true);
-                        ParticleSystem ps = clouds[i].GetComponent<ParticleSystem>();
-                        ps.startColor = CloudsColor;
-                        clouds[i].AddComponent<CloudScript>();
-                        //axis[i] = new Vector3(UnityEngine.Random.Range(-0.1f, 0.1f), 1f, UnityEngine.Random.Range(-0.1f, 0.1f));
-                    }
-                     GeoTools.Log("LoadCloud Successfully");
-                }
-            }
-            catch (Exception ex)
-            {
-                GeoTools.Log("Error! LoadCloud Failed");
-                GeoTools.Log(ex.ToString());
-                ClearCloud();
-            }
+            //    if (gameObject.GetComponent<Prop>().CloudTemp == null) return;
+            //    if (CloudSize < 0) CloudSize = 0;
+            //    if (CloudSize > 1000) CloudSize = 1000;
+            //    if (CloudSize == 0) { return; }
+            //    else
+            //    {
+            //        clouds = new GameObject[CloudSize];
+            //        //axis = new Vector3[CloudSize];
+            //        for (int i = 0; i < clouds.Length; i++)
+            //        {
+            //            clouds[i] = (GameObject)Instantiate(this.gameObject.GetComponent<Prop>().CloudTemp, new Vector3(
+            //                UnityEngine.Random.Range(-cloudScale.x + transform.localPosition.x, cloudScale.x + transform.localPosition.x),
+            //                UnityEngine.Random.Range(transform.localPosition.y, cloudScale.y + transform.localPosition.y),
+            //                UnityEngine.Random.Range(-cloudScale.z + transform.localPosition.z, cloudScale.z + transform.localPosition.z)),
+            //                new Quaternion(0, 0, 0, 0));
+            //            clouds[i].transform.SetParent(transform);
+            //            clouds[i].transform.localScale = new Vector3(100, 100, 100);
+            //            clouds[i].SetActive(true);
+            //            ParticleSystem ps = clouds[i].GetComponent<ParticleSystem>();
+            //            ps.startColor = CloudsColor;
+            //            clouds[i].AddComponent<CloudScript>();
+            //            //axis[i] = new Vector3(UnityEngine.Random.Range(-0.1f, 0.1f), 1f, UnityEngine.Random.Range(-0.1f, 0.1f));
+            //        }
+            //         GeoTools.Log("LoadCloud Successfully");
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    GeoTools.Log("Error! LoadCloud Failed");
+            //    GeoTools.Log(ex.ToString());
+            //    ClearCloud();
+            //}
         }
 
         public void ClearCloud()

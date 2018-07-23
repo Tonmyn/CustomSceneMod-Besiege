@@ -1,6 +1,7 @@
-﻿using System;
+﻿using Modding;
+using System;
 using System.Collections.Generic;
-using System.IO;
+//using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -30,15 +31,15 @@ namespace BesiegeCustomScene
                 try
                 {
 
-                    if (!File.Exists(filePath))
+                    if (!ModIO.ExistsFile(filePath))
                     {
                         GeoTools.Log("Error! Language File not exists!");
                         return;
                     }
 
-                    FileStream fs = new FileStream(filePath, FileMode.Open);
+                    //var fs = ModIO.Open(filePath, System.IO.FileMode.Open);
                     //打开数据文件
-                    StreamReader srd = new StreamReader(fs, Encoding.Default);
+                    var srd = ModIO.OpenText(filePath);
 
                     while (srd.Peek() != -1)
                     {
@@ -89,7 +90,7 @@ namespace BesiegeCustomScene
 
         Language currentLanguage;
 
-        static string languageFilePath = Application.dataPath + "/Mods/BesiegeCustomScene/UI/";
+        static string languageFilePath = GeoTools.UIPath;
 
         void Awake()
         {

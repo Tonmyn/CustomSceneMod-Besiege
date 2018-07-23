@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
+//using System.IO;
 using System.Linq;
 using System.Text;
 using UnityEngine;
@@ -31,44 +31,44 @@ namespace BesiegeCustomScene
             //skyBoxMeshPath = scenePack.MeshsPath + "/Skydome.obj";
 
             
-            try
-            {
-                if (!File.Exists(scenePack.SettingFilePath))
-                {
-                    GeoTools.Log("Error! Scene File not exists!");
-                    return;
-                }
+            //try
+            //{
+            //    if (!File.Exists(scenePack.SettingFilePath))
+            //    {
+            //        GeoTools.Log("Error! Scene File not exists!");
+            //        return;
+            //    }
 
-                FileStream fs = new FileStream(scenePack.SettingFilePath, FileMode.Open);
+            //    FileStream fs = new FileStream(scenePack.SettingFilePath, FileMode.Open);
 
-                //打开数据文件
-                StreamReader srd = new StreamReader(fs, Encoding.Default);
+            //    //打开数据文件
+            //    StreamReader srd = new StreamReader(fs, Encoding.Default);
 
-                while (srd.Peek() != -1)
-                {
-                    string str = srd.ReadLine();
-                    string[] chara = str.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-                    if (chara.Length > 2)
-                    {
-                        #region Mesheses
-                        if (chara[0] == "Sky")
-                        {
-                            skyBoxTexturePath = scenePack.TexturesPath + "/" + chara[1];
-                            create();
-                        }
-                        #endregion                 
-                    }
-                }
-                srd.Close();
-                //   for (int i = 0; i < this.meshes.Length; i++){GeoTools.MeshFilt(ref this.meshes[i]);}
-                GeoTools.Log("Read Sky Completed!");
-            }
-            catch (Exception ex)
-            {
-                GeoTools.Log("Error! Read Sky Failed!");
-                GeoTools.Log(ex.ToString());
-                return;
-            }
+            //    while (srd.Peek() != -1)
+            //    {
+            //        string str = srd.ReadLine();
+            //        string[] chara = str.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+            //        if (chara.Length > 2)
+            //        {
+            //            #region Mesheses
+            //            if (chara[0] == "Sky")
+            //            {
+            //                skyBoxTexturePath = scenePack.TexturesPath + "/" + chara[1];
+            //                create();
+            //            }
+            //            #endregion                 
+            //        }
+            //    }
+            //    srd.Close();
+            //    //   for (int i = 0; i < this.meshes.Length; i++){GeoTools.MeshFilt(ref this.meshes[i]);}
+            //    GeoTools.Log("Read Sky Completed!");
+            //}
+            //catch (Exception ex)
+            //{
+            //    GeoTools.Log("Error! Read Sky Failed!");
+            //    GeoTools.Log(ex.ToString());
+            //    return;
+            //}
 
           
         }
@@ -83,7 +83,7 @@ namespace BesiegeCustomScene
 
         void getTexture()
         {
-            skyBallTexture = LoadByIO(skyBoxTexturePath);
+            //skyBallTexture = LoadByIO(skyBoxTexturePath);
         }
 
         void create()
@@ -138,37 +138,37 @@ namespace BesiegeCustomScene
             }
         }
 
-        private Texture2D LoadByIO(string path)
-        {
-            //Image image = gameObject.AddComponent<Image>();
+        //private Texture2D LoadByIO(string path)
+        //{
+        //    //Image image = gameObject.AddComponent<Image>();
 
-            double startTime = (double)Time.time;
-            //创建文件流
-            FileStream fileStream = new FileStream(path, FileMode.Open, FileAccess.Read);
-            fileStream.Seek(0, SeekOrigin.Begin);
-            //创建文件长度的缓冲区
-            byte[] bytes = new byte[fileStream.Length];
-            //读取文件
-            fileStream.Read(bytes, 0, (int)fileStream.Length);
-            //释放文件读取liu
-            fileStream.Close();
-            fileStream.Dispose();
-            fileStream = null;
+        //    double startTime = (double)Time.time;
+        //    //创建文件流
+        //    FileStream fileStream = new FileStream(path, FileMode.Open, FileAccess.Read);
+        //    fileStream.Seek(0, SeekOrigin.Begin);
+        //    //创建文件长度的缓冲区
+        //    byte[] bytes = new byte[fileStream.Length];
+        //    //读取文件
+        //    fileStream.Read(bytes, 0, (int)fileStream.Length);
+        //    //释放文件读取liu
+        //    fileStream.Close();
+        //    fileStream.Dispose();
+        //    fileStream = null;
 
-            //创建Texture
-            int width = 300;
-            int height = 372;
-            Texture2D texture2D = new Texture2D(width, height);
-            texture2D.LoadImage(bytes);
+        //    //创建Texture
+        //    int width = 300;
+        //    int height = 372;
+        //    Texture2D texture2D = new Texture2D(width, height);
+        //    texture2D.LoadImage(bytes);
 
-            return texture2D;
+        //    return texture2D;
 
-            //Sprite sprite = Sprite.Create(texture2D, new Rect(0, 0, texture2D.width, texture2D.height),
-            //    new Vector2(0.5f, 0.5f));
-            //image.sprite = sprite;
-            //double time = (double)Time.time - startTime;
-            //Debug.Log("IO加载用时：" + time);
-        }
+        //    //Sprite sprite = Sprite.Create(texture2D, new Rect(0, 0, texture2D.width, texture2D.height),
+        //    //    new Vector2(0.5f, 0.5f));
+        //    //image.sprite = sprite;
+        //    //double time = (double)Time.time - startTime;
+        //    //Debug.Log("IO加载用时：" + time);
+        //}
     }
 
     public class CameraFollower : MonoBehaviour

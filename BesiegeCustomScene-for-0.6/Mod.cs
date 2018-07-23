@@ -1,36 +1,41 @@
-using PluginManager.Plugin;
 using UnityEngine;
+using Modding;
 
 namespace BesiegeCustomScene
 {
 
-    [OnGameInit]
-    public class Mod : MonoBehaviour
+
+    public class BesiegeCustomSceneMod : ModEntryPoint
     {
-        public GameObject customSceneMod;
 
-        string DisplayName = "Besiege Custom Scene";
-
-        string Version = "1.10.9";
-
-        private void Start()   
+        public override void OnLoad()
         {
+
+            GameObject customSceneMod;
+
+            string DisplayName = "Besiege Custom Scene";
+
+            string Version = "1.10.9";
 
             //添加MOD更新推送功能
             //new GameObject("Mod更新组件").AddComponent<Updater>().SetUrl("XultimateX", Name);
 
             customSceneMod = new GameObject();
-            customSceneMod.name = string.Format("{0} {1}", DisplayName, Version);
+            //customSceneMod.name = string.Format("{0} {1}", DisplayName, Version);
 
-            customSceneMod.AddComponent<SettingsManager>();
-            customSceneMod.AddComponent<LanguageManager>();
-            customSceneMod.AddComponent<Prop>();
-            customSceneMod.AddComponent<UI.SceneSettingUI>();
-            customSceneMod.AddComponent<UI.ToolBoxSettingUI>();
-            
-            UnityEngine.Object.DontDestroyOnLoad(customSceneMod);
+            //customSceneMod.AddComponent<SettingsManager>();
+            //customSceneMod.AddComponent<LanguageManager>();
+            //customSceneMod.AddComponent<Prop>();
+            //customSceneMod.AddComponent<UI.SceneSettingUI>();
+            //customSceneMod.AddComponent<UI.ToolBoxSettingUI>();
 
-            
+            customSceneMod.AddComponent<TestScript>();
+
+
+            //UnityEngine.Object.DontDestroyOnLoad(customSceneMod);
+
+
+            BesiegeConsoleController.ShowMessage("on load form BesiegeCustomSceneMod");
 
         }
     }

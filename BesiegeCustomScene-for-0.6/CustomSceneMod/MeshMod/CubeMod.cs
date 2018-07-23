@@ -1,5 +1,5 @@
 ﻿using System;
-using System.IO;
+//using System.IO;
 using System.Text;
 using UnityEngine;
 
@@ -29,325 +29,325 @@ namespace BesiegeCustomScene
         [Obsolete]
         public void ReadScene(string SceneName)
         {
-            try
-            {
+            //try
+            //{
 
-                if (!File.Exists(ScenePath + SceneName + ".txt"))
-                {
-                    GeoTools.Log("Error! Scene File not exists!");
-                    return;
-                }
+            //    if (!File.Exists(ScenePath + SceneName + ".txt"))
+            //    {
+            //        GeoTools.Log("Error! Scene File not exists!");
+            //        return;
+            //    }
 
-                StreamReader srd = File.OpenText(ScenePath + SceneName + ".txt");
+            //    StreamReader srd = File.OpenText(ScenePath + SceneName + ".txt");
 
-                CubeAmount = 0;
+            //    CubeAmount = 0;
 
-                while (srd.Peek() != -1)
-                {
-                    string str = srd.ReadLine();
-                    string[] chara = str.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-                    if (chara.Length > 2)
-                    {
-                        #region Cube
-                        if (chara[0].ToLower() == "cubes")
-                        {
-                            if (chara[1].ToLower() == "amount")
-                            {
-                                CubeAmount = Convert.ToInt32(chara[2]);
-                                LoadCube();
-                            }
-                        }
-                        else if (chara[0].ToLower() == "cube")
-                        {
-                            int i = Convert.ToInt32(chara[1]);
-                            if (chara[2] == "mesh")
-                            {
-                                meshCubes[i].GetComponent<MeshFilter>().mesh = GeoTools.MeshFromObj(chara[3]);
-                            }
-                            else if (chara[2] == "wmesh")
-                            {
-                                meshCubes[i].GetComponent<MeshFilter>().mesh = GeoTools.WMeshFromObj(chara[3]);
-                            }
-                            else if (chara[2] == "scale")
-                            {
-                                meshCubes[i].transform.localScale = new Vector3(
-                               Convert.ToSingle(chara[3]),
-                               Convert.ToSingle(chara[4]),
-                               Convert.ToSingle(chara[5]));
-                            }
-                            else if (chara[2] == "rotation")
-                            {
-                                meshCubes[i].transform.rotation = new Quaternion(
-                                Convert.ToSingle(chara[3]),
-                                Convert.ToSingle(chara[4]),
-                                Convert.ToSingle(chara[5]),
-                                Convert.ToSingle(chara[6]));
-                            }
-                            else if (chara[2] == "eulerangles")
-                            {
-                                meshCubes[i].transform.Rotate(new Vector3(
-                                Convert.ToSingle(chara[3]),
-                                Convert.ToSingle(chara[4]),
-                                Convert.ToSingle(chara[5])), Space.Self);
-                            }
-                            else if (chara[2] == "euleranglesworld")
-                            {
-                                meshCubes[i].transform.Rotate(new Vector3(
-                                Convert.ToSingle(chara[3]),
-                                Convert.ToSingle(chara[4]),
-                                Convert.ToSingle(chara[5])), Space.World);
-                            }
-                            else if (chara[2] == "fromtorotation")
-                            {
-                                meshCubes[i].transform.rotation = Quaternion.FromToRotation(
-                              new Vector3(Convert.ToSingle(chara[3]),
-                                Convert.ToSingle(chara[4]),
-                                Convert.ToSingle(chara[5])),
-                                new Vector3(Convert.ToSingle(chara[6]),
-                                Convert.ToSingle(chara[7]),
-                                Convert.ToSingle(chara[8]))
-                                );
-                            }
-                            else if (chara[2] == "shader")
-                            {
-                                meshCubes[i].GetComponent<MeshRenderer>().material.shader = Shader.Find("chara[3]");
-                            }
-                            else if (chara[2] == "texture")
-                            {
-                                meshCubes[i].GetComponent<MeshRenderer>().material.mainTexture = GeoTools.LoadTexture(chara[3]);
-                            }
-                            else if (chara[2] == "stexture")
-                            {
-                                meshCubes[i].GetComponent<MeshRenderer>().sharedMaterial.mainTexture = GeoTools.LoadTexture(chara[3]);
-                            }
-                            else if (chara[2] == "color")
-                            {
-                                meshCubes[i].GetComponent<MeshRenderer>().material.color = new Color(
-                                Convert.ToSingle(chara[3]),
-                                Convert.ToSingle(chara[4]),
-                                Convert.ToSingle(chara[5]),
-                                Convert.ToSingle(chara[6]));
-                            }
-                            else if (chara[2] == "meshcollider")
-                            {
-                                meshCubes[i].GetComponent<MeshCollider>().sharedMesh = GeoTools.MeshFromObj(chara[3]);
-                                meshCubes[i].GetComponent<MeshCollider>().convex = true;
-                                meshCubes[i].GetComponent<MeshCollider>().isTrigger = true;
-                            }
-                            else if (chara[2] == "wmeshcollider")
-                            {
-                                meshCubes[i].GetComponent<MeshCollider>().sharedMesh = GeoTools.WMeshFromObj(chara[3]);
-                                meshCubes[i].GetComponent<MeshCollider>().convex = true;
-                                meshCubes[i].GetComponent<MeshCollider>().isTrigger = true;
-                            }
-                            else if (chara[2].ToLower() == "startlocation" || chara[2].ToLower() == "location")
-                            {
-                                meshCubes[i].GetComponent<CubeScript>().StartLocation = meshCubes[i].transform.localPosition = new Vector3(
-                                    Convert.ToSingle(chara[3]),
-                                    Convert.ToSingle(chara[4]),
-                                    Convert.ToSingle(chara[5]));
-                            }
-                            else if (chara[2].ToLower() == "movevector")
-                            {
-                                meshCubes[i].GetComponent<CubeScript>().MoveVector = new Vector3(
-                                    Convert.ToSingle(chara[3]),
-                                    Convert.ToSingle(chara[4]),
-                                    Convert.ToSingle(chara[5]));
+            //    while (srd.Peek() != -1)
+            //    {
+            //        string str = srd.ReadLine();
+            //        string[] chara = str.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+            //        if (chara.Length > 2)
+            //        {
+            //            #region Cube
+            //            if (chara[0].ToLower() == "cubes")
+            //            {
+            //                if (chara[1].ToLower() == "amount")
+            //                {
+            //                    CubeAmount = Convert.ToInt32(chara[2]);
+            //                    LoadCube();
+            //                }
+            //            }
+            //            else if (chara[0].ToLower() == "cube")
+            //            {
+            //                int i = Convert.ToInt32(chara[1]);
+            //                if (chara[2] == "mesh")
+            //                {
+            //                    meshCubes[i].GetComponent<MeshFilter>().mesh = GeoTools.MeshFromObj(chara[3]);
+            //                }
+            //                else if (chara[2] == "wmesh")
+            //                {
+            //                    meshCubes[i].GetComponent<MeshFilter>().mesh = GeoTools.WMeshFromObj(chara[3]);
+            //                }
+            //                else if (chara[2] == "scale")
+            //                {
+            //                    meshCubes[i].transform.localScale = new Vector3(
+            //                   Convert.ToSingle(chara[3]),
+            //                   Convert.ToSingle(chara[4]),
+            //                   Convert.ToSingle(chara[5]));
+            //                }
+            //                else if (chara[2] == "rotation")
+            //                {
+            //                    meshCubes[i].transform.rotation = new Quaternion(
+            //                    Convert.ToSingle(chara[3]),
+            //                    Convert.ToSingle(chara[4]),
+            //                    Convert.ToSingle(chara[5]),
+            //                    Convert.ToSingle(chara[6]));
+            //                }
+            //                else if (chara[2] == "eulerangles")
+            //                {
+            //                    meshCubes[i].transform.Rotate(new Vector3(
+            //                    Convert.ToSingle(chara[3]),
+            //                    Convert.ToSingle(chara[4]),
+            //                    Convert.ToSingle(chara[5])), Space.Self);
+            //                }
+            //                else if (chara[2] == "euleranglesworld")
+            //                {
+            //                    meshCubes[i].transform.Rotate(new Vector3(
+            //                    Convert.ToSingle(chara[3]),
+            //                    Convert.ToSingle(chara[4]),
+            //                    Convert.ToSingle(chara[5])), Space.World);
+            //                }
+            //                else if (chara[2] == "fromtorotation")
+            //                {
+            //                    meshCubes[i].transform.rotation = Quaternion.FromToRotation(
+            //                  new Vector3(Convert.ToSingle(chara[3]),
+            //                    Convert.ToSingle(chara[4]),
+            //                    Convert.ToSingle(chara[5])),
+            //                    new Vector3(Convert.ToSingle(chara[6]),
+            //                    Convert.ToSingle(chara[7]),
+            //                    Convert.ToSingle(chara[8]))
+            //                    );
+            //                }
+            //                else if (chara[2] == "shader")
+            //                {
+            //                    meshCubes[i].GetComponent<MeshRenderer>().material.shader = Shader.Find("chara[3]");
+            //                }
+            //                else if (chara[2] == "texture")
+            //                {
+            //                    meshCubes[i].GetComponent<MeshRenderer>().material.mainTexture = GeoTools.LoadTexture(chara[3]);
+            //                }
+            //                else if (chara[2] == "stexture")
+            //                {
+            //                    meshCubes[i].GetComponent<MeshRenderer>().sharedMaterial.mainTexture = GeoTools.LoadTexture(chara[3]);
+            //                }
+            //                else if (chara[2] == "color")
+            //                {
+            //                    meshCubes[i].GetComponent<MeshRenderer>().material.color = new Color(
+            //                    Convert.ToSingle(chara[3]),
+            //                    Convert.ToSingle(chara[4]),
+            //                    Convert.ToSingle(chara[5]),
+            //                    Convert.ToSingle(chara[6]));
+            //                }
+            //                else if (chara[2] == "meshcollider")
+            //                {
+            //                    meshCubes[i].GetComponent<MeshCollider>().sharedMesh = GeoTools.MeshFromObj(chara[3]);
+            //                    meshCubes[i].GetComponent<MeshCollider>().convex = true;
+            //                    meshCubes[i].GetComponent<MeshCollider>().isTrigger = true;
+            //                }
+            //                else if (chara[2] == "wmeshcollider")
+            //                {
+            //                    meshCubes[i].GetComponent<MeshCollider>().sharedMesh = GeoTools.WMeshFromObj(chara[3]);
+            //                    meshCubes[i].GetComponent<MeshCollider>().convex = true;
+            //                    meshCubes[i].GetComponent<MeshCollider>().isTrigger = true;
+            //                }
+            //                else if (chara[2].ToLower() == "startlocation" || chara[2].ToLower() == "location")
+            //                {
+            //                    meshCubes[i].GetComponent<CubeScript>().StartLocation = meshCubes[i].transform.localPosition = new Vector3(
+            //                        Convert.ToSingle(chara[3]),
+            //                        Convert.ToSingle(chara[4]),
+            //                        Convert.ToSingle(chara[5]));
+            //                }
+            //                else if (chara[2].ToLower() == "movevector")
+            //                {
+            //                    meshCubes[i].GetComponent<CubeScript>().MoveVector = new Vector3(
+            //                        Convert.ToSingle(chara[3]),
+            //                        Convert.ToSingle(chara[4]),
+            //                        Convert.ToSingle(chara[5]));
 
-                            }
-                            else if (chara[2] == "velocity")
-                            {
-                                meshCubes[i].GetComponent<CubeScript>().Velocity = Convert.ToSingle(chara[3]);
-                            }
-                            else if (chara[2] == "control")
-                            {
-                                meshCubes[i].GetComponent<CubeScript>().Key = (KeyCode)Enum.Parse(typeof(KeyCode), chara[3]);
-                            }
-                            //else if (chara[2].ToLower() == "parent")
-                            //{
-                            //    meshCubes[i].GetComponent<CubeScript>().ParentName = chara[3];
-                            //}
-                            ///////////////////////////////////////////////
-                        }
+            //                }
+            //                else if (chara[2] == "velocity")
+            //                {
+            //                    meshCubes[i].GetComponent<CubeScript>().Velocity = Convert.ToSingle(chara[3]);
+            //                }
+            //                else if (chara[2] == "control")
+            //                {
+            //                    meshCubes[i].GetComponent<CubeScript>().Key = (KeyCode)Enum.Parse(typeof(KeyCode), chara[3]);
+            //                }
+            //                //else if (chara[2].ToLower() == "parent")
+            //                //{
+            //                //    meshCubes[i].GetComponent<CubeScript>().ParentName = chara[3];
+            //                //}
+            //                ///////////////////////////////////////////////
+            //            }
 
-                        #endregion
-                    }
-                }
+            //            #endregion
+            //        }
+            //    }
 
-                if (CubeAmount <= 0)
-                {
-                    ClearCube();
-                }
+            //    if (CubeAmount <= 0)
+            //    {
+            //        ClearCube();
+            //    }
 
-                srd.Close();
+            //    srd.Close();
 
-                GeoTools.Log("Read Cube Completed! CubeAmount:" + CubeAmount);
-            }
-            catch (Exception ex)
-            {
-                GeoTools.Log("Error! Read Cube Failed!");
-                GeoTools.Log(ex.ToString());
-                return;
-            }
+            //    GeoTools.Log("Read Cube Completed! CubeAmount:" + CubeAmount);
+            //}
+            //catch (Exception ex)
+            //{
+            //    GeoTools.Log("Error! Read Cube Failed!");
+            //    GeoTools.Log(ex.ToString());
+            //    return;
+            //}
         }
 
         public void ReadScene(CustomSceneMod.ScenePack scenePack)
         {
-            try
-            {
-                ClearCube();
+//            try
+//            {
+//                ClearCube();
 
-                if (!File.Exists(scenePack.SettingFilePath))
-                {
-                    GeoTools.Log("Error! Scene File not exists!");
-                    return;
-                }
+//                if (!File.Exists(scenePack.SettingFilePath))
+//                {
+//                    GeoTools.Log("Error! Scene File not exists!");
+//                    return;
+//                }
 
-                FileStream fs = new FileStream(scenePack.SettingFilePath, FileMode.Open);
-                //打开数据文件
-                StreamReader srd = new StreamReader(fs, Encoding.Default);
+//                FileStream fs = new FileStream(scenePack.SettingFilePath, FileMode.Open);
+//                //打开数据文件
+//                StreamReader srd = new StreamReader(fs, Encoding.Default);
               
-                while (srd.Peek() != -1)
-                {
-                    string str = srd.ReadLine();
-                    string[] chara = str.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-                    if (chara.Length > 2)
-                    {
-                        #region Cube
-                        if (chara[0].ToLower() == "cubes")
-                        {
-                            if (chara[1].ToLower() == "amount")
-                            {                               
-                                CubeAmount = Convert.ToInt32(chara[2]);
-                                LoadCube();
-                            }
-                        }
-                        else if (chara[0].ToLower() == "cube")
-                        {
-                            int i = Convert.ToInt32(chara[1]);
-                            if (chara[2] == "mesh")
-                            {
-                                meshCubes[i].GetComponent<MeshFilter>().mesh = GeoTools.MeshFromObj(chara[3],scenePack);
-                            }
-                            else if (chara[2] == "wmesh")
-                            {
-                                meshCubes[i].GetComponent<MeshFilter>().mesh = GeoTools.WMeshFromObj(chara[3],scenePack);
-                            }
-                            else if (chara[2] == "scale")
-                            {
-                                meshCubes[i].transform.localScale = new Vector3(
-                               Convert.ToSingle(chara[3]),
-                               Convert.ToSingle(chara[4]),
-                               Convert.ToSingle(chara[5]));
-                            }
-                            else if (chara[2] == "rotation")
-                            {
-                                meshCubes[i].transform.rotation = new Quaternion(
-                                Convert.ToSingle(chara[3]),
-                                Convert.ToSingle(chara[4]),
-                                Convert.ToSingle(chara[5]),
-                                Convert.ToSingle(chara[6]));
-                            }
-                            else if (chara[2] == "eulerangles")
-                            {
-                                meshCubes[i].transform.Rotate(new Vector3(
-                                Convert.ToSingle(chara[3]),
-                                Convert.ToSingle(chara[4]),
-                                Convert.ToSingle(chara[5])), Space.Self);
-                            }
-                            else if (chara[2] == "euleranglesworld")
-                            {
-                                meshCubes[i].transform.Rotate(new Vector3(
-                                Convert.ToSingle(chara[3]),
-                                Convert.ToSingle(chara[4]),
-                                Convert.ToSingle(chara[5])), Space.World);
-                            }
-                            else if (chara[2] == "fromtorotation")
-                            {
-                                meshCubes[i].transform.rotation = Quaternion.FromToRotation(
-                              new Vector3(Convert.ToSingle(chara[3]),
-                                Convert.ToSingle(chara[4]),
-                                Convert.ToSingle(chara[5])),
-                                new Vector3(Convert.ToSingle(chara[6]),
-                                Convert.ToSingle(chara[7]),
-                                Convert.ToSingle(chara[8]))
-                                );
-                            }
-                            else if (chara[2] == "shader")
-                            {
-                                meshCubes[i].GetComponent<MeshRenderer>().material.shader = Shader.Find("chara[3]");
-                            }
-                            else if (chara[2] == "texture")
-                            {
-                                meshCubes[i].GetComponent<MeshRenderer>().material.mainTexture = GeoTools.LoadTexture(chara[3],scenePack);
-                            }
-                            else if (chara[2] == "stexture")
-                            {
-                                meshCubes[i].GetComponent<MeshRenderer>().sharedMaterial.mainTexture = GeoTools.LoadTexture(chara[3],scenePack);
-                            }
-                            else if (chara[2] == "color")
-                            {
-                                meshCubes[i].GetComponent<MeshRenderer>().material.color = new Color(
-                                Convert.ToSingle(chara[3]),
-                                Convert.ToSingle(chara[4]),
-                                Convert.ToSingle(chara[5]),
-                                Convert.ToSingle(chara[6]));
-                            }
-                            else if (chara[2] == "meshcollider")
-                            {
-                                meshCubes[i].GetComponent<MeshCollider>().sharedMesh = GeoTools.MeshFromObj(chara[3],scenePack);
-                                meshCubes[i].GetComponent<MeshCollider>().convex = true;
-                            }
-                            else if (chara[2] == "wmeshcollider")
-                            {
-                                meshCubes[i].GetComponent<MeshCollider>().sharedMesh = GeoTools.WMeshFromObj(chara[3],scenePack);
-                                meshCubes[i].GetComponent<MeshCollider>().convex = true;
-                            }
-                            else if (chara[2].ToLower() == "startlocation" || chara[2].ToLower() == "location")
-                            {
-                                meshCubes[i].GetComponent<CubeScript>().StartLocation = meshCubes[i].transform.localPosition = new Vector3(
-                                    Convert.ToSingle(chara[3]),
-                                    Convert.ToSingle(chara[4]),
-                                    Convert.ToSingle(chara[5]));
-                            }
-                            else if (chara[2].ToLower() == "movevector")
-                            {
-                                meshCubes[i].GetComponent<CubeScript>().MoveVector = new Vector3(
-                                    Convert.ToSingle(chara[3]),
-                                    Convert.ToSingle(chara[4]),
-                                    Convert.ToSingle(chara[5]));
+//                while (srd.Peek() != -1)
+//                {
+//                    string str = srd.ReadLine();
+//                    string[] chara = str.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+//                    if (chara.Length > 2)
+//                    {
+//                        #region Cube
+//                        if (chara[0].ToLower() == "cubes")
+//                        {
+//                            if (chara[1].ToLower() == "amount")
+//                            {                               
+//                                CubeAmount = Convert.ToInt32(chara[2]);
+//                                LoadCube();
+//                            }
+//                        }
+//                        else if (chara[0].ToLower() == "cube")
+//                        {
+//                            int i = Convert.ToInt32(chara[1]);
+//                            if (chara[2] == "mesh")
+//                            {
+//                                meshCubes[i].GetComponent<MeshFilter>().mesh = GeoTools.MeshFromObj(chara[3],scenePack);
+//                            }
+//                            else if (chara[2] == "wmesh")
+//                            {
+//                                meshCubes[i].GetComponent<MeshFilter>().mesh = GeoTools.WMeshFromObj(chara[3],scenePack);
+//                            }
+//                            else if (chara[2] == "scale")
+//                            {
+//                                meshCubes[i].transform.localScale = new Vector3(
+//                               Convert.ToSingle(chara[3]),
+//                               Convert.ToSingle(chara[4]),
+//                               Convert.ToSingle(chara[5]));
+//                            }
+//                            else if (chara[2] == "rotation")
+//                            {
+//                                meshCubes[i].transform.rotation = new Quaternion(
+//                                Convert.ToSingle(chara[3]),
+//                                Convert.ToSingle(chara[4]),
+//                                Convert.ToSingle(chara[5]),
+//                                Convert.ToSingle(chara[6]));
+//                            }
+//                            else if (chara[2] == "eulerangles")
+//                            {
+//                                meshCubes[i].transform.Rotate(new Vector3(
+//                                Convert.ToSingle(chara[3]),
+//                                Convert.ToSingle(chara[4]),
+//                                Convert.ToSingle(chara[5])), Space.Self);
+//                            }
+//                            else if (chara[2] == "euleranglesworld")
+//                            {
+//                                meshCubes[i].transform.Rotate(new Vector3(
+//                                Convert.ToSingle(chara[3]),
+//                                Convert.ToSingle(chara[4]),
+//                                Convert.ToSingle(chara[5])), Space.World);
+//                            }
+//                            else if (chara[2] == "fromtorotation")
+//                            {
+//                                meshCubes[i].transform.rotation = Quaternion.FromToRotation(
+//                              new Vector3(Convert.ToSingle(chara[3]),
+//                                Convert.ToSingle(chara[4]),
+//                                Convert.ToSingle(chara[5])),
+//                                new Vector3(Convert.ToSingle(chara[6]),
+//                                Convert.ToSingle(chara[7]),
+//                                Convert.ToSingle(chara[8]))
+//                                );
+//                            }
+//                            else if (chara[2] == "shader")
+//                            {
+//                                meshCubes[i].GetComponent<MeshRenderer>().material.shader = Shader.Find("chara[3]");
+//                            }
+//                            else if (chara[2] == "texture")
+//                            {
+//                                meshCubes[i].GetComponent<MeshRenderer>().material.mainTexture = GeoTools.LoadTexture(chara[3],scenePack);
+//                            }
+//                            else if (chara[2] == "stexture")
+//                            {
+//                                meshCubes[i].GetComponent<MeshRenderer>().sharedMaterial.mainTexture = GeoTools.LoadTexture(chara[3],scenePack);
+//                            }
+//                            else if (chara[2] == "color")
+//                            {
+//                                meshCubes[i].GetComponent<MeshRenderer>().material.color = new Color(
+//                                Convert.ToSingle(chara[3]),
+//                                Convert.ToSingle(chara[4]),
+//                                Convert.ToSingle(chara[5]),
+//                                Convert.ToSingle(chara[6]));
+//                            }
+//                            else if (chara[2] == "meshcollider")
+//                            {
+//                                meshCubes[i].GetComponent<MeshCollider>().sharedMesh = GeoTools.MeshFromObj(chara[3],scenePack);
+//                                meshCubes[i].GetComponent<MeshCollider>().convex = true;
+//                            }
+//                            else if (chara[2] == "wmeshcollider")
+//                            {
+//                                meshCubes[i].GetComponent<MeshCollider>().sharedMesh = GeoTools.WMeshFromObj(chara[3],scenePack);
+//                                meshCubes[i].GetComponent<MeshCollider>().convex = true;
+//                            }
+//                            else if (chara[2].ToLower() == "startlocation" || chara[2].ToLower() == "location")
+//                            {
+//                                meshCubes[i].GetComponent<CubeScript>().StartLocation = meshCubes[i].transform.localPosition = new Vector3(
+//                                    Convert.ToSingle(chara[3]),
+//                                    Convert.ToSingle(chara[4]),
+//                                    Convert.ToSingle(chara[5]));
+//                            }
+//                            else if (chara[2].ToLower() == "movevector")
+//                            {
+//                                meshCubes[i].GetComponent<CubeScript>().MoveVector = new Vector3(
+//                                    Convert.ToSingle(chara[3]),
+//                                    Convert.ToSingle(chara[4]),
+//                                    Convert.ToSingle(chara[5]));
 
-                            }
-                            else if (chara[2] == "velocity")
-                            {
-                                meshCubes[i].GetComponent<CubeScript>().Velocity = Convert.ToSingle(chara[3]);
-                            }
-                            else if (chara[2] == "control")
-                            {
-                                meshCubes[i].GetComponent<CubeScript>().Key = (KeyCode)Enum.Parse(typeof(KeyCode), chara[3]);
-                            }
-                            //else if (chara[2].ToLower() == "parent")
-                            //{
-                            //    meshCubes[i].GetComponent<CubeScript>().ParentName = chara[3];
-                            //}
-                            ///////////////////////////////////////////////
-                        }
+//                            }
+//                            else if (chara[2] == "velocity")
+//                            {
+//                                meshCubes[i].GetComponent<CubeScript>().Velocity = Convert.ToSingle(chara[3]);
+//                            }
+//                            else if (chara[2] == "control")
+//                            {
+//                                meshCubes[i].GetComponent<CubeScript>().Key = (KeyCode)Enum.Parse(typeof(KeyCode), chara[3]);
+//                            }
+//                            //else if (chara[2].ToLower() == "parent")
+//                            //{
+//                            //    meshCubes[i].GetComponent<CubeScript>().ParentName = chara[3];
+//                            //}
+//                            ///////////////////////////////////////////////
+//                        }
 
-                        #endregion
-                    }
-                }
+//                        #endregion
+//                    }
+//                }
 
-                srd.Close();
-#if DEBUG
-                GeoTools.Log("Read Cube Completed! CubeAmount:" + CubeAmount);
-#endif
-            }
-            catch (Exception ex)
-            {
-                GeoTools.Log("Error! Read Cube Failed!");
-                GeoTools.Log(ex.ToString());
-                return;
-            }
+//                srd.Close();
+//#if DEBUG
+//                GeoTools.Log("Read Cube Completed! CubeAmount:" + CubeAmount);
+//#endif
+//            }
+//            catch (Exception ex)
+//            {
+//                GeoTools.Log("Error! Read Cube Failed!");
+//                GeoTools.Log(ex.ToString());
+//                return;
+//            }
         }
 
         public void LoadCube()

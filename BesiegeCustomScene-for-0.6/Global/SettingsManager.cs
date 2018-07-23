@@ -1,6 +1,7 @@
-﻿using System;
+﻿using Modding;
+using System;
 using System.Collections.Generic;
-using System.IO;
+//using System.IO;
 using System.Linq;
 using System.Text;
 using UnityEngine;
@@ -44,7 +45,7 @@ namespace BesiegeCustomScene
         class SettingsFile
         {
             /// <summary>设置路径</summary>
-            public static string SettingsPath = Application.dataPath + "/Mods/BesiegeCustomScene/Settings.txt";
+            public static string SettingsPath = GeoTools.ModPath + "Settings.txt";
 
             public Settings settings;
 
@@ -57,15 +58,15 @@ namespace BesiegeCustomScene
                 try
                 {
                     
-                    if (!File.Exists(filePath))
+                    if (!ModIO.ExistsFile(filePath))
                     {
                         GeoTools.Log("Error! Settings.txt File not exists!");
                         return;
                     }
 
-                    FileStream fs = new FileStream(filePath, FileMode.Open);
+                    //FileStream fs = new FileStream(filePath, FileMode.Open);
                     //打开数据文件
-                    StreamReader srd = new StreamReader(fs, Encoding.Default);
+                    var srd = ModIO.OpenText(filePath);
 
                     while (srd.Peek() != -1)
                     {
@@ -136,14 +137,15 @@ namespace BesiegeCustomScene
            
         }
 
-        //void Update()
-        //{
-        //    //if (Input.GetKeyDown(KeyCode.G))
-        //    //{
-        //    //    //new SettingsFile();
-        //    //    BesiegeConsoleController.ShowMessage(settings.language);
-        //    //}
-        //}
+        void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.G))
+            {
+                //new SettingsFile();
+                BesiegeConsoleController.ShowMessage("??show");
+                Debug.Log("??debug");
+            }
+        }
 
     }
 
