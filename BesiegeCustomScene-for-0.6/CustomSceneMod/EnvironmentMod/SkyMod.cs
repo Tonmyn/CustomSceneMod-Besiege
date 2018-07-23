@@ -73,59 +73,6 @@ namespace BesiegeCustomScene
           
         }
 
-        //void SkyBox(Shader shaderzzz)
-        //{
-        //    try
-        //    {
-        //        WWW www = new WWW("File:///" + Application.dataPath + "/Mods/Blocks/Resources/SkyBoxTexture.jpg");
-        //        Texture2D texture;
-        //        //YAY adding models in game
-        //        //NeededResource TheBall = new NeededResource(ResourceType.Mesh, "Skydome.obj");
-        //        //AssetImporter.StartImport.Mesh(ref TheBall.mesh, TheBall.resourcePath);
-        //        skyBallMesh = GeoTools.MeshFromObj()
-        //        GameObject SkySphere;
-        //        Destroy(GameObject.Find("STAR SPHERE"));
-        //        SkySphere = new GameObject("SKY SPHERE");
-        //        SkySphere.AddComponent<MeshRenderer>();
-        //        SkySphere.AddComponent<MeshFilter>();
-
-        //        SkySphere.AddComponent<CameraFollower>();
-        //        SkySphere.GetComponent<MeshFilter>().mesh = TheBall.mesh;
-        //        try
-        //        {
-        //            byte[] TexByte = System.IO.File.ReadAllBytes(Application.dataPath + "/Mods/Blocks/Resources/SkyBoxTexture.jpg");
-        //            texture = www.texture;
-        //            MeshRenderer mr = SkySphere.GetComponent<MeshRenderer>();
-
-        //            mr.material = new Material(shaderzzz);
-        //            mr.material.mainTexture = texture;
-        //            mr.material.mainTexture.wrapMode = TextureWrapMode.Clamp;
-        //            mr.receiveShadows = false;
-        //            mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            Debug.LogException(e);
-        //            Debug.Log("Exception happened! Check if there is such a texture file named \"SkyBoxTexture.jpg\" \n under \\Besiege_Data\\Mods\\Blocks\\Resources\\ and a obj file called \"Skydome.obj\"! "); return;
-        //        }
-        //        //GameObject.Find("Main Camera").GetComponent<Camera>().clearFlags = CameraClearFlags.Skybox;
-
-        //    }
-        //    catch (Exception e) { Debug.Log(e); }
-        //}
-
-        void Update()
-        {
-            //if (Input.GetKeyDown(KeyCode.C))
-            //{
-            //    create();
-
-               
-
-            //}
-
-        }
-
         void getMesh()
         {
             GameObject a = GameObject.CreatePrimitive(PrimitiveType.Sphere);
@@ -136,8 +83,6 @@ namespace BesiegeCustomScene
 
         void getTexture()
         {
-            //WWW www = new WWW(skyBoxTexturePath);
-            ////skyBallTexture = www.texture;
             skyBallTexture = LoadByIO(skyBoxTexturePath);
         }
 
