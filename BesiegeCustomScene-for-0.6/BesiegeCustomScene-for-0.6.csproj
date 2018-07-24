@@ -69,47 +69,7 @@
     <Reference Include="Assembly-UnityScript">
       <HintPath>F:\Game\Besiege\Besiege.v0.60\Besiege_Data\Managed\Assembly-UnityScript.dll</HintPath>
     </Reference>
-    <Reference Include="Boo.Lang">
-      <HintPath>F:\Game\Besiege\Besiege.v0.60\Besiege_Data\Managed\Boo.Lang.dll</HintPath>
-    </Reference>
-    <Reference Include="DynamicText">
-      <HintPath>F:\Game\Besiege\Besiege.v0.60\Besiege_Data\Managed\DynamicText.dll</HintPath>
-    </Reference>
-    <Reference Include="GameAnalytics">
-      <HintPath>F:\Game\Besiege\Besiege.v0.60\Besiege_Data\Managed\GameAnalytics.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Data.Sqlite">
-      <HintPath>F:\Game\Besiege\Besiege.v0.60\Besiege_Data\Managed\Mono.Data.Sqlite.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Data.Tds">
-      <HintPath>F:\Game\Besiege\Besiege.v0.60\Besiege_Data\Managed\Mono.Data.Tds.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Posix, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>F:\Game\Besiege\Besiege.v0.60\Besiege_Data\Managed\Mono.Posix.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Security">
-      <HintPath>F:\Game\Besiege\Besiege.v0.60\Besiege_Data\Managed\Mono.Security.dll</HintPath>
-    </Reference>
-    <Reference Include="NATTraversalForUNET">
-      <HintPath>F:\Game\Besiege\Besiege.v0.60\Besiege_Data\Managed\NATTraversalForUNET.dll</HintPath>
-    </Reference>
-    <Reference Include="Open.Nat">
-      <HintPath>F:\Game\Besiege\Besiege.v0.60\Besiege_Data\Managed\Open.Nat.dll</HintPath>
-    </Reference>
-    <Reference Include="PluginManager">
-      <HintPath>F:\Game\Besiege\Besiege.v0.60\PluginManager.dll</HintPath>
-    </Reference>
-    <Reference Include="RakNetSwig">
-      <HintPath>F:\Game\Besiege\Besiege.v0.60\Besiege_Data\Managed\RakNetSwig.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Security" />
-    <Reference Include="System.Threading">
-      <HintPath>F:\Game\Besiege\Besiege.v0.60\Besiege_Data\Managed\System.Threading.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Transactions" />
+    <Reference Include="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL" />
     <Reference Include="UnityEngine">
       <HintPath>F:\Game\Besiege\Besiege.v0.60\Besiege_Data\Managed\UnityEngine.dll</HintPath>
     </Reference>

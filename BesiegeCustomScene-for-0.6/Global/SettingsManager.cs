@@ -142,8 +142,7 @@ namespace BesiegeCustomScene
             if (Input.GetKeyDown(KeyCode.G))
             {
                 //new SettingsFile();
-                BesiegeConsoleController.ShowMessage("??show");
-                Debug.Log("??debug");
+                BesiegeConsoleController.ShowMessage("??show  setting manager");
             }
         }
 
