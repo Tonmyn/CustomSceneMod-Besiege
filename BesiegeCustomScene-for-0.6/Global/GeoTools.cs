@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Modding;
+using System;
 using System.Collections.Generic;
+using System.IO;
 //using System.IO;
 using System.Reflection;
 using UnityEngine;
@@ -1612,6 +1614,22 @@ namespace BesiegeCustomScene
 
             return false;
 
+        }
+
+        public static TextReader FileReader(string path)
+        {
+
+            if (!ModIO.ExistsFile(path))
+            {
+                GeoTools.Log(string.Format( "Error! {0} File not exists!",path));
+                return TextReader.Null;
+            }
+
+            //var fs = ModIO.Open(filePath, System.IO.FileMode.Open);
+            //打开数据文件
+            var srd = ModIO.OpenText(path);
+
+            return srd;
         }
 
     }

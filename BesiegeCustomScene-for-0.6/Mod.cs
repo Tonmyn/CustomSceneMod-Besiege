@@ -24,10 +24,10 @@ namespace BesiegeCustomScene
             customSceneMod.name = string.Format("{0} {1}", DisplayName, Version);
 
             customSceneMod.AddComponent<SettingsManager>();
-            //customSceneMod.AddComponent<LanguageManager>();
-            //customSceneMod.AddComponent<Prop>();
-            //customSceneMod.AddComponent<UI.SceneSettingUI>();
-            //customSceneMod.AddComponent<UI.ToolBoxSettingUI>();
+            customSceneMod.AddComponent<LanguageManager>();
+            customSceneMod.AddComponent<Prop>();
+            customSceneMod.AddComponent<UI.SceneSettingUI>();
+            customSceneMod.AddComponent<UI.ToolBoxSettingUI>();
 
             //customSceneMod.AddComponent<TestScript>();
 

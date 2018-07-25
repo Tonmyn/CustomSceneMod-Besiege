@@ -1,0 +1,130 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using UnityEngine;
+using Modding;
+
+namespace BesiegeCustomScene
+{
+    class DataLoader : MonoBehaviour
+    {
+
+        Dictionary<string, Type> dic_EnvironmentPropertise;
+
+
+        void OnDisable()
+        {
+            ClearEnvironment();
+        }
+        void OnDestroy()
+        {
+            ClearEnvironment();
+        }
+
+        public virtual void ReadEnvironment(CustomSceneMod.ScenePack scenePack)
+        {
+           
+        }
+
+        public virtual void LoadEnvironment()
+        {
+
+        }
+
+        public virtual void ClearEnvironment()
+        {
+
+        }
+
+        bool? readBool(string[] str, int index)
+        {
+            bool? value = false;
+
+            if ((Convert.ToInt32(str[index + 1]) == 0) || (str[index+1].ToUpper() == "FALSE"))
+            {
+                value = false;
+            }
+            if ((Convert.ToInt32(str[index + 1]) == 1) || (str[index + 1].ToUpper() == "TRUE"))
+            {
+                value = true;
+            }
+            return value;               
+        }
+
+        internal int? readInt(string[] str,int index)
+        {
+            int? i = 0;
+            i = Convert.ToInt32(str[index + 1]);
+            return i;
+        }
+
+        float? readFloat(string[] str, int index)
+        {
+            float? i = 0;
+
+            return i = Convert.ToSingle(str[index + 1]);
+        }
+
+        Vector3? readVector3(string[] str, int index)
+        {
+            Vector3 vector = Vector3.zero;
+
+            vector = new Vector3
+                    (
+                    Convert.ToSingle(str[index + 1]),
+                    Convert.ToSingle(str[index + 2]),
+                    Convert.ToSingle(str[index + 3])
+                    );
+
+            return vector;
+        }
+
+        Color? readColor(string[] str, int index)
+        {
+            Color? color = Color.white;
+
+            color = new Color
+                    (                             
+                    Convert.ToSingle(str[index + 1]),                              
+                    Convert.ToSingle(str[index + 2]),                               
+                    Convert.ToSingle(str[index + 3]),                               
+                    Convert.ToSingle(str[index + 4])                              
+                    );
+
+            return color;
+        }
+
+        Texture2D readTexture2D(string[] str, int index)
+        {
+            Texture2D texture2D = Texture2D.whiteTexture;
+
+            //double startTime = (double)Time.time;
+            //创建文件流
+            //FileStream fileStream = new FileStream(path, FileMode.Open, FileAccess.Read);
+            //fileStream.Seek(0, SeekOrigin.Begin);
+
+
+
+            //创建文件长度的缓冲区
+            //byte[] bytes = new byte[fileStream.Length];
+
+            byte[] bytes =ModIO.ReadAllBytes(str[index + 1]);
+            //读取文件
+            //fileStream.Read(bytes, 0, (int)fileStream.Length);
+            //释放文件读取liu
+            //fileStream.Close();
+            //fileStream.Dispose();
+            //fileStream = null;
+
+            //创建Texture
+            int width = 300;
+            int height = 372;
+            texture2D = new Texture2D(width, height);
+            texture2D.LoadImage(bytes);
+            return texture2D;
+
+        }
+    
+    }
+}
