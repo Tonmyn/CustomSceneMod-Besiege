@@ -7,35 +7,28 @@ using Modding;
 
 namespace BesiegeCustomScene
 {
-    class DataLoader : MonoBehaviour
+    class DataLoader
     {
 
-        Dictionary<string, Type> dic_EnvironmentPropertise;
+        public Dictionary<string,Type> dic_datas;
+
+        public List<string> datas;
+
+        public DataLoader(string[] datas)
+        {
 
 
-        void OnDisable()
-        {
-            ClearEnvironment();
-        }
-        void OnDestroy()
-        {
-            ClearEnvironment();
-        }
+           // datas = new List<string>();
 
-        public virtual void ReadEnvironment(CustomSceneMod.ScenePack scenePack)
-        {
-           
-        }
+           //var textReader = GeoTools.FileReader(data_path);
 
-        public virtual void LoadEnvironment()
-        {
+           // while (textReader.Peek() != -1)
+           // {
+           //     datas.Add(textReader.ReadLine());
+           // }
 
         }
 
-        public virtual void ClearEnvironment()
-        {
-
-        }
 
         bool? readBool(string[] str, int index)
         {

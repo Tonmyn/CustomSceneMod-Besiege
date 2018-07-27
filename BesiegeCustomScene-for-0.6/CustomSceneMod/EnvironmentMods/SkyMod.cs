@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Modding;
+using System;
 using System.Collections.Generic;
 //using System.IO;
 using System.Linq;
@@ -8,7 +9,7 @@ using UnityEngine.UI;
 
 namespace BesiegeCustomScene
 {
-    class SkyMod : MonoBehaviour
+    class SkyMod : EnvironmentMod
     {
 
         Mesh skyBallMesh;
@@ -17,13 +18,7 @@ namespace BesiegeCustomScene
         GameObject skySphere;
 
         string skyBoxTexturePath;
-        string skyBoxMeshPath;
-
-        void Awake()
-        {
-
-
-        }
+        //string skyBoxMeshPath;
 
         public void ReadScene(CustomSceneMod.ScenePack scenePack)
         {
@@ -73,68 +68,125 @@ namespace BesiegeCustomScene
           
         }
 
-        void getMesh()
+        public override void ReadEnvironment(CustomSceneMod.ScenePack scenePack)
         {
+            ClearEnvironment();
+
+            foreach (var str in scenePack.SettingFileDatas)
+            {
+                string[] chara = str.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+                if (chara.Length > 2)
+                {
+                    if (chara[0] == "Sky")
+                    {
+                        skyBoxTexturePath = scenePack.TexturesPath + "/" + chara[1];
+                        //create();
+                    }
+                }
+            }
+        }
+
+        public override void LoadEnvironment()
+        {
+            skyBallMesh = getMesh();
+            skyBallTexture = getTexture(skyBoxTexturePath);
+            
+            starSphere = GameObject.Find("STAR SPHERE");
+            if (starSphere != null)
+            {
+                starSphere.SetActive(false);
+            }
+
+            skySphere = CreateSkyMaterialBall(skyBallMesh,skyBallTexture);
+
+            skySphere.AddComponent<CameraFollower>();
+
+        }
+
+        public override void ClearEnvironment()
+        {
+          
+            Destroy(starSphere);
+            Destroy(skyBallMesh);
+            Destroy(skyBallTexture);
+
+            skyBoxTexturePath = "";
+
+            int childCount = skySphere.transform.childCount;
+            for (int i = 0; i < childCount; i++)
+            {
+                Destroy(skySphere.transform.GetChild(i).gameObject);
+            }
+            Destroy(skySphere);
+        }
+
+        Mesh getMesh()
+        {
+            Mesh mesh;
+
             GameObject a = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            skyBallMesh = a.GetComponent<MeshFilter>().mesh;
+            mesh = a.GetComponent<MeshFilter>().mesh;
             Destroy(a);
+            return mesh;
             //skyBallMesh = GeoTools.MeshFromObj(skyBoxMeshPath, true);
         }
 
-        void getTexture()
+        Texture2D getTexture(string path)
         {
             //skyBallTexture = LoadByIO(skyBoxTexturePath);
+
+            Texture2D texture2D = Texture2D.whiteTexture;
+
+            //double startTime = (double)Time.time;
+            //创建文件流
+            //FileStream fileStream = new FileStream(path, FileMode.Open, FileAccess.Read);
+            //fileStream.Seek(0, SeekOrigin.Begin);
+
+
+
+            //创建文件长度的缓冲区
+            //byte[] bytes = new byte[fileStream.Length];
+
+            byte[] bytes = ModIO.ReadAllBytes(path);
+            //读取文件
+            //fileStream.Read(bytes, 0, (int)fileStream.Length);
+            //释放文件读取liu
+            //fileStream.Close();
+            //fileStream.Dispose();
+            //fileStream = null;
+
+            //创建Texture
+            int width = 300;
+            int height = 372;
+            texture2D = new Texture2D(width, height);
+            texture2D.LoadImage(bytes);
+            return texture2D;
         }
 
-        void create()
+        GameObject CreateSkyMaterialBall(Mesh mesh,Texture texture2D)
         {
+            GameObject go = new GameObject("SKY SPHERE");
             try
-            {
-                getMesh();
-
-                getTexture();
-
-                CreateSkyMaterialBall();
-
-                skySphere.AddComponent<CameraFollower>();
-            }
-            catch (Exception e)
-            {
-                GeoTools.Log("create filed");
-                GeoTools.Log(e.Message);
-            }
-        }
-
-        void CreateSkyMaterialBall()
-        {
-          
-           
-
-            try
-            {
-                starSphere = GameObject.Find("STAR SPHERE");
-                if (starSphere != null)
-                {
-                    starSphere.SetActive(false);
-                }
-
-                skySphere = new GameObject("SKY SPHERE");
-                MeshRenderer mr = skySphere.AddComponent<MeshRenderer>();
-                skySphere.AddComponent<MeshFilter>().mesh = skyBallMesh;
+            {         
+                go.AddComponent<MeshFilter>().mesh = mesh;
+                MeshRenderer mr = go.AddComponent<MeshRenderer>();
 
                 //mr.material = new Material(Shader.Find("Custom/ReflectBumpEmiss/late"));
                 mr.material = new Material(Shader.Find("Particles/Alpha Blended"));
-                mr.material.mainTexture = skyBallTexture;
+                mr.material.mainTexture = texture2D;
                 mr.material.mainTexture.wrapMode = TextureWrapMode.Clamp;
                 mr.receiveShadows = false;
                 mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
 
-                BesiegeConsoleController.ShowMessage("create material ball");
+                BesiegeConsoleController.ShowMessage("create sky material ball");
+                return go;
+                
             }
             catch (Exception e)
             {
                 Debug.LogException(e);
                 //Debug.Log("Exception happened! Check if there is such a texture file named \"SkyBoxTexture.jpg\" \n under \\Besiege_Data\\Mods\\Blocks\\Resources\\ and a obj file called \"Skydome.obj\"! "); return;
+                return go = null;
             }
         }
 
@@ -174,11 +226,13 @@ namespace BesiegeCustomScene
     public class CameraFollower : MonoBehaviour
     {
         Camera main;
+
         void Start()
         {
             main = GameObject.Find("Main Camera").GetComponent<Camera>();
             this.transform.localScale = Vector3.one * main.farClipPlane / /*42*/ 10;
         }
+
         void Update()
         {
             this.transform.position = main.transform.position;      

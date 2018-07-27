@@ -1,11 +1,12 @@
 ﻿ using System;
 using System.Collections;
 using System.Collections.Generic;
-//using System.IO;
+using System.IO;
 using System.Linq;
 using System.Text;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Modding;
 
 namespace BesiegeCustomScene
 {
@@ -68,6 +69,11 @@ namespace BesiegeCustomScene
             public string SettingFilePath;
 
             /// <summary>
+            /// 设置文件数据
+            /// </summary>
+            public List<string> SettingFileDatas;
+
+            /// <summary>
             /// 地图包类型
             /// </summary>
             public enum SceneType
@@ -82,29 +88,40 @@ namespace BesiegeCustomScene
 
             public SceneType Type;
 
-            //public ScenePack(DirectoryInfo folderName)
-            //{
+            public ScenePack(DirectoryInfo folderName)
+            {
 
-            //    Name = folderName.Name;
-            //    Path = folderName.FullName;
-            //    MeshsPath = Path + "/Meshs";
-            //    TexturesPath = Path + "/Textures";
-            //    SettingFilePath = string.Format("{0}/setting.txt", Path);
+                Name = folderName.Name;
+                Path = folderName.FullName;
+                MeshsPath = Path + "/Meshs";
+                TexturesPath = Path + "/Textures";
+                SettingFilePath = string.Format("{0}/setting.txt", Path);
 
-            //    if (!File.Exists(string.Format("{0}/setting.txt", Path)))
-            //    {
-            //        Type = SceneType.Empty;
-            //    }
-            //    else
-            //    {
-            //        Type = SceneType.Enabled;
-            //    }
+                if (!ModIO.ExistsFile(string.Format("{0}/setting.txt", Path)))
+                {
+                    Type = SceneType.Empty;
+                }
+                else
+                {
+                    Type = SceneType.Enabled;
+                }
 
-            //}
+                SettingFileDatas = new List<string>();
+                if (Type == SceneType.Enabled)
+                {
+                    var textReader = GeoTools.FileReader(SettingFilePath);
+
+                    while (textReader.Peek() != -1)
+                    {
+                        SettingFileDatas.Add(textReader.ReadLine());
+                    }
+                }
+
+            }
 
         }
 
-
+        List<EnvironmentMod> EnvironmentMods;
 
         //UI.SceneSettingUI sUI;
 
@@ -115,15 +132,22 @@ namespace BesiegeCustomScene
 
             ScenePacks = ReadScenePacks(ScenePacksPath);
 
+            EnvironmentMods = new List<EnvironmentMod>();
+
             GameObject customSceneMod = gameObject;
 
-            customSceneMod.AddComponent<MeshMod>();
+            //foreach (var v in EnvironmentMods)
+            //{
+            //    customSceneMod.AddComponent(v.GetType());
+            //}
+
+             customSceneMod.AddComponent<MeshMod>();
             customSceneMod.AddComponent<CubeMod>();
             customSceneMod.AddComponent<SnowMod>();
             customSceneMod.AddComponent<CloudMod>();
             customSceneMod.AddComponent<WaterMod>();
-            customSceneMod.AddComponent<SkyMod>();
-            
+            EnvironmentMods.Add(customSceneMod.AddComponent<SkyMod>());
+
         }
 
         void Start()
@@ -190,110 +214,115 @@ namespace BesiegeCustomScene
 
             SceneSetting SS = new SceneSetting();
 
-//            try
-//            {
-//#if DEBUG
-//                GeoTools.Log(Application.dataPath);
-//#endif
-//                if (!File.Exists(scenePack.SettingFilePath))
-//                {
-//                    GeoTools.Log("Error! Scene File not exists!");
-//                    return;
-//                }
+            //            try
+            //            {
+            //#if DEBUG
+            //                GeoTools.Log(Application.dataPath);
+            //#endif
+            //                if (!File.Exists(scenePack.SettingFilePath))
+            //                {
+            //                    GeoTools.Log("Error! Scene File not exists!");
+            //                    return;
+            //                }
 
-//                FileStream fs = new FileStream(scenePack.SettingFilePath, FileMode.Open);
-//                //打开数据文件
-//                StreamReader srd = new StreamReader(fs, Encoding.Default);
+            //                FileStream fs = new FileStream(scenePack.SettingFilePath, FileMode.Open);
+            //                //打开数据文件
+            //                StreamReader srd = new StreamReader(fs, Encoding.Default);
 
-//                while (srd.Peek() != -1)
-//                {
-//                    string str = srd.ReadLine();
-//                    string[] chara = str.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-//                    if (chara.Length > 2)
-//                    {
-//                        #region Camera
-//                        if (chara[0] == nameof(Camera))
-//                        {
-//                            if (chara[1] == nameof(Camera.farClipPlane))
-//                            {
-//                                try
-//                                {
-//                                    GameObject.Find("Main Camera").GetComponent<Camera>().farClipPlane = Convert.ToInt32(chara[2]);
-//                                }
-//                                catch (Exception ex)
-//                                {
-//                                    GeoTools.Log("farClipPlane Error");
-//                                    GeoTools.Log(ex.ToString());
-//                                }
-//                            }
-//                            else if (chara[1] == nameof(SS.focusLerpSmooth))
-//                            {
-//                                try
-//                                {
-//                                    if (chara[2] == "Infinity")
-//                                    {
-//                                        GameObject.Find("Main Camera").GetComponent<MouseOrbit>().focusLerpSmooth = float.PositiveInfinity;
-//                                    }
-//                                    else
-//                                    {
-//                                        GameObject.Find("Main Camera").GetComponent<MouseOrbit>().focusLerpSmooth = Convert.ToSingle(chara[2]);
-//                                    }
-//                                }
-//                                catch (Exception ex)
-//                                {
-//                                    GeoTools.Log("focusLerpSmooth Error");
-//                                    GeoTools.Log(ex.ToString());
-//                                }
-//                            }
-//                            else if (chara[1] == nameof(SS.fog))
-//                            {
-//                                try
-//                                {
-//                                    GameObject.Find("Fog Volume").transform.localScale = new Vector3(0, 0, 0);
-//                                }
-//                                catch
-//                                {
-//                                    try
-//                                    {
-//                                        GameObject.Find("Fog Volume Dark").transform.localScale = new Vector3(0, 0, 0);
-//                                    }
-//                                    catch
-//                                    {
-//                                        GeoTools.Log("fog error");
-//                                    }
-//                                }
-//                            }
-//                            else if (chara[1] == nameof(SceneSetting.SSAO))
-//                            {
-//                                //if (chara[2] == "OFF")
-//                                //{
-//                                //    GeoTools.Log("SSAO OFF");
-//                                //    OptionsMaster.SSAO = true;
-//                                //    FindObjectOfType<ToggleAO>().Set();
-//                                //}
-//                                //else if (chara[2] == "ON")
-//                                //{
-//                                //    GeoTools.Log("SSAO ON");
-//                                //    OptionsMaster.SSAO = false;
-//                                //    FindObjectOfType<ToggleAO>().Set();
-//                                //}
+            //                while (srd.Peek() != -1)
+            //                {
+            //                    string str = srd.ReadLine();
+            //                    string[] chara = str.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+            //                    if (chara.Length > 2)
+            //                    {
+            //                        #region Camera
+            //                        if (chara[0] == nameof(Camera))
+            //                        {
+            //                            if (chara[1] == nameof(Camera.farClipPlane))
+            //                            {
+            //                                try
+            //                                {
+            //                                    GameObject.Find("Main Camera").GetComponent<Camera>().farClipPlane = Convert.ToInt32(chara[2]);
+            //                                }
+            //                                catch (Exception ex)
+            //                                {
+            //                                    GeoTools.Log("farClipPlane Error");
+            //                                    GeoTools.Log(ex.ToString());
+            //                                }
+            //                            }
+            //                            else if (chara[1] == nameof(SS.focusLerpSmooth))
+            //                            {
+            //                                try
+            //                                {
+            //                                    if (chara[2] == "Infinity")
+            //                                    {
+            //                                        GameObject.Find("Main Camera").GetComponent<MouseOrbit>().focusLerpSmooth = float.PositiveInfinity;
+            //                                    }
+            //                                    else
+            //                                    {
+            //                                        GameObject.Find("Main Camera").GetComponent<MouseOrbit>().focusLerpSmooth = Convert.ToSingle(chara[2]);
+            //                                    }
+            //                                }
+            //                                catch (Exception ex)
+            //                                {
+            //                                    GeoTools.Log("focusLerpSmooth Error");
+            //                                    GeoTools.Log(ex.ToString());
+            //                                }
+            //                            }
+            //                            else if (chara[1] == nameof(SS.fog))
+            //                            {
+            //                                try
+            //                                {
+            //                                    GameObject.Find("Fog Volume").transform.localScale = new Vector3(0, 0, 0);
+            //                                }
+            //                                catch
+            //                                {
+            //                                    try
+            //                                    {
+            //                                        GameObject.Find("Fog Volume Dark").transform.localScale = new Vector3(0, 0, 0);
+            //                                    }
+            //                                    catch
+            //                                    {
+            //                                        GeoTools.Log("fog error");
+            //                                    }
+            //                                }
+            //                            }
+            //                            else if (chara[1] == nameof(SceneSetting.SSAO))
+            //                            {
+            //                                //if (chara[2] == "OFF")
+            //                                //{
+            //                                //    GeoTools.Log("SSAO OFF");
+            //                                //    OptionsMaster.SSAO = true;
+            //                                //    FindObjectOfType<ToggleAO>().Set();
+            //                                //}
+            //                                //else if (chara[2] == "ON")
+            //                                //{
+            //                                //    GeoTools.Log("SSAO ON");
+            //                                //    OptionsMaster.SSAO = false;
+            //                                //    FindObjectOfType<ToggleAO>().Set();
+            //                                //}
 
-//                            }
+            //                            }
 
-//                        }
-//                        #endregion
-//                    }
-//                }
-//                srd.Close();
+            //                        }
+            //                        #endregion
+            //                    }
+            //                }
+            //                srd.Close();
 
-//                GeoTools.Log("ReadSceneSetting Completed!");
-//            }
-//            catch (Exception ex)
-//            {
-//                GeoTools.Log("ReadSceneSetting Failed!");
-//                GeoTools.Log(ex.ToString());
-//                return;
-//            }
+            //                GeoTools.Log("ReadSceneSetting Completed!");
+            //            }
+            //            catch (Exception ex)
+            //            {
+            //                GeoTools.Log("ReadSceneSetting Failed!");
+            //                GeoTools.Log(ex.ToString());
+            //                return;
+            //            }
+
+            foreach (var v in EnvironmentMods)
+            {
+                v.ReadEnvironment(scenePack);
+            }
         }
 
         /// <summary>
@@ -330,13 +359,18 @@ namespace BesiegeCustomScene
 
             hideFloorBig();
             ReadSceneSetting(scenePack);
-            try { GetComponent<MeshMod>().ReadScene(scenePack); } catch { }
-            try { GetComponent<TriggerMod>().ReadScene(scenePack); } catch { }
-            try { GetComponent<CubeMod>().ReadScene(scenePack); } catch { }
-            try { GetComponent<WaterMod>().ReadScene(scenePack); } catch { }
-            try { GetComponent<CloudMod>().ReadScene(scenePack); } catch { }
-            try { GetComponent<SnowMod>().ReadScene(scenePack); } catch { }
-            try { GetComponent<SkyMod>().ReadScene(scenePack); } catch { }
+            //try { GetComponent<MeshMod>().ReadScene(scenePack); } catch { }
+            //try { GetComponent<TriggerMod>().ReadScene(scenePack); } catch { }
+            //try { GetComponent<CubeMod>().ReadScene(scenePack); } catch { }
+            //try { GetComponent<WaterMod>().ReadScene(scenePack); } catch { }
+            //try { GetComponent<CloudMod>().ReadScene(scenePack); } catch { }
+            //try { GetComponent<SnowMod>().ReadScene(scenePack); } catch { }
+            //try { GetComponent<SkyMod>().ReadScene(scenePack); } catch { }
+            foreach (var v in EnvironmentMods)
+            {
+                v.LoadEnvironment();
+            }
+
         }
 
         /// <summary>
@@ -376,31 +410,36 @@ namespace BesiegeCustomScene
         {
             Resources.UnloadUnusedAssets();
 
-            try
+            //try
+            //{
+            //    this.gameObject.GetComponent<MeshMod>().ClearMeshes();
+            //}
+            //catch { }
+            //try
+            //{
+            //    this.gameObject.GetComponent<TriggerMod>().ClearTrigger();
+            //}
+            //catch { }
+            //try
+            //{
+            //    this.gameObject.GetComponent<CubeMod>().ClearCube();
+            //}
+            //catch { }
+            //try
+            //{
+            //    this.gameObject.GetComponent<WaterMod>().ClearWater();
+            //}
+            //catch { }
+            //try
+            //{
+            //    this.gameObject.GetComponent<CloudMod>().ClearCloud();
+            //}
+            //catch { }
+
+            foreach (var v in EnvironmentMods)
             {
-                this.gameObject.GetComponent<MeshMod>().ClearMeshes();
+                v.ClearEnvironment();
             }
-            catch { }
-            try
-            {
-                this.gameObject.GetComponent<TriggerMod>().ClearTrigger();
-            }
-            catch { }
-            try
-            {
-                this.gameObject.GetComponent<CubeMod>().ClearCube();
-            }
-            catch { }
-            try
-            {
-                this.gameObject.GetComponent<WaterMod>().ClearWater();
-            }
-            catch { }
-            try
-            {
-                this.gameObject.GetComponent<CloudMod>().ClearCloud();
-            }
-            catch { }
         }
 
 
