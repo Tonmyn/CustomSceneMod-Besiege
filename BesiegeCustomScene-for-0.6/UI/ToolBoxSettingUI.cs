@@ -72,7 +72,7 @@ namespace BesiegeCustomScene.UI
 
         void initLanguage()
         {
-            LanguageManager.LanguageFile currentLanuage = GetComponent<LanguageManager>().Get_CurretLanguageFile();
+            LanguageFile currentLanuage = GetComponent<LanguageManager>().Get_CurretLanguageFile();
 
             toolBoxUI_Language = ToolBoxUI_Language.DefaultLanguage;
             if (currentLanuage != null)

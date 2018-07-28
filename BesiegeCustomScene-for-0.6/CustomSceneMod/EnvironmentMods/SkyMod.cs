@@ -12,105 +12,87 @@ namespace BesiegeCustomScene
     class SkyMod : EnvironmentMod
     {
 
-        Mesh skyBallMesh;
-        Texture skyBallTexture;
-        GameObject starSphere;
+
         GameObject skySphere;
+        GameObject starSphere;
+        SkyPropertise skyPropertise = new SkyPropertise();
 
-        string skyBoxTexturePath;
-        //string skyBoxMeshPath;
-
-        public void ReadScene(CustomSceneMod.ScenePack scenePack)
+        class SkyPropertise
         {
-            //skyBoxTexturePath = scenePack.TexturesPath + "/SkyBoxTexture.jpg";
-            //skyBoxMeshPath = scenePack.MeshsPath + "/Skydome.obj";
-
-            
-            //try
-            //{
-            //    if (!File.Exists(scenePack.SettingFilePath))
-            //    {
-            //        GeoTools.Log("Error! Scene File not exists!");
-            //        return;
-            //    }
-
-            //    FileStream fs = new FileStream(scenePack.SettingFilePath, FileMode.Open);
-
-            //    //打开数据文件
-            //    StreamReader srd = new StreamReader(fs, Encoding.Default);
-
-            //    while (srd.Peek() != -1)
-            //    {
-            //        string str = srd.ReadLine();
-            //        string[] chara = str.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-            //        if (chara.Length > 2)
-            //        {
-            //            #region Mesheses
-            //            if (chara[0] == "Sky")
-            //            {
-            //                skyBoxTexturePath = scenePack.TexturesPath + "/" + chara[1];
-            //                create();
-            //            }
-            //            #endregion                 
-            //        }
-            //    }
-            //    srd.Close();
-            //    //   for (int i = 0; i < this.meshes.Length; i++){GeoTools.MeshFilt(ref this.meshes[i]);}
-            //    GeoTools.Log("Read Sky Completed!");
-            //}
-            //catch (Exception ex)
-            //{
-            //    GeoTools.Log("Error! Read Sky Failed!");
-            //    GeoTools.Log(ex.ToString());
-            //    return;
-            //}
-
-          
+            public Mesh Mesh;
+            public Texture Texture;
+            public string TexturePath;                 
         }
-
-        public override void ReadEnvironment(CustomSceneMod.ScenePack scenePack)
+     
+        public override void ReadEnvironment(ScenePack scenePack)
         {
             ClearEnvironment();
 
-            foreach (var str in scenePack.SettingFileDatas)
+            try
             {
-                string[] chara = str.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-                if (chara.Length > 2)
+
+                foreach (var str in scenePack.SettingFileDatas)
                 {
-                    if (chara[0] == "Sky")
+                    string[] chara = str.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+                    if (chara.Length >= 2)
                     {
-                        skyBoxTexturePath = scenePack.TexturesPath + "/" + chara[1];
-                        //create();
+                        if (chara[0] == "Sky")
+                        {
+                            skyPropertise.TexturePath = scenePack.TexturesPath + "/" + chara[1];
+                            //create();
+                        }
                     }
                 }
+#if DEBUG
+                GeoTools.Log("Read Sky Completed!");
+#endif
+            }
+            catch (Exception e)
+            {
+                GeoTools.Log("Error! Read Sky Failed!");
+                GeoTools.Log(e.Message);
+                ClearEnvironment();
+                return;
             }
         }
 
         public override void LoadEnvironment()
         {
-            skyBallMesh = getMesh();
-            skyBallTexture = getTexture(skyBoxTexturePath);
-            
-            starSphere = GameObject.Find("STAR SPHERE");
-            if (starSphere != null)
+            try
             {
-                starSphere.SetActive(false);
+                skyPropertise.Mesh = getMesh();
+                skyPropertise.Texture = getTexture(skyPropertise.TexturePath);
+
+                 starSphere = GameObject.Find("STAR SPHERE");
+                if (starSphere != null)
+                {
+                    starSphere.SetActive(false);
+                }
+
+                skySphere = CreateSkyMaterialBall(skyPropertise);
+
+                skySphere.AddComponent<CameraFollower>();
+
+#if DEBUG
+                GeoTools.Log("Load Sky Successfully");
+#endif
             }
-
-            skySphere = CreateSkyMaterialBall(skyBallMesh,skyBallTexture);
-
-            skySphere.AddComponent<CameraFollower>();
-
+            catch (Exception e)
+            {
+                GeoTools.Log("Error! Load Sky Failed");
+                GeoTools.Log(e.Message);
+                ClearEnvironment();
+            }
         }
 
         public override void ClearEnvironment()
         {
-          
-            Destroy(starSphere);
-            Destroy(skyBallMesh);
-            Destroy(skyBallTexture);
+#if DEBUG
+            GeoTools.Log("Clear Sky");
+#endif
 
-            skyBoxTexturePath = "";
+            Destroy(starSphere);
+            skyPropertise = null;
 
             int childCount = skySphere.transform.childCount;
             for (int i = 0; i < childCount; i++)
@@ -163,17 +145,17 @@ namespace BesiegeCustomScene
             return texture2D;
         }
 
-        GameObject CreateSkyMaterialBall(Mesh mesh,Texture texture2D)
+        GameObject CreateSkyMaterialBall(SkyPropertise skyPropertise)
         {
             GameObject go = new GameObject("SKY SPHERE");
             try
             {         
-                go.AddComponent<MeshFilter>().mesh = mesh;
+                go.AddComponent<MeshFilter>().mesh = skyPropertise.Mesh;
                 MeshRenderer mr = go.AddComponent<MeshRenderer>();
 
                 //mr.material = new Material(Shader.Find("Custom/ReflectBumpEmiss/late"));
                 mr.material = new Material(Shader.Find("Particles/Alpha Blended"));
-                mr.material.mainTexture = texture2D;
+                mr.material.mainTexture = skyPropertise.Texture;
                 mr.material.mainTexture.wrapMode = TextureWrapMode.Clamp;
                 mr.receiveShadows = false;
                 mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;

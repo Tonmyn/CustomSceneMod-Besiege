@@ -17,8 +17,6 @@ namespace BesiegeCustomScene
         public static string ScenePacksPath;
         /// <summary>地图包列表</summary>
         public List<ScenePack> ScenePacks;
-        /// <summary>地图包设置参数</summary>
-        public SceneSetting Camera;
 
         public bool WorldBoundariesEnable = true;
 
@@ -26,104 +24,9 @@ namespace BesiegeCustomScene
 
         public bool FogEnable = true;
 
-        /// <summary>
-        /// 地图包设置参数结构体
-        /// </summary>
-        public struct SceneSetting
-        {
-            public int farClipPlane;
-            public float focusLerpSmooth;
-            public Vector3 fog;
-            public bool SSAO;
-            
-            //public static SceneSetting None { get; } = new SceneSetting { farClipPlane = 3000, focusLerpSmooth = 100, fog = Vector3.one, SSAO = false };
-        }
-
-        /// <summary>地图包类</summary>
-        public class ScenePack
-        {
-
-            /// <summary>
-            /// 地图路径
-            /// </summary>
-            public string Path;
-
-            /// <summary>
-            /// 地图名称
-            /// </summary>
-            public string Name;
-
-            /// <summary>
-            /// 网格文件路径
-            /// </summary>
-            public string MeshsPath;
-
-            /// <summary>
-            /// 贴图文件路径
-            /// </summary>
-            public string TexturesPath;
-
-            /// <summary>
-            /// 设置文件路径
-            /// </summary>
-            public string SettingFilePath;
-
-            /// <summary>
-            /// 设置文件数据
-            /// </summary>
-            public List<string> SettingFileDatas;
-
-            /// <summary>
-            /// 地图包类型
-            /// </summary>
-            public enum SceneType
-            {
-                /// <summary>可用</summary>
-                Enabled = 0,
-                /// <summary>不可用</summary>
-                Disable = 1,
-                /// <summary>空</summary>
-                Empty = 3,
-            }
-
-            public SceneType Type;
-
-            public ScenePack(DirectoryInfo folderName)
-            {
-
-                Name = folderName.Name;
-                Path = folderName.FullName;
-                MeshsPath = Path + "/Meshs";
-                TexturesPath = Path + "/Textures";
-                SettingFilePath = string.Format("{0}/setting.txt", Path);
-
-                if (!ModIO.ExistsFile(string.Format("{0}/setting.txt", Path)))
-                {
-                    Type = SceneType.Empty;
-                }
-                else
-                {
-                    Type = SceneType.Enabled;
-                }
-
-                SettingFileDatas = new List<string>();
-                if (Type == SceneType.Enabled)
-                {
-                    var textReader = GeoTools.FileReader(SettingFilePath);
-
-                    while (textReader.Peek() != -1)
-                    {
-                        SettingFileDatas.Add(textReader.ReadLine());
-                    }
-                }
-
-            }
-
-        }
 
         List<EnvironmentMod> EnvironmentMods;
 
-        //UI.SceneSettingUI sUI;
 
         void Awake()
         {
@@ -136,16 +39,12 @@ namespace BesiegeCustomScene
 
             GameObject customSceneMod = gameObject;
 
-            //foreach (var v in EnvironmentMods)
-            //{
-            //    customSceneMod.AddComponent(v.GetType());
-            //}
-
-             customSceneMod.AddComponent<MeshMod>();
-            customSceneMod.AddComponent<CubeMod>();
-            customSceneMod.AddComponent<SnowMod>();
-            customSceneMod.AddComponent<CloudMod>();
-            customSceneMod.AddComponent<WaterMod>();
+            EnvironmentMods.Add(customSceneMod.AddComponent<CameraMod>());
+            EnvironmentMods.Add(customSceneMod.AddComponent<MeshMod>());
+            EnvironmentMods.Add(customSceneMod.AddComponent<SnowMod>());
+            EnvironmentMods.Add(customSceneMod.AddComponent<CloudMod>());
+            EnvironmentMods.Add(customSceneMod.AddComponent<WaterMod>());
+            EnvironmentMods.Add(customSceneMod.AddComponent<WindMod>());
             EnvironmentMods.Add(customSceneMod.AddComponent<SkyMod>());
 
         }
@@ -184,19 +83,19 @@ namespace BesiegeCustomScene
         {
             List<ScenePack> SPs = new List<ScenePack>() { };
 
-            //if (!Directory.Exists(scenesPackPath))
-            //{
-            //    GeoTools.Log("Error! Scenes Path Directory not exists!");
-            //    return SPs;
-            //}
+            if (!ModIO.ExistsDirectory(scenesPackPath))
+            {
+                GeoTools.Log("Error! Scenes Path Directory not exists!");
+                return SPs;
+            }
 
-            //DirectoryInfo TheFolder = new DirectoryInfo(scenesPackPath);
+            DirectoryInfo TheFolder = new DirectoryInfo(scenesPackPath);
 
-            ////遍历文件夹
-            //foreach (DirectoryInfo NextFolder in TheFolder.GetDirectories())
-            //{
-            //    SPs.Add(new ScenePack(NextFolder));
-            //}
+            //遍历文件夹
+            foreach (DirectoryInfo NextFolder in TheFolder.GetDirectories())
+            {
+                SPs.Add(new ScenePack(NextFolder));
+            }
 
             return SPs;
         }
@@ -207,123 +106,7 @@ namespace BesiegeCustomScene
         }  
 
 
-        //读取地图地图设定 参数:地图包
-        public void ReadSceneSetting(ScenePack scenePack)
-        {
-            Resources.UnloadUnusedAssets();
-
-            SceneSetting SS = new SceneSetting();
-
-            //            try
-            //            {
-            //#if DEBUG
-            //                GeoTools.Log(Application.dataPath);
-            //#endif
-            //                if (!File.Exists(scenePack.SettingFilePath))
-            //                {
-            //                    GeoTools.Log("Error! Scene File not exists!");
-            //                    return;
-            //                }
-
-            //                FileStream fs = new FileStream(scenePack.SettingFilePath, FileMode.Open);
-            //                //打开数据文件
-            //                StreamReader srd = new StreamReader(fs, Encoding.Default);
-
-            //                while (srd.Peek() != -1)
-            //                {
-            //                    string str = srd.ReadLine();
-            //                    string[] chara = str.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-            //                    if (chara.Length > 2)
-            //                    {
-            //                        #region Camera
-            //                        if (chara[0] == nameof(Camera))
-            //                        {
-            //                            if (chara[1] == nameof(Camera.farClipPlane))
-            //                            {
-            //                                try
-            //                                {
-            //                                    GameObject.Find("Main Camera").GetComponent<Camera>().farClipPlane = Convert.ToInt32(chara[2]);
-            //                                }
-            //                                catch (Exception ex)
-            //                                {
-            //                                    GeoTools.Log("farClipPlane Error");
-            //                                    GeoTools.Log(ex.ToString());
-            //                                }
-            //                            }
-            //                            else if (chara[1] == nameof(SS.focusLerpSmooth))
-            //                            {
-            //                                try
-            //                                {
-            //                                    if (chara[2] == "Infinity")
-            //                                    {
-            //                                        GameObject.Find("Main Camera").GetComponent<MouseOrbit>().focusLerpSmooth = float.PositiveInfinity;
-            //                                    }
-            //                                    else
-            //                                    {
-            //                                        GameObject.Find("Main Camera").GetComponent<MouseOrbit>().focusLerpSmooth = Convert.ToSingle(chara[2]);
-            //                                    }
-            //                                }
-            //                                catch (Exception ex)
-            //                                {
-            //                                    GeoTools.Log("focusLerpSmooth Error");
-            //                                    GeoTools.Log(ex.ToString());
-            //                                }
-            //                            }
-            //                            else if (chara[1] == nameof(SS.fog))
-            //                            {
-            //                                try
-            //                                {
-            //                                    GameObject.Find("Fog Volume").transform.localScale = new Vector3(0, 0, 0);
-            //                                }
-            //                                catch
-            //                                {
-            //                                    try
-            //                                    {
-            //                                        GameObject.Find("Fog Volume Dark").transform.localScale = new Vector3(0, 0, 0);
-            //                                    }
-            //                                    catch
-            //                                    {
-            //                                        GeoTools.Log("fog error");
-            //                                    }
-            //                                }
-            //                            }
-            //                            else if (chara[1] == nameof(SceneSetting.SSAO))
-            //                            {
-            //                                //if (chara[2] == "OFF")
-            //                                //{
-            //                                //    GeoTools.Log("SSAO OFF");
-            //                                //    OptionsMaster.SSAO = true;
-            //                                //    FindObjectOfType<ToggleAO>().Set();
-            //                                //}
-            //                                //else if (chara[2] == "ON")
-            //                                //{
-            //                                //    GeoTools.Log("SSAO ON");
-            //                                //    OptionsMaster.SSAO = false;
-            //                                //    FindObjectOfType<ToggleAO>().Set();
-            //                                //}
-
-            //                            }
-
-            //                        }
-            //                        #endregion
-            //                    }
-            //                }
-            //                srd.Close();
-
-            //                GeoTools.Log("ReadSceneSetting Completed!");
-            //            }
-            //            catch (Exception ex)
-            //            {
-            //                GeoTools.Log("ReadSceneSetting Failed!");
-            //                GeoTools.Log(ex.ToString());
-            //                return;
-            //            }
-
-            foreach (var v in EnvironmentMods)
-            {
-                v.ReadEnvironment(scenePack);
-            }
-        }
+      
 
         /// <summary>
         /// 加载地图包
@@ -356,16 +139,15 @@ namespace BesiegeCustomScene
 
         void loadScenePack(ScenePack scenePack)
         {
+            ClearScene();
 
             hideFloorBig();
-            ReadSceneSetting(scenePack);
-            //try { GetComponent<MeshMod>().ReadScene(scenePack); } catch { }
-            //try { GetComponent<TriggerMod>().ReadScene(scenePack); } catch { }
-            //try { GetComponent<CubeMod>().ReadScene(scenePack); } catch { }
-            //try { GetComponent<WaterMod>().ReadScene(scenePack); } catch { }
-            //try { GetComponent<CloudMod>().ReadScene(scenePack); } catch { }
-            //try { GetComponent<SnowMod>().ReadScene(scenePack); } catch { }
-            //try { GetComponent<SkyMod>().ReadScene(scenePack); } catch { }
+
+            foreach (var v in EnvironmentMods)
+            {
+                v.ReadEnvironment(scenePack);
+            }
+
             foreach (var v in EnvironmentMods)
             {
                 v.LoadEnvironment();
@@ -402,44 +184,18 @@ namespace BesiegeCustomScene
                 return;
             }
 
-            //StartCoroutine(ILoadScenePack(ScenePacks[index]));
         }
 
         //清除地图
         public void ClearScene()
         {
-            Resources.UnloadUnusedAssets();
-
-            //try
-            //{
-            //    this.gameObject.GetComponent<MeshMod>().ClearMeshes();
-            //}
-            //catch { }
-            //try
-            //{
-            //    this.gameObject.GetComponent<TriggerMod>().ClearTrigger();
-            //}
-            //catch { }
-            //try
-            //{
-            //    this.gameObject.GetComponent<CubeMod>().ClearCube();
-            //}
-            //catch { }
-            //try
-            //{
-            //    this.gameObject.GetComponent<WaterMod>().ClearWater();
-            //}
-            //catch { }
-            //try
-            //{
-            //    this.gameObject.GetComponent<CloudMod>().ClearCloud();
-            //}
-            //catch { }
-
+            
             foreach (var v in EnvironmentMods)
             {
                 v.ClearEnvironment();
             }
+
+            Resources.UnloadUnusedAssets();
         }
 
 

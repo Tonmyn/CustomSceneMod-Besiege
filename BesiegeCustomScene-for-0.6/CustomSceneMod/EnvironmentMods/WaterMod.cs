@@ -1,254 +1,191 @@
 ﻿using System;
+using System.Collections.Generic;
 //using System.IO;
 using System.Text;
 using UnityEngine;
 
 namespace BesiegeCustomScene
 {
-    public class WaterMod : MonoBehaviour
+    public class WaterMod : EnvironmentMod
     {
 
-        void Start()
-        {
-
-        }
-        void OnDisable()
-        {
-            ClearWater();
-        }
-        void OnDestroy()
-        {
-            ClearWater();
-        }
+        //void OnDisable()
+        //{
+        //    ClearWater();
+        //}
+        //void OnDestroy()
+        //{
+        //    ClearWater();
+        //}
         /// ////////////////////////      
-        private GameObject[] Mwater;
+
+        private List<GameObject> waterObjects;
         private int WaterSize = 0;
-        [Obsolete]
-        public void ReadScene(string SceneName)
+
+        WaterPropertise[] waterPropertise;
+
+        class WaterPropertise
         {
-            WaterSize = 0;
-            //try
-            //{
-            //    //  GeoTools.Log(Application.dataPath);
-            //    if (!File.Exists(GeoTools.ScenePath + SceneName + ".txt"))
-            //    {
-            //        GeoTools.Log("Error! Scene File not exists!");
-            //        return;
-            //    }
-            //    StreamReader srd = File.OpenText(GeoTools.ScenePath + SceneName + ".txt");
-            //    while (srd.Peek() != -1)
-            //    {
-            //        string str = srd.ReadLine();
-            //        string[] chara = str.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-            //        if (chara.Length > 2)
-            //        {
-            //            #region Water
-            //            if (chara[0] == "MWater" || chara[0] == "Mwater")
-            //            {
-            //                if (chara[1] == "size")
-            //                {
-            //                    this.WaterSize = Convert.ToInt32(chara[2]);
-            //                    LoadWater();
-            //                }
-            //                if (chara[1] == "watertemp")
-            //                {
-            //                    if (Convert.ToInt32(chara[2]) == 0)
-            //                    {
-            //                        gameObject.GetComponent<Prop>().WaterTemp.SetActive(false);
-            //                    }
-            //                    else
-            //                    {
-            //                        gameObject.GetComponent<Prop>().WaterTemp.SetActive(true);
-            //                    }
-            //                }
-            //            }
-            //            else if (chara[0] == "Water")
-            //            {
-            //                int i = Convert.ToInt32(chara[1]);
-            //                if (chara[2] == "mesh")
-            //                {
-            //                    Mwater[i].GetComponent<MeshFilter>().mesh = GeoTools.MeshFromObj(chara[3]);
-            //                }
-            //                else if (chara[2] == "wmesh")
-            //                {
-            //                    Mwater[i].GetComponent<MeshFilter>().mesh = GeoTools.WMeshFromObj(chara[3]);
-            //                }
-            //                else if (chara[2] == "scale")
-            //                {
-            //                    Mwater[i].transform.localScale = new Vector3(
-            //                   Convert.ToSingle(chara[3]),
-            //                   Convert.ToSingle(chara[4]),
-            //                   Convert.ToSingle(chara[5]));
-            //                }
-            //                else if (chara[2] == "location")
-            //                {
-            //                    Mwater[i].transform.localPosition = new Vector3(
-            //                   Convert.ToSingle(chara[3]),
-            //                   Convert.ToSingle(chara[4]),
-            //                   Convert.ToSingle(chara[5]));
-            //                }
-            //                else if (chara[2] == "meshcollider")
-            //                {
-            //                    Mwater[i].GetComponent<MeshCollider>().sharedMesh = GeoTools.MeshFromObj(chara[3]);
-            //                    Mwater[i].GetComponent<MeshCollider>().convex = true;
-            //                    Mwater[i].GetComponent<MeshCollider>().isTrigger = true;
-            //                }
-            //                else if (chara[2] == "wmeshcollider")
-            //                {
-            //                    Mwater[i].GetComponent<MeshCollider>().sharedMesh = GeoTools.WMeshFromObj(chara[3]);
-            //                    Mwater[i].GetComponent<MeshCollider>().convex = true;
-            //                    Mwater[i].GetComponent<MeshCollider>().isTrigger = true;
-            //                }
-            //            }
-            //            #endregion
-            //        }
-            //    }
-            //    srd.Close();
-            //    GeoTools.Log("ReadWater Completed!");
-            //}
-            //catch (Exception ex)
-            //{
-            //    GeoTools.Log("Error! ReadWater Failed!");
-            //    GeoTools.Log(ex.ToString());
-            //    return;
-            //}
+            public Mesh mesh = new Mesh();
+
+            public Vector3 position = Vector3.zero;
+
+            public Vector3 scale = Vector3.one;
+
+            public MeshCollider meshCollider = new MeshCollider();
         }
-        public void ReadScene(CustomSceneMod.ScenePack scenePack)
+
+        public override void ReadEnvironment(ScenePack scenePack)
         {
-            WaterSize = 0;
-            //try
-            //{
-            //    ClearWater();
+            ClearEnvironment();
 
-            //    if (!File.Exists(scenePack.SettingFilePath))
-            //    {
-            //        GeoTools.Log("Error! Scene File not exists!");
-            //        return;
-            //    }
+            try
+            {
 
-            //    FileStream fs = new FileStream(scenePack.SettingFilePath, FileMode.Open);
-            //    //打开数据文件
-            //    StreamReader srd = new StreamReader(fs, Encoding.Default);                
+                foreach (var str in scenePack.SettingFileDatas)
+                {
 
-            //    while (srd.Peek() != -1)
-            //    {
-            //        string str = srd.ReadLine();
-            //        string[] chara = str.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-            //        if (chara.Length > 2)
-            //        {
-            //            #region Water
-            //            if (chara[0] == "MWater" || chara[0] == "Mwater")
-            //            {
-            //                if (chara[1] == "size")
-            //                {
-            //                    this.WaterSize = Convert.ToInt32(chara[2]);
-            //                    LoadWater();
-            //                }
-            //                if (chara[1] == "watertemp")
-            //                {
-            //                    if (Convert.ToInt32(chara[2]) == 0)
-            //                    {
-            //                        gameObject.GetComponent<Prop>().WaterTemp.SetActive(false);
-            //                    }
-            //                    else
-            //                    {
-            //                        gameObject.GetComponent<Prop>().WaterTemp.SetActive(true);
-            //                    }
-            //                }
-            //            }
-            //            else if (chara[0] == "Water")
-            //            {
-            //                int i = Convert.ToInt32(chara[1]);
-            //                if (chara[2] == "mesh")
-            //                {
-            //                    Mwater[i].GetComponent<MeshFilter>().mesh = GeoTools.MeshFromObj(chara[3]);
-            //                }
-            //                else if (chara[2] == "wmesh")
-            //                {
-            //                    Mwater[i].GetComponent<MeshFilter>().mesh = GeoTools.WMeshFromObj(chara[3]);
-            //                }
-            //                else if (chara[2] == "scale")
-            //                {
-            //                    Mwater[i].transform.localScale = new Vector3(
-            //                   Convert.ToSingle(chara[3]),
-            //                   Convert.ToSingle(chara[4]),
-            //                   Convert.ToSingle(chara[5]));
-            //                }
-            //                else if (chara[2] == "location")
-            //                {
-            //                    Mwater[i].transform.localPosition = new Vector3(
-            //                   Convert.ToSingle(chara[3]),
-            //                   Convert.ToSingle(chara[4]),
-            //                   Convert.ToSingle(chara[5]));
-            //                }
-            //                else if (chara[2] == "meshcollider")
-            //                {
-            //                    Mwater[i].GetComponent<MeshCollider>().sharedMesh = GeoTools.MeshFromObj(chara[3]);
-            //                    Mwater[i].GetComponent<MeshCollider>().convex = true;
-            //                    Mwater[i].GetComponent<MeshCollider>().isTrigger = true;
-            //                }
-            //                else if (chara[2] == "wmeshcollider")
-            //                {
-            //                    Mwater[i].GetComponent<MeshCollider>().sharedMesh = GeoTools.WMeshFromObj(chara[3]);
-            //                    Mwater[i].GetComponent<MeshCollider>().convex = true;
-            //                    Mwater[i].GetComponent<MeshCollider>().isTrigger = true;
-            //                }
-            //            }
-            //            #endregion
-            //        }
-            //    }
-            //    srd.Close();
-            //    GeoTools.Log("ReadWater Completed!");
-            //}
-            //catch (Exception ex)
-            //{
-            //    GeoTools.Log("Error! ReadWater Failed!");
-            //    GeoTools.Log(ex.ToString());
-            //    return;
-            //}
+                    string[] chara = str.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+                    if (chara.Length > 2)
+                    {
+                        #region Water
+                        if (chara[0] == "MWater" || chara[0] == "Mwater")
+                        {
+                            if (chara[1] == "size")
+                            {
+                                WaterSize = Convert.ToInt32(chara[2]);
+                                waterPropertise = new WaterPropertise[WaterSize];
+                                //LoadWater();
+                            }
+                            if (chara[1] == "watertemp")
+                            {
+                                if (Convert.ToInt32(chara[2]) == 0)
+                                {
+                                    gameObject.GetComponent<Prop>().WaterTemp.SetActive(false);
+                                }
+                                else
+                                {
+                                    gameObject.GetComponent<Prop>().WaterTemp.SetActive(true);
+                                }
+                            }
+                        }
+                        else if (chara[0] == "Water")
+                        {
+                            int i = Convert.ToInt32(chara[1]);
+                            if (chara[2] == "mesh")
+                            {
+                                waterPropertise[i].mesh = GeoTools.MeshFromObj(chara[3]);
+                            }
+                            else if (chara[2] == "wmesh")
+                            {
+                                waterPropertise[i].mesh = GeoTools.WMeshFromObj(chara[3]);
+                            }
+                            else if (chara[2] == "scale")
+                            {
+                                waterPropertise[i].scale = new Vector3(
+                               Convert.ToSingle(chara[3]),
+                               Convert.ToSingle(chara[4]),
+                               Convert.ToSingle(chara[5]));
+                            }
+                            else if (chara[2] == "location")
+                            {
+                                waterPropertise[i].position = new Vector3(
+                               Convert.ToSingle(chara[3]),
+                               Convert.ToSingle(chara[4]),
+                               Convert.ToSingle(chara[5]));
+                            }
+                            else if (chara[2] == "meshcollider")
+                            {
+                                waterPropertise[i].meshCollider.sharedMesh = GeoTools.MeshFromObj(chara[3]);
+                            }
+                            else if (chara[2] == "wmeshcollider")
+                            {
+                                waterPropertise[i].meshCollider.sharedMesh = GeoTools.WMeshFromObj(chara[3]);
+                            }
+                        }
+                        #endregion
+                    }
+                }
+#if DEBUG
+                GeoTools.Log("Read Water Completed!");
+#endif
+            }
+            catch (Exception ex)
+            {
+                GeoTools.Log("Error! Read Water Failed!");
+                GeoTools.Log(ex.Message);
+                return;
+            }
         }
-        public void LoadWater()
+        public override void LoadEnvironment()
         {
-            //try
-            //{
+            try
+            {
+
                 
-            //    if (WaterSize <= 0) return;
-            //    if (this.gameObject.GetComponent<Prop>().TileTemp == null) return;              
-            //    Mwater = new GameObject[WaterSize];
-            //    for (int i = 0; i < Mwater.Length; i++)
-            //    {
-            //        Mwater[i] = Instantiate(gameObject.GetComponent<Prop>().TileTemp);
-            //        Mwater[i].name = "water" + i.ToString();
-            //        Mwater[i].SetActive(true);
-            //        Mwater[i].transform.localScale = new Vector3(1, 1, 1);
-            //        Mwater[i].transform.localPosition = new Vector3(0, 0, 0);
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    GeoTools.Log("LoadWater Failed");
-            //    GeoTools.Log(ex.ToString());
-            //}
-        }
-        public void ClearWater()
-        {
-            //ClearFloater();
-            //if (Mwater == null) return;
-            //if (Mwater.Length <= 0) return;
-            //if (WaterSize > 0) GeoTools.Log("ClearWater");
-            //gameObject.GetComponent<Prop>().WaterTemp.SetActive(false);
-            //try
-            //{
-            //    Destroy(GameObject.Find("WaterTempReflectionMain Camera"));
-            //}
-            //catch { }
-            //for (int i = 0; i < Mwater.Length; i++)
-            //{
-            //    Destroy(Mwater[i]);
-            //}
+                if (this.gameObject.GetComponent<Prop>().TileTemp == null) return;
+                WaterSize = Mathf.Clamp(WaterSize,0, 1000);
+                if (WaterSize <= 0) return;
 
-            //Mwater = null;
-            //WaterSize = 0;
+                waterObjects = new List<GameObject>();
+
+                for (int i = 0; i < WaterSize; i++)
+                {
+                    createWaterObject(waterPropertise[i]);
+                }
+
+#if DEBUG
+                GeoTools.Log("Load Water Successfully");
+#endif
+            }
+            catch (Exception ex)
+            {
+                GeoTools.Log("Load Water Failed");
+                GeoTools.Log(ex.ToString());
+                ClearEnvironment();
+                return;
+            }
+        }
+        public override void ClearEnvironment()
+        {
+            ClearFloater();
+            if (waterObjects == null) return;
+            if (waterObjects.Count <= 0) return;
+#if DEBUG
+            GeoTools.Log("Clear Water");
+#endif
+            gameObject.GetComponent<Prop>().WaterTemp.SetActive(false);
+            try
+            {
+                Destroy(GameObject.Find("WaterTempReflectionMain Camera"));
+            }
+            catch { }
+            for (int i = 0; i < waterObjects.Count; i++)
+            {
+                Destroy(waterObjects[i]);
+            }
+
+            waterObjects = null;
+            WaterSize = 0;
+        }
+
+        GameObject createWaterObject(WaterPropertise waterPropertise)
+        {
+            GameObject go = Instantiate(gameObject.GetComponent<Prop>().TileTemp);
+            go.name = "Water Object";
+            go.SetActive(true);
+            go.transform.localScale = waterPropertise.scale;
+            go.transform.localPosition = waterPropertise.position;
+
+            Mesh mesh = go.GetComponent<Mesh>();
+            mesh = waterPropertise.mesh;
+
+            MeshCollider mc = go.GetComponent<MeshCollider>();
+            mc.sharedMesh = mesh;
+            mc.convex = true;
+            mc.isTrigger = true;
+
+            return go;
         }
         public void LoadFloater()
         {

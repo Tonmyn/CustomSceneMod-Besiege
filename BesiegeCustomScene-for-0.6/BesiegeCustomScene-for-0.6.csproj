@@ -30,7 +30,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="BaseFileClass\LanguageFile.cs" />
+    <Compile Include="BaseFileClass\ScenePack.cs" />
+    <Compile Include="BaseFileClass\SettingFile.cs" />
     <Compile Include="CustomSceneMod\EnvironmentMod.cs" />
+    <Compile Include="CustomSceneMod\EnvironmentMods\CameraMod.cs" />
     <Compile Include="Global\DataLoader.cs" />
     <Compile Include="Mod.cs" />
     <Compile Include="Global\LanguageManager.cs" />

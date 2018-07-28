@@ -1,226 +1,182 @@
 ﻿using System;
+using System.Collections.Generic;
 //using System.IO;
 using System.Text;
 using UnityEngine;
 
 namespace BesiegeCustomScene
 {
-    public class SnowMod : MonoBehaviour
+    public class SnowMod : EnvironmentMod
     {
-        void Start()
+
+        //void OnDisable()
+        //{
+        //    ClearSnow();
+        //}
+        //void OnDestroy()
+        //{
+        //    ClearSnow();
+        //}
+
+        List<GameObject> snowObjects;
+        int snowSize = 0;
+
+        SnowPropertise[] snowPropertises;
+        class SnowPropertise
         {
+
+            public Vector3 snowPosition = Vector3.zero;
+            public Vector3 snowScale = Vector3.one;
+            public Color snowColor = Color.white;
+            public float snowStartSize = 0f;
+            public float snowStartSpeed = 0f;
+            public int snowMaxParticles = 0;
+
         }
-        void OnDisable()
+
+        public override void ReadEnvironment(ScenePack scenePack)
         {
-            ClearSnow();
-        }
-        void OnDestroy()
-        {
-            ClearSnow();
-        }
-        private GameObject[] MSnow;
-        private int SnowSize = 0;
-        [Obsolete]
-        public void ReadScene(string SceneName)
-        {
-            //try
-            //{
-            //    //GeoTools.Log(Application.dataPath);
-            //    if (!File.Exists(GeoTools.ScenePath + SceneName + ".txt"))
-            //    {
-            //        GeoTools.Log("Error! Scene File not exists!");
-            //        return;
-            //    }
-            //    StreamReader srd = File.OpenText(GeoTools.ScenePath + SceneName + ".txt");
-            //    while (srd.Peek() != -1)
-            //    {
-            //        string str = srd.ReadLine();
-            //        string[] chara = str.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-            //        if (chara.Length > 2)
-            //        {
-            //            #region Snow
-            //            if (chara[0] == "MSnow" || chara[0] == "Msnow")
-            //            {
+            ClearEnvironment();
 
-            //                if (chara[1] == "size")
-            //                {
-            //                    this.SnowSize = Convert.ToInt32(chara[2]);
-            //                    LoadSnow();
-            //                }
-            //            }
-            //            else if (chara[0] == "Snow")
-            //            {
-            //                int i = Convert.ToInt32(chara[1]);
-
-            //                if (chara[2] == "scale")
-            //                {
-            //                    MSnow[i].transform.localScale = new Vector3(
-            //                    Convert.ToSingle(chara[3]),
-            //                    Convert.ToSingle(chara[4]),
-            //                    Convert.ToSingle(chara[5]));
-            //                }
-            //                else if (chara[2] == "location")
-            //                {
-            //                    MSnow[i].transform.localPosition = new Vector3(
-            //                    Convert.ToSingle(chara[3]),
-            //                    Convert.ToSingle(chara[4]),
-            //                    Convert.ToSingle(chara[5]));
-            //                }
-            //                else if (chara[2] == "color" || chara[2] == "startColor")
-            //                {
-            //                    MSnow[i].GetComponent<ParticleSystem>().startColor = new Color(
-            //                    Convert.ToSingle(chara[3]),
-            //                    Convert.ToSingle(chara[4]),
-            //                    Convert.ToSingle(chara[5]),
-            //                    Convert.ToSingle(chara[6]));
-            //                }
-            //                else if (chara[2] == "Size" || chara[2] == "startSize")
-            //                {
-            //                    MSnow[i].GetComponent<ParticleSystem>().startSize = Convert.ToSingle(chara[3]);
-            //                }
-            //                else if (chara[2] == "Speed" || chara[2] == "startSpeed")
-            //                {
-            //                    MSnow[i].GetComponent<ParticleSystem>().startSpeed = Convert.ToSingle(chara[3]);
-            //                }
-            //                else if (chara[2] == "maxParticles")
-            //                {
-            //                    MSnow[i].GetComponent<ParticleSystem>().maxParticles = Convert.ToInt32(chara[3]);
-            //                }
-            //            }
-            //            #endregion
-            //        }
-            //    }
-            //    srd.Close();
-            //    GeoTools.Log("ReadSnow Completed!");
-            //}
-            //catch (Exception ex)
-            //{
-            //    GeoTools.Log("Error! ReadSnow Failed!");
-            //    GeoTools.Log(ex.ToString());
-            //    return;
-            //}
-        }
-        public void ReadScene(CustomSceneMod.ScenePack scenePack)
-        {
-            //try
-            //{
-            //    ClearSnow();
-
-            //    if (!File.Exists(scenePack.SettingFilePath))
-            //    {
-            //        GeoTools.Log("Error! Scene File not exists!");
-            //        return;
-            //    }
-
-            //    FileStream fs = new FileStream(scenePack.SettingFilePath, FileMode.Open);
-            //    //打开数据文件
-            //    StreamReader srd = new StreamReader(fs, Encoding.Default);
-                
-            //    while (srd.Peek() != -1)
-            //    {
-            //        string str = srd.ReadLine();
-            //        string[] chara = str.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-            //        if (chara.Length > 2)
-            //        {
-            //            #region Snow
-            //            if (chara[0] == "MSnow" || chara[0] == "Msnow")
-            //            {
-
-            //                if (chara[1] == "size")
-            //                {
-            //                    this.SnowSize = Convert.ToInt32(chara[2]);
-            //                    LoadSnow();
-            //                }
-            //            }
-            //            else if (chara[0] == "Snow")
-            //            {
-            //                int i = Convert.ToInt32(chara[1]);
-
-            //                if (chara[2] == "scale")
-            //                {
-            //                    MSnow[i].transform.localScale = new Vector3(
-            //                    Convert.ToSingle(chara[3]),
-            //                    Convert.ToSingle(chara[4]),
-            //                    Convert.ToSingle(chara[5]));
-            //                }
-            //                else if (chara[2] == "location")
-            //                {
-            //                    MSnow[i].transform.localPosition = new Vector3(
-            //                    Convert.ToSingle(chara[3]),
-            //                    Convert.ToSingle(chara[4]),
-            //                    Convert.ToSingle(chara[5]));
-            //                }
-            //                else if (chara[2] == "color" || chara[2] == "startColor")
-            //                {
-            //                    MSnow[i].GetComponent<ParticleSystem>().startColor = new Color(
-            //                    Convert.ToSingle(chara[3]),
-            //                    Convert.ToSingle(chara[4]),
-            //                    Convert.ToSingle(chara[5]),
-            //                    Convert.ToSingle(chara[6]));
-            //                }
-            //                else if (chara[2] == "Size" || chara[2] == "startSize")
-            //                {
-            //                    MSnow[i].GetComponent<ParticleSystem>().startSize = Convert.ToSingle(chara[3]);
-            //                }
-            //                else if (chara[2] == "Speed" || chara[2] == "startSpeed")
-            //                {
-            //                    MSnow[i].GetComponent<ParticleSystem>().startSpeed = Convert.ToSingle(chara[3]);
-            //                }
-            //                else if (chara[2] == "maxParticles")
-            //                {
-            //                    MSnow[i].GetComponent<ParticleSystem>().maxParticles = Convert.ToInt32(chara[3]);
-            //                }
-            //            }
-            //            #endregion
-            //        }
-            //    }
-            //    srd.Close();
-            //    GeoTools.Log("ReadSnow Completed!");
-            //}
-            //catch (Exception ex)
-            //{
-            //    GeoTools.Log("Error! ReadSnow Failed!");
-            //    GeoTools.Log(ex.ToString());
-            //    return;
-            //}
-        }
-        public void LoadSnow()
-        {
-            //try
-            //{
-
-            //    if (SnowSize <= 0) return;
-            //    if (this.gameObject.GetComponent<Prop>().SnowTemp == null) return;                
-            //    MSnow = new GameObject[SnowSize];
-            //    for (int i = 0; i < MSnow.Length; i++)
-            //    {
-            //        MSnow[i] = (GameObject)Instantiate(gameObject.GetComponent<Prop>().SnowTemp);
-            //        MSnow[i].name = "snow" + i.ToString();
-            //        MSnow[i].SetActive(true);
-            //        MSnow[i].transform.SetParent(transform);
-            //        MSnow[i].transform.localScale = new Vector3(1, 1, 1);
-            //        MSnow[i].transform.localPosition = new Vector3(0, 0, 0);
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    GeoTools.Log("Error! LoadSnow Failed");
-            //    GeoTools.Log(ex.ToString());
-            //    ClearSnow();
-            //}
-        }
-        public void ClearSnow()
-        {
-            if (MSnow == null) return;
-            if (MSnow.Length <= 0) return;
-           if(SnowSize>0) GeoTools.Log("ClearSnow");
-            for (int i = 0; i < MSnow.Length; i++)
+            try
             {
-                Destroy(MSnow[i]);
+
+
+                foreach (var str in scenePack.SettingFileDatas)
+                {
+                    string[] chara = str.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+                    if (chara.Length > 2)
+                    {
+                        #region Snow
+                        if (chara[0] == "MSnow" || chara[0] == "Msnow")
+                        {
+
+                            if (chara[1] == "size")
+                            {
+                                snowSize = Convert.ToInt32(chara[2]);
+                                //snowObjects.AddRange(new GameObject[10]);
+                                snowPropertises = new SnowPropertise[snowSize];
+                                //LoadSnow();
+                            }
+                        }
+                        else if (chara[0] == "Snow")
+                        {
+                            int i = Convert.ToInt32(chara[1]);
+
+                            if (chara[2] == "scale")
+                            {
+                                snowPropertises[i].snowScale = new Vector3(
+                                Convert.ToSingle(chara[3]),
+                                Convert.ToSingle(chara[4]),
+                                Convert.ToSingle(chara[5]));
+                            }
+                            else if (chara[2] == "location")
+                            {
+                                snowPropertises[i].snowPosition = new Vector3(
+                                Convert.ToSingle(chara[3]),
+                                Convert.ToSingle(chara[4]),
+                                Convert.ToSingle(chara[5]));
+                            }
+                            else if (chara[2] == "color" || chara[2] == "startColor")
+                            {
+                                snowPropertises[i].snowColor = new Color(
+                                Convert.ToSingle(chara[3]),
+                                Convert.ToSingle(chara[4]),
+                                Convert.ToSingle(chara[5]),
+                                Convert.ToSingle(chara[6]));
+                            }
+                            else if (chara[2] == "Size" || chara[2] == "startSize")
+                            {
+                                snowPropertises[i].snowStartSize = Convert.ToSingle(chara[3]);
+                            }
+                            else if (chara[2] == "Speed" || chara[2] == "startSpeed")
+                            {
+                                snowPropertises[i].snowStartSpeed = Convert.ToSingle(chara[3]);
+                            }
+                            else if (chara[2] == "maxParticles")
+                            {
+                                snowPropertises[i].snowMaxParticles = Convert.ToInt32(chara[3]);
+                            }
+                        }
+                        #endregion
+                    }
+                }
+                GeoTools.Log("Read Snow Completed!");
+            }
+            catch (Exception ex)
+            {
+                GeoTools.Log("Error! Read Snow Failed!");
+                GeoTools.Log(ex.Message);
+                ClearEnvironment();
+                return;
+            }
+        }
+        public override void LoadEnvironment()
+        {
+            try
+            {       
+                if (this.gameObject.GetComponent<Prop>().SnowTemp == null) return;
+
+                snowSize = Mathf.Clamp(snowSize, 0, 1000);
+
+                if (snowSize == 0)
+                {
+                    return;
+                }
+                else
+                {
+                    snowObjects = new List<GameObject>();
+
+                    for (int i = 0; i < snowSize; i++)
+                    {
+                        snowObjects.Add(createSnowObject(snowPropertises[i]));
+                    }
+
+#if DEBUG
+                    GeoTools.Log("Load Snow Successfully");
+#endif
+                }
+
+            }
+            catch (Exception ex)
+            {
+                GeoTools.Log("Error! Load Snow Failed");
+                GeoTools.Log(ex.Message);
+                ClearEnvironment();
+            }
+        }
+        public override void ClearEnvironment()
+        {
+            if (snowObjects == null) return;
+            if (snowObjects.Count <= 0) return;
+#if DEBUG
+            GeoTools.Log("Clear Snow");
+#endif
+            for (int i = 0; i < snowObjects.Count; i++)
+            {
+                Destroy(snowObjects[i]);
             }
 
-            MSnow = null;
-            SnowSize = 0;
+            snowObjects = null;
+            snowSize = 0;
+        }
+
+        GameObject createSnowObject(SnowPropertise snowPropertise )
+        {
+            GameObject go = (GameObject)Instantiate(gameObject.GetComponent<Prop>().SnowTemp);
+            go.name = "Snow Object";
+            go.SetActive(true);
+            go.transform.SetParent(transform);
+            go.transform.localScale = snowPropertise.snowScale;
+            go.transform.localPosition = snowPropertise.snowPosition;
+
+            ParticleSystem ps = go.GetComponent<ParticleSystem>();
+            ps.startColor = snowPropertise.snowColor;
+            ps.startSize = snowPropertise.snowStartSize;
+            ps.startSpeed = snowPropertise.snowStartSpeed;
+            ps.maxParticles = snowPropertise.snowMaxParticles;
+
+            return go;
         }
 
     }

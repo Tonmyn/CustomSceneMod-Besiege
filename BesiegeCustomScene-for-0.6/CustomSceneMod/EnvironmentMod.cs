@@ -7,7 +7,7 @@ using Modding;
 
 namespace BesiegeCustomScene
 {
-    abstract class EnvironmentMod : MonoBehaviour
+    abstract public class EnvironmentMod : MonoBehaviour
     {
 
         void OnDisable()
@@ -20,7 +20,8 @@ namespace BesiegeCustomScene
             ClearEnvironment();
         }
 
-        public abstract void ReadEnvironment(CustomSceneMod.ScenePack scenePack);
+
+        public abstract void ReadEnvironment(ScenePack scenePack);
 
         public abstract void LoadEnvironment();
 
