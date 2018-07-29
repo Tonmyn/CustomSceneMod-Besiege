@@ -20,15 +20,32 @@ namespace BesiegeCustomScene
         //}
    
         private List<GameObject> meshObjects;
-        private GameObject Meshs;
+        MeshPropertise[] meshPropertises;
+        //private GameObject Meshs;
         private GameObject materialTemp;
 
         private int MeshSize = 0;
 
         ShadowCastingMode shadowCastingMode = ShadowCastingMode.On;
 
+        class MeshPropertise
+        {
 
-        public override void ReadEnvironment(ScenePack scenePack)
+        }
+
+        class MeshsPropertise
+        {
+            int Size;
+            bool NoShadow;
+            string MaterialTemp;
+            string Textrue;
+            Vector3 Position;
+            Vector3 Scale;
+
+        }
+
+
+        public override void ReadEnvironment(SceneFolder scenePack)
         {
             ClearEnvironment();
             try
@@ -48,12 +65,13 @@ namespace BesiegeCustomScene
                             if (chara[1].ToLower() == "size")
                             {
                                 this.MeshSize = Convert.ToInt32(chara[2]);
-                                //LoadMesh();
+                                LoadEnvironment();
                             }
                             else if (chara[1].ToLower() == "noshadow")
                             {
                                 this.MeshSize = Convert.ToInt32(chara[2]);
                                 shadowCastingMode = ShadowCastingMode.Off;
+                                LoadEnvironment();
                                 //LoadMeshWithOutCastShadow();//对于带烘焙贴图的和模型过大的这项必须取消
                             }
 
@@ -593,11 +611,11 @@ namespace BesiegeCustomScene
                 }
 
                 //   for (int i = 0; i < this.meshes.Length; i++){GeoTools.MeshFilt(ref this.meshes[i]);}
-                GeoTools.Log("ReadMeshObj Completed!");
+                GeoTools.Log("Read MeshObj Completed!");
             }
             catch (Exception ex)
             {
-                GeoTools.Log("Error! ReadMeshObj Failed!");
+                GeoTools.Log("Error! Read MeshObj Failed!");
                 GeoTools.Log(ex.ToString());
                 return;
             }
@@ -614,15 +632,18 @@ namespace BesiegeCustomScene
                 }
                 else
                 {
-                    meshObjects = new List<GameObject>()
-                        ;
-                    for (int i = 0; i < MeshSize; i++)
+                    if (meshObjects == null)
                     {
-                        createMeshObject(shadowCastingMode);
-                    }
+                        meshObjects = new List<GameObject>();
+                            ;
+                        for (int i = 0; i < MeshSize; i++)
+                        {
+                            meshObjects.Add(createMeshObject(shadowCastingMode));
+                        }
 #if DEBUG
-                    GeoTools.Log("Load Mesh Successfully");
+                        GeoTools.Log("Load Mesh Successfully");
 #endif
+                    }
                 }
             }
             catch (Exception ex)
@@ -663,8 +684,9 @@ namespace BesiegeCustomScene
             }
             go.GetComponent<MeshCollider>().sharedMesh.Clear();
             go.GetComponent<MeshFilter>().mesh.Clear();
+            go.transform.SetParent(transform);
             go.transform.localScale = Vector3.one;
-            go.transform.localPosition = Vector3.zero;
+            go.transform.localPosition = Vector3.zero;   
             go.name = "Mesh Object";
 
             return go;

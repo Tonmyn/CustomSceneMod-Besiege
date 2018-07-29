@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace BesiegeCustomScene
 {
+    /// <summary>语言文件</summary>
     public class LanguageFile
     {
         public Dictionary<int, string> dic_Translation;

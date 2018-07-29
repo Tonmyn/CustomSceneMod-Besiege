@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-//using System.IO;
 using System.Text;
 using UnityEngine;
 
@@ -34,29 +33,19 @@ namespace BesiegeCustomScene
             //}, "Set CloudSize.No bigger than 80 and no less than 10.");
 
         }
-        //void OnDisable()
-        //{
-        //    ClearCloud();
-        //}
-        //void OnDestroy()
-        //{
-        //    ClearCloud();
-        //}
 
-        
-
-        List<GameObject> cloudObjects;
         int cloudSize = 0;
-        CloudPropertise cloudPropertise = new CloudPropertise();
+        List<GameObject> cloudObjects;  
+        CloudsPropertise cloudPropertise = new CloudsPropertise();
 
-        class CloudPropertise
+        class CloudsPropertise
         {
             public Vector3 cloudPosition = Vector3.zero;
             public Vector3 cloudScale = new Vector3(1000, 200, 1000);
             public Color cloudsColor = new Color(0.92f, 0.92f, 0.92f, 0.5f);
         }
 
-        public override void ReadEnvironment(ScenePack scenePack)
+        public override void ReadEnvironment(SceneFolder scenePack)
         {
             ClearEnvironment();
 
@@ -67,33 +56,32 @@ namespace BesiegeCustomScene
                     string[] chara = str.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
                     if (chara.Length > 2)
                     {
-                        if (chara[0] == "Cloud")
+                        if (chara[0].ToLower() == "cloud" || chara[0].ToLower() == "clouds")
                         {
 
                             if (chara[1] == "size")
                             {
-                                this.cloudSize = Convert.ToInt32(chara[2]);
-                                //LoadCloud();
+                                cloudSize = Convert.ToInt32(chara[2]);
+                                if (cloudSize <= 0)
+                                {
+                                    break;
+                                }
                             }
-                            //if (chara[1] == "step")
-                            //{
-                            //    this.cloudstep = Convert.ToInt32(chara[2]);
-                            //}
-                            else if (chara[1] == "floorScale" || chara[1] == "cloudScale")
+                            else if (chara[1].ToLower() == "floorscale" || chara[1].ToLower() == "cloudscale" || chara[1].ToLower() == "scale")
                             {
                                 cloudPropertise.cloudScale = new Vector3(
                                 Convert.ToSingle(chara[2]),
                                 Convert.ToSingle(chara[3]),
                                 Convert.ToSingle(chara[4]));
                             }
-                            else if (chara[1] == "location")
+                            else if (chara[1].ToLower() == "location")
                             {
                                 cloudPropertise.cloudPosition = new Vector3(
                                 Convert.ToSingle(chara[2]),
                                 Convert.ToSingle(chara[3]),
                                 Convert.ToSingle(chara[4]));
                             }
-                            else if (chara[1] == "color")
+                            else if (chara[1].ToLower() == "color")
                             {
                                 cloudPropertise.cloudsColor = new Color(
                                 Convert.ToSingle(chara[2]),
@@ -122,11 +110,11 @@ namespace BesiegeCustomScene
         {
             try
             {
-                if (GetComponent<Prop>().CloudTemp == null) return;
+                if (BesiegeCustomSceneMod.Mod.GetComponent<Prop>().CloudTemp == null) return;
 
                 cloudSize = Mathf.Clamp(cloudSize, 0, 1000);
 
-                if (cloudSize == 0)
+                if (cloudSize <= 0)
                 {
                     return;
                 }
@@ -166,13 +154,13 @@ namespace BesiegeCustomScene
             cloudSize = 0;
         }
 
-        GameObject createCloudObject(CloudPropertise cloudPropertise)
+        GameObject createCloudObject(CloudsPropertise cloudPropertise)
         {
             Vector3 position = cloudPropertise.cloudPosition;
             Vector3 scale = cloudPropertise.cloudScale;
             Color color = cloudPropertise.cloudsColor;
 
-            GameObject go = (GameObject)Instantiate(this.gameObject.GetComponent<Prop>().CloudTemp, new Vector3(
+            GameObject go = (GameObject)Instantiate(BesiegeCustomSceneMod.Mod.GetComponent<Prop>().CloudTemp, new Vector3(
                            UnityEngine.Random.Range(-scale.x + position.x, scale.x + position.x),
                            UnityEngine.Random.Range(position.y, scale.y + position.y),
                            UnityEngine.Random.Range(-scale.z + position.z, scale.z + position.z)),
@@ -192,7 +180,7 @@ namespace BesiegeCustomScene
 
     }
 
-    public class CloudScript :MonoBehaviour
+    public class CloudScript : MonoBehaviour
     {
         int time = 0;
 
@@ -205,12 +193,12 @@ namespace BesiegeCustomScene
             if (time++ == 20)
             {
                 GetComponent<ParticleSystem>().startSize = UnityEngine.Random.Range(30, 200);
-            }  
-            
+            }
+
             if (time > 20)
             {
                 time = 0;
-            } 
+            }
 
         }
 

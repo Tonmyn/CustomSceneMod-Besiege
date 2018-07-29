@@ -8,24 +8,28 @@ namespace BesiegeCustomScene
 {
     class CameraMod : EnvironmentMod
     {
-
+        
 
         /// <summary>摄像头设置参数</summary>
         public CameraPropertise cameraPropertise;
 
+        /// <summary>
+        /// 默认的摄像头参数  储存原先的摄像头参数
+        /// </summary>
+        public CameraPropertise defultePropertise;
 
         /// <summary>摄像头属性</summary>
         public class CameraPropertise
         {
-            public int farClipPlane;
-            public float focusLerpSmooth;
-            public Vector3 fog;
+            public float farClipPlane = 4500f;
+            public float focusLerpSmooth = 8f;
+            //public bool fog;
             public bool SSAO;
 
             //public static SceneSetting None { get; } = new SceneSetting { farClipPlane = 3000, focusLerpSmooth = 100, fog = Vector3.one, SSAO = false };
         }
 
-        public override void ReadEnvironment(ScenePack scenePack)
+        public override void ReadEnvironment(SceneFolder scenePack)
         {
             ClearEnvironment();
 
@@ -38,62 +42,29 @@ namespace BesiegeCustomScene
                     if (chara.Length > 2)
                     {
                         #region Camera
-                        if (chara[0] == nameof(Camera))
+                        if (chara[0].ToLower() == nameof(Camera).ToLower())
                         {
-                            if (chara[1] == nameof(cameraPropertise.farClipPlane))
+
+                            cameraPropertise = cameraPropertise ?? new CameraPropertise();
+
+                            if (chara[1].ToLower() == nameof(cameraPropertise.farClipPlane).ToLower())
                             {
-                                //try
-                                //{
-                                //    GameObject.Find("Main Camera").GetComponent<Camera>().farClipPlane = Convert.ToInt32(chara[2]);
-                                //}
-                                //catch (Exception ex)
-                                //{
-                                //    GeoTools.Log("farClipPlane Error");
-                                //    GeoTools.Log(ex.ToString());
-                                //}
                                 cameraPropertise.farClipPlane = Convert.ToInt32(chara[2]);
                             }
-                            else if (chara[1] == nameof(cameraPropertise.focusLerpSmooth))
+                            else if (chara[1].ToLower() == nameof(cameraPropertise.focusLerpSmooth).ToLower())
                             {
-                                try
+
+                                if (chara[2].ToLower() == "infinity")
                                 {
-                                    if (chara[2] == "Infinity")
-                                    {
-                                        //GameObject.Find("Main Camera").GetComponent<MouseOrbit>().focusLerpSmooth = float.PositiveInfinity;
-                                        cameraPropertise.focusLerpSmooth = float.PositiveInfinity;
-                                    }
-                                    else
-                                    {
-                                        //GameObject.Find("Main Camera").GetComponent<MouseOrbit>().focusLerpSmooth = Convert.ToSingle(chara[2]);
-                                        cameraPropertise.focusLerpSmooth = Convert.ToSingle(chara[2]);
-                                    }
+                                    cameraPropertise.focusLerpSmooth = float.PositiveInfinity;
                                 }
-                                catch (Exception ex)
+                                else
                                 {
-                                    GeoTools.Log("focusLerpSmooth Error");
-                                    GeoTools.Log(ex.ToString());
+                                    cameraPropertise.focusLerpSmooth = Convert.ToInt32(chara[2]);
                                 }
-                            }
-                            //else if (chara[1] == nameof(cameraPropertise.fog))
-                            //{
-                            //    try
-                            //    {
-                            //        //GameObject.Find("Fog Volume").transform.localScale = new Vector3(0, 0, 0);
-                            //        cameraPropertise.fog = Vector3.zero;
-                            //    }
-                            //    catch
-                            //    {
-                            //        try
-                            //        {
-                            //            GameObject.Find("Fog Volume Dark").transform.localScale = new Vector3(0, 0, 0);
-                            //        }
-                            //        catch
-                            //        {
-                            //            GeoTools.Log("fog error");
-                            //        }
-                            //    }
-                            //}
-                            else if (chara[1] == nameof(cameraPropertise.SSAO))
+
+                            }                   
+                            else if (chara[1].ToLower() == nameof(cameraPropertise.SSAO).ToLower())
                             {
                                 //if (chara[2] == "OFF")
                                 //{
@@ -107,7 +78,7 @@ namespace BesiegeCustomScene
                                 //    OptionsMaster.SSAO = false;
                                 //    FindObjectOfType<ToggleAO>().Set();
                                 //}
-
+                                //cameraPropertise.SSAO = dataLoader.readBool(chara, 1);
                             }
 
                         }
@@ -130,12 +101,35 @@ namespace BesiegeCustomScene
 
         public override void LoadEnvironment()
         {
-            throw new NotImplementedException();
+            if (cameraPropertise == null) return;
+
+            defultePropertise = new CameraPropertise();
+
+            GameObject mainCamera = GameObject.Find("Main Camera");
+
+            Camera camera = mainCamera.GetComponent<Camera>();
+            defultePropertise.farClipPlane = camera.farClipPlane;
+            camera.farClipPlane = cameraPropertise.farClipPlane;
+
+            MouseOrbit mouseOrbit = mainCamera.GetComponent<MouseOrbit>();
+            defultePropertise.focusLerpSmooth = mouseOrbit.focusLerpSmooth;
+            mouseOrbit.focusLerpSmooth = cameraPropertise.focusLerpSmooth;
         }
 
         public override void ClearEnvironment()
         {
-            throw new NotImplementedException();
+            if (cameraPropertise == null) return;
+            if (defultePropertise == null) return;
+            
+            GameObject mainCamera = GameObject.Find("Main Camera");
+
+            Camera camera = mainCamera.GetComponent<Camera>();
+            camera.farClipPlane = defultePropertise.farClipPlane;
+
+            MouseOrbit mouseOrbit = mainCamera.GetComponent<MouseOrbit>();
+            mouseOrbit.focusLerpSmooth = defultePropertise.focusLerpSmooth;
+
+            cameraPropertise = defultePropertise = null;
         }
     }
 }

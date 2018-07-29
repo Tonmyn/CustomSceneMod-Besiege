@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace BesiegeCustomScene.UI
@@ -38,18 +35,19 @@ namespace BesiegeCustomScene.UI
 
         bool ShowGUI;
 
+        KeyCode DisplayToolBoxKey = KeyCode.F8;
+
         int windowID = GeoTools.GetWindowID();
 
         Rect windowRect = new Rect(15f, 100f, 180f, 200f);
 
         ToolBoxUI_Language toolBoxUI_Language;
 
-
+        //List<GameObject> Mods;
 
         event Click VelocityButtonClickEvent;
         event Click RetimeButtonClickEvent;
         event Click TimerButtonClickEvent;
-        event Click TriggerButtonClickEvent;
 
         //int triggerIndex;
         //int triggerSize;
@@ -65,14 +63,19 @@ namespace BesiegeCustomScene.UI
             initLanguage();
             initEvent();
 
-            timerMod = gameObject.AddComponent<TimerMod>();
-            //triggerMod = gameObject.AddComponent<TriggerMod>();
-            blockInformationMod = gameObject.AddComponent<BlockInformationMod>();
+            GameObject go = new GameObject("Timer Mod");
+            go.transform.SetParent(transform);
+            timerMod = go.AddComponent<TimerMod>();
+
+            go = new GameObject("Block Information Mod");
+            go.transform.SetParent(transform);
+            blockInformationMod = go.AddComponent<BlockInformationMod>();
+
         }
 
         void initLanguage()
         {
-            LanguageFile currentLanuage = GetComponent<LanguageManager>().Get_CurretLanguageFile();
+            LanguageFile currentLanuage = BesiegeCustomSceneMod.Mod.GetComponent<LanguageManager>().Get_CurretLanguageFile();
 
             toolBoxUI_Language = ToolBoxUI_Language.DefaultLanguage;
             if (currentLanuage != null)
@@ -109,12 +112,14 @@ namespace BesiegeCustomScene.UI
                 BesiegeConsoleController.ShowMessage("timer button click event ");
 #endif
             };
-            TriggerButtonClickEvent += () => 
+        }
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(DisplayToolBoxKey) && Input.GetKey(KeyCode.LeftControl))
             {
-#if DEBUG
-                BesiegeConsoleController.ShowMessage("trigger button click event ");
-#endif
-            };
+                ShowGUI = !ShowGUI;
+            }
         }
 
         void OnGUI()

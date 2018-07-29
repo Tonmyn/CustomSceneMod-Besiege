@@ -24,6 +24,11 @@ namespace BesiegeCustomScene
             {
                 //new SettingsFile();
                 BesiegeConsoleController.ShowMessage("??show  setting manager");
+
+                foreach (var v in settingFile.settings.sceneNames)
+                {
+                    GeoTools.Log(v);
+                }
             }
         }
 

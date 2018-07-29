@@ -8,7 +8,7 @@ namespace BesiegeCustomScene
     class WindMod : EnvironmentMod
     {
 
-        public override void ReadEnvironment(ScenePack scenePack)
+        public override void ReadEnvironment(SceneFolder scenePack)
         {
             throw new NotImplementedException();
         }

@@ -1,7 +1,7 @@
 ﻿ using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
+//using System.IO;
 using System.Linq;
 using System.Text;
 using UnityEngine;
@@ -10,43 +10,38 @@ using Modding;
 
 namespace BesiegeCustomScene
 {
+
+    public delegate void ReadSceneHandler(SceneFolder scenePack);
+    public delegate void LoadSceneHandler();
+    public delegate void ClearSceneHandler();
+
     public class CustomSceneMod : MonoBehaviour
     {
     
         /// <summary>地图包路径</summary>
         public static string ScenePacksPath;
         /// <summary>地图包列表</summary>
-        public List<ScenePack> ScenePacks;
+        public List<SceneFolder> ScenePacks;
 
         public bool WorldBoundariesEnable = true;
-
         public bool FloorBigEnable = true;
-
         public bool FogEnable = true;
 
+        public event ReadSceneHandler ReadSceneEvent;
+        public event LoadSceneHandler LoadSceneEvent;
+        public event ClearSceneHandler ClearSceneEvent;
 
-        List<EnvironmentMod> EnvironmentMods;
+        List<string> sceneNames;
 
+        //public List<GameObject> EnvironmentObjects;
 
         void Awake()
         {
+            sceneNames = BesiegeCustomSceneMod.Mod.GetComponent<SettingsManager>().settingFile.settings.sceneNames;
 
             ScenePacksPath = GeoTools.ScenePackPath;
 
             ScenePacks = ReadScenePacks(ScenePacksPath);
-
-            EnvironmentMods = new List<EnvironmentMod>();
-
-            GameObject customSceneMod = gameObject;
-
-            EnvironmentMods.Add(customSceneMod.AddComponent<CameraMod>());
-            EnvironmentMods.Add(customSceneMod.AddComponent<MeshMod>());
-            EnvironmentMods.Add(customSceneMod.AddComponent<SnowMod>());
-            EnvironmentMods.Add(customSceneMod.AddComponent<CloudMod>());
-            EnvironmentMods.Add(customSceneMod.AddComponent<WaterMod>());
-            EnvironmentMods.Add(customSceneMod.AddComponent<WindMod>());
-            EnvironmentMods.Add(customSceneMod.AddComponent<SkyMod>());
-
         }
 
         void Start()
@@ -64,24 +59,22 @@ namespace BesiegeCustomScene
 
         void OnDisable()
         {
-            ClearScene();
+            ClearEnvironment();
         }
 
         void OnDestroy()
         {
-            ClearScene();
+            ClearEnvironment();
         }
-
-
 
         /// <summary>
         /// 读取指定路径下所有地图包
         /// </summary>
         /// <param name="scenesPackPath">地图包路径</param>
         /// <returns></returns>
-        public List<ScenePack> ReadScenePacks(string scenesPackPath)
+        public List<SceneFolder> ReadScenePacks(string scenesPackPath)
         {
-            List<ScenePack> SPs = new List<ScenePack>() { };
+            List<SceneFolder> SPs = new List<SceneFolder>() { };
 
             if (!ModIO.ExistsDirectory(scenesPackPath))
             {
@@ -89,18 +82,14 @@ namespace BesiegeCustomScene
                 return SPs;
             }
 
-            DirectoryInfo TheFolder = new DirectoryInfo(scenesPackPath);
-
-            //遍历文件夹
-            foreach (DirectoryInfo NextFolder in TheFolder.GetDirectories())
+            foreach (var sceneName in sceneNames)
             {
-                SPs.Add(new ScenePack(NextFolder));
+                SPs.Add(new SceneFolder(sceneName));
             }
-
             return SPs;
         }
 
-        public List<ScenePack> ReloadScenePacks()
+        public List<SceneFolder> ReloadScenePacks()
         {
             return ReadScenePacks(ScenePacksPath);
         }  
@@ -112,7 +101,7 @@ namespace BesiegeCustomScene
         /// 加载地图包
         /// </summary>
         /// <param name="ScenePack">地图包</param>
-        IEnumerator ILoadScenePack(ScenePack scenePack)
+        IEnumerator ILoadScenePack(SceneFolder scenePack)
         {
             if (SceneManager.GetActiveScene().name != "2")
             {
@@ -128,7 +117,7 @@ namespace BesiegeCustomScene
         /// 加载地图包 多人模式下
         /// </summary>
         /// <param name="ScenePack">地图包</param>
-        IEnumerator ILoadScenePack_Multiplayer(ScenePack scenePack)
+        IEnumerator ILoadScenePack_Multiplayer(SceneFolder scenePack)
         {
 
             yield return null;
@@ -137,21 +126,13 @@ namespace BesiegeCustomScene
 
         }
 
-        void loadScenePack(ScenePack scenePack)
+        void loadScenePack(SceneFolder scenePack)
         {
-            ClearScene();
-
             hideFloorBig();
 
-            foreach (var v in EnvironmentMods)
-            {
-                v.ReadEnvironment(scenePack);
-            }
+            ReadSceneEvent(scenePack);
 
-            foreach (var v in EnvironmentMods)
-            {
-                v.LoadEnvironment();
-            }
+            LoadSceneEvent();
 
         }
 
@@ -187,16 +168,13 @@ namespace BesiegeCustomScene
         }
 
         //清除地图
-        public void ClearScene()
+        public void ClearEnvironment()
         {
-            
-            foreach (var v in EnvironmentMods)
-            {
-                v.ClearEnvironment();
-            }
+            ClearSceneEvent();
 
             Resources.UnloadUnusedAssets();
         }
+
 
 
         #region 隐藏/显示地面 空气墙 雾

@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="BaseFileClass\LanguageFile.cs" />
-    <Compile Include="BaseFileClass\ScenePack.cs" />
+    <Compile Include="BaseFileClass\SceneFolder.cs" />
     <Compile Include="BaseFileClass\SettingFile.cs" />
     <Compile Include="CustomSceneMod\EnvironmentMod.cs" />
     <Compile Include="CustomSceneMod\EnvironmentMods\CameraMod.cs" />
@@ -42,23 +42,20 @@
     <Compile Include="CustomSceneMod\CustomSceneMod.cs" />
     <Compile Include="CustomSceneMod\EnvironmentMods\SkyMod.cs" />
     <Compile Include="CustomSceneMod\EnvironmentMods\CloudMod.cs" />
-    <Compile Include="test-script.cs" />
     <Compile Include="ToolBoxMod\BlockInformationMod.cs" />
     <Compile Include="ToolBoxMod\TimerMod.cs" />
     <Compile Include="UI\SceneSettingUI.cs" />
-    <Compile Include="CustomSceneMod\MeshMod\CubeMod.cs" />
     <Compile Include="UI\ToolBoxSettingUI.cs" />
     <Compile Include="CustomSceneMod\Water4\Displace.cs" />
     <Compile Include="Global\GeoTools.cs" />
     <Compile Include="CustomSceneMod\Water4\GerstnerDisplace.cs" />
     <Compile Include="CustomSceneMod\Water4\MeshContainer.cs" />
-    <Compile Include="CustomSceneMod\MeshMod\MeshMod.cs" />
+    <Compile Include="CustomSceneMod\EnvironmentMods\MeshMod.cs" />
     <Compile Include="CustomSceneMod\Water4\PlanarReflection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CustomSceneMod\EnvironmentMods\SnowMod.cs" />
     <Compile Include="CustomSceneMod\Water4\SpecularLighting.cs" />
     <Compile Include="Global\StaticProp.cs" />
-    <Compile Include="CustomSceneMod\MeshMod\TriggerMod.cs" />
     <Compile Include="CustomSceneMod\Water4\Water.cs" />
     <Compile Include="CustomSceneMod\Water4\WaterBase.cs" />
     <Compile Include="CustomSceneMod\EnvironmentMods\WaterMod.cs" />

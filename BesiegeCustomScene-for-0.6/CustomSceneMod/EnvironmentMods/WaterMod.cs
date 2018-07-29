@@ -8,21 +8,11 @@ namespace BesiegeCustomScene
 {
     public class WaterMod : EnvironmentMod
     {
-
-        //void OnDisable()
-        //{
-        //    ClearWater();
-        //}
-        //void OnDestroy()
-        //{
-        //    ClearWater();
-        //}
-        /// ////////////////////////      
-
+ 
         private List<GameObject> waterObjects;
         private int WaterSize = 0;
 
-        WaterPropertise[] waterPropertise;
+        List<WaterPropertise> waterPropertise;
 
         class WaterPropertise
         {
@@ -35,7 +25,7 @@ namespace BesiegeCustomScene
             public MeshCollider meshCollider = new MeshCollider();
         }
 
-        public override void ReadEnvironment(ScenePack scenePack)
+        public override void ReadEnvironment(SceneFolder scenePack)
         {
             ClearEnvironment();
 
@@ -49,29 +39,39 @@ namespace BesiegeCustomScene
                     if (chara.Length > 2)
                     {
                         #region Water
-                        if (chara[0] == "MWater" || chara[0] == "Mwater")
+                        if (chara[0].ToLower() == "mwater")
                         {
                             if (chara[1] == "size")
                             {
                                 WaterSize = Convert.ToInt32(chara[2]);
-                                waterPropertise = new WaterPropertise[WaterSize];
-                                //LoadWater();
+                                if (WaterSize <= 0)
+                                {
+                                    break;
+                                }
+                                waterPropertise = new List<WaterPropertise>();
+                                for (int i = 0; i < WaterSize; i++)
+                                {
+                                    waterPropertise.Add(new WaterPropertise());
+                                }
+                                
+                                //LoadEnvironment();
                             }
                             if (chara[1] == "watertemp")
                             {
                                 if (Convert.ToInt32(chara[2]) == 0)
                                 {
-                                    gameObject.GetComponent<Prop>().WaterTemp.SetActive(false);
+                                    BesiegeCustomSceneMod.Mod.GetComponent<Prop>().WaterTemp.SetActive(false);
                                 }
                                 else
                                 {
-                                    gameObject.GetComponent<Prop>().WaterTemp.SetActive(true);
+                                    BesiegeCustomSceneMod.Mod.GetComponent<Prop>().WaterTemp.SetActive(true);
                                 }
                             }
                         }
                         else if (chara[0] == "Water")
                         {
                             int i = Convert.ToInt32(chara[1]);
+
                             if (chara[2] == "mesh")
                             {
                                 waterPropertise[i].mesh = GeoTools.MeshFromObj(chara[3]);
@@ -113,30 +113,34 @@ namespace BesiegeCustomScene
             catch (Exception ex)
             {
                 GeoTools.Log("Error! Read Water Failed!");
-                GeoTools.Log(ex.Message);
+                GeoTools.Log(ex.ToString());
                 return;
             }
         }
         public override void LoadEnvironment()
         {
             try
-            {
-
-                
-                if (this.gameObject.GetComponent<Prop>().TileTemp == null) return;
+            {        
+                if (BesiegeCustomSceneMod.Mod.GetComponent<Prop>().TileTemp == null) return;
                 WaterSize = Mathf.Clamp(WaterSize,0, 1000);
-                if (WaterSize <= 0) return;
-
-                waterObjects = new List<GameObject>();
-
-                for (int i = 0; i < WaterSize; i++)
+                if (WaterSize <= 0)
                 {
-                    createWaterObject(waterPropertise[i]);
+                    return;
                 }
+                else
+                {
+
+                    waterObjects = new List<GameObject>();
+
+                    for (int i = 0; i < WaterSize; i++)
+                    {
+                        waterObjects.Add(createWaterObject(waterPropertise[i]));
+                    }
 
 #if DEBUG
-                GeoTools.Log("Load Water Successfully");
+                    GeoTools.Log("Load Water Successfully");
 #endif
+                }
             }
             catch (Exception ex)
             {
@@ -154,7 +158,11 @@ namespace BesiegeCustomScene
 #if DEBUG
             GeoTools.Log("Clear Water");
 #endif
-            gameObject.GetComponent<Prop>().WaterTemp.SetActive(false);
+            try
+            {
+                BesiegeCustomSceneMod.Mod.GetComponent<Prop>().WaterTemp.SetActive(false);
+            }
+            catch { }
             try
             {
                 Destroy(GameObject.Find("WaterTempReflectionMain Camera"));
@@ -171,9 +179,10 @@ namespace BesiegeCustomScene
 
         GameObject createWaterObject(WaterPropertise waterPropertise)
         {
-            GameObject go = Instantiate(gameObject.GetComponent<Prop>().TileTemp);
+            GameObject go = Instantiate(BesiegeCustomSceneMod.Mod.GetComponent<Prop>().TileTemp);
             go.name = "Water Object";
             go.SetActive(true);
+            go.transform.SetParent(transform);
             go.transform.localScale = waterPropertise.scale;
             go.transform.localPosition = waterPropertise.position;
 

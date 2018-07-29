@@ -1,14 +1,10 @@
 ﻿using Modding;
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace BesiegeCustomScene
 {
     /// <summary>地图包类</summary>
-    public class ScenePack
+    public class SceneFolder
     {
 
         /// <summary>
@@ -56,22 +52,54 @@ namespace BesiegeCustomScene
 
         public SceneType Type;
 
-        public ScenePack(DirectoryInfo folderName)
+        //public ScenePack(DirectoryInfo folderName)
+        //{
+
+        //    Name = folderName.Name;
+        //    Path = folderName.FullName;
+        //    MeshsPath = Path + "/Meshs";
+        //    TexturesPath = Path + "/Textures";
+        //    SettingFilePath = string.Format("{0}/setting.txt", Path);
+
+        //    if (!ModIO.ExistsFile(string.Format("{0}/setting.txt", Path)))
+        //    {
+        //        Type = SceneType.Empty;
+        //    }
+        //    else
+        //    {
+        //        Type = SceneType.Enabled;
+        //    }
+
+        //    SettingFileDatas = new List<string>();
+        //    if (Type == SceneType.Enabled)
+        //    {
+        //        var textReader = GeoTools.FileReader(SettingFilePath);
+
+        //        while (textReader.Peek() != -1)
+        //        {
+        //            SettingFileDatas.Add(textReader.ReadLine());
+        //        }
+        //    }
+
+        //}
+
+        public SceneFolder(string  sceneName)
         {
 
-            Name = folderName.Name;
-            Path = folderName.FullName;
+            Name = sceneName;
+            Path = string.Format("{0}/{1}", GeoTools.ScenePackPath, sceneName);
             MeshsPath = Path + "/Meshs";
             TexturesPath = Path + "/Textures";
             SettingFilePath = string.Format("{0}/setting.txt", Path);
 
-            if (!ModIO.ExistsFile(string.Format("{0}/setting.txt", Path)))
-            {
-                Type = SceneType.Empty;
+
+            if (ModIO.ExistsFile(string.Format("{0}/setting.txt", Path))&& ModIO.ExistsDirectory(Path))
+            {         
+                Type = SceneType.Enabled;
             }
             else
             {
-                Type = SceneType.Enabled;
+                Type = SceneType.Empty;
             }
 
             SettingFileDatas = new List<string>();
@@ -83,6 +111,11 @@ namespace BesiegeCustomScene
                 {
                     SettingFileDatas.Add(textReader.ReadLine());
                 }
+                //foreach (var v in SettingFileDatas)
+                //{
+                //    GeoTools.Log(v);
+                //}
+
             }
 
         }

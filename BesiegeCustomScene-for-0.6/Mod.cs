@@ -7,11 +7,13 @@ namespace BesiegeCustomScene
 
     public class BesiegeCustomSceneMod : ModEntryPoint
     {
+        
+        public static GameObject Mod;
 
         public override void OnLoad()
         {
 
-            GameObject customSceneMod;
+    
 
             string DisplayName = "Besiege Custom Scene";
 
@@ -20,24 +22,23 @@ namespace BesiegeCustomScene
             //添加MOD更新推送功能
             //new GameObject("Mod更新组件").AddComponent<Updater>().SetUrl("XultimateX", Name);
 
-            customSceneMod = new GameObject();
-            customSceneMod.name = string.Format("{0} {1}", DisplayName, Version);
+            Mod = new GameObject();
+            Mod.name = string.Format("{0} {1}", DisplayName, Version);
 
-            customSceneMod.AddComponent<SettingsManager>();
-            customSceneMod.AddComponent<LanguageManager>();
-            customSceneMod.AddComponent<Prop>();
+            Mod.AddComponent<SettingsManager>();
+            Mod.AddComponent<LanguageManager>();
+            Mod.AddComponent<Prop>();
+
+            GameObject customSceneMod = new GameObject("Custom Scene Mod");
             customSceneMod.AddComponent<UI.SceneSettingUI>();
-            customSceneMod.AddComponent<UI.ToolBoxSettingUI>();
+            customSceneMod.transform.SetParent(Mod.transform);
 
-            //customSceneMod.AddComponent<TestScript>();
+            GameObject toolboxmod = new GameObject("Tool Box Mod");
+            toolboxmod.AddComponent<UI.ToolBoxSettingUI>();
+            toolboxmod.transform.SetParent(Mod.transform);
 
+            //UnityEngine.Object.DontDestroyOnLoad(Mod);
 
-            //UnityEngine.Object.DontDestroyOnLoad(customSceneMod);
-
-            //GameObject go = new GameObject("test object");
-            //go.AddComponent<test_script>();
-
-            BesiegeConsoleController.ShowMessage("on load form BesiegeCustomSceneMod");
 
         }
     }

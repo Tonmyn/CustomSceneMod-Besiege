@@ -72,10 +72,13 @@ namespace BesiegeCustomScene
                             for (int i = 0; i < names.Length; i++)
                             {
 #if DEBUG
-                                GeoTools.Log(names[i]);
+                                //GeoTools.Log(names[i]);
 #endif
                             }
                         }
+#if DEBUG
+                        GeoTools.Log("assetBundle succese");
+#endif
                     }
                     catch (Exception ex)
                     {
@@ -86,13 +89,15 @@ namespace BesiegeCustomScene
                 }
                 if (Isstart == 2 * t)
                 {
-                    StartedScene = SceneManager.GetActiveScene().name;
-                    if (StartedScene != "TITLE SCREEN")
-                    {
-                        return;
-                    }
-                    //GeoTools.OpenScene("TITLE SCREEN");
-                    CloudTemp = GetObjectInScene("CLoud");
+                    //StartedScene = SceneManager.GetActiveScene().name;
+                    //if (StartedScene != "TITLE SCREEN")
+                    //{
+                    //    return;
+                    //}
+                    ////GeoTools.OpenScene("TITLE SCREEN");
+                    if (CloudTemp == null) return;
+
+                    CloudTemp = GetObjectInScene("CLOUD");
                     ParticleSystemRenderer psr = CloudTemp.GetComponent<ParticleSystemRenderer>();
                     psr.receiveShadows = false;
                     psr.sharedMaterial.mainTexture = iteratorVariable1.LoadAsset<Texture>(

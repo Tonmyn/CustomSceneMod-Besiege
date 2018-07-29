@@ -7,7 +7,7 @@ using Modding;
 
 namespace BesiegeCustomScene
 {
-    class DataLoader
+    public class DataLoader
     {
 
         public Dictionary<string,Type> dic_datas;
@@ -29,37 +29,41 @@ namespace BesiegeCustomScene
 
         }
 
-
-        bool? readBool(string[] str, int index)
+        public DataLoader()
         {
-            bool? value = false;
 
-            if ((Convert.ToInt32(str[index + 1]) == 0) || (str[index+1].ToUpper() == "FALSE"))
+        }
+
+        public bool readBool(string[] str, int index)
+        {
+            bool value = false;
+
+            if ((Convert.ToInt32(str[index + 1]) == 0) || (str[index+1].ToUpper() == "FALSE") || (str[index+1].ToUpper()=="OFF"))
             {
                 value = false;
             }
-            if ((Convert.ToInt32(str[index + 1]) == 1) || (str[index + 1].ToUpper() == "TRUE"))
+            if ((Convert.ToInt32(str[index + 1]) == 1) || (str[index + 1].ToUpper() == "TRUE") || (str[index + 1].ToUpper() == "ON"))
             {
                 value = true;
             }
             return value;               
         }
 
-        internal int? readInt(string[] str,int index)
+        public int? readInt(string[] str,int index)
         {
             int? i = 0;
             i = Convert.ToInt32(str[index + 1]);
             return i;
         }
 
-        float? readFloat(string[] str, int index)
+        public float? readFloat(string[] str, int index)
         {
             float? i = 0;
 
             return i = Convert.ToSingle(str[index + 1]);
         }
 
-        Vector3? readVector3(string[] str, int index)
+        public Vector3? readVector3(string[] str, int index)
         {
             Vector3 vector = Vector3.zero;
 
@@ -73,7 +77,22 @@ namespace BesiegeCustomScene
             return vector;
         }
 
-        Color? readColor(string[] str, int index)
+        public Vector4? readVector4(string[] str, int index)
+        {
+            Vector4 vector = Vector4.zero;
+
+            vector = new Vector4
+                    (
+                    Convert.ToSingle(str[index + 1]),
+                    Convert.ToSingle(str[index + 2]),
+                    Convert.ToSingle(str[index + 3]),
+                    Convert.ToSingle(str[index + 4])        
+                    );
+
+            return vector;
+        }
+
+        public Color? readColor(string[] str, int index)
         {
             Color? color = Color.white;
 
@@ -88,7 +107,7 @@ namespace BesiegeCustomScene
             return color;
         }
 
-        Texture2D readTexture2D(string[] str, int index)
+        public Texture2D readTexture2D(string[] str, int index)
         {
             Texture2D texture2D = Texture2D.whiteTexture;
 

@@ -9,6 +9,9 @@ namespace BesiegeCustomScene
 {
     abstract public class EnvironmentMod : MonoBehaviour
     {
+        public CustomSceneMod customSceneMod;
+
+        public DataLoader dataLoader;
 
         void OnDisable()
         {
@@ -20,8 +23,25 @@ namespace BesiegeCustomScene
             ClearEnvironment();
         }
 
+        void Start()
+        {
+            //transform.SetParent(BesiegeCustomSceneMod.Mod.GetComponent<UI.SceneSettingUI>().gameObject.transform);
 
-        public abstract void ReadEnvironment(ScenePack scenePack);
+            customSceneMod = transform.parent.GetComponent<CustomSceneMod>();
+            customSceneMod.ReadSceneEvent += ReadEnvironment;
+            customSceneMod.LoadSceneEvent += LoadEnvironment;
+            customSceneMod.ClearSceneEvent += ClearEnvironment;
+
+            //GameObject go = new GameObject();
+            //go.AddComponent(this.GetType());
+            //go.transform.SetParent(customSceneMod.transform);
+
+            
+
+            dataLoader = new DataLoader();
+        }
+
+        public abstract void ReadEnvironment(SceneFolder scenePack);
 
         public abstract void LoadEnvironment();
 

@@ -62,7 +62,7 @@ namespace BesiegeCustomScene.UI
             initSceneMod();
 
             LanguageFile currentLanuage;
-            currentLanuage = GetComponent<LanguageManager>().Get_CurretLanguageFile();
+            currentLanuage = BesiegeCustomSceneMod.Mod.GetComponent<LanguageManager>().Get_CurretLanguageFile();
 
             float height = (sceneMod.ScenePacks.Count - 1) * (buttonHeight + 5) + 5;
             sceneButtonsRect = new Rect(0, 0, 200, height);
@@ -82,11 +82,7 @@ namespace BesiegeCustomScene.UI
 
         void initSceneMod()
         {
-            sceneMod = new GameObject("Custom Scene Mod").AddComponent<CustomSceneMod>();
-
-            sceneMod.transform.SetParent(transform);
-
-            //sceneMod = gameObject.GetComponent<CustomSceneMod>() ?? gameObject.AddComponent<CustomSceneMod>();
+            sceneMod = gameObject.AddComponent<CustomSceneMod>();
 
             OnSceneButtonClick += sceneMod.LoadScenePack;
 
@@ -95,6 +91,22 @@ namespace BesiegeCustomScene.UI
             OnFloorButtonClick += sceneMod.HideFloorBig;
 
             OnWorldBoundsButtonClick += sceneMod.HideWorldBoundaries;
+
+            GameObject go = new GameObject("Camera Mod");
+            go.AddComponent<CameraMod>().transform.SetParent(transform);
+            go = new GameObject("Mesh Mod");
+            go.AddComponent<MeshMod>().transform.SetParent(transform);
+            go = new GameObject("Snow Mod");
+            go.AddComponent<SnowMod>().transform.SetParent(transform);
+            go = new GameObject("Cloud Mod");
+            go.AddComponent<CloudMod>().transform.SetParent(transform);
+            go = new GameObject("Water Mod");
+            go.AddComponent<WaterMod>().transform.SetParent(transform);
+            //go = new GameObject("Wind Mod");
+            //go.AddComponent<WindMod>().transform.SetParent(transform);
+            go = new GameObject("Sky Mod");
+            go.AddComponent<SkyMod>().transform.SetParent(transform);
+
         }
 
         private void Update()
@@ -135,9 +147,9 @@ namespace BesiegeCustomScene.UI
                 {
                     GUILayout.BeginArea(new Rect(0, 0, 250, sceneButtonsRect.height));
                     {
-                        for (int i = 0; i < sceneMod.ScenePacks.Count; i++)
+                        for (int i = 0; i < sceneMod.GetComponent<CustomSceneMod>().ScenePacks.Count; i++)
                         {
-                            if (GUILayout.Button(sceneMod.ScenePacks[i].Name, GUILayout.Width(230), GUILayout.Height(20)))
+                            if (GUILayout.Button(sceneMod.GetComponent<CustomSceneMod>().ScenePacks[i].Name, GUILayout.Width(230), GUILayout.Height(20)))
                             {
                                 //LoadScene(i);
                                 OnSceneButtonClick(i);

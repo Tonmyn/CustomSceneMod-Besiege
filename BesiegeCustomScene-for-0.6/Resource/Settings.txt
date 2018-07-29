@@ -5,12 +5,21 @@
 800*600_Scene,window_poistion,35,545
 800*600_Timer,window_poistion,15,40
 ////////////////////////////////////////////////
-_Scene,display_UI,F9,//Òş²Ø»òÏÔÊ¾µØĞÎUI
-_Scene,reload_UI,F5,//Ë¢ĞÂµØĞÎUI
+_Scene,display_UI,F9,//ï¿½ï¿½ï¿½Ø»ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½UI
+_Scene,reload_UI,F5,//Ë¢ï¿½Âµï¿½ï¿½ï¿½UI
 _Scene,show_on_start,ON
 
-_Timer,display_UI,F8,//Òş²Ø»òÏÔÊ¾ËÙ¶È¼ÆUI
-_Timer,reload_UI,F5,//Ë¢ĞÂËÙ¶È¼ÆUI
+_Timer,display_UI,F8,//ï¿½ï¿½ï¿½Ø»ï¿½ï¿½ï¿½Ê¾ï¿½Ù¶È¼ï¿½UI
+_Timer,reload_UI,F5,//Ë¢ï¿½ï¿½ï¿½Ù¶È¼ï¿½UI
 _Timer,show_on_start,ON
 
 _Language,currentLanguage,CHN
+
+_Scene,SceneName,103å·å…¬è·¯
+_Scene,SceneName,å¸ƒæ‹‰ä¸‡è¾¾é«˜åœ°
+_Scene,SceneName,ç©ºå²›
+_Scene,SceneName,è¾½å®å·
+_Scene,SceneName,å¹³åœ°
+_Scene,SceneName,è¶Šé‡
+_Scene,SceneName,ä¸˜é™µ
+_Scene,SceneName,è’æ»©

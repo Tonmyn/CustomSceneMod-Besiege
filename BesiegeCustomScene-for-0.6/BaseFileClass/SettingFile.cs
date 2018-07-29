@@ -31,6 +31,8 @@ namespace BesiegeCustomScene
 
             public string language;
 
+            public List<string> sceneNames;
+
             public static Settings Default { get; } = new Settings
             {
                 sceneUI = KeyCode.F9,
@@ -39,7 +41,8 @@ namespace BesiegeCustomScene
                 timerUI = KeyCode.F8,
                 timerUI_refresh = KeyCode.F5,
                 timerUI_showOnAwake = true,
-                language = "CHN"
+                language = "CHN",
+                sceneNames = new List<string>()
             };
 
         }
@@ -59,8 +62,6 @@ namespace BesiegeCustomScene
                     return;
                 }
 
-                //FileStream fs = new FileStream(filePath, FileMode.Open);
-                //打开数据文件
                 var srd = ModIO.OpenText(filePath);
 
                 while (srd.Peek() != -1)
@@ -83,6 +84,10 @@ namespace BesiegeCustomScene
                             else if (chara[1] == "show_on_start")
                             {
                                 if (chara[2] == "0" || chara[2] == "OFF") settings.sceneUI_showOnAwake = false;
+                            }
+                            else if (chara[1].ToLower() == "scenename")
+                            {
+                                settings.sceneNames.Add(chara[2]);
                             }
 
                         }

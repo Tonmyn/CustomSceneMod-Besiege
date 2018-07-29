@@ -15,7 +15,7 @@ namespace BesiegeCustomScene
 
         GameObject skySphere;
         GameObject starSphere;
-        SkyPropertise skyPropertise = new SkyPropertise();
+        SkyPropertise skyPropertise;
 
         class SkyPropertise
         {
@@ -24,7 +24,7 @@ namespace BesiegeCustomScene
             public string TexturePath;                 
         }
      
-        public override void ReadEnvironment(ScenePack scenePack)
+        public override void ReadEnvironment(SceneFolder scenePack)
         {
             ClearEnvironment();
 
@@ -38,8 +38,8 @@ namespace BesiegeCustomScene
                     {
                         if (chara[0] == "Sky")
                         {
+                            skyPropertise = new SkyPropertise();
                             skyPropertise.TexturePath = scenePack.TexturesPath + "/" + chara[1];
-                            //create();
                         }
                     }
                 }
@@ -58,18 +58,21 @@ namespace BesiegeCustomScene
 
         public override void LoadEnvironment()
         {
+
+            if (skyPropertise == null) return;
+
             try
             {
                 skyPropertise.Mesh = getMesh();
                 skyPropertise.Texture = getTexture(skyPropertise.TexturePath);
 
-                 starSphere = GameObject.Find("STAR SPHERE");
+                starSphere = GameObject.Find("STAR SPHERE");
                 if (starSphere != null)
                 {
                     starSphere.SetActive(false);
                 }
 
-                skySphere = CreateSkyMaterialBall(skyPropertise);
+                skySphere = CreateSkyObject(skyPropertise);
 
                 skySphere.AddComponent<CameraFollower>();
 
@@ -87,19 +90,19 @@ namespace BesiegeCustomScene
 
         public override void ClearEnvironment()
         {
+            if (skySphere == null) return;
 #if DEBUG
             GeoTools.Log("Clear Sky");
 #endif
-
-            Destroy(starSphere);
             skyPropertise = null;
-
-            int childCount = skySphere.transform.childCount;
-            for (int i = 0; i < childCount; i++)
-            {
-                Destroy(skySphere.transform.GetChild(i).gameObject);
-            }
+            if (starSphere != null)starSphere.SetActive(true);
+            //int childCount = skySphere.transform.childCount;
+            //for (int i = 0; i < childCount; i++)
+            //{
+            //    Destroy(skySphere.transform.GetChild(i).gameObject);
+            //}
             Destroy(skySphere);
+
         }
 
         Mesh getMesh()
@@ -145,9 +148,11 @@ namespace BesiegeCustomScene
             return texture2D;
         }
 
-        GameObject CreateSkyMaterialBall(SkyPropertise skyPropertise)
+        GameObject CreateSkyObject(SkyPropertise skyPropertise)
         {
             GameObject go = new GameObject("SKY SPHERE");
+            go.transform.SetParent(transform);
+
             try
             {         
                 go.AddComponent<MeshFilter>().mesh = skyPropertise.Mesh;
@@ -159,8 +164,6 @@ namespace BesiegeCustomScene
                 mr.material.mainTexture.wrapMode = TextureWrapMode.Clamp;
                 mr.receiveShadows = false;
                 mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-
-                BesiegeConsoleController.ShowMessage("create sky material ball");
                 return go;
                 
             }
