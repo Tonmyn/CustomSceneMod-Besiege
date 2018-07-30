@@ -34,14 +34,15 @@ namespace BesiegeCustomScene
 
         }
 
-        int cloudSize = 0;
+        
         List<GameObject> cloudObjects;  
-        CloudsPropertise cloudPropertise = new CloudsPropertise();
+        CloudsPropertise cloudsPropertise;
 
         class CloudsPropertise
         {
-            public Vector3 cloudPosition = Vector3.zero;
-            public Vector3 cloudScale = new Vector3(1000, 200, 1000);
+            public int cloudsSize = 0;
+            public Vector3 cloudsPosition = Vector3.zero;
+            public Vector3 cloudsScale = new Vector3(1000, 200, 1000);
             public Color cloudsColor = new Color(0.92f, 0.92f, 0.92f, 0.5f);
         }
 
@@ -61,29 +62,32 @@ namespace BesiegeCustomScene
 
                             if (chara[1] == "size")
                             {
-                                cloudSize = Convert.ToInt32(chara[2]);
-                                if (cloudSize <= 0)
+                                int size = Mathf.Clamp(Convert.ToInt32(chara[2]), 0, 1000);
+                                
+                                if (size <= 0)
                                 {
                                     break;
                                 }
+                                cloudsPropertise = new CloudsPropertise();
+                                cloudsPropertise.cloudsSize = size;
                             }
                             else if (chara[1].ToLower() == "floorscale" || chara[1].ToLower() == "cloudscale" || chara[1].ToLower() == "scale")
                             {
-                                cloudPropertise.cloudScale = new Vector3(
+                                cloudsPropertise.cloudsScale = new Vector3(
                                 Convert.ToSingle(chara[2]),
                                 Convert.ToSingle(chara[3]),
                                 Convert.ToSingle(chara[4]));
                             }
                             else if (chara[1].ToLower() == "location")
                             {
-                                cloudPropertise.cloudPosition = new Vector3(
+                                cloudsPropertise.cloudsPosition = new Vector3(
                                 Convert.ToSingle(chara[2]),
                                 Convert.ToSingle(chara[3]),
                                 Convert.ToSingle(chara[4]));
                             }
                             else if (chara[1].ToLower() == "color")
                             {
-                                cloudPropertise.cloudsColor = new Color(
+                                cloudsPropertise.cloudsColor = new Color(
                                 Convert.ToSingle(chara[2]),
                                 Convert.ToSingle(chara[3]),
                                 Convert.ToSingle(chara[4]),
@@ -111,10 +115,10 @@ namespace BesiegeCustomScene
             try
             {
                 if (BesiegeCustomSceneMod.Mod.GetComponent<Prop>().CloudTemp == null) return;
+                if (cloudsPropertise == null) return;
 
-                cloudSize = Mathf.Clamp(cloudSize, 0, 1000);
-
-                if (cloudSize <= 0)
+                int size = cloudsPropertise.cloudsSize;
+                if (size <= 0)
                 {
                     return;
                 }
@@ -122,9 +126,9 @@ namespace BesiegeCustomScene
                 {
                     cloudObjects = new List<GameObject>();
 
-                    for (int i = 0; i < cloudSize; i++)
+                    for (int i = 0; i < size; i++)
                     {
-                        cloudObjects.Add(createCloudObject(cloudPropertise));
+                        cloudObjects.Add(createCloudObject(cloudsPropertise));
                     }
 #if DEBUG
                     GeoTools.Log("Load Cloud Successfully");
@@ -151,13 +155,13 @@ namespace BesiegeCustomScene
             }
 
             cloudObjects = null;
-            cloudSize = 0;
+            cloudsPropertise = null;
         }
 
         GameObject createCloudObject(CloudsPropertise cloudPropertise)
         {
-            Vector3 position = cloudPropertise.cloudPosition;
-            Vector3 scale = cloudPropertise.cloudScale;
+            Vector3 position = cloudPropertise.cloudsPosition;
+            Vector3 scale = cloudPropertise.cloudsScale;
             Color color = cloudPropertise.cloudsColor;
 
             GameObject go = (GameObject)Instantiate(BesiegeCustomSceneMod.Mod.GetComponent<Prop>().CloudTemp, new Vector3(

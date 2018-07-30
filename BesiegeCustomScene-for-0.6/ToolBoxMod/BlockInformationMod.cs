@@ -82,18 +82,6 @@ namespace BesiegeCustomScene
 
         public void changedVelocityUnit()
         {
-            //if (velocityUnit == VelocityUnit.kmh)
-            //{
-            //    velocityUnit = VelocityUnit.ms;
-            //}
-            //if (velocityUnit == VelocityUnit.ms)
-            //{
-            //    velocityUnit = VelocityUnit.mach;
-            //}
-            //if (velocityUnit == VelocityUnit.mach)
-            //{
-            //    velocityUnit = VelocityUnit.kmh;
-            //}
             switch (velocityUnit)
             {
                 case VelocityUnit.kmh: { velocityUnit = VelocityUnit.ms; } break;
@@ -101,7 +89,6 @@ namespace BesiegeCustomScene
                 case VelocityUnit.mach: { velocityUnit = VelocityUnit.kmh; } break;
             }
                 
-            //initPropertise();
             velocity = Vector3.zero;
 
             BesiegeConsoleController.ShowMessage(velocityUnit.ToString());

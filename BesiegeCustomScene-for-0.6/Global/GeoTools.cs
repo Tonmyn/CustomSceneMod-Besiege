@@ -1590,6 +1590,11 @@ namespace BesiegeCustomScene
             BesiegeConsoleController.ShowMessage(message.ToString());
         }
 
+        public static void Log(bool message)
+        {
+            BesiegeConsoleController.ShowMessage(message.ToString());
+        }
+
         static public bool isBuilding()
         {
             List<string> scene = new List<string> { "INITIALISER", "TITLE SCREEN", "LevelSelect", "LevelSelect1", "LevelSelect2", "LevelSelect3" };

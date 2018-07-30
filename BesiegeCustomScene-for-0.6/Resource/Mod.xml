@@ -48,7 +48,7 @@
 		 Only use this if there is a good reason for it!
 		 Mods that are immediately loaded when starting the game are significantly
 		 less user-friendly, whenever the mod is disabled the game needs to be restarted.-->
-	<!-- <LoadInTitleScreen /> -->
+  <!-- <LoadInTitleScreen /> -->
 	
 	<!-- Note on IDs -->
 	<!-- Many elements of your mod need to have an ID assigned that will identify them.

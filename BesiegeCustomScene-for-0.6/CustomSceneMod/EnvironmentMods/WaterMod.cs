@@ -41,9 +41,9 @@ namespace BesiegeCustomScene
                         #region Water
                         if (chara[0].ToLower() == "mwater")
                         {
-                            if (chara[1] == "size")
+                            if (chara[1].ToLower() == "size")
                             {
-                                WaterSize = Convert.ToInt32(chara[2]);
+                                WaterSize = Mathf.Clamp(Convert.ToInt32(chara[2]), 0, 1000);
                                 if (WaterSize <= 0)
                                 {
                                     break;
@@ -56,7 +56,7 @@ namespace BesiegeCustomScene
                                 
                                 //LoadEnvironment();
                             }
-                            if (chara[1] == "watertemp")
+                            if (chara[1].ToLower() == "watertemp")
                             {
                                 if (Convert.ToInt32(chara[2]) == 0)
                                 {
@@ -68,7 +68,7 @@ namespace BesiegeCustomScene
                                 }
                             }
                         }
-                        else if (chara[0] == "Water")
+                        else if (chara[0].ToLower() == "water")
                         {
                             int i = Convert.ToInt32(chara[1]);
 
@@ -122,7 +122,7 @@ namespace BesiegeCustomScene
             try
             {        
                 if (BesiegeCustomSceneMod.Mod.GetComponent<Prop>().TileTemp == null) return;
-                WaterSize = Mathf.Clamp(WaterSize,0, 1000);
+                
                 if (WaterSize <= 0)
                 {
                     return;
@@ -174,6 +174,7 @@ namespace BesiegeCustomScene
             }
 
             waterObjects = null;
+            waterPropertise = null;
             WaterSize = 0;
         }
 
@@ -186,13 +187,17 @@ namespace BesiegeCustomScene
             go.transform.localScale = waterPropertise.scale;
             go.transform.localPosition = waterPropertise.position;
 
-            Mesh mesh = go.GetComponent<Mesh>();
-            mesh = waterPropertise.mesh;
+            //Mesh mesh = go.GetComponent<Mesh>();
+            //if (waterPropertise.mesh != null)
+            //{
+            //    mesh = waterPropertise.mesh;
+            //}
 
-            MeshCollider mc = go.GetComponent<MeshCollider>();
-            mc.sharedMesh = mesh;
-            mc.convex = true;
-            mc.isTrigger = true;
+            //MeshCollider mc = go.GetComponent<MeshCollider>();
+            //mc.sharedMesh = mesh;
+            //mc.convex = true;
+            //mc.isTrigger = true;
+
 
             return go;
         }

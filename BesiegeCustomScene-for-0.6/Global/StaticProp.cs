@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Modding;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -37,8 +38,8 @@ namespace BesiegeCustomScene
         {
             try
             {
-                GameObject ObjectTemp = (GameObject)Instantiate(GameObject.Find(ObjectName));
-                ObjectTemp.name = ObjectName + "Temp";
+                GameObject ObjectTemp = (GameObject)Instantiate(transform.Find(ObjectName).gameObject);
+                ObjectTemp.name = ObjectName + " Temp";
                 UnityEngine.Object.DontDestroyOnLoad(ObjectTemp);
 #if DEBUG
                 GeoTools.Log("Get " + ObjectName + "Temp Successfully");
@@ -48,7 +49,7 @@ namespace BesiegeCustomScene
             }
             catch (Exception ex)
             {
-                GeoTools.Log("Error! Get " + ObjectName + "Temp Failed");
+                GeoTools.Log("Error! Get " + ObjectName + " Temp Failed");
                 GeoTools.Log(ex.ToString());
                 return null;
             }
@@ -95,9 +96,12 @@ namespace BesiegeCustomScene
                     //    return;
                     //}
                     ////GeoTools.OpenScene("TITLE SCREEN");
-                    if (CloudTemp == null) return;
+                    if (CloudTemp != null) return;
 
-                    CloudTemp = GetObjectInScene("CLOUD");
+                    GeoTools.Log(transform.Find("_PERSISTENT") == null);
+
+                     CloudTemp = GetObjectInScene("CLOUD");
+                    //if (CloudTemp == null) return;
                     ParticleSystemRenderer psr = CloudTemp.GetComponent<ParticleSystemRenderer>();
                     psr.receiveShadows = false;
                     psr.sharedMaterial.mainTexture = iteratorVariable1.LoadAsset<Texture>(
@@ -108,7 +112,7 @@ namespace BesiegeCustomScene
                     ps.startLifetime = 60;
                     ps.startSpeed = 0.8f;
                     ps.maxParticles = 15;
-                    CloudTemp.name = "CloudTemp";
+                    CloudTemp.name = "Cloud Temp";
                     DontDestroyOnLoad(CloudTemp);
                     CloudTemp.SetActive(false);
 #if DEBUG
@@ -150,11 +154,11 @@ namespace BesiegeCustomScene
                     Material mat = TileTemp.GetComponent<Renderer>().material;
                     GeoTools.ResetWaterMaterial(ref mat);
                     UnityEngine.Object.DontDestroyOnLoad(TileTemp);
-                    TileTemp.name = "TileTemp";
+                    TileTemp.name = "Tile Temp";
                     TileTemp.SetActive(false);
                     WaterTemp.GetComponent<WaterBase>().sharedMaterial = TileTemp.GetComponent<Renderer>().material;
                     UnityEngine.Object.DontDestroyOnLoad(WaterTemp);
-                    WaterTemp.name = "WaterTemp";
+                    WaterTemp.name = "Water Temp";
                     WaterTemp.SetActive(false);
 #if DEBUG
                     GeoTools.Log("Get " + TileTemp.name + " Successfully");
@@ -164,7 +168,7 @@ namespace BesiegeCustomScene
                 {
                     SnowTemp = iteratorVariable1.LoadAsset<GameObject>(
                         "assets/standard assets/particlesystems/prefabs/duststom2.prefab");
-                    SnowTemp.name = "SnowTemp";
+                    SnowTemp.name = "Snow Temp";
                     SnowTemp.SetActive(false);
                     UnityEngine.Object.DontDestroyOnLoad(SnowTemp);
 #if DEBUG

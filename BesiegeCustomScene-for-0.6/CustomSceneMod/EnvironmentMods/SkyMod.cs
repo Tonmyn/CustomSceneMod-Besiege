@@ -21,7 +21,9 @@ namespace BesiegeCustomScene
         {
             public Mesh Mesh;
             public Texture Texture;
-            public string TexturePath;                 
+            public Vector2 TextureSize;
+            public string TexturePath;       
+            
         }
      
         public override void ReadEnvironment(SceneFolder scenePack)
@@ -34,12 +36,13 @@ namespace BesiegeCustomScene
                 foreach (var str in scenePack.SettingFileDatas)
                 {
                     string[] chara = str.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-                    if (chara.Length >= 2)
+                    if (chara.Length > 2)
                     {
                         if (chara[0] == "Sky")
                         {
                             skyPropertise = new SkyPropertise();
                             skyPropertise.TexturePath = scenePack.TexturesPath + "/" + chara[1];
+                            skyPropertise.TextureSize = new Vector2(int.Parse(chara[2]), int.Parse(chara[3]));
                         }
                     }
                 }
@@ -141,9 +144,9 @@ namespace BesiegeCustomScene
             //fileStream = null;
 
             //创建Texture
-            int width = 300;
-            int height = 372;
-            texture2D = new Texture2D(width, height);
+            //int width = 300;
+            //int height = 372;
+            texture2D = new Texture2D((int)(skyPropertise.TextureSize.x), (int)(skyPropertise.TextureSize.y));
             texture2D.LoadImage(bytes);
             return texture2D;
         }
@@ -210,17 +213,17 @@ namespace BesiegeCustomScene
 
     public class CameraFollower : MonoBehaviour
     {
-        Camera main;
+        Camera mainCamera;
 
         void Start()
         {
-            main = GameObject.Find("Main Camera").GetComponent<Camera>();
-            this.transform.localScale = Vector3.one * main.farClipPlane / /*42*/ 10;
+            mainCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
         }
 
         void Update()
         {
-            this.transform.position = main.transform.position;      
+            this.transform.position = mainCamera.transform.position;
+            this.transform.localScale = Vector3.one * mainCamera.farClipPlane / /*42*/ 10;
         }
 
     }

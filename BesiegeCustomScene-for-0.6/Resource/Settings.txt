@@ -16,7 +16,7 @@ _Timer,show_on_start,ON
 _Language,currentLanguage,CHN
 
 _Scene,SceneName,103号公路
-_Scene,SceneName,布拉万达高地
+_Scene,SceneName,布拉万高地
 _Scene,SceneName,空岛
 _Scene,SceneName,辽宁号
 _Scene,SceneName,平地

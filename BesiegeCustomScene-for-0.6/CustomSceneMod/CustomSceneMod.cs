@@ -297,14 +297,20 @@ namespace BesiegeCustomScene
         {
             FogEnable = !FogEnable;
 
-            //try
-            //{
-            //    GameObject mainCamera = GameObject.Find("Main Camera");
-            //    mainCamera.GetComponent<ColorfulFog>().enabled = FogEnable;
-            //}
-            //catch
-            //{ }
+            try
+            {
+                if (SceneManager.GetActiveScene().name == "MasterSceneMultiplayer")
+                {
+                    //DisplayLevelTitle 
+                    NetworkScene
+                    GameObject mainCamera = GameObject.Find("Main Camera");
+                    mainCamera.GetComponent<ColorfulFog>().enabled = FogEnable;
+                }
 
+            }
+            catch
+            { }
+            GeoTools.Log(SceneManager.GetActiveScene().name);
             try
             {
                 GameObject fogSPHERE = GameObject.Find("FOG SPHERE");
