@@ -29,13 +29,18 @@ namespace BesiegeCustomScene
             Mod.AddComponent<LanguageManager>();
             Mod.AddComponent<Prop>();
 
-            GameObject customSceneMod = new GameObject("Custom Scene Mod");
-            customSceneMod.AddComponent<UI.SceneSettingUI>();
-            customSceneMod.transform.SetParent(Mod.transform);
+            GameObject customScene = new GameObject("Custom Scene");
+            customScene.AddComponent<UI.SceneSettingUI>();
+            customScene.transform.SetParent(Mod.transform);
 
-            GameObject toolboxmod = new GameObject("Tool Box Mod");
-            toolboxmod.AddComponent<UI.ToolBoxSettingUI>();
-            toolboxmod.transform.SetParent(Mod.transform);
+            GameObject toolbox = new GameObject("Tool Box");
+            toolbox.AddComponent<UI.ToolBoxSettingUI>();
+            toolbox.transform.SetParent(Mod.transform);
+
+            GameObject miniMap = new GameObject("Mini Map");
+            miniMap.AddComponent<UI.MiniMapSettingUI>();
+            miniMap.transform.SetParent(Mod.transform);
+
 
             //UnityEngine.Object.DontDestroyOnLoad(Mod);
 

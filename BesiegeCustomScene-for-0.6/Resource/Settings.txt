@@ -23,3 +23,7 @@ _Scene,SceneName,平地
 _Scene,SceneName,越野
 _Scene,SceneName,丘陵
 _Scene,SceneName,荒滩
+_Scene,SceneName,翠屏山
+_Scene,SceneName,刀锋山
+_Scene,SceneName,环湖
+_Scene,SceneName,竞速

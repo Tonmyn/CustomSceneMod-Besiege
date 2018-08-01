@@ -86,16 +86,31 @@ namespace BesiegeCustomScene
             {
                 SPs.Add(new SceneFolder(sceneName));
             }
+
+            SPs = SPs.Distinct(new Compare()).ToList();
             return SPs;
         }
 
         public List<SceneFolder> ReloadScenePacks()
         {
             return ReadScenePacks(ScenePacksPath);
-        }  
+        }
 
 
-      
+        class Compare : IEqualityComparer<SceneFolder>
+        {
+            public bool Equals(SceneFolder x, SceneFolder y)
+            {
+                return x.Name == y.Name;//可以自定义去重规则，此处将地图包名字相同的就作为重复记录，不管地图的路径是什么
+            }
+
+            public int GetHashCode(SceneFolder obj)
+            {
+                return obj.Name.GetHashCode();
+            }
+        }
+
+
 
         /// <summary>
         /// 加载地图包
@@ -302,7 +317,7 @@ namespace BesiegeCustomScene
                 if (SceneManager.GetActiveScene().name == "MasterSceneMultiplayer")
                 {
                     //DisplayLevelTitle 
-                    NetworkScene
+                    
                     GameObject mainCamera = GameObject.Find("Main Camera");
                     mainCamera.GetComponent<ColorfulFog>().enabled = FogEnable;
                 }

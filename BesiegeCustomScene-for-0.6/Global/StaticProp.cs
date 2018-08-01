@@ -38,7 +38,13 @@ namespace BesiegeCustomScene
         {
             try
             {
-                GameObject ObjectTemp = (GameObject)Instantiate(transform.Find(ObjectName).gameObject);
+
+
+                //GameObject ObjectTemp = (GameObject)Instantiate(transform.Find(ObjectName).gameObject);
+                GameObject ObjectTemp = PrefabMaster.GetPrefab(StatMaster.Category.Weather, 2).transform.FindChild(ObjectName).gameObject;
+
+
+
                 ObjectTemp.name = ObjectName + " Temp";
                 UnityEngine.Object.DontDestroyOnLoad(ObjectTemp);
 #if DEBUG
@@ -98,10 +104,8 @@ namespace BesiegeCustomScene
                     ////GeoTools.OpenScene("TITLE SCREEN");
                     if (CloudTemp != null) return;
 
-                    GeoTools.Log(transform.Find("_PERSISTENT") == null);
-
                      CloudTemp = GetObjectInScene("CLOUD");
-                    //if (CloudTemp == null) return;
+                    if (CloudTemp == null) return;
                     ParticleSystemRenderer psr = CloudTemp.GetComponent<ParticleSystemRenderer>();
                     psr.receiveShadows = false;
                     psr.sharedMaterial.mainTexture = iteratorVariable1.LoadAsset<Texture>(

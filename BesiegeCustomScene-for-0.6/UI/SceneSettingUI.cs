@@ -64,7 +64,8 @@ namespace BesiegeCustomScene.UI
             LanguageFile currentLanuage;
             currentLanuage = BesiegeCustomSceneMod.Mod.GetComponent<LanguageManager>().Get_CurretLanguageFile();
 
-            float height = (sceneMod.ScenePacks.Count - 1) * (buttonHeight + 5) + 5;
+            float height = (sceneMod.ScenePacks.Count - 1+1) * (buttonHeight + 5) + 5-5;
+            
             sceneButtonsRect = new Rect(0, 0, 200, height);
 
             sceneUI_Language = SceneUI_Language.DefaultLanguage;
