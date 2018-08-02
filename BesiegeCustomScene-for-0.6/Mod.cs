@@ -37,9 +37,9 @@ namespace BesiegeCustomScene
             toolbox.AddComponent<UI.ToolBoxSettingUI>();
             toolbox.transform.SetParent(Mod.transform);
 
-            GameObject miniMap = new GameObject("Mini Map");
-            miniMap.AddComponent<UI.MiniMapSettingUI>();
-            miniMap.transform.SetParent(Mod.transform);
+            //GameObject miniMap = new GameObject("Mini Map");
+            //miniMap.AddComponent<UI.MiniMapSettingUI>();
+            //miniMap.transform.SetParent(Mod.transform);
 
 
             //UnityEngine.Object.DontDestroyOnLoad(Mod);

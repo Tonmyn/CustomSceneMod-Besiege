@@ -46,7 +46,7 @@ namespace BesiegeCustomScene
 
 
                 ObjectTemp.name = ObjectName + " Temp";
-                UnityEngine.Object.DontDestroyOnLoad(ObjectTemp);
+               // UnityEngine.Object.DontDestroyOnLoad(ObjectTemp);
 #if DEBUG
                 GeoTools.Log("Get " + ObjectName + "Temp Successfully");
 #endif
@@ -104,7 +104,7 @@ namespace BesiegeCustomScene
                     ////GeoTools.OpenScene("TITLE SCREEN");
                     if (CloudTemp != null) return;
 
-                     CloudTemp = GetObjectInScene("CLOUD");
+                     CloudTemp = GetObjectInScene("CLOUD/RAIN CLOUD");
                     if (CloudTemp == null) return;
                     ParticleSystemRenderer psr = CloudTemp.GetComponent<ParticleSystemRenderer>();
                     psr.receiveShadows = false;

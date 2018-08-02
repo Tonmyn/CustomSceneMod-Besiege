@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using Modding.Levels;
 
 namespace BesiegeCustomScene
 {
@@ -180,6 +181,18 @@ namespace BesiegeCustomScene
             go.AddComponent<CloudScript>();
 
             return go;
+        }
+
+        void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.T))
+            {
+                BesiegeConsoleController.ShowMessage(":??");
+
+
+                Level.GetCurrentLevel().AddEntity(8003, Vector3.up * 10, transform.rotation, Vector3.one * 3);
+               
+            }
         }
 
     }
