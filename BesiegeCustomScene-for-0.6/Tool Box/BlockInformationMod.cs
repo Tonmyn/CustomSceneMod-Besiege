@@ -30,7 +30,7 @@ namespace BesiegeCustomScene
         private Vector3 lastVelocity;
         private bool isFirstFrame;
         private Queue<float> averageAccelerationQueue = new Queue<float>();
-        readonly int queueSize = 60;
+        private int queueSize = 60;
 
         void Awake()
         {
@@ -40,7 +40,7 @@ namespace BesiegeCustomScene
 
         void FixedUpdate()
         {
-            if (StatMaster.levelSimulating)
+            if (StatMaster.levelSimulating && !StatMaster.isClient)
             {
                 if (!isFirstFrame)
                 {
@@ -48,8 +48,6 @@ namespace BesiegeCustomScene
 
                     LoadBlock();
                     averageAccelerationQueue.Clear();
-                    //func_position();
-                    //func_velocity();
                 }
                 FuncPosition();
                 FuncVelocity();
@@ -122,17 +120,10 @@ namespace BesiegeCustomScene
         {
             if (velocityUnit == VelocityUnit.kmh)
             {
-                //V = string.Format("{0:N0}", v1.magnitude * 3.6f);
                 velocity = Vector3.Scale(velocity, Vector3.one * 3.6f);
-            }
-            else if (velocityUnit == VelocityUnit.ms)
-            {
-                //V = string.Format("{0:N0}", v1.magnitude);
-                //velocity = velocity;
             }
             else if (velocityUnit == VelocityUnit.mach)
             {
-                //V = string.Format("{0:N2}", v1.magnitude / 340f);
                 velocity = Vector3.Scale(velocity, Vector3.one / 340f);
             }
             return velocity;
@@ -142,10 +133,6 @@ namespace BesiegeCustomScene
         {
             if (validBlock)
             {
-                //Distance = string.Format("{0:N2}", _Distance / 1000f);
-                //Vector3 v2 = _Position - startingBlock.GetComponent<Rigidbody>().position;
-                //_Distance += v2.magnitude;
-                //_Position = startingBlock.GetComponent<Rigidbody>().position;
                 Vector3 currentPosition = Position;
 
                 Vector3 deltaPosition = currentPosition - lastPosition;
@@ -154,7 +141,6 @@ namespace BesiegeCustomScene
             }
             else
             {
-                //Distance = "0";
                 Distance = 0f;
             }
         }
@@ -163,35 +149,16 @@ namespace BesiegeCustomScene
         {
             if (validBlock)
             {
-                //Vector3 v1 = startingBlock.GetComponent<Rigidbody>().velocity;
-                //float _overload = 0;
-                //float timedomain = Time.fixedDeltaTime * 25f;
-                //if (timedomain > 0) _overload =
-                //           Vector3.Dot((_V - v1), base.transform.up) / timedomain / 38.5f + Vector3.Dot(Vector3.up, base.transform.up) - 1;
-                //_V = v1;
-                //Overload = string.Format("{0:N2}", _overload);
-
-                //Vector3 v1 = Velocity;
-
-                //float timedomain = Time.fixedDeltaTime * 25f;
-                //if (timedomain > 0)
-                //{
-                //    Overload = Vector3.Dot(getVelocity(v1, velocityUnit) - lastVelocity, transform.up) / timedomain / 38.5f + Vector3.Dot(Vector3.up, transform.up) - 1;
-                //}
-
                 float acceleration = Acceleration;
 
                 if (velocityUnit == VelocityUnit.kmh)
                 {
-                    //V = string.Format("{0:N0}", v1.magnitude * 3.6f);
                     acceleration = acceleration / 3.6f;
                 }
                 else if (velocityUnit == VelocityUnit.mach)
                 {
-                    //V = string.Format("{0:N2}", v1.magnitude / 340f);
                     acceleration = acceleration * 340f;
                 }
-
 
                 if (averageAccelerationQueue.Count == queueSize)
                 {
@@ -203,7 +170,6 @@ namespace BesiegeCustomScene
             }
             else
             {
-                //Overload = "0";
                 Overload = 0;
             }
         }
@@ -233,48 +199,14 @@ namespace BesiegeCustomScene
         {
             try
             {
-                targetBlock = GameObject.Find("StartingBlock");
-                // Dlight = GameObject.Find("Directional light");
+                targetBlock = Machine.Active().FirstBlock.gameObject;
             }
             catch { }
 
-            if (targetBlock == null)
-            {
-                targetBlock = GameObject.Find("bgeL0");
-                if (targetBlock == null)
-                {
-                    MyBlockInfo info = UnityEngine.Object.FindObjectOfType<MyBlockInfo>();
-                    if (info != null)
-                    {
-                        targetBlock = info.gameObject;
-                    }
-                    //if (targetBlock == null)
-                    //{
-                    //    validBlock = false; 
-                    //}
-                    //else
-                    //{
-                    //    validBlock = true;
-                    //}
-
-                    validBlock = (targetBlock == null ? false : true);
-                }
-                else
-                {
-                    validBlock = true;
-                }
-            }
-            else
-            {
-                validBlock = true;
-            }
-
+            validBlock = (targetBlock == null ? false : true);
 #if DEBUG 
             ConsoleController.ShowMessage(targetBlock.name);
 #endif
         }
-
-
-
     }
 }
