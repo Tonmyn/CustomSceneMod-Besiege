@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace BesiegeCustomScene
 {
-    class BlockInformationMod: MonoBehaviour
+    class BlockInformationMod : MonoBehaviour
     {
 
         public enum VelocityUnit
@@ -20,67 +20,63 @@ namespace BesiegeCustomScene
         GameObject targetBlock;
         bool validBlock = false;
 
-        public Vector3 Position { get { return position; } }
-        public Vector3 Velocity { get { return velocity; } }
-        public float Distance { get { return distance; } }
-        public float Overload { get { return overload; } }
-        public float Acceleration { get { return acceleration; } }
+        public Vector3 Position { get; private set; }
+        public Vector3 Velocity { get; private set; }
+        public float Distance { get; private set; }
+        public float Overload { get; private set; }
+        public float Acceleration { get; private set; }
 
-        Vector3 position, lastPosition;
-        Vector3 velocity, lastVelocity;
-        float distance;
-        float overload;
-        float acceleration;
-
-        bool isFirstFram;
+        private Vector3 lastPosition;
+        private Vector3 lastVelocity;
+        private bool isFirstFrame;
+        private Queue<float> averageAccelerationQueue = new Queue<float>();
+        private int queueSize = 60;
 
         void Awake()
         {
-            isFirstFram = false;
+            isFirstFrame = false;
             velocityUnit = VelocityUnit.kmh;
-        } 
+        }
 
         void FixedUpdate()
         {
-            if (StatMaster.levelSimulating)
+            if (StatMaster.levelSimulating && !StatMaster.isClient)
             {
-                if (!isFirstFram)
+                if (!isFirstFrame)
                 {
-                    isFirstFram = true;
+                    isFirstFrame = true;
 
                     LoadBlock();
-
-                    //func_position();
-                    //func_velocity();
+                    averageAccelerationQueue.Clear();
                 }
-                func_position();
-                func_velocity();
-                func_distance();
-                func_overload();
-                func_acceleration();
+                FuncPosition();
+                FuncVelocity();
+                FuncDistance();
+                FuncOverload();
+                FuncAcceleration();
             }
             else
             {
-                if (isFirstFram)
+                if (isFirstFrame)
                 {
-                    isFirstFram = false;
+                    isFirstFrame = false;
 
                     validBlock = false;
-                    initPropertise();
+                    InitPropertise();
                 }
             }
         }
 
-        public void initPropertise()
+        public void InitPropertise()
         {
-            position = lastPosition = Vector3.zero;
-            velocity = lastVelocity = Vector3.zero;
-            distance = 0f;
-            overload = 0f;
-            acceleration = 0f;           
+            Position = lastPosition = Vector3.zero;
+            Velocity = lastVelocity = Vector3.zero;
+            Distance = 0f;
+            Overload = 0f;
+            Acceleration = 0f;
         }
 
-        public void changedVelocityUnit()
+        public void ChangedVelocityUnit()
         {
             switch (velocityUnit)
             {
@@ -88,124 +84,113 @@ namespace BesiegeCustomScene
                 case VelocityUnit.ms: { velocityUnit = VelocityUnit.mach; } break;
                 case VelocityUnit.mach: { velocityUnit = VelocityUnit.kmh; } break;
             }
-                
-            velocity = Vector3.zero;
+
+            Velocity = Vector3.zero;
 
             BesiegeConsoleController.ShowMessage(velocityUnit.ToString());
         }
 
-        void func_position()
+        void FuncPosition()
         {
             if (validBlock)
             {
-                position = targetBlock.GetComponent<Rigidbody>().position;
+                Position = targetBlock.GetComponent<Rigidbody>().position;
             }
             else
             {
-                position = new Vector3(0, 0, 0);
+                Position = new Vector3(0, 0, 0);
             }
         }
 
-        void func_velocity()
+        void FuncVelocity()
         {
             if (validBlock)
             {
                 Vector3 v1 = targetBlock.GetComponent<Rigidbody>().velocity;
 
-                velocity = getVelocity(v1, velocityUnit);
+                Velocity = GetVelocity(v1, velocityUnit);
             }
             else
             {
-                velocity = Vector3.zero;
+                Velocity = Vector3.zero;
             }
         }
 
-        Vector3 getVelocity(Vector3 velocity,VelocityUnit velocityUnit)
+        Vector3 GetVelocity(Vector3 velocity, VelocityUnit velocityUnit)
         {
-            
             if (velocityUnit == VelocityUnit.kmh)
             {
-                //V = string.Format("{0:N0}", v1.magnitude * 3.6f);
                 velocity = Vector3.Scale(velocity, Vector3.one * 3.6f);
-            }
-            else if (velocityUnit == VelocityUnit.ms)
-            {
-                //V = string.Format("{0:N0}", v1.magnitude);
-                //velocity = velocity;
             }
             else if (velocityUnit == VelocityUnit.mach)
             {
-                //V = string.Format("{0:N2}", v1.magnitude / 340f);
                 velocity = Vector3.Scale(velocity, Vector3.one / 340f);
             }
             return velocity;
         }
 
-        void func_distance()
+        void FuncDistance()
         {
             if (validBlock)
             {
-                //Distance = string.Format("{0:N2}", _Distance / 1000f);
-                //Vector3 v2 = _Position - startingBlock.GetComponent<Rigidbody>().position;
-                //_Distance += v2.magnitude;
-                //_Position = startingBlock.GetComponent<Rigidbody>().position;
-                Vector3 currentPosition = position;
+                Vector3 currentPosition = Position;
 
                 Vector3 deltaPosition = currentPosition - lastPosition;
-                distance += deltaPosition.magnitude;
+                Distance += deltaPosition.magnitude;
                 lastPosition = currentPosition;
             }
             else
             {
-                //Distance = "0";
-                distance = 0f;
+                Distance = 0f;
             }
         }
 
-        void func_overload()
+        void FuncOverload()
         {
             if (validBlock)
             {
-                //Vector3 v1 = startingBlock.GetComponent<Rigidbody>().velocity;
-                //float _overload = 0;
-                //float timedomain = Time.fixedDeltaTime * 25f;
-                //if (timedomain > 0) _overload =
-                //           Vector3.Dot((_V - v1), base.transform.up) / timedomain / 38.5f + Vector3.Dot(Vector3.up, base.transform.up) - 1;
-                //_V = v1;
-                //Overload = string.Format("{0:N2}", _overload);
+                float acceleration = Acceleration;
 
-                Vector3 v1 = velocity;
-
-                float timedomain = Time.fixedDeltaTime * 25f;
-                if (timedomain > 0)
+                if (velocityUnit == VelocityUnit.kmh)
                 {
-                    overload = Vector3.Dot(getVelocity(v1, velocityUnit) - lastVelocity, transform.up) / timedomain / 38.5f + Vector3.Dot(Vector3.up, transform.up) - 1;
-                }    
+                    acceleration = acceleration / 3.6f;
+                }
+                else if (velocityUnit == VelocityUnit.mach)
+                {
+                    acceleration = acceleration * 340f;
+                }
+
+                if (averageAccelerationQueue.Count == queueSize)
+                {
+                    averageAccelerationQueue.Dequeue();
+                }
+                averageAccelerationQueue.Enqueue(acceleration);
+
+                Overload = averageAccelerationQueue.Average() / Physics.gravity.magnitude;
             }
             else
             {
-                //Overload = "0";
-                overload = 0;
+                Overload = 0;
             }
         }
 
-        void func_acceleration()
+        void FuncAcceleration()
         {
             if (validBlock)
             {
-                Vector3 currentVelocity = velocity;
+                Vector3 currentVelocity = Velocity;
                 Vector3 _acceleration = Vector3.zero;
                 int sign = 0;
 
                 Vector3 deltaVelocity = currentVelocity - lastVelocity;
                 _acceleration = deltaVelocity / Time.fixedDeltaTime;
                 sign = (Vector3.Dot(_acceleration, currentVelocity) > 0) ? 1 : -1;
-                acceleration = sign * _acceleration.magnitude;
+                Acceleration = sign * _acceleration.magnitude;
                 lastVelocity = currentVelocity;
             }
             else
             {
-                acceleration = 0f;
+                Acceleration = 0f;
             }
         }
 
@@ -214,48 +199,14 @@ namespace BesiegeCustomScene
         {
             try
             {
-                targetBlock = GameObject.Find("StartingBlock");
-                // Dlight = GameObject.Find("Directional light");
+                targetBlock = Machine.Active().FirstBlock.gameObject;
             }
             catch { }
 
-            if (targetBlock == null)
-            {
-                targetBlock = GameObject.Find("bgeL0");
-                if (targetBlock == null)
-                {
-                    MyBlockInfo info = UnityEngine.Object.FindObjectOfType<MyBlockInfo>();
-                    if (info != null)
-                    {
-                        targetBlock = info.gameObject;
-                    }
-                    //if (targetBlock == null)
-                    //{
-                    //    validBlock = false; 
-                    //}
-                    //else
-                    //{
-                    //    validBlock = true;
-                    //}
-
-                    validBlock = (targetBlock == null ? false : true);
-                }
-                else
-                {
-                    validBlock = true; 
-                }
-            }
-            else
-            {
-                validBlock = true; 
-            }
-
+            validBlock = (targetBlock == null ? false : true);
 #if DEBUG 
             ConsoleController.ShowMessage(targetBlock.name);
 #endif
         }
-
-
-
     }
 }

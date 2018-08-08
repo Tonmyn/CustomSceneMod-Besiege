@@ -34,10 +34,8 @@ namespace BesiegeCustomScene.UI
         }
 
         bool ShowGUI;
-
-        KeyCode DisplayToolBoxKey = KeyCode.F8;
-
-        int windowID = GeoTools.GetWindowID();
+        readonly KeyCode DisplayToolBoxKey = KeyCode.F8;
+        readonly int windowID = GeoTools.GetWindowID();
 
         Rect windowRect = new Rect(15f, 100f, 180f, 200f);
 
@@ -60,8 +58,8 @@ namespace BesiegeCustomScene.UI
         {
             ShowGUI = true;
 
-            initLanguage();
-            initEvent();
+            InitLanguage();
+            InitEvent();
 
             GameObject go = new GameObject("Timer Mod");
             go.transform.SetParent(transform);
@@ -73,7 +71,7 @@ namespace BesiegeCustomScene.UI
 
         }
 
-        void initLanguage()
+        void InitLanguage()
         {
             LanguageFile currentLanuage = BesiegeCustomSceneMod.Mod.GetComponent<LanguageManager>().Get_CurretLanguageFile();
 
@@ -92,7 +90,7 @@ namespace BesiegeCustomScene.UI
                 toolBoxUI_Language._TriggerUI = translation[208];
             }
         }
-        void initEvent()
+        void InitEvent()
         {
             VelocityButtonClickEvent += () => 
             {
@@ -148,7 +146,7 @@ namespace BesiegeCustomScene.UI
                     //GUILayout.Label(string.Format("{0} {1}" ,toolBoxUI_Language._VelocityUI,blockInformationMod.velocityUnit));
                     if (GUILayout.Button(toolBoxUI_Language._VelocityUI))
                     {
-                        blockInformationMod.changedVelocityUnit();
+                        blockInformationMod.ChangedVelocityUnit();
                         VelocityButtonClickEvent();
                     }
 
@@ -221,8 +219,8 @@ namespace BesiegeCustomScene.UI
 
             GUI.DragWindow();
         }
-                   
-        GUIStyle style = new GUIStyle
+
+        readonly GUIStyle style = new GUIStyle
         {
             normal = { textColor = Color.white },
             alignment = TextAnchor.MiddleLeft,
@@ -230,7 +228,7 @@ namespace BesiegeCustomScene.UI
             margin = { top = 5 },
             fontSize = 15
         };
-        GUIStyle style1 = new GUIStyle
+        readonly GUIStyle style1 = new GUIStyle
         {
             normal = { textColor = Color.white },
             alignment = TextAnchor.MiddleRight,
