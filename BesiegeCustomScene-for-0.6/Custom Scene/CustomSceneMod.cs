@@ -315,19 +315,11 @@ namespace BesiegeCustomScene
 
             try
             {
-                if (/*Level.GetCurrentLevel().Setup.Name == "BARREN EXPANSE" ||*/ SceneManager.GetActiveScene().name == "BARREN EXPANSE")
+                if (SceneManager.GetActiveScene().name == "BARREN EXPANSE"|| (SceneManager.GetActiveScene().name == "MasterSceneMultiplayer" && (Level.GetCurrentLevel().Setup.Name == null || Level.GetCurrentLevel().Setup.Name == "")))
                 {
 
                     GameObject mainCamera = GameObject.Find("Main Camera");
                     mainCamera.GetComponent<ColorfulFog>().enabled = FogEnable;
-                }
-                else if (SceneManager.GetActiveScene().name == "MasterSceneMultiplayer")
-                {
-                    if (Level.GetCurrentLevel().Setup.Name == null)
-                    {
-                        GameObject mainCamera = GameObject.Find("Main Camera");
-                        mainCamera.GetComponent<ColorfulFog>().enabled = FogEnable;
-                    }
                 }
             }
             catch
