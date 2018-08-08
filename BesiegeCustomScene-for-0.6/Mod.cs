@@ -42,7 +42,7 @@ namespace BesiegeCustomScene
             //miniMap.transform.SetParent(Mod.transform);
 
 
-            //UnityEngine.Object.DontDestroyOnLoad(Mod);
+            UnityEngine.Object.DontDestroyOnLoad(Mod);
 
 
         }
