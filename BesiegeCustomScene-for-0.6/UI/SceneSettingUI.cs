@@ -121,7 +121,7 @@ namespace BesiegeCustomScene.UI
         private void OnGUI()
         {
             
-            if (!StatMaster.levelSimulating && ShowGUI && GeoTools.isBuilding() && !StatMaster.inMenu)
+            if (!StatMaster.levelSimulating && ShowGUI && GeoTools.IsBuilding() && !StatMaster.inMenu)
             {
                 windowRect = GUI.Window(windowID, windowRect, new GUI.WindowFunction(SceneWindow), sceneUI_Language._SceneWindowUI);
             }

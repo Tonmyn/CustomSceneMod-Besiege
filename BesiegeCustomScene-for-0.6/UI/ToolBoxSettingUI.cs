@@ -122,7 +122,7 @@ namespace BesiegeCustomScene.UI
 
         void OnGUI()
         {
-            if (ShowGUI && GeoTools.isBuilding())
+            if (ShowGUI && GeoTools.IsBuilding())
             {
                 windowRect = GUI.Window(windowID, windowRect, new GUI.WindowFunction(TimerWindow),toolBoxUI_Language._ToolBoxWindowUI);
             }

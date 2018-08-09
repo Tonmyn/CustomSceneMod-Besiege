@@ -34,7 +34,7 @@ namespace BesiegeCustomScene
 
         }
 
-        public bool readBool(string[] str, int index)
+        public bool ReadBool(string[] str, int index)
         {
             bool value = false;
 
@@ -49,21 +49,21 @@ namespace BesiegeCustomScene
             return value;               
         }
 
-        public int? readInt(string[] str,int index)
+        public int? ReadInt(string[] str,int index)
         {
             int? i = 0;
             i = Convert.ToInt32(str[index + 1]);
             return i;
         }
 
-        public float? readFloat(string[] str, int index)
+        public float? ReadFloat(string[] str, int index)
         {
             float? i = 0;
 
             return i = Convert.ToSingle(str[index + 1]);
         }
 
-        public Vector3? readVector3(string[] str, int index)
+        public Vector3? ReadVector3(string[] str, int index)
         {
             Vector3 vector = Vector3.zero;
 
@@ -77,7 +77,7 @@ namespace BesiegeCustomScene
             return vector;
         }
 
-        public Vector4? readVector4(string[] str, int index)
+        public Vector4? ReadVector4(string[] str, int index)
         {
             Vector4 vector = Vector4.zero;
 
@@ -92,7 +92,7 @@ namespace BesiegeCustomScene
             return vector;
         }
 
-        public Color? readColor(string[] str, int index)
+        public Color? ReadColor(string[] str, int index)
         {
             Color? color = Color.white;
 
@@ -107,7 +107,7 @@ namespace BesiegeCustomScene
             return color;
         }
 
-        public Texture2D readTexture2D(string[] str, int index)
+        public Texture2D ReadTexture2D(string[] str, int index)
         {
             Texture2D texture2D = Texture2D.whiteTexture;
 

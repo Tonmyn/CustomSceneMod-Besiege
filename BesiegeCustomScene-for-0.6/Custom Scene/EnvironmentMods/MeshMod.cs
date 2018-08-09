@@ -638,7 +638,7 @@ namespace BesiegeCustomScene
                             ;
                         for (int i = 0; i < MeshSize; i++)
                         {
-                            meshObjects.Add(createMeshObject(shadowCastingMode));
+                            meshObjects.Add(CreateMeshObject(shadowCastingMode));
                         }
 #if DEBUG
                         GeoTools.Log("Load Mesh Successfully");
@@ -673,7 +673,7 @@ namespace BesiegeCustomScene
             MeshSize = 0;      
         }
 
-        GameObject createMeshObject(ShadowCastingMode shadowCastingMode = ShadowCastingMode.On)
+        GameObject CreateMeshObject(ShadowCastingMode shadowCastingMode = ShadowCastingMode.On)
         {
             GameObject go = GameObject.CreatePrimitive(PrimitiveType.Plane);
             Shader diffuse = Shader.Find("Legacy Shaders/Diffuse");

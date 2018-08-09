@@ -9,11 +9,8 @@ namespace BesiegeCustomScene
 {
     public class Prop : MonoBehaviour
     {
-        void Start()
-        {
-            Isstart = 0;
-        }
-        private int Isstart = 0;
+
+        private int isStart = 0;
         public static AssetBundle iteratorVariable1;
         public GameObject TileTemp = null;
         public GameObject WaterTemp = null;
@@ -23,17 +20,27 @@ namespace BesiegeCustomScene
         [Obsolete]
         public List<GameObject> MaterialTemp = new List<GameObject>();
         public static string BundlePath = "assets/standard assets/besiegecustomscene/";
+        private string StartedScene = "";
+        public static double t = 5;
+
+        void Start()
+        {
+            isStart = 0;
+        }
+
         public static Mesh MeshFormBundle(string Objname)
         {
             Mesh mesh = iteratorVariable1.LoadAsset<Mesh>(BundlePath + "Mesh/" + Objname + ".obj");
             return mesh;
         }
+
         public static Texture TextureFormBundle(string Objname)
         {
             Texture te = iteratorVariable1.LoadAsset<Texture>(BundlePath + "Texture/" + Objname + ".jpg");
             if (te == null) te = iteratorVariable1.LoadAsset<Texture>(BundlePath + "Texture/" + Objname + ".png");
             return te;
         }
+
         public GameObject GetObjectInScene(string ObjectName)
         {
             try
@@ -46,7 +53,7 @@ namespace BesiegeCustomScene
 
 
                 ObjectTemp.name = ObjectName + " Temp";
-               // UnityEngine.Object.DontDestroyOnLoad(ObjectTemp);
+                // UnityEngine.Object.DontDestroyOnLoad(ObjectTemp);
 #if DEBUG
                 GeoTools.Log("Get " + ObjectName + "Temp Successfully");
 #endif
@@ -60,14 +67,13 @@ namespace BesiegeCustomScene
                 return null;
             }
         }
-        private string StartedScene = "";
-        public static double t = 5;
+
         void FixedUpdate()
         {
-            if (Isstart > 6 * t) return;
+            if (isStart > 6 * t) return;
             try
             {
-                if (Isstart == 1 * t)
+                if (isStart == 1 * t)
                 {
                     try
                     {
@@ -94,7 +100,7 @@ namespace BesiegeCustomScene
                     }
 
                 }
-                if (Isstart == 2 * t)
+                if (isStart == 2 * t)
                 {
                     //StartedScene = SceneManager.GetActiveScene().name;
                     //if (StartedScene != "TITLE SCREEN")
@@ -104,7 +110,7 @@ namespace BesiegeCustomScene
                     ////GeoTools.OpenScene("TITLE SCREEN");
                     if (CloudTemp != null) return;
 
-                     CloudTemp = GetObjectInScene("CLOUD/RAIN CLOUD");
+                    CloudTemp = GetObjectInScene("CLOUD/RAIN CLOUD");
                     if (CloudTemp == null) return;
                     ParticleSystemRenderer psr = CloudTemp.GetComponent<ParticleSystemRenderer>();
                     psr.receiveShadows = false;
@@ -123,7 +129,7 @@ namespace BesiegeCustomScene
                     GeoTools.Log("Get " + CloudTemp.name + " Successfully");
 #endif
                 }
-                if (Isstart == 3 * t)
+                if (isStart == 3 * t)
                 {
                     //                    for (int i = 0; i <= 10; i++)
                     //                    {
@@ -143,7 +149,7 @@ namespace BesiegeCustomScene
                     //                    }
                 }
 
-                if (Isstart == 4 * t)
+                if (isStart == 4 * t)
                 {
                     WaterTemp = new GameObject();
                     WaterTemp.AddComponent<WaterBase>();
@@ -168,7 +174,7 @@ namespace BesiegeCustomScene
                     GeoTools.Log("Get " + TileTemp.name + " Successfully");
 #endif
                 }
-                if (Isstart == 5 * t)
+                if (isStart == 5 * t)
                 {
                     SnowTemp = iteratorVariable1.LoadAsset<GameObject>(
                         "assets/standard assets/particlesystems/prefabs/duststom2.prefab");
@@ -184,7 +190,7 @@ namespace BesiegeCustomScene
             {
                 GeoTools.Log(ex.ToString());
             }
-            if (Isstart < 6 * t) Isstart++;
+            if (isStart < 6 * t) isStart++;
         }
     }
 }

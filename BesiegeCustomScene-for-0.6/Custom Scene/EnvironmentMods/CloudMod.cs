@@ -129,7 +129,7 @@ namespace BesiegeCustomScene
 
                     for (int i = 0; i < size; i++)
                     {
-                        cloudObjects.Add(createCloudObject(cloudsPropertise));
+                        cloudObjects.Add(CreateCloudObject(cloudsPropertise));
                     }
 #if DEBUG
                     GeoTools.Log("Load Cloud Successfully");
@@ -159,7 +159,7 @@ namespace BesiegeCustomScene
             cloudsPropertise = null;
         }
 
-        GameObject createCloudObject(CloudsPropertise cloudPropertise)
+        GameObject CreateCloudObject(CloudsPropertise cloudPropertise)
         {
             Vector3 position = cloudPropertise.cloudsPosition;
             Vector3 scale = cloudPropertise.cloudsScale;

@@ -125,7 +125,7 @@ namespace BesiegeCustomScene
 
                     for (int i = 0; i < snowSize; i++)
                     {
-                        snowObjects.Add(createSnowObject(snowPropertises));
+                        snowObjects.Add(CreateSnowObject(snowPropertises));
                     }
 
 #if DEBUG
@@ -157,7 +157,7 @@ namespace BesiegeCustomScene
             snowSize = 0;
         }
 
-        GameObject createSnowObject(SnowPropertise snowPropertise )
+        GameObject CreateSnowObject(SnowPropertise snowPropertise )
         {
             GameObject go = (GameObject)Instantiate(BesiegeCustomSceneMod.Mod.GetComponent<Prop>().SnowTemp);
             go.name = "Snow Object";
