@@ -15,15 +15,16 @@ namespace BesiegeCustomScene.UI
 
         private int windowID = GeoTools.GetWindowID();
 
-        private float width = 306;
-        private float textureWidth;
+        private float width;
+        private float boarderWidth = 3;
+        private float textureWidth = 300;
 
         void Start()
         {
             GameObject go = new GameObject("Mini Map Mod");
             go.transform.SetParent(transform);
             miniMapMod = go.AddComponent<MiniMapMod>();
-            textureWidth = width - 6;
+            width = textureWidth + boarderWidth * 2;
             windowRect = new Rect(15f, 100f, width, width * miniMapMod.cameraRenderTexture.height / miniMapMod.cameraRenderTexture.width + 20);
 
         }
@@ -35,7 +36,7 @@ namespace BesiegeCustomScene.UI
 
         void MiniMapWindow(int WindowID)
         {
-            GUI.DrawTexture(new Rect((width - textureWidth) / 2, 18, textureWidth, textureWidth * Screen.height / Screen.width), miniMapMod.cameraRenderTexture, ScaleMode.ScaleToFit);
+            GUI.DrawTexture(new Rect(boarderWidth, 18, textureWidth, textureWidth * Screen.height / Screen.width), miniMapMod.cameraRenderTexture, ScaleMode.ScaleToFit);
         }
     }
 }
