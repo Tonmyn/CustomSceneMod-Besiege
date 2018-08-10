@@ -59,7 +59,7 @@ namespace BesiegeCustomScene.UI
 
         void Awake()
         {
-            initSceneMod();
+            InitSceneMod();
 
             LanguageFile currentLanuage;
             currentLanuage = BesiegeCustomSceneMod.Mod.GetComponent<LanguageManager>().Get_CurretLanguageFile();
@@ -81,7 +81,7 @@ namespace BesiegeCustomScene.UI
 
         }
 
-        void initSceneMod()
+        void InitSceneMod()
         {
             sceneMod = gameObject.AddComponent<CustomSceneMod>();
 
