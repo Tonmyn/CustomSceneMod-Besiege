@@ -7,6 +7,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Modding;
+using Modding.Levels;
 
 namespace BesiegeCustomScene
 {
@@ -314,18 +315,16 @@ namespace BesiegeCustomScene
 
             try
             {
-                if (SceneManager.GetActiveScene().name == "MasterSceneMultiplayer")
+                if (SceneManager.GetActiveScene().name == "BARREN EXPANSE"|| (SceneManager.GetActiveScene().name == "MasterSceneMultiplayer" && (Level.GetCurrentLevel().Setup.Name == null || Level.GetCurrentLevel().Setup.Name == "")))
                 {
-                    //DisplayLevelTitle 
-                    
+
                     GameObject mainCamera = GameObject.Find("Main Camera");
                     mainCamera.GetComponent<ColorfulFog>().enabled = FogEnable;
                 }
-
             }
             catch
             { }
-            GeoTools.Log(SceneManager.GetActiveScene().name);
+
             try
             {
                 GameObject fogSPHERE = GameObject.Find("FOG SPHERE");
