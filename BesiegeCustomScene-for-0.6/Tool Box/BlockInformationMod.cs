@@ -13,7 +13,7 @@ namespace BesiegeCustomScene
         {
             kmh = 0,
             ms = 1,
-            mach = 2,
+            Mach = 2,
         };
 
         public VelocityUnit velocityUnit;
@@ -28,19 +28,15 @@ namespace BesiegeCustomScene
 
         private Vector3 lastPosition;
         private Vector3 lastVelocity;
-        private bool isFirstFrame;
+        private bool isFirstFrame = false;
         private Queue<float> averageAccelerationQueue = new Queue<float>();
+        private Queue<Vector3> averageVelocityQueue = new Queue<Vector3>();
         private int queueSize = 60;
 
         void Awake()
         {
             isFirstFrame = false;
             velocityUnit = VelocityUnit.kmh;
-        }
-
-        void Start()
-        {
-
         }
 
         void FixedUpdate()
@@ -66,6 +62,7 @@ namespace BesiegeCustomScene
                 if (isFirstFrame)
                 {
                     isFirstFrame = false;
+                    InitPropertise();
                 }
             }
         }
@@ -84,20 +81,21 @@ namespace BesiegeCustomScene
             switch (velocityUnit)
             {
                 case VelocityUnit.kmh: { velocityUnit = VelocityUnit.ms; } break;
-                case VelocityUnit.ms: { velocityUnit = VelocityUnit.mach; } break;
-                case VelocityUnit.mach: { velocityUnit = VelocityUnit.kmh; } break;
+                case VelocityUnit.ms: { velocityUnit = VelocityUnit.Mach; } break;
+                case VelocityUnit.Mach: { velocityUnit = VelocityUnit.kmh; } break;
             }
 
             Velocity = Vector3.zero;
 
-            BesiegeConsoleController.ShowMessage(velocityUnit.ToString());
+            ConsoleController.ShowMessage(velocityUnit.ToString());
         }
 
         void FuncPosition()
         {
             if (validBlock)
             {
-                Position = targetBlock.GetComponent<Rigidbody>().position;
+                //Position = targetBlock.GetComponent<Rigidbody>().position;
+                Position = targetBlock.transform.position;
             }
             else
             {
@@ -109,8 +107,24 @@ namespace BesiegeCustomScene
         {
             if (validBlock)
             {
-                Vector3 v1 = targetBlock.GetComponent<Rigidbody>().velocity;
+                //Vector3 v1 = targetBlock.GetComponent<Rigidbody>().velocity;
+                Vector3 v1 = (Position - lastPosition) / Time.deltaTime;
+                if (StatMaster.isClient)
+                {
+                    if (averageVelocityQueue.Count == queueSize)
+                    {
+                        averageVelocityQueue.Dequeue();
+                    }
+                    averageVelocityQueue.Enqueue(v1);
 
+                    Vector3 sumVelocity = Vector3.zero;
+                    foreach (var velocity in averageVelocityQueue)
+                    {
+                        sumVelocity += velocity;
+                    }
+                    v1 = sumVelocity / averageVelocityQueue.Count;
+                }
+                
                 Velocity = GetVelocity(v1, velocityUnit);
             }
             else
@@ -125,7 +139,7 @@ namespace BesiegeCustomScene
             {
                 velocity = Vector3.Scale(velocity, Vector3.one * 3.6f);
             }
-            else if (velocityUnit == VelocityUnit.mach)
+            else if (velocityUnit == VelocityUnit.Mach)
             {
                 velocity = Vector3.Scale(velocity, Vector3.one / 340f);
             }
@@ -158,7 +172,7 @@ namespace BesiegeCustomScene
                 {
                     acceleration = acceleration / 3.6f;
                 }
-                else if (velocityUnit == VelocityUnit.mach)
+                else if (velocityUnit == VelocityUnit.Mach)
                 {
                     acceleration = acceleration * 340f;
                 }
