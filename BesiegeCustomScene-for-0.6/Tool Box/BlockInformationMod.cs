@@ -38,14 +38,20 @@ namespace BesiegeCustomScene
             velocityUnit = VelocityUnit.kmh;
         }
 
+        void Start()
+        {
+
+        }
+
         void FixedUpdate()
         {
-            if (StatMaster.levelSimulating && !StatMaster.isClient)
+            if (Machine.Active().isSimulating)
             {
                 if (!isFirstFrame)
                 {
                     isFirstFrame = true;
 
+                    InitPropertise();
                     LoadBlock();
                     averageAccelerationQueue.Clear();
                 }
@@ -60,9 +66,6 @@ namespace BesiegeCustomScene
                 if (isFirstFrame)
                 {
                     isFirstFrame = false;
-
-                    validBlock = false;
-                    InitPropertise();
                 }
             }
         }
@@ -199,7 +202,23 @@ namespace BesiegeCustomScene
         {
             try
             {
-                targetBlock = Machine.Active().FirstBlock.gameObject;
+                if (StatMaster.isMP && StatMaster.isClient)
+                {
+                    foreach (var player in Playerlist.Players)
+                    {
+                        if (!player.isSpectator)
+                        {
+                            if (player.machine.PlayerID == Machine.Active().PlayerID)
+                            {
+                                targetBlock = player.machine.FirstBlock.gameObject;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    targetBlock = Machine.Active().FirstBlock.gameObject;
+                }
             }
             catch { }
 
