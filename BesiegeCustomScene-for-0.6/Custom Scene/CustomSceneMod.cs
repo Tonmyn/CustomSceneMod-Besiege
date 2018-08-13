@@ -125,7 +125,7 @@ namespace BesiegeCustomScene
             }
             yield return null;
 
-            loadScenePack(scenePack);
+            LoadScenePack(scenePack);
 
         }
 
@@ -138,13 +138,13 @@ namespace BesiegeCustomScene
 
             yield return null;
 
-            loadScenePack(scenePack);
+            LoadScenePack(scenePack);
 
         }
 
-        void loadScenePack(SceneFolder scenePack)
+        void LoadScenePack(SceneFolder scenePack)
         {
-            hideFloorBig();
+            HideFloorBigy();
 
             ReadSceneEvent(scenePack);
 
@@ -207,11 +207,11 @@ namespace BesiegeCustomScene
                 return;
             }
 
-            hideFloorBig();
+            HideFloorBigy();
 
         }
 
-        private void hideFloorBig()
+        private void HideFloorBigy()
         {
 
             GameObject floorBig = GameObject.Find("FloorBig");

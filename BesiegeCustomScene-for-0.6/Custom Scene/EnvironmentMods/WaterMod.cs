@@ -134,7 +134,7 @@ namespace BesiegeCustomScene
 
                     for (int i = 0; i < WaterSize; i++)
                     {
-                        waterObjects.Add(createWaterObject(waterPropertise[i]));
+                        waterObjects.Add(CreateWaterObject(waterPropertise[i]));
                     }
 
 #if DEBUG
@@ -178,7 +178,7 @@ namespace BesiegeCustomScene
             WaterSize = 0;
         }
 
-        GameObject createWaterObject(WaterPropertise waterPropertise)
+        GameObject CreateWaterObject(WaterPropertise waterPropertise)
         {
             GameObject go = Instantiate(BesiegeCustomSceneMod.Mod.GetComponent<Prop>().TileTemp);
             go.name = "Water Object";

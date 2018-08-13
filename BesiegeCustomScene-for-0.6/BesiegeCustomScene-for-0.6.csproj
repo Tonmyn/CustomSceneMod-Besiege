@@ -86,8 +86,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resource\CHN.txt" />
-    <Content Include="Resource\EN.txt" />
     <Content Include="Resource\Mod.xml" />
     <Content Include="Resource\Settings.txt" />
   </ItemGroup>

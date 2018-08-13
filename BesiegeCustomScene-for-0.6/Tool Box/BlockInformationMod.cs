@@ -13,7 +13,7 @@ namespace BesiegeCustomScene
         {
             kmh = 0,
             ms = 1,
-            mach = 2,
+            Mach = 2,
         };
 
         public VelocityUnit velocityUnit;
@@ -28,8 +28,9 @@ namespace BesiegeCustomScene
 
         private Vector3 lastPosition;
         private Vector3 lastVelocity;
-        private bool isFirstFrame;
+        private bool isFirstFrame = false;
         private Queue<float> averageAccelerationQueue = new Queue<float>();
+        private Queue<Vector3> averageVelocityQueue = new Queue<Vector3>();
         private int queueSize = 60;
 
         void Awake()
@@ -40,12 +41,13 @@ namespace BesiegeCustomScene
 
         void FixedUpdate()
         {
-            if (StatMaster.levelSimulating && !StatMaster.isClient)
+            if (Machine.Active().isSimulating)
             {
                 if (!isFirstFrame)
                 {
                     isFirstFrame = true;
 
+                    InitPropertise();
                     LoadBlock();
                     averageAccelerationQueue.Clear();
                 }
@@ -60,8 +62,6 @@ namespace BesiegeCustomScene
                 if (isFirstFrame)
                 {
                     isFirstFrame = false;
-
-                    validBlock = false;
                     InitPropertise();
                 }
             }
@@ -81,20 +81,21 @@ namespace BesiegeCustomScene
             switch (velocityUnit)
             {
                 case VelocityUnit.kmh: { velocityUnit = VelocityUnit.ms; } break;
-                case VelocityUnit.ms: { velocityUnit = VelocityUnit.mach; } break;
-                case VelocityUnit.mach: { velocityUnit = VelocityUnit.kmh; } break;
+                case VelocityUnit.ms: { velocityUnit = VelocityUnit.Mach; } break;
+                case VelocityUnit.Mach: { velocityUnit = VelocityUnit.kmh; } break;
             }
 
             Velocity = Vector3.zero;
 
-            BesiegeConsoleController.ShowMessage(velocityUnit.ToString());
+            ConsoleController.ShowMessage(velocityUnit.ToString());
         }
 
         void FuncPosition()
         {
             if (validBlock)
             {
-                Position = targetBlock.GetComponent<Rigidbody>().position;
+                //Position = targetBlock.GetComponent<Rigidbody>().position;
+                Position = targetBlock.transform.position;
             }
             else
             {
@@ -106,8 +107,24 @@ namespace BesiegeCustomScene
         {
             if (validBlock)
             {
-                Vector3 v1 = targetBlock.GetComponent<Rigidbody>().velocity;
+                //Vector3 v1 = targetBlock.GetComponent<Rigidbody>().velocity;
+                Vector3 v1 = (Position - lastPosition) / Time.deltaTime;
+                if (StatMaster.isClient)
+                {
+                    if (averageVelocityQueue.Count == queueSize)
+                    {
+                        averageVelocityQueue.Dequeue();
+                    }
+                    averageVelocityQueue.Enqueue(v1);
 
+                    Vector3 sumVelocity = Vector3.zero;
+                    foreach (var velocity in averageVelocityQueue)
+                    {
+                        sumVelocity += velocity;
+                    }
+                    v1 = sumVelocity / averageVelocityQueue.Count;
+                }
+                
                 Velocity = GetVelocity(v1, velocityUnit);
             }
             else
@@ -122,7 +139,7 @@ namespace BesiegeCustomScene
             {
                 velocity = Vector3.Scale(velocity, Vector3.one * 3.6f);
             }
-            else if (velocityUnit == VelocityUnit.mach)
+            else if (velocityUnit == VelocityUnit.Mach)
             {
                 velocity = Vector3.Scale(velocity, Vector3.one / 340f);
             }
@@ -155,7 +172,7 @@ namespace BesiegeCustomScene
                 {
                     acceleration = acceleration / 3.6f;
                 }
-                else if (velocityUnit == VelocityUnit.mach)
+                else if (velocityUnit == VelocityUnit.Mach)
                 {
                     acceleration = acceleration * 340f;
                 }
@@ -199,7 +216,23 @@ namespace BesiegeCustomScene
         {
             try
             {
-                targetBlock = Machine.Active().FirstBlock.gameObject;
+                if (StatMaster.isMP && StatMaster.isClient)
+                {
+                    foreach (var player in Playerlist.Players)
+                    {
+                        if (!player.isSpectator)
+                        {
+                            if (player.machine.PlayerID == Machine.Active().PlayerID)
+                            {
+                                targetBlock = player.machine.FirstBlock.gameObject;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    targetBlock = Machine.Active().FirstBlock.gameObject;
+                }
             }
             catch { }
 

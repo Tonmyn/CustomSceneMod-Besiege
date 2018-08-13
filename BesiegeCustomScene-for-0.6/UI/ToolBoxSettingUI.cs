@@ -5,60 +5,22 @@ namespace BesiegeCustomScene.UI
 {
     class ToolBoxSettingUI : MonoBehaviour
     {
-       
-
-        struct ToolBoxUI_Language
-        {
-            public string _ToolBoxWindowUI;
-            public string _PositionUI;
-            public string _VelocityUI;
-            public string _DistanceUI;
-            public string _AccelerationUI;
-            public string _OverloadUI;
-            public string _TimeUI;
-            public string _TimerUI;
-            public string _TriggerUI;
-
-            public static ToolBoxUI_Language DefaultLanguage { get; } = new ToolBoxUI_Language
-            {
-                _ToolBoxWindowUI = "Tool Box",
-                _PositionUI = "Position",
-                _VelocityUI = "Velocity",
-                _DistanceUI = "Distance",
-                _AccelerationUI = "Acceleration",
-                _OverloadUI = "Overload",
-                _TimeUI = "Time",
-                _TimerUI = "Timer",
-                _TriggerUI = "Trigger"
-            };
-        }
-
         bool ShowGUI;
         readonly KeyCode DisplayToolBoxKey = KeyCode.F8;
         readonly int windowID = GeoTools.GetWindowID();
 
         Rect windowRect = new Rect(15f, 100f, 180f, 200f);
 
-        ToolBoxUI_Language toolBoxUI_Language;
-
-        //List<GameObject> Mods;
-
         event Click VelocityButtonClickEvent;
         event Click RetimeButtonClickEvent;
         event Click TimerButtonClickEvent;
 
-        //int triggerIndex;
-        //int triggerSize;
-
         TimerMod timerMod;
-        //TriggerMod triggerMod;
         BlockInformationMod blockInformationMod;
 
         void Start()
         {
             ShowGUI = true;
-
-            InitLanguage();
             InitEvent();
 
             GameObject go = new GameObject("Timer Mod");
@@ -71,43 +33,24 @@ namespace BesiegeCustomScene.UI
 
         }
 
-        void InitLanguage()
-        {
-            LanguageFile currentLanuage = BesiegeCustomSceneMod.Mod.GetComponent<LanguageManager>().Get_CurretLanguageFile();
-
-            toolBoxUI_Language = ToolBoxUI_Language.DefaultLanguage;
-            if (currentLanuage != null)
-            {
-                Dictionary<int, string> translation = currentLanuage.dic_Translation;
-                toolBoxUI_Language._ToolBoxWindowUI = translation[200];
-                toolBoxUI_Language._PositionUI = translation[204];
-                toolBoxUI_Language._VelocityUI = translation[205];
-                toolBoxUI_Language._AccelerationUI = translation[201];
-                toolBoxUI_Language._OverloadUI = translation[202];
-                toolBoxUI_Language._DistanceUI = translation[206];
-                toolBoxUI_Language._TimeUI = translation[203];
-                toolBoxUI_Language._TimerUI = translation[207];
-                toolBoxUI_Language._TriggerUI = translation[208];
-            }
-        }
         void InitEvent()
         {
             VelocityButtonClickEvent += () => 
             {
 #if DEBUG
-                BesiegeConsoleController.ShowMessage("velocity button click event ");
+                ConsoleController.ShowMessage("velocity button click event ");
 #endif
             };
             RetimeButtonClickEvent += () => 
             {
 #if DEBUG
-                BesiegeConsoleController.ShowMessage("retime button click event ");
+                ConsoleController.ShowMessage("retime button click event ");
 #endif
             };
             TimerButtonClickEvent += () =>
             {
 #if DEBUG
-                BesiegeConsoleController.ShowMessage("timer button click event ");
+                ConsoleController.ShowMessage("timer button click event ");
 #endif
             };
         }
@@ -122,9 +65,9 @@ namespace BesiegeCustomScene.UI
 
         void OnGUI()
         {
-            if (ShowGUI && GeoTools.isBuilding())
+            if (ShowGUI && GeoTools.IsBuilding())
             {
-                windowRect = GUI.Window(windowID, windowRect, new GUI.WindowFunction(TimerWindow),toolBoxUI_Language._ToolBoxWindowUI);
+                windowRect = GUI.Window(windowID, windowRect, new GUI.WindowFunction(TimerWindow), LanguageManager.BlockInformationTitle);
             }
         }
 
@@ -136,15 +79,14 @@ namespace BesiegeCustomScene.UI
             {
                 GUILayout.BeginHorizontal(new GUILayoutOption[0]);
                 {
-                    GUILayout.Label(toolBoxUI_Language._PositionUI);
+                    GUILayout.Label(LanguageManager.PositionLabel);
                     GUILayout.Label(blockInformationMod.Position.ToString());
                 }
                 GUILayout.EndHorizontal();
 
                 GUILayout.BeginHorizontal(new GUILayoutOption[0]);
                 {
-                    //GUILayout.Label(string.Format("{0} {1}" ,toolBoxUI_Language._VelocityUI,blockInformationMod.velocityUnit));
-                    if (GUILayout.Button(toolBoxUI_Language._VelocityUI))
+                    if (GUILayout.Button(LanguageManager.VelocityLabel))
                     {
                         blockInformationMod.ChangedVelocityUnit();
                         VelocityButtonClickEvent();
@@ -156,14 +98,14 @@ namespace BesiegeCustomScene.UI
 
                 GUILayout.BeginHorizontal(new GUILayoutOption[0]);
                 {
-                    GUILayout.Label(toolBoxUI_Language._AccelerationUI);
+                    GUILayout.Label(LanguageManager.AccelerationLabel);
                     GUILayout.Label(blockInformationMod.Acceleration.ToString("#0.00"));
                 }
                 GUILayout.EndHorizontal();
 
                 GUILayout.BeginHorizontal(new GUILayoutOption[0]);
                 {
-                    GUILayout.Label(toolBoxUI_Language._DistanceUI);
+                    GUILayout.Label(LanguageManager.DistanceLabel);
                     GUILayout.Label(string.Format("{0:N2}", blockInformationMod.Distance / 1000f));
                 }
                 GUILayout.EndHorizontal();
@@ -171,14 +113,14 @@ namespace BesiegeCustomScene.UI
 
                 GUILayout.BeginHorizontal(new GUILayoutOption[0]);
                 {
-                    GUILayout.Label(toolBoxUI_Language._OverloadUI);
+                    GUILayout.Label(LanguageManager.GForceLabel);
                     GUILayout.Label(string.Format("{0}(g)", blockInformationMod.Overload.ToString("#0.00")));
                 }
                 GUILayout.EndHorizontal();
 
                 GUILayout.BeginHorizontal(new GUILayoutOption[0]);
                 {
-                    GUILayout.Label(toolBoxUI_Language._TimeUI);
+                    GUILayout.Label(LanguageManager.TimeLabel);
                     GUILayout.Label(timerMod.CurrentSystemTime);
                 }
                 GUILayout.EndHorizontal();
@@ -186,7 +128,7 @@ namespace BesiegeCustomScene.UI
 
                 GUILayout.BeginHorizontal(new GUILayoutOption[0]);
                 {
-                    if (GUILayout.Button(toolBoxUI_Language._TimerUI))
+                    if (GUILayout.Button(LanguageManager.TimerLabel))
                     {
                         //timerSwitch = false; Timer = "00:00:00";
                         timerMod.Retime();
@@ -205,7 +147,7 @@ namespace BesiegeCustomScene.UI
 
                 //GUILayout.BeginHorizontal(new GUILayoutOption[0]);
                 //{
-                //    GUILayout.Label(toolBoxUI_Language._TriggerUI);
+                //GUILayout.Label(LanguageManager.Trigger);
                 //    if (GUILayout.Button(string.Format("{0}/{1}", (triggerMod.Index + 1).ToString(), triggerMod.Size)))
                 //    {
                 //        //triggerIndex = -1;

@@ -11,7 +11,7 @@ namespace BesiegeCustomScene
 
         GameObject miniMapCamera;
 
-        public RenderTexture cameraRenderTexture;
+        public RenderTexture cameraRenderTexture = new RenderTexture(Screen.width, Screen.height, 16);
 
         GameObject mainCamera;
 
@@ -25,24 +25,41 @@ namespace BesiegeCustomScene
             mainCamera = GameObject.Find("Main Camera");
             distance = 100;
 
-            initCamera();
+            InitCamera();
         }
 
-        void initCamera()
+        void InitCamera()
         {
             miniMapCamera = new GameObject("Mini Map Camera");
             miniMapCamera.transform.SetParent(transform);
             camera = miniMapCamera.AddComponent<Camera>();
-           
-
+            camera.gameObject.AddComponent<CameraShadowControl>();
+            camera.transform.rotation = Quaternion.LookRotation(Vector3.down);
+            camera.fieldOfView = 43;
         }
 
 
         void Update()
         {
             miniMapCamera.transform.position = mainCamera.transform.position + Vector3.up * distance;
-            cameraRenderTexture = camera.targetTexture;
+            camera.targetTexture = cameraRenderTexture;
+        }
+    }
 
+    class CameraShadowControl : MonoBehaviour
+    {
+        float storedShadowDistance;
+
+        void OnPreRender()
+        {
+            storedShadowDistance = QualitySettings.shadowDistance;
+            QualitySettings.shadowDistance = 0;
+        }
+
+
+        void OnPostRender()
+        {
+            QualitySettings.shadowDistance = storedShadowDistance;
         }
     }
 }
