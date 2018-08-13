@@ -16,11 +16,9 @@ namespace BesiegeCustomScene
             EN = 1, 
         }
 
-      
-
         List<LanguageFile> languageFiles;
 
-        Dictionary<string, LanguageFile> dic_LanguageFile;
+        Dictionary<string, LanguageFile> dicLanguageFile;
 
         LanguageFile currentLanguageFile = null;
 
@@ -33,7 +31,7 @@ namespace BesiegeCustomScene
 
             languageFiles = new List<LanguageFile>();
 
-            dic_LanguageFile = new Dictionary<string, LanguageFile>();
+            dicLanguageFile = new Dictionary<string, LanguageFile>();
 
             try
             {
@@ -44,7 +42,7 @@ namespace BesiegeCustomScene
 
                     LanguageFile languageFile = new LanguageFile(languageFilePath + languageName + ".txt");
                     languageFiles.Add(languageFile);
-                    dic_LanguageFile[languageName] = languageFile;
+                    dicLanguageFile[languageName] = languageFile;
                     //BesiegeConsoleController.ShowMessage("")
                 }
             }
@@ -58,7 +56,7 @@ namespace BesiegeCustomScene
             try
 
             {
-                Set_Language(currentLanguage);
+                SetLanguage(currentLanguage);
             }
             catch (Exception e)
             {
@@ -139,17 +137,17 @@ namespace BesiegeCustomScene
         //    }
         //}
 
-        public Language Get_CurretLanguage()
+        public Language GetCurretLanguage()
         {
             return currentLanguage;
         }
 
-        public void Set_Language(Language language)
+        public void SetLanguage(Language language)
         {
-            currentLanguageFile = dic_LanguageFile[language.ToString()];
+            currentLanguageFile = dicLanguageFile[language.ToString()];
         }
 
-        public LanguageFile Get_CurretLanguageFile()
+        public LanguageFile GetCurretLanguageFile()
         {
             return currentLanguageFile;
         }
