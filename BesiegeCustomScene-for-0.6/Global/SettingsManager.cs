@@ -8,6 +8,7 @@ using UnityEngine;
 
 namespace BesiegeCustomScene
 {
+    [Obsolete]
     public class SettingsManager :MonoBehaviour
     {
 

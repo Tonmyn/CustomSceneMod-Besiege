@@ -30,15 +30,13 @@ namespace BesiegeCustomScene
 
         public event ReadSceneHandler ReadSceneEvent;
         public event LoadSceneHandler LoadSceneEvent;
-        public event ClearSceneHandler ClearSceneEvent;
-
-        List<string> sceneNames;
+        public event ClearSceneHandler ClearSceneEvent;      
 
         //public List<GameObject> EnvironmentObjects;
 
         void Awake()
         {
-            sceneNames = BesiegeCustomSceneMod.Mod.GetComponent<SettingsManager>().settingFile.settings.sceneNames;
+            //sceneNames = BesiegeCustomSceneMod.Mod.GetComponent<SettingsManager>().settingFile.settings.sceneNames;
 
             ScenePacksPath = GeoTools.ScenePackPath;
 
@@ -83,9 +81,11 @@ namespace BesiegeCustomScene
                 return SPs;
             }
 
-            foreach (var sceneName in sceneNames)
+            List<string> scenePaths = ModIO.GetDirectories(scenesPackPath).ToList();
+
+            foreach (var scenePath in scenePaths)
             {
-                SPs.Add(new SceneFolder(sceneName));
+                SPs.Add(new SceneFolder(scenePath));
             }
 
             SPs = SPs.Distinct(new Compare()).ToList();

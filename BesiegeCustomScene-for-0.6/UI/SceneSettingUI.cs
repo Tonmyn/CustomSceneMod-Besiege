@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Modding;
 
 namespace BesiegeCustomScene.UI
 {
@@ -11,19 +12,20 @@ namespace BesiegeCustomScene.UI
 
         public bool ShowGUI = true;
 
-        public KeyCode DisplaySceneSettingKey = KeyCode.F9;
+        //public KeyCode DisplaySceneSettingKey = KeyCode.F9;
 
-        public delegate void SceneButtonClickHandler(int index);
-        /// <summary>地形按钮点击事件  按键序号</summary>
-        public event SceneButtonClickHandler OnSceneButtonClick;
+        public ModKey DisplaySceneSettingKey = ModKeys.GetKey("Scene SettingUI-key");
+
+        /// <summary>地形按钮点击事件  按键序号</summary> 
+        public Action<int> OnSceneButtonClick;
         /// <summary>去雾按钮点击事件</summary>
-        public event VoidDel OnFogButtonClick;
+        public Action OnFogButtonClick;
         /// <summary>去地面按钮点击事件</summary>
-        public event VoidDel OnFloorButtonClick;
+        public Action OnFloorButtonClick;
         /// <summary>去空气墙按钮点击事件</summary>
-        public event VoidDel OnWorldBoundsButtonClick;
+        public Action OnWorldBoundsButtonClick;
         /// <summary>重新加载地形按钮点击事件</summary>
-        public event VoidDel OnReloadScenesButtonClick;
+        public Action OnReloadScenesButtonClick;
 
         readonly int windowID = GeoTools.GetWindowID();
 
@@ -56,8 +58,9 @@ namespace BesiegeCustomScene.UI
             OnFloorButtonClick += sceneMod.HideFloorBig;
 
             OnWorldBoundsButtonClick += sceneMod.HideWorldBoundaries;
-
-            GameObject go = new GameObject("Camera Mod");
+            
+            GameObject go; 
+            go = new GameObject("Camera Mod");
             go.AddComponent<CameraMod>().transform.SetParent(transform);
             go = new GameObject("Mesh Mod");
             go.AddComponent<MeshMod>().transform.SetParent(transform);
@@ -73,9 +76,15 @@ namespace BesiegeCustomScene.UI
 
         private void Update()
         {
-            if (Input.GetKeyDown(DisplaySceneSettingKey) && Input.GetKey(KeyCode.LeftControl))
+            if (DisplaySceneSettingKey.IsPressed && Input.GetKey(KeyCode.LeftControl))
             {
                 ShowGUI = !ShowGUI;
+
+                foreach (var v in ModIO.GetDirectories(GeoTools.ScenePackPath))
+                {
+                    Debug.Log(v);
+                }
+                
             }
         }
 
@@ -111,7 +120,6 @@ namespace BesiegeCustomScene.UI
                         {
                             if (GUILayout.Button(sceneMod.GetComponent<CustomSceneMod>().ScenePacks[i].Name, GUILayout.Width(230), GUILayout.Height(20)))
                             {
-                                //LoadScene(i);
                                 OnSceneButtonClick(i);
                             }
                         }
