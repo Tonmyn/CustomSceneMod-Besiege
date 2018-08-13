@@ -7,9 +7,9 @@
 
 	<!-- General information about the mod. -->
 	<Name>Besiege Custom Scene Mod</Name>
-	<Author>XultimateX, OrzPX</Author> <!-- FIX: Insert your name here. -->
+	<Author>zian, XultimateX, OrzPX</Author> <!-- FIX: Insert your name here. -->
 	<!-- Major.Minor.Build -->
-	<Version>0.0.1</Version>
+	<Version>1.10.10</Version>
 	
 	<Description>
     You can create custom scene and use it <!-- FIX: Insert a short description here. -->
@@ -18,8 +18,9 @@
 	<!-- Square icon of the mod. Texture defined in the Resources section.
 		 This is displayed in the mod list and used as thumbnail when uploaded to the Steam workshop. -->
 	<!-- <Icon name="icon" /> -->
-	
-	<!-- Enables reloading of various values at runtime. This is normally triggered automatically when a file is changed,
+  <Icon name="Mod Icon" />
+
+  <!-- Enables reloading of various values at runtime. This is normally triggered automatically when a file is changed,
 		 you can also trigger it by pressing Ctrl+H.
 		 Reloadable values include:
 			- Colliders
@@ -76,7 +77,16 @@
 		<Assembly path="BesiegeCustomSceneMod.dll" />
 	</Assemblies>
 
+  <Keys>
+    <Key name="Scene SettingUI-key" defaultModifier="F9" defaultTrigger="L"/>
+    <Key name="Tool Box SettingUI-key" defaultModifier="F8" defaultTrigger="L"/>
+  </Keys>
 
+  <Resources>
+    <!-- <Mesh name="some-mesh-name" path="some_mesh_file.obj" /> -->
+    <!-- <Texture name="some-texture-name" path="some_texture_file.png" /> -->
+    <Texture name="Mod Icon" path="icon.png" />
+  </Resources>
 
 <!-- This value is automatically generated. Do not change it or you may break machine&level save files. -->
 <ID>2c12a0fb-c022-4717-a9e8-f8b2bd9de433</ID>

@@ -14,7 +14,7 @@ namespace BesiegeCustomScene
         {
             string DisplayName = "Besiege Custom Scene";
 
-            string Version = "1.10.9";
+            string Version = "1.10.10";
 
             //添加MOD更新推送功能
             //new GameObject("Mod更新组件").AddComponent<Updater>().SetUrl("XultimateX", Name);
@@ -24,7 +24,7 @@ namespace BesiegeCustomScene
                 name = string.Format("{0} {1}", DisplayName, Version)
             };
 
-            Mod.AddComponent<SettingsManager>();
+            //Mod.AddComponent<SettingsManager>();
             Mod.AddComponent<Prop>();
 
             GameObject customScene = new GameObject("CustomScene");
@@ -40,6 +40,7 @@ namespace BesiegeCustomScene
             //miniMap.transform.SetParent(Mod.transform);
 
             Object.DontDestroyOnLoad(Mod);
+
         }
     }
 

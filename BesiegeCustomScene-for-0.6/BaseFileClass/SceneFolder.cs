@@ -83,11 +83,12 @@ namespace BesiegeCustomScene
 
         //}
 
-        public SceneFolder(string  sceneName)
+        public SceneFolder(string  scenePath)
         {
 
-            Name = sceneName;
-            Path = string.Format("{0}/{1}", GeoTools.ScenePackPath, sceneName);
+            Name = scenePath.Substring(scenePath.LastIndexOf(@"\") + 1, scenePath.Length - scenePath.LastIndexOf(@"\") - 1);
+            Path = scenePath;
+            //Path = string.Format("{0}/{1}", GeoTools.ScenePackPath, sceneName);
             MeshsPath = Path + "/Meshs";
             TexturesPath = Path + "/Textures";
             SettingFilePath = string.Format("{0}/setting.txt", Path);
@@ -111,10 +112,6 @@ namespace BesiegeCustomScene
                 {
                     SettingFileDatas.Add(textReader.ReadLine());
                 }
-                //foreach (var v in SettingFileDatas)
-                //{
-                //    GeoTools.Log(v);
-                //}
 
             }
 

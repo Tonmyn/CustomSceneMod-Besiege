@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using Modding;
 
 namespace BesiegeCustomScene.UI
 {
     class ToolBoxSettingUI : MonoBehaviour
     {
         bool ShowGUI;
-        readonly KeyCode DisplayToolBoxKey = KeyCode.F8;
+        //readonly KeyCode DisplayToolBoxKey = KeyCode.F8;
+        ModKey DisplayToolBoxKey = ModKeys.GetKey("Tool Box SettingUI-key");
         readonly int windowID = GeoTools.GetWindowID();
 
         Rect windowRect = new Rect(15f, 100f, 180f, 200f);
@@ -57,7 +59,7 @@ namespace BesiegeCustomScene.UI
 
         private void Update()
         {
-            if (Input.GetKeyDown(DisplayToolBoxKey) && Input.GetKey(KeyCode.LeftControl))
+            if (DisplayToolBoxKey.IsPressed && Input.GetKey(KeyCode.LeftControl))
             {
                 ShowGUI = !ShowGUI;
             }

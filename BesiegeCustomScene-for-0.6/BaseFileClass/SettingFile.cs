@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace BesiegeCustomScene
 {
-
+    [Obsolete]
     public class SettingFile
     {
         /// <summary>设置路径</summary>
