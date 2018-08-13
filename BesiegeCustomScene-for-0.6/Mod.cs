@@ -12,9 +12,6 @@ namespace BesiegeCustomScene
 
         public override void OnLoad()
         {
-
-    
-
             string DisplayName = "Besiege Custom Scene";
 
             string Version = "1.10.9";
@@ -28,25 +25,21 @@ namespace BesiegeCustomScene
             };
 
             Mod.AddComponent<SettingsManager>();
-            Mod.AddComponent<LanguageManager>();
             Mod.AddComponent<Prop>();
 
-            GameObject customScene = new GameObject("Custom Scene");
+            GameObject customScene = new GameObject("CustomScene");
             customScene.AddComponent<UI.SceneSettingUI>();
             customScene.transform.SetParent(Mod.transform);
 
-            GameObject toolbox = new GameObject("Tool Box");
+            GameObject toolbox = new GameObject("ToolBox");
             toolbox.AddComponent<UI.ToolBoxSettingUI>();
             toolbox.transform.SetParent(Mod.transform);
 
-            GameObject miniMap = new GameObject("Mini Map");
-            miniMap.AddComponent<UI.MiniMapSettingUI>();
-            miniMap.transform.SetParent(Mod.transform);
+            //GameObject miniMap = new GameObject("Mini Map");
+            //miniMap.AddComponent<UI.MiniMapSettingUI>();
+            //miniMap.transform.SetParent(Mod.transform);
 
-
-            UnityEngine.Object.DontDestroyOnLoad(Mod);
-
-
+            Object.DontDestroyOnLoad(Mod);
         }
     }
 

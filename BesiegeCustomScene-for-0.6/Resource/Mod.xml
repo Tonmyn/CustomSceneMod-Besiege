@@ -7,12 +7,12 @@
 
 	<!-- General information about the mod. -->
 	<Name>Besiege Custom Scene Mod</Name>
-	<Author>XultimateX</Author> <!-- FIX: Insert your name here. -->
+	<Author>XultimateX, OrzPX</Author> <!-- FIX: Insert your name here. -->
 	<!-- Major.Minor.Build -->
 	<Version>0.0.1</Version>
 	
 	<Description>
-    You can create custom scene use it <!-- FIX: Insert a short description here. -->
+    You can create custom scene and use it <!-- FIX: Insert a short description here. -->
 	</Description>
 	
 	<!-- Square icon of the mod. Texture defined in the Resources section.
