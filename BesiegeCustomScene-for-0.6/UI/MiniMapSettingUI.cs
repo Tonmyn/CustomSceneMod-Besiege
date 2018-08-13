@@ -13,11 +13,11 @@ namespace BesiegeCustomScene.UI
 
         Rect windowRect;
 
-        private int windowID = GeoTools.GetWindowID();
+        private readonly int windowID = GeoTools.GetWindowID();
 
         private float width;
-        private float boarderWidth = 3;
-        private float textureWidth = 300;
+        private readonly float boarderWidth = 3;
+        private readonly float textureWidth = 300;
 
         void Start()
         {
@@ -31,7 +31,7 @@ namespace BesiegeCustomScene.UI
 
         void OnGUI()
         {
-            windowRect = GUI.Window(windowID, windowRect, new GUI.WindowFunction(MiniMapWindow), "小地图");
+            windowRect = GUI.Window(windowID, windowRect, new GUI.WindowFunction(MiniMapWindow), LanguageManager.MiniMapTitle);
         }
 
         void MiniMapWindow(int WindowID)

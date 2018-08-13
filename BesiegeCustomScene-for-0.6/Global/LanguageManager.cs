@@ -10,149 +10,39 @@ namespace BesiegeCustomScene
     public class LanguageManager : MonoBehaviour
     {
 
-        public enum Language
-        {
-            CHN = 0,
-            EN = 1, 
-        }
+        public static readonly bool isChinese = (Application.systemLanguage == SystemLanguage.Chinese);
 
-        List<LanguageFile> languageFiles;
+        //Mini Map
+        public static String MiniMapTitle = isChinese ? "小地图" : "Mini Map";
 
-        Dictionary<string, LanguageFile> dicLanguageFile;
+        //Block Information
+        public static String BlockInformationTitle = isChinese ? "速度计" : "Speedometer";
 
-        LanguageFile currentLanguageFile = null;
+        public static String AccelerationLabel = isChinese ? "加速度" : "Acceleration";
 
-        Language currentLanguage;
+        public static String VelocityLabel = isChinese ? "速度" : "Velocity";
 
-        static string languageFilePath = GeoTools.UIPath;
+        public static String PositionLabel = isChinese ? "位置" : "Position";
 
-        void Awake()
-        {
+        public static String DistanceLabel = isChinese ? "里程" : "Distance";
 
-            languageFiles = new List<LanguageFile>();
+        public static String GForceLabel = isChinese ? "过载" : "G-Force";
 
-            dicLanguageFile = new Dictionary<string, LanguageFile>();
+        public static String TimerLabel = isChinese ? "计时器" : "Timer";
 
-            try
-            {
-                for (int i = 0; i < Enum.GetNames(typeof(Language)).Length; i++)
-                {
-                    string languageName = Enum.GetNames(typeof(Language))[i];
-                    Language language = (Language)Enum.Parse(typeof(Language), languageName);
+        public static String TimeLabel = isChinese ? "时间" : "Time";
 
-                    LanguageFile languageFile = new LanguageFile(languageFilePath + languageName + ".txt");
-                    languageFiles.Add(languageFile);
-                    dicLanguageFile[languageName] = languageFile;
-                    //BesiegeConsoleController.ShowMessage("")
-                }
-            }
-            catch (Exception e)
-            {
-                ConsoleController.ShowMessage(e.Message);
-            }
+        public static String TriggerLabel = isChinese ? "触发器" : "Trigger";
 
-            currentLanguage = (Language)Enum.Parse(typeof(Language), GetComponent<SettingsManager>().settingFile.settings.language);
+        //Scene Setting
+        public static String SceneWindowTitle = isChinese ? "地形设置" : "Scene Setting";
 
-            try
+        public static String FogButtonLabel = isChinese ? "去掉迷雾" : "Remove Fog";
 
-            {
-                SetLanguage(currentLanguage);
-            }
-            catch (Exception e)
-            {
-                BesiegeConsoleController.ShowMessage(e.Message);
-            }
+        public static String WorldBoundsButtonLabel = isChinese ? "去空气墙" : "Remove Bounds";
 
+        public static String FloorGridButtonLabel = isChinese ? "去掉地板" : "Remove Floor";
 
-        }
-
-        //void Update()
-        //{
-        //    if (Input.GetKeyDown(KeyCode.F))
-        //    {
-        //        //for (int i = 0; i < languageFiles[0].dic_Translation.Count; i++)
-        //        //{
-        //        //    BesiegeConsoleController.ShowMessage(languageFiles[0].dic_Translation[i]);
-        //        //}
-        //        //    ConsoleController.ShowMessage("??");
-        //        //    BesiegeConsoleController.ShowMessage(languageFilePath + Enum.GetNames(typeof(Language))[0] + ".txt");
-
-        //        //try
-        //        //{
-        //        //    LanguageFile lf = new LanguageFile(languageFilePath + Enum.GetNames(typeof(Language))[0] + ".txt");
-
-        //        //    foreach (var v in lf.dic_Translation)
-        //        //    {
-        //        //        BesiegeConsoleController.ShowMessage(v.Key +"|"+ v.Value+"|");
-        //        //    }
-        //        //}
-        //        //catch (Exception e)
-        //        //{
-        //        //    BesiegeConsoleController.ShowMessage(e.Message);
-        //        //}
-        //        //foreach (var v in dic_LanguageFile[Language.CHN.ToString()].dic_Translation)
-        //        //{
-        //        //    BesiegeConsoleController.ShowMessage(v.Key + v.Value);
-        //        //}
-        //        //BesiegeConsoleController.ShowMessage(dic_LanguageFile[Language.CHN]);
-
-        //        //languageFiles = new List<LanguageFile>();
-
-        //        //dic_LanguageFile = new Dictionary<string, LanguageFile>();
-
-        //        //try
-        //        //{
-        //        //    for (int i = 0; i < Enum.GetNames(typeof(Language)).Length; i++)
-        //        //    {
-        //        //        string languageName = Enum.GetNames(typeof(Language))[i];
-        //        //        Language language = (Language)Enum.Parse(typeof(Language), languageName);
-
-        //        //        LanguageFile languageFile = new LanguageFile(languageFilePath + languageName + ".txt");
-        //        //        languageFiles.Add(languageFile);
-        //        //        dic_LanguageFile[languageName] = languageFile;
-        //        //        BesiegeConsoleController.ShowMessage("read lanuage " + languageName);
-        //        //    }
-        //        //}
-        //        //catch (Exception e)
-        //        //{
-        //        //    ConsoleController.ShowMessage(e.Message);
-        //        //}
-
-        //        foreach (var v in Get_CurretLanguageFile().dic_Translation)
-        //        {
-        //            BesiegeConsoleController.ShowMessage(v.Key + v.Value);
-        //        }
-        //    }
-        //    if (Input.GetKeyDown(KeyCode.G))
-        //    {
-        //        //foreach (var v in languageFiles[0].dic_Translation)
-        //        //{
-        //        //    BesiegeConsoleController.ShowMessage(v.Key + v.Value);
-        //        //}
-
-        //        foreach (var v in dic_LanguageFile[Language.EN.ToString()].dic_Translation)
-        //        {
-        //            BesiegeConsoleController.ShowMessage(v.Key + v.Value);
-        //        }
-        //    }
-        //}
-
-        public Language GetCurretLanguage()
-        {
-            return currentLanguage;
-        }
-
-        public void SetLanguage(Language language)
-        {
-            currentLanguageFile = dicLanguageFile[language.ToString()];
-        }
-
-        public LanguageFile GetCurretLanguageFile()
-        {
-            return currentLanguageFile;
-        }
-
+        public static String SceneListLabel = isChinese ? "地形列表" : "Scene List";
     }
-
-
 }
