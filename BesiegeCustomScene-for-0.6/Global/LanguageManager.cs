@@ -37,11 +37,11 @@ namespace BesiegeCustomScene
         //Scene Setting
         public static String SceneWindowTitle = isChinese ? "地形设置" : "Scene Setting";
 
-        public static String FogButtonLabel = isChinese ? "去掉迷雾" : "Remove Fog";
+        public static String FogButtonLabel = isChinese ? "去掉迷雾" : "No Fog";
 
-        public static String WorldBoundsButtonLabel = isChinese ? "去空气墙" : "Remove Bounds";
+        public static String WorldBoundsButtonLabel = isChinese ? "去空气墙" : "No Bounds";
 
-        public static String FloorGridButtonLabel = isChinese ? "去掉地板" : "Remove Floor";
+        public static String FloorGridButtonLabel = isChinese ? "去掉地板" : "No Floor";
 
         public static String SceneListLabel = isChinese ? "地形列表" : "Scene List";
     }
