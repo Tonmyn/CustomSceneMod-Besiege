@@ -10,7 +10,7 @@ namespace BesiegeCustomScene
     public class LanguageManager : MonoBehaviour
     {
 
-        public static readonly bool isChinese = !(Application.systemLanguage == SystemLanguage.Chinese);
+        public static readonly bool isChinese = (Application.systemLanguage == SystemLanguage.Chinese);
 
         //Mini Map
         public static String MiniMapTitle = isChinese ? "小地图" : "Mini Map";
