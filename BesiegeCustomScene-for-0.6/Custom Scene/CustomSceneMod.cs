@@ -92,9 +92,9 @@ namespace BesiegeCustomScene
             return SPs;
         }
 
-        public List<SceneFolder> ReloadScenePacks()
+        public void ReloadScenePacks()
         {
-            return ReadScenePacks(ScenePacksPath);
+            ReadScenePacks(ScenePacksPath);
         }
 
 
