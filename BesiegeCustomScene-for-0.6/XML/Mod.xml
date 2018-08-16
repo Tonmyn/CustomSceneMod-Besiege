@@ -78,8 +78,8 @@
 	</Assemblies>
 
   <Keys>
-    <Key name="Scene SettingUI-key" defaultModifier="F9" defaultTrigger="L"/>
-    <Key name="Tool Box SettingUI-key" defaultModifier="F8" defaultTrigger="L"/>
+    <Key name="Scene SettingUI-key" defaultModifier="LeftControl" defaultTrigger="F9"/>
+    <Key name="Tool Box SettingUI-key" defaultModifier="LeftControl" defaultTrigger="F8"/>
   </Keys>
 
   <Resources>

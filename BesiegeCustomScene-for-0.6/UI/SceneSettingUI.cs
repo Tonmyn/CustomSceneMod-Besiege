@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Modding;
+using System.Reflection;
 
 namespace BesiegeCustomScene.UI
 {
@@ -58,7 +59,9 @@ namespace BesiegeCustomScene.UI
             OnFloorButtonClick += sceneMod.HideFloorBig;
 
             OnWorldBoundsButtonClick += sceneMod.HideWorldBoundaries;
-            
+
+            OnReloadScenesButtonClick += sceneMod.ReloadScenePacks;
+
             GameObject go; 
             go = new GameObject("Camera Mod");
             go.AddComponent<CameraMod>().transform.SetParent(transform);
@@ -76,16 +79,11 @@ namespace BesiegeCustomScene.UI
 
         private void Update()
         {
-            if (DisplaySceneSettingKey.IsPressed && Input.GetKey(KeyCode.LeftControl))
+            if (DisplaySceneSettingKey.IsPressed /*&& Input.GetKey(KeyCode.LeftControl)*/)
             {
                 ShowGUI = !ShowGUI;
-
-                foreach (var v in ModIO.GetDirectories(GeoTools.ScenePackPath))
-                {
-                    Debug.Log(v);
-                }
-                
             }
+
         }
 
         private void OnGUI()
