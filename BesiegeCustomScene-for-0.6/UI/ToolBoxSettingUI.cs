@@ -59,17 +59,9 @@ namespace BesiegeCustomScene.UI
 
         private void Update()
         {
-            if (DisplayToolBoxKey.IsPressed /*&& Input.GetKey(KeyCode.LeftControl)*/)
+            if (DisplayToolBoxKey.IsPressed)
             {
                 ShowGUI = !ShowGUI;
-            }
-
-            if (Input.GetKeyDown(KeyCode.R))
-            {
-                foreach (var v in ModIO.GetDirectories("Scenes/",true))
-                {
-                    Debug.Log(v);
-                }
             }
         }
 

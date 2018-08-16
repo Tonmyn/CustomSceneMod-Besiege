@@ -107,7 +107,7 @@ namespace BesiegeCustomScene
             return color;
         }
 
-        public Texture2D ReadTexture2D(string[] str, int index)
+        public Texture2D ReadTexture2D(string[] str, int index,bool data)
         {
             Texture2D texture2D = Texture2D.whiteTexture;
 
@@ -121,7 +121,7 @@ namespace BesiegeCustomScene
             //创建文件长度的缓冲区
             //byte[] bytes = new byte[fileStream.Length];
 
-            byte[] bytes =ModIO.ReadAllBytes(str[index + 1]);
+            byte[] bytes =ModIO.ReadAllBytes(str[index + 1],data);
             //读取文件
             //fileStream.Read(bytes, 0, (int)fileStream.Length);
             //释放文件读取liu
@@ -137,6 +137,8 @@ namespace BesiegeCustomScene
             return texture2D;
 
         }
-    
+
+
+
     }
 }

@@ -1,5 +1,7 @@
 ﻿using Modding;
+using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace BesiegeCustomScene
 {
@@ -52,50 +54,19 @@ namespace BesiegeCustomScene
 
         public SceneType Type;
 
-        //public ScenePack(DirectoryInfo folderName)
-        //{
+        public SceneFolder(string scenePath,bool data = false)
+        {           
+            scenePath = scenePath.Replace(@"\", "/");
 
-        //    Name = folderName.Name;
-        //    Path = folderName.FullName;
-        //    MeshsPath = Path + "/Meshs";
-        //    TexturesPath = Path + "/Textures";
-        //    SettingFilePath = string.Format("{0}/setting.txt", Path);
-
-        //    if (!ModIO.ExistsFile(string.Format("{0}/setting.txt", Path)))
-        //    {
-        //        Type = SceneType.Empty;
-        //    }
-        //    else
-        //    {
-        //        Type = SceneType.Enabled;
-        //    }
-
-        //    SettingFileDatas = new List<string>();
-        //    if (Type == SceneType.Enabled)
-        //    {
-        //        var textReader = GeoTools.FileReader(SettingFilePath);
-
-        //        while (textReader.Peek() != -1)
-        //        {
-        //            SettingFileDatas.Add(textReader.ReadLine());
-        //        }
-        //    }
-
-        //}
-
-        public SceneFolder(string  scenePath)
-        {
-
-            Name = scenePath.Substring(scenePath.LastIndexOf(@"\") + 1, scenePath.Length - scenePath.LastIndexOf(@"\") - 1);
+            Name = scenePath.Substring(scenePath.LastIndexOf("/") + 1, scenePath.Length - scenePath.LastIndexOf("/") - 1);
             Path = scenePath;
-            //Path = string.Format("{0}/{1}", GeoTools.ScenePackPath, sceneName);
             MeshsPath = Path + "/Meshs";
             TexturesPath = Path + "/Textures";
             SettingFilePath = string.Format("{0}/setting.txt", Path);
 
 
-            if (ModIO.ExistsFile(string.Format("{0}/setting.txt", Path))&& ModIO.ExistsDirectory(Path))
-            {         
+            if (ModIO.ExistsFile(string.Format("{0}/setting.txt", Path),data) && ModIO.ExistsDirectory(Path,data))
+            {
                 Type = SceneType.Enabled;
             }
             else
@@ -106,7 +77,7 @@ namespace BesiegeCustomScene
             SettingFileDatas = new List<string>();
             if (Type == SceneType.Enabled)
             {
-                var textReader = GeoTools.FileReader(SettingFilePath);
+                var textReader = GeoTools.FileReader(SettingFilePath,data);
 
                 while (textReader.Peek() != -1)
                 {

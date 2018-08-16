@@ -27,11 +27,13 @@ namespace BesiegeCustomScene.UI
         public Action OnWorldBoundsButtonClick;
         /// <summary>重新加载地形按钮点击事件</summary>
         public Action OnReloadScenesButtonClick;
+        /// <summary>打开地图包文件夹按钮点击事件</summary>
+        public Action<string> OnOpenScenePacksDirectoryButtonClick;
 
         readonly int windowID = GeoTools.GetWindowID();
 
         Vector2 scrollVector = Vector2.zero;
-        Rect windowRect = new Rect(Screen.width * 0.05f, Screen.height * 0.5f, 280, 300f);
+        Rect windowRect = new Rect(Screen.width * 0.05f, Screen.height * 0.5f, 280, 300f+25f);
 
         /// <summary>地图按钮高度</summary>
         readonly int buttonHeight = 20;
@@ -62,6 +64,8 @@ namespace BesiegeCustomScene.UI
 
             OnReloadScenesButtonClick += sceneMod.ReloadScenePacks;
 
+            OnOpenScenePacksDirectoryButtonClick += openDirectory;
+
             GameObject go; 
             go = new GameObject("Camera Mod");
             go.AddComponent<CameraMod>().transform.SetParent(transform);
@@ -79,7 +83,7 @@ namespace BesiegeCustomScene.UI
 
         private void Update()
         {
-            if (DisplaySceneSettingKey.IsPressed /*&& Input.GetKey(KeyCode.LeftControl)*/)
+            if (DisplaySceneSettingKey.IsPressed)
             {
                 ShowGUI = !ShowGUI;
             }
@@ -105,12 +109,19 @@ namespace BesiegeCustomScene.UI
             }
             GUILayout.EndHorizontal();
 
+            GUILayout.BeginHorizontal();
+            {
+                if (GUI.Button(new Rect(10, 20+25, 120, 20), LanguageManager.ReloadButonLabel)) { OnReloadScenesButtonClick(); }
+                if (GUI.Button(new Rect(140, 20+25, 120, 20), LanguageManager.ScenesDirectoryButtonLabel)) { OnOpenScenePacksDirectoryButtonClick(GeoTools.ScenePackPath); }
+            }
+            GUILayout.EndHorizontal();
+
             GUILayout.BeginVertical();
             {
-                GUI.Label(new Rect(10, 50, 280, 20), LanguageManager.SceneListLabel);
-                GUI.Box(new Rect(10, 70, 260, 220), "");
+                GUI.Label(new Rect(10, 50+25, 280, 20), LanguageManager.SceneListLabel);
+                GUI.Box(new Rect(10, 70+25, 260, 220), "");
 
-                scrollVector = GUI.BeginScrollView(new Rect(15, 75, 250, 210), scrollVector, sceneButtonsRect);
+                scrollVector = GUI.BeginScrollView(new Rect(15, 75+25, 250, 210), scrollVector, sceneButtonsRect);
                 {
                     GUILayout.BeginArea(new Rect(0, 0, 250, sceneButtonsRect.height));
                     {
@@ -138,5 +149,10 @@ namespace BesiegeCustomScene.UI
             normal = { textColor = Color.red },
             alignment = TextAnchor.UpperLeft,
         };
+
+        void openDirectory(string path)
+        {
+
+        }
     }
 }

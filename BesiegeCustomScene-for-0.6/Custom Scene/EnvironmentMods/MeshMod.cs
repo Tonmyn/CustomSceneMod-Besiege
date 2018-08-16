@@ -83,7 +83,7 @@ namespace BesiegeCustomScene
                                     materialTemp = GameObject.CreatePrimitive(PrimitiveType.Plane);
                                     materialTemp.GetComponent<Renderer>().material.shader = Shader.Find("Standard");
                                     materialTemp.GetComponent<Renderer>().material.SetFloat("_Glossiness", 1);
-                                    materialTemp.GetComponent<Renderer>().material.mainTexture = GeoTools.LoadTexture(chara[2], scenePack);
+                                    materialTemp.GetComponent<Renderer>().material.mainTexture = GeoTools.LoadTexture(chara[2], scenePack, GeoTools.isDataMode);
                                     //DontDestroyOnLoad(materialTemp);
                                     materialTemp.SetActive(false);
                                     //meshes[i].GetComponent<MeshRenderer>().material = materialTemp.GetComponent<Renderer>().material;
@@ -110,7 +110,7 @@ namespace BesiegeCustomScene
                             {
                                 int index = 0;
                                 // Meshseries,start,end,largeobjcollider,Name,faceCount
-                                List<Mesh> _meshes = GeoTools.MeshFromLargeObj(chara[4], Convert.ToInt32(chara[5]), scenePack);
+                                List<Mesh> _meshes = GeoTools.MeshFromLargeObj(chara[4], Convert.ToInt32(chara[5]), scenePack, GeoTools.isDataMode);
                                 for (int i = start; i <= end; i++)
                                 {
                                     meshObjects[i].GetComponent<MeshFilter>().mesh = _meshes[index];
@@ -120,7 +120,7 @@ namespace BesiegeCustomScene
                             else if (chara[3] == "largeobjcollider")
                             {
                                 int index = 0;
-                                List<Mesh> _meshes = GeoTools.MeshFromLargeObj(chara[4], Convert.ToInt32(chara[5]), scenePack);
+                                List<Mesh> _meshes = GeoTools.MeshFromLargeObj(chara[4], Convert.ToInt32(chara[5]), scenePack, GeoTools.isDataMode);
                                 for (int i = start; i <= end; i++)
                                 {
                                     meshObjects[i].GetComponent<MeshCollider>().sharedMesh = _meshes[index];
@@ -139,7 +139,7 @@ namespace BesiegeCustomScene
                                 Vector2 texturescale = new Vector3(
                                     Convert.ToInt32(chara[9]),
                                     Convert.ToInt32(chara[10]));
-                                List<Mesh> _meshes = GeoTools.LoadHeightMap(_width, _height, scale, texturescale, chara[11], scenePack);
+                                List<Mesh> _meshes = GeoTools.LoadHeightMap(_width, _height, scale, texturescale, chara[11], scenePack, GeoTools.isDataMode);
                                 for (int i = start; i <= end; i++)
                                 {
                                     meshObjects[i].GetComponent<MeshFilter>().mesh = _meshes[index];
@@ -205,7 +205,7 @@ namespace BesiegeCustomScene
                             {
                                 for (int i = start; i <= end; i++)
                                 {
-                                    meshObjects[i].GetComponent<MeshRenderer>().material.mainTexture = GeoTools.LoadTexture(chara[4], scenePack);
+                                    meshObjects[i].GetComponent<MeshRenderer>().material.mainTexture = GeoTools.LoadTexture(chara[4], scenePack, GeoTools.isDataMode);
                                 }
                             }
                             else if (chara[3] == "materialcopy")
@@ -300,11 +300,11 @@ namespace BesiegeCustomScene
                             int i = Convert.ToInt32(chara[1]);
                             if (chara[2] == "mesh")
                             {
-                                meshObjects[i].GetComponent<MeshFilter>().mesh = GeoTools.MeshFromObj(chara[3], scenePack);
+                                meshObjects[i].GetComponent<MeshFilter>().mesh = GeoTools.MeshFromObj(chara[3], scenePack, GeoTools.isDataMode);
                             }
                             else if (chara[2] == "wmesh")
                             {
-                                meshObjects[i].GetComponent<MeshFilter>().mesh = GeoTools.WMeshFromObj(chara[3], scenePack);
+                                meshObjects[i].GetComponent<MeshFilter>().mesh = GeoTools.WMeshFromObj(chara[3], scenePack, GeoTools.isDataMode);
                             }
                             else if (chara[2] == "emesh")
                             {
@@ -415,7 +415,7 @@ namespace BesiegeCustomScene
                             }
                             else if (chara[2] == "texture")
                             {
-                                meshObjects[i].GetComponent<MeshRenderer>().material.mainTexture = GeoTools.LoadTexture(chara[3], scenePack);
+                                meshObjects[i].GetComponent<MeshRenderer>().material.mainTexture = GeoTools.LoadTexture(chara[3], scenePack, GeoTools.isDataMode);
                                 //meshes[i].GetComponent<MeshRenderer>().material.shader = Shader.Find("Standard"); 
                                 //meshes[i].GetComponent<MeshRenderer>().material.SetFloat("_Glossiness", 1);//1是smoothness最高
                             }
@@ -427,7 +427,7 @@ namespace BesiegeCustomScene
                             }
                             else if (chara[2] == "stexture")
                             {
-                                meshObjects[i].GetComponent<MeshRenderer>().sharedMaterial.mainTexture = GeoTools.LoadTexture(chara[3], scenePack);
+                                meshObjects[i].GetComponent<MeshRenderer>().sharedMaterial.mainTexture = GeoTools.LoadTexture(chara[3], scenePack, GeoTools.isDataMode);
                             }
                             else if (chara[2] == "materialcopy")
                             {
@@ -479,7 +479,7 @@ namespace BesiegeCustomScene
                             }
                             else if (chara[2] == "settexture")
                             {
-                                meshObjects[i].GetComponent<MeshRenderer>().material.SetTexture(chara[3], GeoTools.LoadTexture(chara[4], scenePack));
+                                meshObjects[i].GetComponent<MeshRenderer>().material.SetTexture(chara[3], GeoTools.LoadTexture(chara[4], scenePack, GeoTools.isDataMode));
                             }
                             else if (chara[2] == "setcolor")
                             {
@@ -503,11 +503,11 @@ namespace BesiegeCustomScene
                             }
                             else if (chara[2] == "meshcollider")
                             {
-                                meshObjects[i].GetComponent<MeshCollider>().sharedMesh = GeoTools.MeshFromObj(chara[3], scenePack);
+                                meshObjects[i].GetComponent<MeshCollider>().sharedMesh = GeoTools.MeshFromObj(chara[3], scenePack, GeoTools.isDataMode);
                             }
                             else if (chara[2] == "wmeshcollider")
                             {
-                                meshObjects[i].GetComponent<MeshCollider>().sharedMesh = GeoTools.WMeshFromObj(chara[3], scenePack);
+                                meshObjects[i].GetComponent<MeshCollider>().sharedMesh = GeoTools.WMeshFromObj(chara[3], scenePack, GeoTools.isDataMode);
                             }
                             else if (chara[2] == "emeshcollider")
                             {

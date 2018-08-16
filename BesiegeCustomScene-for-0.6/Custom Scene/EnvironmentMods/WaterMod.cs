@@ -74,11 +74,11 @@ namespace BesiegeCustomScene
 
                             if (chara[2] == "mesh")
                             {
-                                waterPropertise[i].mesh = GeoTools.MeshFromObj(chara[3]);
+                                waterPropertise[i].mesh = GeoTools.MeshFromObj(chara[3], GeoTools.isDataMode);
                             }
                             else if (chara[2] == "wmesh")
                             {
-                                waterPropertise[i].mesh = GeoTools.WMeshFromObj(chara[3]);
+                                waterPropertise[i].mesh = GeoTools.WMeshFromObj(chara[3], GeoTools.isDataMode);
                             }
                             else if (chara[2] == "scale")
                             {
@@ -96,11 +96,11 @@ namespace BesiegeCustomScene
                             }
                             else if (chara[2] == "meshcollider")
                             {
-                                waterPropertise[i].meshCollider.sharedMesh = GeoTools.MeshFromObj(chara[3]);
+                                waterPropertise[i].meshCollider.sharedMesh = GeoTools.MeshFromObj(chara[3], GeoTools.isDataMode);
                             }
                             else if (chara[2] == "wmeshcollider")
                             {
-                                waterPropertise[i].meshCollider.sharedMesh = GeoTools.WMeshFromObj(chara[3]);
+                                waterPropertise[i].meshCollider.sharedMesh = GeoTools.WMeshFromObj(chara[3], GeoTools.isDataMode);
                             }
                         }
                         #endregion
