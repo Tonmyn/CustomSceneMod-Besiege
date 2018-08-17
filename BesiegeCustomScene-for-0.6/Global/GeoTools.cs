@@ -1766,5 +1766,10 @@ namespace BesiegeCustomScene
 
         }
 
+        public static void OpenDirctory(string path,bool data)
+        {
+
+        }
+
     }
 }

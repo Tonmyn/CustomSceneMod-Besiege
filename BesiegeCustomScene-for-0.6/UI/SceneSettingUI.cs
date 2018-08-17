@@ -28,7 +28,7 @@ namespace BesiegeCustomScene.UI
         /// <summary>重新加载地形按钮点击事件</summary>
         public Action OnReloadScenesButtonClick;
         /// <summary>打开地图包文件夹按钮点击事件</summary>
-        public Action<string> OnOpenScenePacksDirectoryButtonClick;
+        public Action OnOpenScenePacksDirectoryButtonClick;
 
         readonly int windowID = GeoTools.GetWindowID();
 
@@ -64,7 +64,7 @@ namespace BesiegeCustomScene.UI
 
             OnReloadScenesButtonClick += sceneMod.ReloadScenePacks;
 
-            OnOpenScenePacksDirectoryButtonClick += openDirectory;
+            OnOpenScenePacksDirectoryButtonClick += sceneMod.OpenScenesDirectory;
 
             GameObject go; 
             go = new GameObject("Camera Mod");
@@ -112,7 +112,7 @@ namespace BesiegeCustomScene.UI
             GUILayout.BeginHorizontal();
             {
                 if (GUI.Button(new Rect(10, 20+25, 120, 20), LanguageManager.ReloadButonLabel)) { OnReloadScenesButtonClick(); }
-                if (GUI.Button(new Rect(140, 20+25, 120, 20), LanguageManager.ScenesDirectoryButtonLabel)) { OnOpenScenePacksDirectoryButtonClick(GeoTools.ScenePackPath); }
+                if (GUI.Button(new Rect(100+50, 20+25, 120, 20), LanguageManager.ScenesDirectoryButtonLabel)) { OnOpenScenePacksDirectoryButtonClick(); }
             }
             GUILayout.EndHorizontal();
 
@@ -149,10 +149,5 @@ namespace BesiegeCustomScene.UI
             normal = { textColor = Color.red },
             alignment = TextAnchor.UpperLeft,
         };
-
-        void openDirectory(string path)
-        {
-
-        }
     }
 }

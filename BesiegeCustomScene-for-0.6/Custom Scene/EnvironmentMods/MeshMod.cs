@@ -20,7 +20,7 @@ namespace BesiegeCustomScene
         //}
    
         private List<GameObject> meshObjects;
-        MeshPropertise[] meshPropertises;
+        //MeshPropertise[] meshPropertises;
         //private GameObject Meshs;
         private GameObject materialTemp;
 
@@ -28,21 +28,21 @@ namespace BesiegeCustomScene
 
         ShadowCastingMode shadowCastingMode = ShadowCastingMode.On;
 
-        class MeshPropertise
-        {
+        //class MeshPropertise
+        //{
 
-        }
+        //}
 
-        class MeshsPropertise
-        {
-            int Size;
-            bool NoShadow;
-            string MaterialTemp;
-            string Textrue;
-            Vector3 Position;
-            Vector3 Scale;
+        //class MeshsPropertise
+        //{
+        //    int Size;
+        //    bool NoShadow;
+        //    string MaterialTemp;
+        //    string Textrue;
+        //    Vector3 Position;
+        //    Vector3 Scale;
 
-        }
+        //}
 
 
         public override void ReadEnvironment(SceneFolder scenePack)

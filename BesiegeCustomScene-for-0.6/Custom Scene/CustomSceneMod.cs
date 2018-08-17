@@ -91,6 +91,10 @@ namespace BesiegeCustomScene
             ReadScenePacks(ScenePacksPath,true);
         }
 
+        public void OpenScenesDirectory()
+        {
+            GeoTools.OpenDirctory(ScenePacksPath,GeoTools.isDataMode);
+        }
 
         class Compare : IEqualityComparer<SceneFolder>
         {
