@@ -67,7 +67,7 @@ namespace BesiegeCustomScene
             try
             {
                 skyPropertise.Mesh = GetMesh();
-                skyPropertise.Texture = GetTexture(skyPropertise.TexturePath);
+                skyPropertise.Texture = GeoTools.ReadTexture2D(skyPropertise.TexturePath,skyPropertise.TextureSize,GeoTools.isDataMode);
 
                 starSphere = GameObject.Find("STAR SPHERE");
                 if (starSphere != null)
@@ -119,6 +119,7 @@ namespace BesiegeCustomScene
             //skyBallMesh = GeoTools.MeshFromObj(skyBoxMeshPath, true);
         }
 
+        [Obsolete]
         Texture2D GetTexture(string path)
         {
             //skyBallTexture = LoadByIO(skyBoxTexturePath);

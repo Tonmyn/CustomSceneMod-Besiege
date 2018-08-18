@@ -1,10 +1,10 @@
 ﻿using Modding;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.IO;
 
 namespace BesiegeCustomScene
 {
@@ -18,8 +18,10 @@ namespace BesiegeCustomScene
         public static string UIPath = Application.dataPath + "/Mods/BesiegeCustomSceneMod/UI/";
         public static string ShaderPath = Application.dataPath + "/Mods/BesiegeCustomSceneMod/Shader/";
         /// <summary>地图包路径  /Mods/BesiegeCustomSceneMod/Scenes</summary>
-        public static string ScenePackPath = Application.dataPath + "/Mods/BesiegeCustomSceneMod/Scenes";
+        //public static string ScenePackPath = Application.dataPath + "/Mods/BesiegeCustomSceneMod/Scenes";
 
+        public static string ScenePackPath = "Scenes";
+        public static bool isDataMode = true;
 
         public static bool StringToKeyCode(string str, out KeyCode output)
         {
@@ -93,7 +95,7 @@ namespace BesiegeCustomScene
             mesh.RecalculateNormals();
             return mesh;
         }
-        public static Mesh EMeshFromObj(string Objpath)
+        public static Mesh EMeshFromObj(string Objpath,bool data = false)
         {
             List<Vector3> newVertices = new List<Vector3>();
             List<Vector2> newUV = new List<Vector2>();
@@ -102,7 +104,7 @@ namespace BesiegeCustomScene
             List<Vector3> newNormals = new List<Vector3>();
             Mesh mesh = new Mesh();
 
-            var srd = FileReader(Objpath);
+            var srd = FileReader(Objpath,data);
 
             try
             {
@@ -185,7 +187,7 @@ namespace BesiegeCustomScene
             }
             return mesh;
         }
-        public static Mesh MeshFromObj(string Objname)
+        public static Mesh MeshFromObj(string Objname,bool data= false)
         {
             List<Vector3> Normals = new List<Vector3>();
             List<Vector2> UV = new List<Vector2>();
@@ -196,10 +198,10 @@ namespace BesiegeCustomScene
             List<Vector3> newNormals = new List<Vector3>();
             Mesh mesh = new Mesh();
 
-            if (!ModIO.ExistsFile(MeshPath + Objname + ".obj")) return Prop.MeshFormBundle(Objname);
+            if (!ModIO.ExistsFile(MeshPath + Objname + ".obj",data)) return Prop.MeshFormBundle(Objname);
             try
             {
-                var srd = FileReader(MeshPath + Objname + ".obj");
+                var srd = FileReader(MeshPath + Objname + ".obj",data);
                 while (srd.Peek() != -1)
                 {
                     string str = srd.ReadLine();
@@ -299,7 +301,7 @@ namespace BesiegeCustomScene
             }
             return mesh;
         }
-        public static Mesh MeshFromObj(string Objpath, bool value = true)
+        public static Mesh MeshFromObj(string Objpath,bool data =false, bool value = true)
         {
             List<Vector3> Normals = new List<Vector3>();
             List<Vector2> UV = new List<Vector2>();
@@ -310,10 +312,10 @@ namespace BesiegeCustomScene
             List<Vector3> newNormals = new List<Vector3>();
             Mesh mesh = new Mesh();
             TextReader srd;
-            if (!ModIO.ExistsFile(Objpath)) return Prop.MeshFormBundle(Objpath);
+            if (!ModIO.ExistsFile(Objpath,data)) return Prop.MeshFormBundle(Objpath);
             try
             {
-                srd = FileReader(Objpath);
+                srd = FileReader(Objpath,data);
                 while (srd.Peek() != -1)
                 {
                     string str = srd.ReadLine();
@@ -413,7 +415,7 @@ namespace BesiegeCustomScene
             }
             return mesh;
         }
-        public static Mesh WMeshFromObj(string Objname)
+        public static Mesh WMeshFromObj(string Objname, bool data = false)
         {
             List<Vector3> newVertices = new List<Vector3>();
             List<Vector2> newUV = new List<Vector2>();
@@ -421,7 +423,7 @@ namespace BesiegeCustomScene
             List<Vector3> newNormals = new List<Vector3>();
             Mesh mesh = new Mesh();
             TextReader srd;
-            if (!ModIO.ExistsFile(MeshPath + Objname + ".obj")) return Prop.MeshFormBundle(Objname);
+            if (!ModIO.ExistsFile(MeshPath + Objname + ".obj",data)) return Prop.MeshFormBundle(Objname);
             try
             {
                 srd = FileReader(MeshPath + Objname + ".obj");
@@ -1089,7 +1091,7 @@ namespace BesiegeCustomScene
         }
         */
 
-        public static Mesh MeshFromObj(string Objname, SceneFolder scenePack)
+        public static Mesh MeshFromObj(string Objname, SceneFolder scenePack,bool data = false)
         {
             List<Vector3> Normals = new List<Vector3>();
             List<Vector2> UV = new List<Vector2>();
@@ -1103,10 +1105,10 @@ namespace BesiegeCustomScene
 
             string objPath = scenePack.MeshsPath + "/" + Objname + ".obj";
 
-            if (!ModIO.ExistsFile(objPath)) return Prop.MeshFormBundle(Objname);
+            if (!ModIO.ExistsFile(objPath,data)) return Prop.MeshFormBundle(Objname);
             try
             {
-                srd = FileReader(objPath);
+                srd = FileReader(objPath,data);
                 while (srd.Peek() != -1)
                 {
                     string str = srd.ReadLine();
@@ -1209,7 +1211,127 @@ namespace BesiegeCustomScene
             return mesh;
         }
 
-        public static List<Mesh> MeshFromLargeObj(string Objname, int FaceCount, SceneFolder scenePack)
+        public static Mesh ReadMesh(string Objname, SceneFolder scenePack,bool data = false)
+        {
+            List<Vector3> Normals = new List<Vector3>();
+            List<Vector2> UV = new List<Vector2>();
+            List<Vector3> newVertices = new List<Vector3>();
+            List<Vector3> Vertices = new List<Vector3>();
+            List<Vector2> newUV = new List<Vector2>();
+            List<int> triangleslist = new List<int>();
+            List<Vector3> newNormals = new List<Vector3>();
+            Mesh mesh = new Mesh();
+            TextReader srd;
+
+            string objPath = scenePack.MeshsPath + "/" + Objname + ".obj";
+
+            if (!ModIO.ExistsFile(objPath,data)) return Prop.MeshFormBundle(Objname);
+            try
+            {
+                srd = FileReader(objPath,data);
+                while (srd.Peek() != -1)
+                {
+                    string str = srd.ReadLine();
+                    string[] chara = str.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+                    if (chara.Length > 2)
+                    {
+                        if (chara[0] == "v")
+                        {
+                            Vector3 v1 = new Vector3(
+                              Convert.ToSingle(chara[1]),
+                              Convert.ToSingle(chara[2]),
+                              Convert.ToSingle(chara[3]));
+                            Vertices.Add(v1);
+                        }
+                        else if (chara[0] == "vt")
+                        {
+                            Vector2 uv1 = new Vector2(
+                              Convert.ToSingle(chara[1]),
+                              Convert.ToSingle(chara[2]));
+
+                            UV.Add(uv1);
+                        }
+                        else if (chara[0] == "vn")
+                        {
+                            Vector3 v2 = new Vector3(
+                              Convert.ToSingle(chara[1]),
+                              Convert.ToSingle(chara[2]),
+                              Convert.ToSingle(chara[3]));
+
+                            Normals.Add(v2);
+                        }
+                        else if (chara[0] == "f")
+                        {
+                            if (chara.Length == 4)
+                            {
+                                int a = Convert.ToInt32(chara[1].Split('/')[0]);
+                                int b = Convert.ToInt32(chara[2].Split('/')[0]);
+                                int c = Convert.ToInt32(chara[3].Split('/')[0]);
+                                triangleslist.Add(newVertices.Count);
+                                triangleslist.Add(newVertices.Count + 1);
+                                triangleslist.Add(newVertices.Count + 2);
+                                newVertices.Add(Vertices[a - 1]);
+                                newVertices.Add(Vertices[b - 1]);
+                                newVertices.Add(Vertices[c - 1]);
+                                newNormals.Add(Normals[Convert.ToInt32(chara[1].Split('/')[2]) - 1]);
+                                newNormals.Add(Normals[Convert.ToInt32(chara[2].Split('/')[2]) - 1]);
+                                newNormals.Add(Normals[Convert.ToInt32(chara[3].Split('/')[2]) - 1]);
+                                newUV.Add(UV[Convert.ToInt32(chara[1].Split('/')[1]) - 1]);
+                                newUV.Add(UV[Convert.ToInt32(chara[2].Split('/')[1]) - 1]);
+                                newUV.Add(UV[Convert.ToInt32(chara[3].Split('/')[1]) - 1]);
+                            }
+                            if (chara.Length == 5)
+                            {
+                                int a = Convert.ToInt32(chara[1].Split('/')[0]);
+                                int b = Convert.ToInt32(chara[2].Split('/')[0]);
+                                int c = Convert.ToInt32(chara[3].Split('/')[0]);
+                                int d = Convert.ToInt32(chara[4].Split('/')[0]);
+                                triangleslist.Add(newVertices.Count);
+                                triangleslist.Add(newVertices.Count + 1);
+                                triangleslist.Add(newVertices.Count + 2);
+                                triangleslist.Add(newVertices.Count);
+                                triangleslist.Add(newVertices.Count + 2);
+                                triangleslist.Add(newVertices.Count + 3);
+                                newVertices.Add(Vertices[a - 1]);
+                                newVertices.Add(Vertices[b - 1]);
+                                newVertices.Add(Vertices[c - 1]);
+                                newVertices.Add(Vertices[d - 1]);
+                                newNormals.Add(Normals[Convert.ToInt32(chara[1].Split('/')[2]) - 1]);
+                                newNormals.Add(Normals[Convert.ToInt32(chara[2].Split('/')[2]) - 1]);
+                                newNormals.Add(Normals[Convert.ToInt32(chara[3].Split('/')[2]) - 1]);
+                                newNormals.Add(Normals[Convert.ToInt32(chara[4].Split('/')[2]) - 1]);
+                                newUV.Add(UV[Convert.ToInt32(chara[1].Split('/')[1]) - 1]);
+                                newUV.Add(UV[Convert.ToInt32(chara[2].Split('/')[1]) - 1]);
+                                newUV.Add(UV[Convert.ToInt32(chara[3].Split('/')[1]) - 1]);
+                                newUV.Add(UV[Convert.ToInt32(chara[4].Split('/')[1]) - 1]);
+                            }
+                        }
+                    }
+                }
+                mesh.vertices = newVertices.ToArray();
+                mesh.uv = newUV.ToArray();
+                mesh.triangles = triangleslist.ToArray();
+                mesh.normals = newNormals.ToArray();
+#if DEBUG
+                //GeoTools.Log("ReadFile " + Objname + " Completed!" + "Vertices:" + newVertices.Count.ToString());
+#endif
+                srd.Close();
+                mesh.RecalculateBounds();
+                mesh.RecalculateNormals();
+                mesh.Optimize();
+            }
+            catch (Exception ex)
+            {
+                GeoTools.Log("Obj model " + Objname + " error!");
+                GeoTools.Log("newUV==>" + newUV.Count.ToString());
+                GeoTools.Log("triangleslist==>" + triangleslist.Count.ToString());
+                GeoTools.Log("newNormals==>" + newNormals.Count.ToString());
+                GeoTools.Log(ex.ToString());
+            }
+            return mesh;
+        }
+
+        public static List<Mesh> MeshFromLargeObj(string Objname, int FaceCount, SceneFolder scenePack,bool data = false)
         {/////f必须在最后 只支持犀牛导出obj
             List<Mesh> meshes = new List<Mesh>();
             List<Vector3> Normals = new List<Vector3>();
@@ -1225,7 +1347,7 @@ namespace BesiegeCustomScene
             TextReader srd;
             try
             {
-                srd = FileReader(objPath);
+                srd = FileReader(objPath,data);
             }
             catch
             {
@@ -1367,10 +1489,10 @@ namespace BesiegeCustomScene
             return meshes;
         }
 
-        public static List<Mesh> LoadHeightMap(int width, int height, Vector3 scale, Vector2 texturescale, string HeightMap, SceneFolder scenePack)
+        public static List<Mesh> LoadHeightMap(int width, int height, Vector3 scale, Vector2 texturescale, string HeightMap, SceneFolder scenePack,bool data = false)
         {
             List<Mesh> _meshes = new List<Mesh>();
-            Texture2D te2 = (Texture2D)LoadTexture(HeightMap, scenePack);
+            Texture2D te2 = (Texture2D)LoadTexture(HeightMap, scenePack, data);
             for (int j = 0; j < te2.height; j += height)
             {
                 for (int i = 0; i < te2.width; i += width)
@@ -1383,7 +1505,7 @@ namespace BesiegeCustomScene
             return _meshes;
         }
 
-        public static Mesh LoadHeightMap(float uscale, float vscale, int u, int v, int heightscale, float texturescale, string HeightMap, SceneFolder scenePack)
+        public static Mesh LoadHeightMap(float uscale, float vscale, int u, int v, int heightscale, float texturescale, string HeightMap, SceneFolder scenePack, bool data = false)
         {
             if (uscale < 1) uscale = 1;
             if (vscale < 1) vscale = 1;
@@ -1400,7 +1522,7 @@ namespace BesiegeCustomScene
             Mesh mesh = new Mesh();
             try
             {
-                Texture2D te2 = (Texture2D)LoadTexture(HeightMap, scenePack);
+                Texture2D te2 = (Texture2D)LoadTexture(HeightMap, scenePack,data);
                 if (te2.width < u || te2.height < v)
                 {
                     GeoTools.Log("LoadHeightMap Failed !");
@@ -1442,12 +1564,12 @@ namespace BesiegeCustomScene
             }
         }
 
-        public static Texture LoadTexture(string TextureName, SceneFolder scenePack)
+        public static Texture LoadTexture(string TextureName, SceneFolder scenePack,bool data = false)
         {
             string texturePath = scenePack.TexturesPath + "/" + TextureName;
             try
             {
-                if (ModIO.ExistsFile(texturePath + ".png") || ModIO.ExistsFile(texturePath + ".jpg"))
+                if (ModIO.ExistsFile(texturePath + ".png",data) || ModIO.ExistsFile(texturePath + ".jpg",data))
                 {
                     WWW png = new WWW("File:///" + texturePath + ".png");
                     WWW jpg = new WWW("File:///" + texturePath + ".jpg");
@@ -1477,7 +1599,7 @@ namespace BesiegeCustomScene
             }
         }
 
-        public static Mesh WMeshFromObj(string Objname, SceneFolder scenePack)
+        public static Mesh WMeshFromObj(string Objname, SceneFolder scenePack,bool data = false)
         {
             List<Vector3> newVertices = new List<Vector3>();
             List<Vector2> newUV = new List<Vector2>();
@@ -1488,10 +1610,10 @@ namespace BesiegeCustomScene
             string objPath = scenePack.MeshsPath + "/" + Objname + ".obj";
 
             TextReader srd;
-            if (!ModIO.ExistsFile(objPath)) return Prop.MeshFormBundle(Objname);
+            if (!ModIO.ExistsFile(objPath,data)) return Prop.MeshFormBundle(Objname);
             try
             {
-                srd = FileReader(objPath);
+                srd = FileReader(objPath,data);
                 while (srd.Peek() != -1)
                 {
                     string str = srd.ReadLine();
@@ -1613,10 +1735,10 @@ namespace BesiegeCustomScene
 
         }
 
-        public static TextReader FileReader(string path)
+        public static TextReader FileReader(string path,bool data = false)
         {
 
-            if (!ModIO.ExistsFile(path))
+            if (!ModIO.ExistsFile(path, data))
             {
                 GeoTools.Log(string.Format("Error! {0} File not exists!", path));
                 return TextReader.Null;
@@ -1624,12 +1746,30 @@ namespace BesiegeCustomScene
 
             //var fs = ModIO.Open(filePath, System.IO.FileMode.Open);
             //打开数据文件
-            var srd = ModIO.OpenText(path);
+            var srd = ModIO.OpenText(path,data);
 
             return srd;
+
+
         }
 
+        public static Texture2D ReadTexture2D(string path, Vector2 textureSize, bool data = false)
+        {
 
-      
+            Texture2D texture2D = Texture2D.whiteTexture;
+
+            byte[] bytes = ModIO.ReadAllBytes(path, data);
+
+            texture2D = new Texture2D((int)(textureSize.x), (int)(textureSize.y));
+            texture2D.LoadImage(bytes);
+            return texture2D;
+
+        }
+
+        public static void OpenDirctory(string path,bool data)
+        {
+
+        }
+
     }
 }

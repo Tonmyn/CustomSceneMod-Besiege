@@ -68,6 +68,34 @@ namespace BesiegeCustomScene
             }
         }
 
+        private void CreateDocument()
+        {
+            if (!ModIO.ExistsFile("Document.txt", GeoTools.isDataMode))
+            {
+                ModIO.CreateText("Document.txt", GeoTools.isDataMode);
+            }
+        }
+
+        private string GetModDataPath()
+        {
+            string dataPath = "";
+
+            if (ModIO.ExistsFile("Document.txt", GeoTools.isDataMode))
+            {
+                foreach (var v in ModIO.GetFiles("", GeoTools.isDataMode))
+                {
+                    string str = v.Substring(v.LastIndexOf("/") + 1, v.Length - v.LastIndexOf("/") - 1);
+                    if (str == "Document.txt")
+                    {
+                        dataPath = v.Substring(0, v.Length - ("Document.txt").Length);
+                        break;
+                    }
+                }
+            }
+
+            return dataPath;
+        }
+
         void FixedUpdate()
         {
             if (isStart > 6 * t) return;

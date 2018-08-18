@@ -12,10 +12,6 @@ using Modding.Levels;
 namespace BesiegeCustomScene
 {
 
-    public delegate void ReadSceneHandler(SceneFolder scenePack);
-    public delegate void LoadSceneHandler();
-    public delegate void ClearSceneHandler();
-
     public class CustomSceneMod : MonoBehaviour
     {
     
@@ -28,19 +24,16 @@ namespace BesiegeCustomScene
         public bool FloorBigEnable = true;
         public bool FogEnable = true;
 
-        public event ReadSceneHandler ReadSceneEvent;
-        public event LoadSceneHandler LoadSceneEvent;
-        public event ClearSceneHandler ClearSceneEvent;      
-
-        //public List<GameObject> EnvironmentObjects;
+        public Action<SceneFolder> ReadSceneEvent;
+        public Action LoadSceneEvent;
+        public Action ClearSceneEvent;      
 
         void Awake()
         {
-            //sceneNames = BesiegeCustomSceneMod.Mod.GetComponent<SettingsManager>().settingFile.settings.sceneNames;
 
             ScenePacksPath = GeoTools.ScenePackPath;
 
-            ScenePacks = ReadScenePacks(ScenePacksPath);
+            ScenePacks = ReadScenePacks(ScenePacksPath,GeoTools.isDataMode);
         }
 
         void Start()
@@ -69,23 +62,24 @@ namespace BesiegeCustomScene
         /// <summary>
         /// 读取指定路径下所有地图包
         /// </summary>
-        /// <param name="scenesPackPath">地图包路径</param>
+        /// <param name="scenesPacksPath">地图包路径</param>
         /// <returns></returns>
-        public List<SceneFolder> ReadScenePacks(string scenesPackPath)
+        public List<SceneFolder> ReadScenePacks(string scenesPacksPath,bool data = false)
         {
             List<SceneFolder> SPs = new List<SceneFolder>() { };
+            List<string> scenePaths = new List<string>();
 
-            if (!ModIO.ExistsDirectory(scenesPackPath))
+            if (!ModIO.ExistsDirectory("", true))
             {
                 GeoTools.Log("Error! Scenes Path Directory not exists!");
                 return SPs;
             }
 
-            List<string> scenePaths = ModIO.GetDirectories(scenesPackPath).ToList();
+            scenePaths = ModIO.GetDirectories(scenesPacksPath, true).ToList();
 
             foreach (var scenePath in scenePaths)
             {
-                SPs.Add(new SceneFolder(scenePath));
+                SPs.Add(new SceneFolder(scenePath,data));
             }
 
             SPs = SPs.Distinct(new Compare()).ToList();
@@ -94,9 +88,13 @@ namespace BesiegeCustomScene
 
         public void ReloadScenePacks()
         {
-            ReadScenePacks(ScenePacksPath);
+            ReadScenePacks(ScenePacksPath,true);
         }
 
+        public void OpenScenesDirectory()
+        {
+            GeoTools.OpenDirctory(ScenePacksPath,GeoTools.isDataMode);
+        }
 
         class Compare : IEqualityComparer<SceneFolder>
         {

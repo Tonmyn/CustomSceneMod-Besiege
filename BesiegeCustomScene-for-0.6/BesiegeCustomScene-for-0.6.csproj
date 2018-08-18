@@ -57,7 +57,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Custom Scene\EnvironmentMods\SnowMod.cs" />
     <Compile Include="Custom Scene\Water4\SpecularLighting.cs" />
-    <Compile Include="Global\StaticProp.cs" />
+    <Compile Include="Global\StaticPropertise.cs" />
     <Compile Include="Custom Scene\Water4\Water.cs" />
     <Compile Include="Custom Scene\Water4\WaterBase.cs" />
     <Compile Include="Custom Scene\EnvironmentMods\WaterMod.cs" />

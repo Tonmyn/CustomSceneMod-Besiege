@@ -25,18 +25,11 @@ namespace BesiegeCustomScene
 
         void Start()
         {
-            //transform.SetParent(BesiegeCustomSceneMod.Mod.GetComponent<UI.SceneSettingUI>().gameObject.transform);
 
             customSceneMod = transform.parent.GetComponent<CustomSceneMod>();
             customSceneMod.ReadSceneEvent += ReadEnvironment;
             customSceneMod.LoadSceneEvent += LoadEnvironment;
-            customSceneMod.ClearSceneEvent += ClearEnvironment;
-
-            //GameObject go = new GameObject();
-            //go.AddComponent(this.GetType());
-            //go.transform.SetParent(customSceneMod.transform);
-
-            
+            customSceneMod.ClearSceneEvent += ClearEnvironment;          
 
             dataLoader = new DataLoader();
         }
