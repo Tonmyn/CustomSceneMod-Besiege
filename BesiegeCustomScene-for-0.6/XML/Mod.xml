@@ -34,7 +34,7 @@
 		 It is generally recommended to turn this on while developing the mod, but keep it off for any releases.
 		 
 		 Note: This value is independent of the Debug values for specific Blocks and Entities.-->
-	<Debug>true</Debug>
+	<Debug>false</Debug>
 	
 	<!-- Whether the mod can be used in MP or only in SP.
 		 SP-only mods are easier to write but obviously more limited in their uses.
