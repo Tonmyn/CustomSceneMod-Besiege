@@ -9,16 +9,7 @@ namespace BesiegeCustomScene
 {
     class MeshMod : EnvironmentMod
     {
-
-        //void OnDisable()
-        //{
-        //    ClearMeshes();
-        //}
-        //void OnDestroy()
-        //{
-        //    ClearMeshes();
-        //}
-   
+  
         private List<GameObject> meshObjects;
         //MeshPropertise[] meshPropertises;
         //private GameObject Meshs;

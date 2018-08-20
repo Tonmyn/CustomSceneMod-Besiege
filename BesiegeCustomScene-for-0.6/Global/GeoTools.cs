@@ -1094,6 +1094,7 @@ namespace BesiegeCustomScene
         }
         */
 
+        [Obsolete]
         public static Mesh MeshFromObj(string Objname, SceneFolder scenePack,bool data = false)
         {
             List<Vector3> Normals = new List<Vector3>();
@@ -1213,7 +1214,7 @@ namespace BesiegeCustomScene
             }
             return mesh;
         }
-
+        [Obsolete]
         public static Mesh ReadMesh(string Objname, SceneFolder scenePack,bool data = false)
         {
             List<Vector3> Normals = new List<Vector3>();
@@ -1334,6 +1335,75 @@ namespace BesiegeCustomScene
             return mesh;
         }
 
+        public static Mesh ReadMesh(string name,string path,bool data)
+        {           
+            string filePath = path + "/" + name;
+
+            Mesh mesh = Prop.MeshFormBundle(filePath);
+
+            try
+            {
+                if (ModIO.ExistsFile(filePath, data))
+                {
+                    mesh = ModResource.CreateMeshResource(name, path, data).Mesh;
+                }
+            }
+            catch (Exception ex)
+            {
+                GeoTools.Log("Read Mesh Failed!");
+                GeoTools.Log(ex.ToString());
+            }
+           
+            return mesh;
+        }
+
+        public static Texture ReadTexture(string name,string path,bool data)
+        {
+            
+            string filePath = path + "/" + name;
+
+            Texture texture = Prop.TextureFormBundle(filePath);
+
+            try
+            {
+                if (ModIO.ExistsFile(filePath,data))
+                {
+                    texture = ModResource.CreateTextureResource(name, path, data, true).Texture;                
+                }
+            }
+            catch(Exception e)
+            {
+                GeoTools.Log("Read Texture Failed!");
+                GeoTools.Log(e.ToString());
+            }
+
+            return texture;
+        }
+
+        public static AssetBundle ReadAssetBundle(string name, string path, bool data)
+        {
+            string filePath = path + "/" + name;
+
+            AssetBundle assetBundle = new AssetBundle();
+
+            try
+            {
+                if (ModIO.ExistsFile(filePath,data))
+                {
+                    assetBundle = ModResource.CreateAssetBundleResource(name, path, data).AssetBundle;
+                }
+            }
+            catch (Exception e)
+            {
+                GeoTools.Log("Read AssetBundle Failed!");
+                GeoTools.Log(e.ToString());
+            }
+
+            return assetBundle;
+
+        }
+
+        [Obsolete]
         public static List<Mesh> MeshFromLargeObj(string Objname, int FaceCount, SceneFolder scenePack,bool data = false)
         {/////f必须在最后 只支持犀牛导出obj
             List<Mesh> meshes = new List<Mesh>();
@@ -1603,7 +1673,7 @@ namespace BesiegeCustomScene
                 return GameObject.Find("FloorBig").GetComponent<Renderer>().material.mainTexture;
             }
         }
-
+        [Obsolete]
         public static Mesh WMeshFromObj(string Objname, SceneFolder scenePack,bool data = false)
         {
             List<Vector3> newVertices = new List<Vector3>();
