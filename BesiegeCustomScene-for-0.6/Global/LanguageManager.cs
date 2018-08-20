@@ -43,10 +43,10 @@ namespace BesiegeCustomScene
 
         public static String FloorGridButtonLabel = isChinese ? "去掉地板" : "No Floor";
 
-        public static String SceneListLabel = isChinese ? "地形列表" : "Scene List";
+        public static String SceneListLabel = isChinese ? "地形列表" : "Scenes List";
 
-        public static String ReloadButonLabel = isChinese ? "重载地图" : "Reload Scenes";
+        public static String ReloadButonLabel = isChinese ? "重载地图" : "Reload Scene";
 
-        public static String ScenesDirectoryButtonLabel = isChinese ? "打开地图文件夹" : "Open Scenes Directory";
+        public static String ScenesDirectoryButtonLabel = isChinese ? "打开地图文件夹" : "Scenes Folder";
     }
 }

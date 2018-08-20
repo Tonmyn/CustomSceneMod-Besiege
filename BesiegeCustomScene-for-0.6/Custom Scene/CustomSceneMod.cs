@@ -69,10 +69,9 @@ namespace BesiegeCustomScene
             List<SceneFolder> SPs = new List<SceneFolder>() { };
             List<string> scenePaths = new List<string>();
 
-            if (!ModIO.ExistsDirectory("", true))
+            if (!ModIO.ExistsDirectory("Scenes", true))
             {
-                GeoTools.Log("Error! Scenes Path Directory not exists!");
-                return SPs;
+                ModIO.CreateDirectory("Scenes", true);
             }
 
             scenePaths = ModIO.GetDirectories(scenesPacksPath, true).ToList();
