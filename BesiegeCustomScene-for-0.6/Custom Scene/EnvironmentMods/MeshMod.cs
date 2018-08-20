@@ -176,7 +176,7 @@ namespace BesiegeCustomScene
                             {
                                 for (int i = start; i <= end; i++)
                                 {
-                                    meshObjects[i].GetComponent<MeshRenderer>().material.SetTexture(chara[4], GeoTools.LoadTexture(chara[5]));
+                                    //meshObjects[i].GetComponent<MeshRenderer>().material.SetTexture(chara[4], GeoTools.LoadTexture(chara[5]));
                                 }
                             }
                             else if (chara[3] == "setcolor")
@@ -421,9 +421,9 @@ namespace BesiegeCustomScene
                             }
                             else if (chara[2] == "etexture")
                             {
-                                meshObjects[i].GetComponent<MeshRenderer>().material.mainTexture = GeoTools.ELoadTexture(chara[3]);
-                                //meshes[i].GetComponent<MeshRenderer>().material.shader = Shader.Find("Standard"); 
-                                //meshes[i].GetComponent<MeshRenderer>().material.SetFloat("_Glossiness", 1);//1是smoothness最高
+                                //meshObjects[i].GetComponent<MeshRenderer>().material.mainTexture = GeoTools.ELoadTexture(chara[3]);
+                                ////meshes[i].GetComponent<MeshRenderer>().material.shader = Shader.Find("Standard"); 
+                                ////meshes[i].GetComponent<MeshRenderer>().material.SetFloat("_Glossiness", 1);//1是smoothness最高
                             }
                             else if (chara[2] == "stexture")
                             {
