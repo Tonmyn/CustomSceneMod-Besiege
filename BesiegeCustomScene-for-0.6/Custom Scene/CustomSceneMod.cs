@@ -95,6 +95,8 @@ namespace BesiegeCustomScene
             GeoTools.OpenDirctory(ScenePacksPath,GeoTools.isDataMode);
         }
 
+
+        /// <summary>List去重类</summary>
         class Compare : IEqualityComparer<SceneFolder>
         {
             public bool Equals(SceneFolder x, SceneFolder y)

@@ -103,29 +103,29 @@ namespace BesiegeCustomScene
             {
                 if (isStart == 1 * t)
                 {
-                    try
-                    {
-                        WWW iteratorVariable0 = new WWW("file:///" + GeoTools.ShaderPath + "water5");
-                        iteratorVariable1 = iteratorVariable0.assetBundle;
-                        if (iteratorVariable1 != null)
-                        {
-                            string[] names = iteratorVariable1.GetAllAssetNames();
-                            for (int i = 0; i < names.Length; i++)
-                            {
-#if DEBUG
-                                //GeoTools.Log(names[i]);
-#endif
-                            }
-                        }
-#if DEBUG
-                        GeoTools.Log("assetBundle succese");
-#endif
-                    }
-                    catch (Exception ex)
-                    {
-                        GeoTools.Log("Error! assetBundle failed");
-                        GeoTools.Log(ex.ToString());
-                    }
+//                    try
+//                    {
+//                        WWW iteratorVariable0 = new WWW("file:///" + GeoTools.ShaderPath + "water5");
+//                        iteratorVariable1 = iteratorVariable0.assetBundle;
+//                        if (iteratorVariable1 != null)
+//                        {
+//                            string[] names = iteratorVariable1.GetAllAssetNames();
+//                            for (int i = 0; i < names.Length; i++)
+//                            {
+//#if DEBUG
+//                                //GeoTools.Log(names[i]);
+//#endif
+//                            }
+//                        }
+//#if DEBUG
+//                        GeoTools.Log("assetBundle succese");
+//#endif
+//                    }
+//                    catch (Exception ex)
+//                    {
+//                        GeoTools.Log("Error! assetBundle failed");
+//                        GeoTools.Log(ex.ToString());
+//                    }
 
                 }
                 if (isStart == 2 * t)

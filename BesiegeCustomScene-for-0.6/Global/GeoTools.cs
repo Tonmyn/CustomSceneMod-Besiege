@@ -505,61 +505,63 @@ namespace BesiegeCustomScene
             }
             return mesh;
         }
-        public static Texture ELoadTexture(string TexturePath)
-        {
-            try
-            {
-                WWW jpg = new WWW("File:///" + TexturePath);
-                if (jpg.size > 5)
-                {
-                    return jpg.texture;
-                }
-                else
-                {
-                    GeoTools.Log("No image in folder or image could not be used!");
-                    return GameObject.Find("FloorBig").GetComponent<Renderer>().material.mainTexture;
-                }
-            }
-            catch
-            {
-                GeoTools.Log("No image in folder,use white image instead !");
-                return GameObject.Find("FloorBig").GetComponent<Renderer>().material.mainTexture;
-            }
-        }
+      
+        //public static Texture ELoadTexture(string TexturePath)
+        //{
+        //    try
+        //    {
+        //        WWW jpg = new WWW("File:///" + TexturePath);
 
-        public static Texture LoadTexture(string TextureName)
-        {
-            try
-            {
-                if (ModIO.ExistsFile(TexturePath + TextureName + ".png") || ModIO.ExistsFile(TexturePath + TextureName + ".jpg"))
-                {
-                    WWW png = new WWW("File:///" + TexturePath + TextureName + ".png");
-                    WWW jpg = new WWW("File:///" + TexturePath + TextureName + ".jpg");
-                    if (png.size > 5)
-                    {
-                        return png.texture;
-                    }
-                    else if (jpg.size > 5)
-                    {
-                        return jpg.texture;
-                    }
-                    else
-                    {
-                        GeoTools.Log("No image in folder or image could not be used!");
-                        return GameObject.Find("FloorBig").GetComponent<Renderer>().material.mainTexture;
-                    }
-                }
-                else
-                {
-                    return Prop.TextureFormBundle(TextureName);
-                }
-            }
-            catch
-            {
-                GeoTools.Log("No image in folder,use white image instead !");
-                return GameObject.Find("FloorBig").GetComponent<Renderer>().material.mainTexture;
-            }
-        }
+        //        if (jpg.size > 5)
+        //        {
+        //            return jpg.texture;
+        //        }
+        //        else
+        //        {
+        //            GeoTools.Log("No image in folder or image could not be used!");
+        //            return GameObject.Find("FloorBig").GetComponent<Renderer>().material.mainTexture;
+        //        }
+        //    }
+        //    catch
+        //    {
+        //        GeoTools.Log("No image in folder,use white image instead !");
+        //        return GameObject.Find("FloorBig").GetComponent<Renderer>().material.mainTexture;
+        //    }
+        //}
+
+        //public static Texture LoadTexture(string TextureName)
+        //{
+        //    try
+        //    {
+        //        if (ModIO.ExistsFile(TexturePath + TextureName + ".png") || ModIO.ExistsFile(TexturePath + TextureName + ".jpg"))
+        //        {
+        //            WWW png = new WWW("File:///" + TexturePath + TextureName + ".png");
+        //            WWW jpg = new WWW("File:///" + TexturePath + TextureName + ".jpg");
+        //            if (png.size > 5)
+        //            {
+        //                return png.texture;
+        //            }
+        //            else if (jpg.size > 5)
+        //            {
+        //                return jpg.texture;
+        //            }
+        //            else
+        //            {
+        //                GeoTools.Log("No image in folder or image could not be used!");
+        //                return GameObject.Find("FloorBig").GetComponent<Renderer>().material.mainTexture;
+        //            }
+        //        }
+        //        else
+        //        {
+        //            return Prop.TextureFormBundle(TextureName);
+        //        }
+        //    }
+        //    catch
+        //    {
+        //        GeoTools.Log("No image in folder,use white image instead !");
+        //        return GameObject.Find("FloorBig").GetComponent<Renderer>().material.mainTexture;
+        //    }
+        //}
         //public static Texture LoadTexture(string TexturePath)
         //{
         //    try
@@ -622,79 +624,79 @@ namespace BesiegeCustomScene
             }
 
         }
-        public static List<Mesh> LoadHeightMap(int width, int height, Vector3 scale, Vector2 texturescale, string HeightMap)
-        {
-            List<Mesh> _meshes = new List<Mesh>();
-            Texture2D te2 = (Texture2D)LoadTexture(HeightMap);
-            for (int j = 0; j < te2.height; j += height)
-            {
-                for (int i = 0; i < te2.width; i += width)
-                {
-                    Rect area = new Rect(i, j, width, height);
-                    _meshes.Add(LoadHeightMap(area, scale, texturescale, te2));
-                }
-            }
-            GeoTools.Log("LoadHeightMap Completed! MeshCount: " + _meshes.Count.ToString());
-            return _meshes;
-        }
-        public static Mesh LoadHeightMap(float uscale, float vscale, int u, int v, int heightscale, float texturescale, string HeightMap)
-        {
-            if (uscale < 1) uscale = 1;
-            if (vscale < 1) vscale = 1;
-            if (uscale > 100) uscale = 100;
-            if (vscale > 100) vscale = 100;
-            if (heightscale < 10) heightscale = 10;
-            if (heightscale > 100) heightscale = 100;
-            if (u < 4) u = 4;
-            if (v < 4) v = 4;
-            if (u > 2048) u = 2048;
-            if (v > 2048) v = 2048;
-            if (texturescale > 2048) texturescale = 2048;
-            if (texturescale < 0.01f) texturescale = 0.01f;
-            Mesh mesh = new Mesh();
-            try
-            {
-                Texture2D te2 = (Texture2D)LoadTexture(HeightMap);
-                if (te2.width < u || te2.height < v)
-                {
-                    GeoTools.Log("LoadHeightMap Failed !");
-                    u = te2.width; v = te2.height;
-                }
-                List<Vector3> newVertices = new List<Vector3>();
-                List<Vector2> newUV = new List<Vector2>();
-                List<int> triangleslist = new List<int>();
-                for (int j = 0; j < v; j++)
-                {
-                    for (int i = 0; i < u; i++)
-                    {
-                        newVertices.Add(new Vector3(i * uscale, te2.GetPixel(i, j).grayscale * heightscale, j * vscale));
-                        newUV.Add(new Vector2((float)i / (float)u * texturescale, (float)j / (float)v * texturescale));
-                        if (i > 0 && j > 0)
-                        {
-                            triangleslist.Add((j - 1) * u + i - 1);
-                            triangleslist.Add((j) * u + i);
-                            triangleslist.Add((j - 1) * u + i);
-                            triangleslist.Add((j - 1) * u + i - 1);
-                            triangleslist.Add((j) * u + i - 1);
-                            triangleslist.Add((j) * u + i);
-                        }
-                    }
-                }
-                mesh.vertices = newVertices.ToArray();
-                mesh.uv = newUV.ToArray();
-                mesh.triangles = triangleslist.ToArray();
-                mesh.RecalculateBounds();
-                mesh.RecalculateNormals();
-                mesh.Optimize();
-                return mesh;
-            }
-            catch (System.Exception ex)
-            {
-                GeoTools.Log("LoadHeightMap Failed !");
-                GeoTools.Log(ex.ToString());
-                return null;
-            }
-        }
+        //public static List<Mesh> LoadHeightMap(int width, int height, Vector3 scale, Vector2 texturescale, string HeightMap)
+        //{
+        //    List<Mesh> _meshes = new List<Mesh>();
+        //    Texture2D te2 = (Texture2D)LoadTexture(HeightMap);
+        //    for (int j = 0; j < te2.height; j += height)
+        //    {
+        //        for (int i = 0; i < te2.width; i += width)
+        //        {
+        //            Rect area = new Rect(i, j, width, height);
+        //            _meshes.Add(LoadHeightMap(area, scale, texturescale, te2));
+        //        }
+        //    }
+        //    GeoTools.Log("LoadHeightMap Completed! MeshCount: " + _meshes.Count.ToString());
+        //    return _meshes;
+        //}
+        //public static Mesh LoadHeightMap(float uscale, float vscale, int u, int v, int heightscale, float texturescale, string HeightMap)
+        //{
+        //    if (uscale < 1) uscale = 1;
+        //    if (vscale < 1) vscale = 1;
+        //    if (uscale > 100) uscale = 100;
+        //    if (vscale > 100) vscale = 100;
+        //    if (heightscale < 10) heightscale = 10;
+        //    if (heightscale > 100) heightscale = 100;
+        //    if (u < 4) u = 4;
+        //    if (v < 4) v = 4;
+        //    if (u > 2048) u = 2048;
+        //    if (v > 2048) v = 2048;
+        //    if (texturescale > 2048) texturescale = 2048;
+        //    if (texturescale < 0.01f) texturescale = 0.01f;
+        //    Mesh mesh = new Mesh();
+        //    try
+        //    {
+        //        Texture2D te2 = (Texture2D)LoadTexture(HeightMap);
+        //        if (te2.width < u || te2.height < v)
+        //        {
+        //            GeoTools.Log("LoadHeightMap Failed !");
+        //            u = te2.width; v = te2.height;
+        //        }
+        //        List<Vector3> newVertices = new List<Vector3>();
+        //        List<Vector2> newUV = new List<Vector2>();
+        //        List<int> triangleslist = new List<int>();
+        //        for (int j = 0; j < v; j++)
+        //        {
+        //            for (int i = 0; i < u; i++)
+        //            {
+        //                newVertices.Add(new Vector3(i * uscale, te2.GetPixel(i, j).grayscale * heightscale, j * vscale));
+        //                newUV.Add(new Vector2((float)i / (float)u * texturescale, (float)j / (float)v * texturescale));
+        //                if (i > 0 && j > 0)
+        //                {
+        //                    triangleslist.Add((j - 1) * u + i - 1);
+        //                    triangleslist.Add((j) * u + i);
+        //                    triangleslist.Add((j - 1) * u + i);
+        //                    triangleslist.Add((j - 1) * u + i - 1);
+        //                    triangleslist.Add((j) * u + i - 1);
+        //                    triangleslist.Add((j) * u + i);
+        //                }
+        //            }
+        //        }
+        //        mesh.vertices = newVertices.ToArray();
+        //        mesh.uv = newUV.ToArray();
+        //        mesh.triangles = triangleslist.ToArray();
+        //        mesh.RecalculateBounds();
+        //        mesh.RecalculateNormals();
+        //        mesh.Optimize();
+        //        return mesh;
+        //    }
+        //    catch (System.Exception ex)
+        //    {
+        //        GeoTools.Log("LoadHeightMap Failed !");
+        //        GeoTools.Log(ex.ToString());
+        //        return null;
+        //    }
+        //}
         public static Mesh LoadHeightMap(Rect area, Vector3 scale, Vector2 texturescale, Texture2D te2)
         {
             Mesh mesh = new Mesh();
@@ -744,26 +746,27 @@ namespace BesiegeCustomScene
                 return null;
             }
         }
-        public static void PrintAssets()
-        {
-            try
-            {
-                WWW iteratorVariable0 = new WWW("file:///" + GeoTools.ShaderPath + "Water.unity3d");
-                AssetBundle iteratorVariable1 = iteratorVariable0.assetBundle;
-                string[] names = iteratorVariable1.GetAllAssetNames();
-                for (int i = 0; i < names.Length; i++)
-                {
+        
+        //public static void PrintAssets()
+        //{
+        //    try
+        //    {
+        //        WWW iteratorVariable0 = new WWW("file:///" + GeoTools.ShaderPath + "Water.unity3d");
+        //        AssetBundle iteratorVariable1 = iteratorVariable0.assetBundle;
+        //        string[] names = iteratorVariable1.GetAllAssetNames();
+        //        for (int i = 0; i < names.Length; i++)
+        //        {
 
-                    GeoTools.Log(names[i]);
+        //            GeoTools.Log(names[i]);
 
-                }
-                iteratorVariable1.Unload(true);
-            }
-            catch (System.Exception ex)
-            {
-                GeoTools.Log(ex.ToString());
-            }
-        }
+        //        }
+        //        iteratorVariable1.Unload(true);
+        //    }
+        //    catch (System.Exception ex)
+        //    {
+        //        GeoTools.Log(ex.ToString());
+        //    }
+        //}
         public static void ResetWaterMaterial(ref Material mat)
         {
             try
@@ -965,24 +968,24 @@ namespace BesiegeCustomScene
             }
 
         }
-        public static void PrintAssetBundle(string name)
-        {
-            try
-            {
-                WWW iteratorVariable0 = new WWW("file:///" + GeoTools.ShaderPath + name);
-                AssetBundle iteratorVariable1 = iteratorVariable0.assetBundle;
-                string[] names = iteratorVariable1.GetAllAssetNames();
-                for (int i = 0; i < names.Length; i++)
-                {
-                    GeoTools.Log(names[i]);
-                }
-            }
-            catch (Exception ex)
-            {
-                GeoTools.Log("Error! assetBundle failed");
-                GeoTools.Log(ex.ToString());
-            }
-        }
+        //public static void PrintAssetBundle(string name)
+        //{
+        //    try
+        //    {
+        //        WWW iteratorVariable0 = new WWW("file:///" + GeoTools.ShaderPath + name);
+        //        AssetBundle iteratorVariable1 = iteratorVariable0.assetBundle;
+        //        string[] names = iteratorVariable1.GetAllAssetNames();
+        //        for (int i = 0; i < names.Length; i++)
+        //        {
+        //            GeoTools.Log(names[i]);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        GeoTools.Log("Error! assetBundle failed");
+        //        GeoTools.Log(ex.ToString());
+        //    }
+        //}
         public static void GetCenter()
         {
             if (StatMaster.levelSimulating)
@@ -1091,6 +1094,7 @@ namespace BesiegeCustomScene
         }
         */
 
+        [Obsolete]
         public static Mesh MeshFromObj(string Objname, SceneFolder scenePack,bool data = false)
         {
             List<Vector3> Normals = new List<Vector3>();
@@ -1210,7 +1214,7 @@ namespace BesiegeCustomScene
             }
             return mesh;
         }
-
+        [Obsolete]
         public static Mesh ReadMesh(string Objname, SceneFolder scenePack,bool data = false)
         {
             List<Vector3> Normals = new List<Vector3>();
@@ -1331,6 +1335,75 @@ namespace BesiegeCustomScene
             return mesh;
         }
 
+        public static Mesh ReadMesh(string name,string path,bool data)
+        {           
+            string filePath = path + "/" + name;
+
+            Mesh mesh = Prop.MeshFormBundle(filePath);
+
+            try
+            {
+                if (ModIO.ExistsFile(filePath, data))
+                {
+                    mesh = ModResource.CreateMeshResource(name, path, data).Mesh;
+                }
+            }
+            catch (Exception ex)
+            {
+                GeoTools.Log("Read Mesh Failed!");
+                GeoTools.Log(ex.ToString());
+            }
+           
+            return mesh;
+        }
+
+        public static Texture ReadTexture(string name,string path,bool data)
+        {
+            
+            string filePath = path + "/" + name;
+
+            Texture texture = Prop.TextureFormBundle(filePath);
+
+            try
+            {
+                if (ModIO.ExistsFile(filePath,data))
+                {
+                    texture = ModResource.CreateTextureResource(name, path, data, true).Texture;                
+                }
+            }
+            catch(Exception e)
+            {
+                GeoTools.Log("Read Texture Failed!");
+                GeoTools.Log(e.ToString());
+            }
+
+            return texture;
+        }
+
+        public static AssetBundle ReadAssetBundle(string name, string path, bool data)
+        {
+            string filePath = path + "/" + name;
+
+            AssetBundle assetBundle = new AssetBundle();
+
+            try
+            {
+                if (ModIO.ExistsFile(filePath,data))
+                {
+                    assetBundle = ModResource.CreateAssetBundleResource(name, path, data).AssetBundle;
+                }
+            }
+            catch (Exception e)
+            {
+                GeoTools.Log("Read AssetBundle Failed!");
+                GeoTools.Log(e.ToString());
+            }
+
+            return assetBundle;
+
+        }
+
+        [Obsolete]
         public static List<Mesh> MeshFromLargeObj(string Objname, int FaceCount, SceneFolder scenePack,bool data = false)
         {/////f必须在最后 只支持犀牛导出obj
             List<Mesh> meshes = new List<Mesh>();
@@ -1563,7 +1636,7 @@ namespace BesiegeCustomScene
                 return null;
             }
         }
-
+      
         public static Texture LoadTexture(string TextureName, SceneFolder scenePack,bool data = false)
         {
             string texturePath = scenePack.TexturesPath + "/" + TextureName;
@@ -1571,21 +1644,23 @@ namespace BesiegeCustomScene
             {
                 if (ModIO.ExistsFile(texturePath + ".png",data) || ModIO.ExistsFile(texturePath + ".jpg",data))
                 {
-                    WWW png = new WWW("File:///" + texturePath + ".png");
-                    WWW jpg = new WWW("File:///" + texturePath + ".jpg");
-                    if (png.size > 5)
-                    {
-                        return png.texture;
-                    }
-                    else if (jpg.size > 5)
-                    {
-                        return jpg.texture;
-                    }
-                    else
-                    {
-                        GeoTools.Log("No image in folder or image could not be used!");
-                        return GameObject.Find("FloorBig").GetComponent<Renderer>().material.mainTexture;
-                    }
+                    return ModResource.CreateTextureResource(TextureName, scenePack.TexturesPath, data, true);
+
+                    //WWW png = new WWW("File:///" + texturePath + ".png");
+                    //WWW jpg = new WWW("File:///" + texturePath + ".jpg");
+                    //if (png.size > 5)
+                    //{
+                    //    return png.texture;
+                    //}
+                    //else if (jpg.size > 5)
+                    //{
+                    //    return jpg.texture;
+                    //}
+                    //else
+                    //{
+                    //    GeoTools.Log("No image in folder or image could not be used!");
+                    //    return GameObject.Find("FloorBig").GetComponent<Renderer>().material.mainTexture;
+                    //}
                 }
                 else
                 {
@@ -1598,7 +1673,7 @@ namespace BesiegeCustomScene
                 return GameObject.Find("FloorBig").GetComponent<Renderer>().material.mainTexture;
             }
         }
-
+        [Obsolete]
         public static Mesh WMeshFromObj(string Objname, SceneFolder scenePack,bool data = false)
         {
             List<Vector3> newVertices = new List<Vector3>();
@@ -1695,7 +1770,7 @@ namespace BesiegeCustomScene
             return mesh;
         }
 
-        private static int currentWindowID = int.MaxValue;
+        private static int currentWindowID = int.MaxValue - 10000;
 
         public static int GetWindowID()
         {
@@ -1768,7 +1843,7 @@ namespace BesiegeCustomScene
 
         public static void OpenDirctory(string path,bool data)
         {
-
+            ModIO.OpenFolderInFileBrowser("Scenes", data);
         }
 
     }
