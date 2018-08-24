@@ -38,7 +38,6 @@ namespace BesiegeCustomScene
 
         void Start()
         {
-
             SceneManager.sceneLoaded += (Scene s, LoadSceneMode lsm) =>
             {
                 WorldBoundariesEnable = true;
@@ -46,6 +45,11 @@ namespace BesiegeCustomScene
                 FloorBigEnable = true;
 
                 FogEnable = true;
+
+                if (!GeoTools.IsBuilding())
+                {
+                    ClearEnvironment();
+                }
             };
         }
 

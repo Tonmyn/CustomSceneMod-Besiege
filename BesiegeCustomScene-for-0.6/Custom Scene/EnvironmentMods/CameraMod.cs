@@ -123,12 +123,15 @@ namespace BesiegeCustomScene
             
             GameObject mainCamera = GameObject.Find("Main Camera");
 
-            Camera camera = mainCamera.GetComponent<Camera>();
-            camera.farClipPlane = defultePropertise.farClipPlane;
+            try
+            {
+                Camera camera = mainCamera.GetComponent<Camera>();
+                camera.farClipPlane = defultePropertise.farClipPlane;
 
-            MouseOrbit mouseOrbit = mainCamera.GetComponent<MouseOrbit>();
-            mouseOrbit.focusLerpSmooth = defultePropertise.focusLerpSmooth;
-
+                MouseOrbit mouseOrbit = mainCamera.GetComponent<MouseOrbit>();
+                mouseOrbit.focusLerpSmooth = defultePropertise.focusLerpSmooth;
+            }
+            catch { }
             cameraPropertise = defultePropertise = null;
         }
     }
