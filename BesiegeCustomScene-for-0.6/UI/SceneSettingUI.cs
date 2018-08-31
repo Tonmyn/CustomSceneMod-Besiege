@@ -11,7 +11,7 @@ namespace BesiegeCustomScene.UI
         /// <summary>地图包列表</summary>
         public CustomSceneMod sceneMod;
 
-        public bool ShowGUI = true;
+        public bool showGUI = true;
 
         //public KeyCode DisplaySceneSettingKey = KeyCode.F9;
 
@@ -85,14 +85,14 @@ namespace BesiegeCustomScene.UI
         {
             if (DisplaySceneSettingKey.IsPressed)
             {
-                ShowGUI = !ShowGUI;
+                showGUI = !showGUI;
             }
 
         }
 
         private void OnGUI()
         {
-            if (!StatMaster.levelSimulating && ShowGUI && GeoTools.IsBuilding() && !StatMaster.inMenu)
+            if (!StatMaster.levelSimulating && showGUI && GeoTools.isBuilding() && !StatMaster.inMenu)
             {
                 windowRect = GUI.Window(windowID, windowRect, new GUI.WindowFunction(SceneWindow), LanguageManager.SceneWindowTitle);
             }

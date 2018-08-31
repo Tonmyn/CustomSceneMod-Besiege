@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Modding;
+using Modding.Common;
 using UnityEngine;
 
 namespace BesiegeCustomScene
@@ -41,7 +43,7 @@ namespace BesiegeCustomScene
 
         void FixedUpdate()
         {
-            if (Machine.Active().isSimulating)
+            if (Game.IsSimulating)
             {
                 if (!isFirstFrame)
                 {
@@ -124,7 +126,7 @@ namespace BesiegeCustomScene
                     }
                     v1 = sumVelocity / averageVelocityQueue.Count;
                 }
-                
+
                 Velocity = GetVelocity(v1, velocityUnit);
             }
             else
