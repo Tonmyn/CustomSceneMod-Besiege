@@ -645,8 +645,9 @@ namespace BesiegeCustomScene
         }
         public override void ClearEnvironment()
         {
-
+            
             if (meshObjects == null) return;
+            Debug.Log(meshObjects.Count);
             if (meshObjects.Count <= 0) return;
 #if DEBUG
             GeoTools.Log("Clear Meshes");
