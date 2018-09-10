@@ -7,6 +7,8 @@ using Modding;
 
 namespace BesiegeCustomScene
 {
+
+    [Obsolete]
     public class DataLoader
     {
 

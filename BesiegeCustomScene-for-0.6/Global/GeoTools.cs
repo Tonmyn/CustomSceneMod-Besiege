@@ -1357,21 +1357,32 @@ namespace BesiegeCustomScene
             return mesh;
         }
 
-        public static Texture ReadTexture(string name,string path,bool data)
+        /// <summary>
+        /// 读取贴图
+        /// </summary>
+        /// <param name="name">文件名 包括后缀名</param>
+        /// <param name="path">绝对路径</param>
+        /// <param name="data">data模式</param>
+        /// <returns></returns>
+        private static Texture ReadTexture(string name, string path, bool data)
         {
-            
+
             string filePath = path + "/" + name;
 
-            Texture texture = Prop.TextureFormBundle(filePath);
+            //Texture texture = Prop.TextureFormBundle(filePath);
+            Texture texture = GameObject.Find("FloorBig").GetComponent<Renderer>().material.mainTexture;
+
 
             try
             {
-                if (ModIO.ExistsFile(filePath,data))
+                if (ModIO.ExistsFile(filePath, data))
                 {
-                    texture = ModResource.CreateTextureResource(name, path, data, true).Texture;                
+                    Debug.Log(name + "  " + path);
+                    texture = ModResource.CreateTextureResource(name,filePath, data).Texture as Texture;
+                    Debug.Log(ModResource.CreateTextureResource("", filePath, data).Texture);
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 GeoTools.Log("Read Texture Failed!");
                 GeoTools.Log(e.ToString());
@@ -1640,11 +1651,16 @@ namespace BesiegeCustomScene
         public static Texture LoadTexture(string TextureName, SceneFolder scenePack,bool data = false)
         {
             string texturePath = scenePack.TexturesPath + "/" + TextureName;
+
             try
             {
                 if (ModIO.ExistsFile(texturePath + ".png",data) || ModIO.ExistsFile(texturePath + ".jpg",data))
                 {
-                    return ModResource.CreateTextureResource(TextureName, scenePack.TexturesPath, data, true);
+                    TextureName = ModIO.ExistsFile(texturePath + ".png", data) ? TextureName + ".png" : TextureName + ".jpg";
+                    
+                    return ReadTexture(TextureName, scenePack.TexturesPath, data);
+
+                    //return ModResource.CreateTextureResource(TextureName, scenePack.TexturesPath, data, true);
 
                     //WWW png = new WWW("File:///" + texturePath + ".png");
                     //WWW jpg = new WWW("File:///" + texturePath + ".jpg");
@@ -1667,9 +1683,10 @@ namespace BesiegeCustomScene
                     return Prop.TextureFormBundle(TextureName);
                 }
             }
-            catch
+            catch(Exception e)
             {
                 GeoTools.Log("No image in folder,use white image instead !");
+                GeoTools.Log(e.Message);
                 return GameObject.Find("FloorBig").GetComponent<Renderer>().material.mainTexture;
             }
         }
@@ -1790,6 +1807,11 @@ namespace BesiegeCustomScene
         public static void Log(bool message)
         {
             BesiegeConsoleController.ShowMessage(message.ToString());
+        }
+
+        public static void Log(object message)
+        {
+            Debug.Log(message);
         }
 
         static public bool isBuilding()

@@ -46,7 +46,7 @@ namespace BesiegeCustomScene
 
                 fogEnable = true;
 
-                if (!GeoTools.IsBuilding())
+                if (!GeoTools.isBuilding())
                 {
                     ClearEnvironment();
                 }
@@ -73,13 +73,13 @@ namespace BesiegeCustomScene
             List<SceneFolder> SPs = new List<SceneFolder>() { };
             List<string> scenePaths = new List<string>();
 
-            if (!ModIO.ExistsDirectory("Scenes", true))
+            if (!ModIO.ExistsDirectory("Scenes", data))
             {
-                ModIO.CreateDirectory("Scenes", true);
+                ModIO.CreateDirectory("Scenes", data);
             }
 
-            scenePaths = ModIO.GetDirectories(scenesPacksPath, true).ToList();
-
+            scenePaths = ModIO.GetDirectories(scenesPacksPath, data).ToList();
+           
             foreach (var scenePath in scenePaths)
             {
                 SPs.Add(new SceneFolder(scenePath, data));

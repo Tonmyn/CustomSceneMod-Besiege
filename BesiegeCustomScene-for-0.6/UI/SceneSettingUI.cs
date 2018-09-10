@@ -87,7 +87,6 @@ namespace BesiegeCustomScene.UI
             {
                 showGUI = !showGUI;
             }
-
         }
 
         private void OnGUI()
