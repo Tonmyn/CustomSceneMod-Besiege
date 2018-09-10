@@ -1378,8 +1378,10 @@ namespace BesiegeCustomScene
                 if (ModIO.ExistsFile(filePath, data))
                 {
                     Debug.Log(name + "  " + path);
-                    texture = ModResource.CreateTextureResource(name,filePath, data).Texture as Texture;
-                    Debug.Log(ModResource.CreateTextureResource("", filePath, data).Texture);
+                    ModResource.CreateTextureResource(name, filePath, data);
+                    texture = ModResource.GetTexture(name).Texture;
+                       
+                    Debug.Log(texture);
                 }
             }
             catch (Exception e)
