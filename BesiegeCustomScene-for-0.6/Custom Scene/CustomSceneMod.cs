@@ -1,4 +1,4 @@
-﻿ using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 //using System.IO;
@@ -14,37 +14,37 @@ namespace BesiegeCustomScene
 
     public class CustomSceneMod : MonoBehaviour
     {
-    
+
         /// <summary>地图包路径</summary>
         public static string ScenePacksPath;
         /// <summary>地图包列表</summary>
         public List<SceneFolder> ScenePacks;
 
-        public bool WorldBoundariesEnable = true;
+        public bool worldBoundariesEnable = true;
         public bool FloorBigEnable = true;
-        public bool FogEnable = true;
+        public bool fogEnable = true;
 
         public Action<SceneFolder> ReadSceneEvent;
         public Action LoadSceneEvent;
-        public Action ClearSceneEvent;      
+        public Action ClearSceneEvent;
 
         void Awake()
         {
 
             ScenePacksPath = GeoTools.ScenePackPath;
 
-            ScenePacks = ReadScenePacks(ScenePacksPath,GeoTools.isDataMode);
+            ScenePacks = ReadScenePacks(ScenePacksPath, GeoTools.isDataMode);
         }
 
         void Start()
         {
             SceneManager.sceneLoaded += (Scene s, LoadSceneMode lsm) =>
             {
-                WorldBoundariesEnable = true;
+                worldBoundariesEnable = true;
 
                 FloorBigEnable = true;
 
-                FogEnable = true;
+                fogEnable = true;
 
                 if (!GeoTools.IsBuilding())
                 {
@@ -68,7 +68,7 @@ namespace BesiegeCustomScene
         /// </summary>
         /// <param name="scenesPacksPath">地图包路径</param>
         /// <returns></returns>
-        public List<SceneFolder> ReadScenePacks(string scenesPacksPath,bool data = false)
+        public List<SceneFolder> ReadScenePacks(string scenesPacksPath, bool data = false)
         {
             List<SceneFolder> SPs = new List<SceneFolder>() { };
             List<string> scenePaths = new List<string>();
@@ -82,7 +82,7 @@ namespace BesiegeCustomScene
 
             foreach (var scenePath in scenePaths)
             {
-                SPs.Add(new SceneFolder(scenePath,data));
+                SPs.Add(new SceneFolder(scenePath, data));
             }
 
             SPs = SPs.Distinct(new Compare()).ToList();
@@ -91,12 +91,12 @@ namespace BesiegeCustomScene
 
         public void ReloadScenePacks()
         {
-            ReadScenePacks(ScenePacksPath,true);
+            ReadScenePacks(ScenePacksPath, true);
         }
 
         public void OpenScenesDirectory()
         {
-            GeoTools.OpenDirctory(ScenePacksPath,GeoTools.isDataMode);
+            GeoTools.OpenDirctory(ScenePacksPath, GeoTools.isDataMode);
         }
 
 
@@ -197,7 +197,7 @@ namespace BesiegeCustomScene
 
 
         #region 隐藏/显示地面 空气墙 雾
- 
+
         /// <summary>
         /// 隐藏地面
         /// </summary>
@@ -230,7 +230,7 @@ namespace BesiegeCustomScene
 
                 FloorBigEnable = false;
             }
-            catch{ }
+            catch { }
         }
 
         /// <summary>
@@ -260,52 +260,71 @@ namespace BesiegeCustomScene
         /// </summary>
         public void HideWorldBoundaries()
         {
-
             try
             {
 
                 //单人模式下
                 GameObject WorldBoundaries_Large = GameObject.Find("WORLD BOUNDARIES_LARGE");
 
-                Set_WorldBoundaries(WorldBoundaries_Large);
+                SetWorldBoundaries(WorldBoundaries_Large);
 
             }
             catch (Exception e)
             {
                 GeoTools.Log(e.Message);
-                WorldBoundariesEnable = !WorldBoundariesEnable;
+                worldBoundariesEnable = !worldBoundariesEnable;
             }
 
             try
             {
                 //多人模式下
-                GameObject WorldBoundaries = GameObject.Find("WORLD BOUNDARIES");
+                GameObject worldBoundaries = GameObject.Find("WORLD BOUNDARIES");
+                //Bounds worldBoundaries = new Bounds();
+                //if (WorldBoundaries == null)
+                //{
+                //    Debug.LogError("Can't find level bounds!");
+                //}
+                //Collider[] componentsInChildren = WorldBoundaries.GetComponentsInChildren<Collider>(true);
+                //for (int i = 0; i < componentsInChildren.Length; i++)
+                //{
+                //    Bounds bound = componentsInChildren[i].bounds;
+                //    if (i != 0)
+                //    {
+                //        worldBoundaries.Encapsulate(bound);
+                //    }
+                //    else
+                //    {
+                //        worldBoundaries = bound;
+                //    }
+                //}
+                //worldBoundaries.Expand(worldBoundaries.extents * 2f * 100f);
 
-                Set_WorldBoundaries(WorldBoundaries);
+                //NetworkCompression.SetWorldBounds(worldBoundaries);
+                SetWorldBoundaries(worldBoundaries);
 
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 GeoTools.Log(e.Message);
-                WorldBoundariesEnable = !WorldBoundariesEnable;
+                worldBoundariesEnable = !worldBoundariesEnable;
             }
 
-            void Set_WorldBoundaries(GameObject WorldBoundaries)
+            void SetWorldBoundaries(GameObject WorldBoundaries)
             {
-                WorldBoundariesEnable = !WorldBoundariesEnable;
+                worldBoundariesEnable = !worldBoundariesEnable;
 
                 foreach (BoxCollider BC in WorldBoundaries.GetComponentsInChildren<BoxCollider>())
                 {
-                    BC.isTrigger = !WorldBoundariesEnable;
+                    BC.isTrigger = !worldBoundariesEnable;
                 }
 
                 foreach (Renderer MR in WorldBoundaries.GetComponentsInChildren<Renderer>())
                 {
-                    MR.enabled = WorldBoundariesEnable;
+                    MR.enabled = worldBoundariesEnable;
                 }
-                
+
             }
-         
+
 
         }
 
@@ -314,15 +333,15 @@ namespace BesiegeCustomScene
         /// </summary>
         public void HideFog()
         {
-            FogEnable = !FogEnable;
+            fogEnable = !fogEnable;
 
             try
             {
-                if (SceneManager.GetActiveScene().name == "BARREN EXPANSE"|| (SceneManager.GetActiveScene().name == "MasterSceneMultiplayer" && (Level.GetCurrentLevel().Setup.Name == null || Level.GetCurrentLevel().Setup.Name == "")))
+                if (SceneManager.GetActiveScene().name == "BARREN EXPANSE" || (SceneManager.GetActiveScene().name == "MasterSceneMultiplayer" && (Level.GetCurrentLevel().Setup.Name == null || Level.GetCurrentLevel().Setup.Name == "")))
                 {
 
                     GameObject mainCamera = GameObject.Find("Main Camera");
-                    mainCamera.GetComponent<ColorfulFog>().enabled = FogEnable;
+                    mainCamera.GetComponent<ColorfulFog>().enabled = fogEnable;
                 }
             }
             catch
@@ -331,14 +350,14 @@ namespace BesiegeCustomScene
             try
             {
                 GameObject fogSPHERE = GameObject.Find("FOG SPHERE");
-                fogSPHERE.GetComponent<MeshRenderer>().enabled = FogEnable;
+                fogSPHERE.GetComponent<MeshRenderer>().enabled = fogEnable;
             }
             catch
             { }
 
             try
             {
-                GameObject.Find("Fog Volume").GetComponent<MeshRenderer>().enabled = FogEnable;
+                GameObject.Find("Fog Volume").GetComponent<MeshRenderer>().enabled = fogEnable;
             }
             catch (Exception e)
             {
@@ -349,6 +368,6 @@ namespace BesiegeCustomScene
         #endregion
     }
 
-   
+
 
 }

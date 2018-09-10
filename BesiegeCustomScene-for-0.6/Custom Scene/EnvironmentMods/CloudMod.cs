@@ -185,14 +185,14 @@ namespace BesiegeCustomScene
 
         void Update()
         {
-            if (Input.GetKeyDown(KeyCode.T))
-            {
-                BesiegeConsoleController.ShowMessage(":??");
+            //if (Input.GetKeyDown(KeyCode.T))
+            //{
+            //    BesiegeConsoleController.ShowMessage(":??");
 
 
-                Level.GetCurrentLevel().AddEntity(8003, Vector3.up * 10, transform.rotation, Vector3.one * 3);
+            //    Level.GetCurrentLevel().AddEntity(8003, Vector3.up * 10, transform.rotation, Vector3.one * 3);
                
-            }
+            //}
         }
 
     }
