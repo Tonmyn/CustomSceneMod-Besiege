@@ -1,4 +1,5 @@
-﻿using Modding;
+﻿using Localisation;
+using Modding;
 using System;
 using System.Collections.Generic;
 //using System.IO;
@@ -10,7 +11,7 @@ namespace BesiegeCustomScene
     public class LanguageManager : MonoBehaviour
     {
 
-        public static readonly bool isChinese = (Application.systemLanguage == SystemLanguage.Chinese);
+        public static readonly bool isChinese = LocalisationManager.Instance.currLangName == "简体中文";
 
         //Mini Map
         public static String MiniMapTitle = isChinese ? "小地图" : "Mini Map";

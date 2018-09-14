@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 
 namespace BesiegeCustomScene
 {
+
     public class Prop : MonoBehaviour
     {
 
@@ -45,11 +46,8 @@ namespace BesiegeCustomScene
         {
             try
             {
-
-
                 //GameObject ObjectTemp = (GameObject)Instantiate(transform.Find(ObjectName).gameObject);
-                GameObject ObjectTemp = PrefabMaster.GetPrefab(StatMaster.Category.Weather, 2).transform.FindChild(ObjectName).gameObject;
-
+                GameObject ObjectTemp = Instantiate(PrefabMaster.GetPrefab(StatMaster.Category.Weather, 2).transform.FindChild(ObjectName).gameObject);
 
 
                 ObjectTemp.name = ObjectName + " Temp";

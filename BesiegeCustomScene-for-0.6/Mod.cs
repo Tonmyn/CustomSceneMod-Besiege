@@ -16,15 +16,11 @@ namespace BesiegeCustomScene
 
             string Version = "1.10.10";
 
-            //添加MOD更新推送功能
-            //new GameObject("Mod更新组件").AddComponent<Updater>().SetUrl("XultimateX", Name);
-
             Mod = new GameObject
             {
                 name = string.Format("{0} {1}", DisplayName, Version)
             };
 
-            //Mod.AddComponent<SettingsManager>();
             Mod.AddComponent<Prop>();
 
             GameObject customScene = new GameObject("CustomScene");
