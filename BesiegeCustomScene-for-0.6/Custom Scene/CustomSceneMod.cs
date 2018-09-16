@@ -46,7 +46,7 @@ namespace BesiegeCustomScene
 
                 fogEnable = true;
 
-                if (!GeoTools.isBuilding())
+                if (!GeoTools.IsBuilding())
                 {
                     ClearEnvironment();
                 }

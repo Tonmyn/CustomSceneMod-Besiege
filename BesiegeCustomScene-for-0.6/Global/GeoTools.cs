@@ -1094,7 +1094,7 @@ namespace BesiegeCustomScene
         }
         */
 
-        [Obsolete]
+        
         public static Mesh MeshFromObj(string Objname, SceneFolder scenePack,bool data = false)
         {
             List<Vector3> Normals = new List<Vector3>();
@@ -1334,7 +1334,7 @@ namespace BesiegeCustomScene
             }
             return mesh;
         }
-
+        [Obsolete]
         public static Mesh ReadMesh(string name,string path,bool data)
         {           
             string filePath = path + "/" + name;
@@ -1356,7 +1356,7 @@ namespace BesiegeCustomScene
            
             return mesh;
         }
-
+        [Obsolete]
         /// <summary>
         /// 读取贴图
         /// </summary>
@@ -1392,7 +1392,7 @@ namespace BesiegeCustomScene
 
             return texture;
         }
-
+        [Obsolete]
         public static AssetBundle ReadAssetBundle(string name, string path, bool data)
         {
             string filePath = path + "/" + name;
@@ -1416,7 +1416,6 @@ namespace BesiegeCustomScene
 
         }
 
-        [Obsolete]
         public static List<Mesh> MeshFromLargeObj(string Objname, int FaceCount, SceneFolder scenePack,bool data = false)
         {/////f必须在最后 只支持犀牛导出obj
             List<Mesh> meshes = new List<Mesh>();
@@ -1658,10 +1657,10 @@ namespace BesiegeCustomScene
             {
                 if (ModIO.ExistsFile(texturePath + ".png",data) || ModIO.ExistsFile(texturePath + ".jpg",data))
                 {
-                    TextureName = ModIO.ExistsFile(texturePath + ".png", data) ? TextureName + ".png" : TextureName + ".jpg";
-                    
-                    return ReadTexture(TextureName, scenePack.TexturesPath, data);
+                    TextureName = ModIO.ExistsFile(texturePath + ".png", data) ? texturePath + ".png" : texturePath + ".jpg";
 
+                    //return ReadTexture(TextureName, scenePack.TexturesPath, data);
+                    return ReadTexture2D(TextureName, Vector2.one * 500f, data);
                     //return ModResource.CreateTextureResource(TextureName, scenePack.TexturesPath, data, true);
 
                     //WWW png = new WWW("File:///" + texturePath + ".png");
@@ -1692,7 +1691,7 @@ namespace BesiegeCustomScene
                 return GameObject.Find("FloorBig").GetComponent<Renderer>().material.mainTexture;
             }
         }
-        [Obsolete]
+
         public static Mesh WMeshFromObj(string Objname, SceneFolder scenePack,bool data = false)
         {
             List<Vector3> newVertices = new List<Vector3>();
@@ -1796,27 +1795,12 @@ namespace BesiegeCustomScene
             return currentWindowID--;
         }
 
-        public static void Log(string message)
-        {
-            BesiegeConsoleController.ShowMessage(message);
-        }
-
-        public static void Log(int message)
-        {
-            BesiegeConsoleController.ShowMessage(message.ToString());
-        }
-
-        public static void Log(bool message)
-        {
-            BesiegeConsoleController.ShowMessage(message.ToString());
-        }
-
         public static void Log(object message)
         {
             Debug.Log(message);
         }
 
-        static public bool isBuilding()
+        static public bool IsBuilding()
         {
             List<string> scene = new List<string> { "INITIALISER", "TITLE SCREEN", "LevelSelect", "LevelSelect1", "LevelSelect2", "LevelSelect3" };
 
