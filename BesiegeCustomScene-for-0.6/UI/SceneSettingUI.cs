@@ -71,10 +71,10 @@ namespace BesiegeCustomScene.UI
             go.AddComponent<CameraMod>().transform.SetParent(transform);
             go = new GameObject("Mesh Mod");
             go.AddComponent<MeshMod>().transform.SetParent(transform);
-            go = new GameObject("Snow Mod");
-            go.AddComponent<SnowMod>().transform.SetParent(transform);
-            go = new GameObject("Cloud Mod");
-            go.AddComponent<CloudMod>().transform.SetParent(transform);
+            //go = new GameObject("Snow Mod");
+            //go.AddComponent<SnowMod>().transform.SetParent(transform);
+            //go = new GameObject("Cloud Mod");
+            //go.AddComponent<CloudMod>().transform.SetParent(transform);
             go = new GameObject("Water Mod");
             go.AddComponent<WaterMod>().transform.SetParent(transform);
             go = new GameObject("Sky Mod");
@@ -91,7 +91,7 @@ namespace BesiegeCustomScene.UI
 
         private void OnGUI()
         {
-            if (!StatMaster.levelSimulating && showGUI && GeoTools.isBuilding() && !StatMaster.inMenu)
+            if (!StatMaster.levelSimulating && showGUI && GeoTools.IsBuilding() && !StatMaster.inMenu)
             {
                 windowRect = GUI.Window(windowID, windowRect, new GUI.WindowFunction(SceneWindow), LanguageManager.SceneWindowTitle);
             }

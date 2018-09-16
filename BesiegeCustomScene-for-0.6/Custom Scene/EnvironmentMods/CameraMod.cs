@@ -13,9 +13,7 @@ namespace BesiegeCustomScene
         /// <summary>摄像头设置参数</summary>
         public CameraPropertise cameraPropertise;
 
-        /// <summary>
-        /// 默认的摄像头参数  储存原先的摄像头参数
-        /// </summary>
+        /// <summary>默认的摄像头参数  储存原先的摄像头参数</summary>
         public CameraPropertise defultePropertise;
 
         /// <summary>摄像头属性</summary>
