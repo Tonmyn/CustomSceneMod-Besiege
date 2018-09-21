@@ -79,7 +79,7 @@ namespace BesiegeCustomScene
             }
 
             scenePaths = ModIO.GetDirectories(scenesPacksPath, data).ToList();
-           
+
             foreach (var scenePath in scenePaths)
             {
                 SPs.Add(new SceneFolder(scenePath, data));
@@ -334,6 +334,8 @@ namespace BesiegeCustomScene
         public void HideFog()
         {
             fogEnable = !fogEnable;
+
+            Camera.main.farClipPlane = fogEnable ? 1500 : 150000;
 
             try
             {
