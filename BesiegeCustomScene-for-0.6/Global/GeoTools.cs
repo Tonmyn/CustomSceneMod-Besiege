@@ -1,7 +1,7 @@
 ﻿using Modding;
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.IO;
@@ -1854,5 +1854,38 @@ namespace BesiegeCustomScene
             ModIO.OpenFolderInFileBrowser("Scenes", data);
         }
 
+
+        public static class ResourceLoader
+        {
+
+
+            //public static IEnumerator LoadTexture(string name,SceneFolder sceneFolder,bool data = false)
+            //{
+            //    string texturePath = sceneFolder.TexturesPath + "/" + name;
+            //    name = ModIO.ExistsFile(texturePath + ".png", data) ? texturePath + ".png" : texturePath + ".jpg";
+
+            //    ModTexture texture = ModResource.CreateTextureResource("tex", name, data, true);
+            //    Debug.Log("图片开始读取...");
+
+            //    yield return  texture.Loaded;
+
+            //    Debug.Log("图片读取成功...");
+            //}
+
+
+            public static ModTexture LoadTexture(string name, SceneFolder sceneFolder, bool data = false)
+            {
+                string texturePath = sceneFolder.TexturesPath + "/" + name;
+                name = ModIO.ExistsFile(texturePath + ".png", data) ? texturePath + ".png" : texturePath + ".jpg";
+
+                ModTexture texture = ModResource.CreateTextureResource("tex1", name, data, true);
+                Debug.Log("图片开始读取...");
+
+                return texture;
+                //yield return texture.Loaded;
+
+                //Debug.Log("图片读取成功...");
+            }
+        }
     }
 }

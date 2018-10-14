@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
 //using System.IO;
 using System.Text;
 using UnityEngine;
 using UnityEngine.Rendering;
+using Modding;
 
 namespace BesiegeCustomScene
 {
@@ -406,9 +408,16 @@ namespace BesiegeCustomScene
                             }
                             else if (chara[2] == "texture")
                             {
-                                meshObjects[i].GetComponent<MeshRenderer>().material.mainTexture = GeoTools.LoadTexture(chara[3], scenePack, GeoTools.isDataMode);
-                                //meshes[i].GetComponent<MeshRenderer>().material.shader = Shader.Find("Standard"); 
-                                //meshes[i].GetComponent<MeshRenderer>().material.SetFloat("_Glossiness", 1);//1是smoothness最高
+                                //meshObjects[i].GetComponent<MeshRenderer>().material.mainTexture = GeoTools.LoadTexture(chara[3], scenePack, GeoTools.isDataMode);
+
+                                //StartCoroutine(GeoTools.ResourceLoader.LoadTexture(chara[3],scenePack,GeoTools.isDataMode));
+
+                                StartCoroutine(settex(meshObjects[i], chara[3], scenePack, GeoTools.isDataMode));
+
+                                //meshObjects[i].GetComponent<MeshRenderer>().material.mainTexture = ModResource.GetTexture("tex1");
+
+                                    //meshes[i].GetComponent<MeshRenderer>().material.shader = Shader.Find("Standard"); 
+                                    //meshes[i].GetComponent<MeshRenderer>().material.SetFloat("_Glossiness", 1);//1是smoothness最高
                             }
                             else if (chara[2] == "etexture")
                             {
@@ -712,6 +721,22 @@ namespace BesiegeCustomScene
         //        GeoTools.Log(ex.ToString());
         //    }
         //}
+
+        private IEnumerator settex(GameObject gameObject, string name,SceneFolder sceneFolder,bool data = false)
+        {
+            ModTexture texture = GeoTools.ResourceLoader.LoadTexture(name, sceneFolder, GeoTools.isDataMode);
+
+            yield return texture.Loaded;
+
+            gameObject.GetComponent<MeshRenderer>().material.mainTexture = ModResource.GetTexture("tex1") /*texture.Texture*/;
+
+            gameObject.GetComponent<MeshRenderer>().material.mainTexture = texture.Texture;
+
+            //gameObject.GetComponent<MeshRenderer>().material.mainTexture = GeoTools.LoadTexture(name, sceneFolder, GeoTools.isDataMode);
+
+            Debug.Log("设置图片 " + texture.Available);
+
+        }
 
     }
 }
