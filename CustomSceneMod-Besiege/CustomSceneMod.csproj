@@ -7,8 +7,8 @@
     <ProjectGuid>{6A16F1F7-31C2-4CAE-9FD3-0C56BBD29757}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BesiegeCustomScene</RootNamespace>
-    <AssemblyName>BesiegeCustomSceneMod</AssemblyName>
+    <RootNamespace>CustomScene</RootNamespace>
+    <AssemblyName>CustomSceneMod</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -92,12 +92,12 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy /Y "$(TargetPath)" "%25BESIEGE_LOCATION%25\Besiege_Data\Mods\$(TargetName)\$(TargetName).dll"
-copy /Y "$(ProjectDir)Resource\Settings.txt" "%25BESIEGE_LOCATION%25\Besiege_Data\Mods\$(TargetName)\Settings.txt"
-copy /Y "$(ProjectDir)Resources\CHN.txt" "%25BESIEGE_LOCATION%25\Besiege_Data\Mods\$(TargetName)\UI\CHN.txt"
-copy /Y "$(ProjectDir)Resources\EN.txt" "%25BESIEGE_LOCATION%25\Besiege_Data\Mods\$(TargetName)\UI\EN.txt"
-copy /Y "$(ProjectDir)Resources\icon.png" "%25BESIEGE_LOCATION%25\Besiege_Data\Mods\$(TargetName)\Resources\icon.png"
-copy /Y "$(ProjectDir)XML\Mod.xml" "%25BESIEGE_LOCATION%25\Besiege_Data\Mods\$(TargetName)\Mod.xml"</PostBuildEvent>
+    <PostBuildEvent>copy /Y "$(TargetPath)" "F:\Game\Besiege\Besiege.v0.80\Besiege_Data\Mods\$(TargetName)\$(TargetName).dll"
+copy /Y "$(ProjectDir)Resource\Settings.txt" "F:\Game\Besiege\Besiege.v0.80\Besiege_Data\Mods\$(TargetName)\Settings.txt"
+copy /Y "$(ProjectDir)Resources\CHN.txt" "F:\Game\Besiege\Besiege.v0.80\Besiege_Data\Mods\$(TargetName)\UI\CHN.txt"
+copy /Y "$(ProjectDir)Resources\EN.txt" "F:\Game\Besiege\Besiege.v0.80\Besiege_Data\Mods\$(TargetName)\UI\EN.txt"
+copy /Y "$(ProjectDir)Resources\icon.png" "F:\Game\Besiege\Besiege.v0.80\Besiege_Data\Mods\$(TargetName)\Resources\icon.png"
+copy /Y "$(ProjectDir)XML\Mod.xml" "F:\Game\Besiege\Besiege.v0.80\Besiege_Data\Mods\$(TargetName)\Mod.xml"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <StartAction>Program</StartAction>
