@@ -6,10 +6,10 @@
 	-->
 
 	<!-- General information about the mod. -->
-	<Name>Besiege Custom Scene Mod</Name>
+	<Name>Custom Scene Mod</Name>
 	<Author>zian, XultimateX, OrzPX</Author> <!-- FIX: Insert your name here. -->
 	<!-- Major.Minor.Build -->
-	<Version>1.10.10</Version>
+	<Version>2.0.0</Version>
 	
 	<Description>
     You can create custom scene and use it <!-- FIX: Insert a short description here. -->
@@ -34,7 +34,7 @@
 		 It is generally recommended to turn this on while developing the mod, but keep it off for any releases.
 		 
 		 Note: This value is independent of the Debug values for specific Blocks and Entities.-->
-	<Debug>false</Debug>
+	<Debug>true</Debug>
 	
 	<!-- Whether the mod can be used in MP or only in SP.
 		 SP-only mods are easier to write but obviously more limited in their uses.
@@ -74,7 +74,7 @@
 		 BlockScripts for your blocks (if any) will be searched for in these assemblies.
 		 The path attribute is relative to the location of this file. -->
 	<Assemblies>
-		<Assembly path="BesiegeCustomSceneMod.dll" />
+		<Assembly path="CustomSceneMod.dll" />
 	</Assemblies>
 
   <Keys>
