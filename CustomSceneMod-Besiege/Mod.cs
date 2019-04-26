@@ -55,14 +55,17 @@ namespace BesiegeCustomScene
             public string SceneName { get; set; }
             [Modding.Serialization.CanBeEmpty]
             public string Author { get; set; }
+            [Modding.Serialization.CanBeEmpty]
             public testClass2 testClass2 { get; set; }
 
 
             public override string ToString()
             {
                 string str = "";
-
-                str = string.Format("{0}-{1}\n{2}", SceneName, Author, testClass2);
+                if (testClass2 != null)
+                    str = string.Format("{0}-{1}\n{2}", SceneName, Author, testClass2.ToString());
+                else
+                    str = string.Format("{0}-{1}\n{2}", SceneName, Author, "null");
 
                 return str;
             }
@@ -97,9 +100,9 @@ namespace BesiegeCustomScene
             ts = new testClass();
             ts.SceneName = "test map";
             ts.Author = "ltm";
-            ts.testClass2 = new testClass2();
-            ts.testClass2.matName = "mat name";
-            ts.testClass2.matType = "shader";
+            //ts.testClass2 = new testClass2();
+            //ts.testClass2.matName = "mat name";
+            //ts.testClass2.matType = "shader";
             //ts.testClass2.material = new Material(Shader.Find("diffuse"));
         }
 
