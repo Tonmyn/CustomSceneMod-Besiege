@@ -7,15 +7,17 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace BesiegeCustomScene
+namespace CustomScene
 {
-    class SkyMod : EnvironmentMod
+    class SkyMod : EnvironmentMod<SkyPropertise>
     {
 
 
         GameObject skySphere;
         GameObject starSphere;
         SkyPropertise skyPropertise;
+
+        public override CustomScene.SkyPropertise Propertise => throw new NotImplementedException();
 
         class SkyPropertise
         {
@@ -104,7 +106,7 @@ namespace BesiegeCustomScene
             //{
             //    Destroy(skySphere.transform.GetChild(i).gameObject);
             //}
-            Destroy(skySphere);
+            UnityEngine.Object.Destroy(skySphere);
 
         }
 
@@ -114,7 +116,7 @@ namespace BesiegeCustomScene
 
             GameObject a = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             mesh = a.GetComponent<MeshFilter>().mesh;
-            Destroy(a);
+            UnityEngine.Object.Destroy(a);
             return mesh;
             //skyBallMesh = GeoTools.MeshFromObj(skyBoxMeshPath, true);
         }
@@ -155,7 +157,7 @@ namespace BesiegeCustomScene
         GameObject CreateSkyObject(SkyPropertise skyPropertise)
         {
             GameObject go = new GameObject("SKY SPHERE");
-            go.transform.SetParent(transform);
+            go.transform.SetParent(Mod.ModObject.GetComponent<CustomSceneMod>().transform);
 
             try
             {         
@@ -210,6 +212,15 @@ namespace BesiegeCustomScene
         //    //double time = (double)Time.time - startTime;
         //    //Debug.Log("IO加载用时：" + time);
         //}
+    }
+
+    public class SkyPropertise : EnvironmentPropertise
+    {
+        public Mesh Mesh;
+        public Texture Texture;
+        public Vector2 TextureSize;
+        public string TexturePath;
+
     }
 
     public class CameraFollower : MonoBehaviour

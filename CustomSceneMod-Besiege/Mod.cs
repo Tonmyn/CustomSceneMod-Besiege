@@ -3,14 +3,18 @@ using Modding;
 using System.Collections.Generic;
 using System;
 
-namespace BesiegeCustomScene
+namespace CustomScene
 {
 
 
-    public class BesiegeCustomSceneMod : ModEntryPoint
+    public class Mod : ModEntryPoint
     {
         
-        public static GameObject Mod;
+        public static GameObject ModObject;
+
+        public static CustomSceneMod customSceneMod;
+        public static BlockInformationMod blockInformationMod;
+        public static TimerMod timerMod;
 
         public override void OnLoad()
         {
@@ -18,29 +22,31 @@ namespace BesiegeCustomScene
 
             string Version = "2.0.0";
 
-            Mod = new GameObject
+            ModObject = new GameObject
             {
                 name = string.Format("{0} {1}", DisplayName, Version)
             };
 
-            Mod.AddComponent<Prop>();Mod.AddComponent<test>();
+            ModObject.AddComponent<Prop>();ModObject.AddComponent<test>();
 
             GameObject customScene = new GameObject("CustomScene");
             customScene.AddComponent<UI.SceneSettingUI>();
-            customScene.transform.SetParent(Mod.transform);
+            customScene.transform.SetParent(ModObject.transform);
 
             GameObject toolbox = new GameObject("ToolBox");
             toolbox.AddComponent<UI.ToolBoxSettingUI>();
-            toolbox.transform.SetParent(Mod.transform);
+            toolbox.transform.SetParent(ModObject.transform);
 
             //GameObject miniMap = new GameObject("Mini Map");
             //miniMap.AddComponent<UI.MiniMapSettingUI>();
             //miniMap.transform.SetParent(Mod.transform);
 
-            UnityEngine.Object.DontDestroyOnLoad(Mod);
+            UnityEngine.Object.DontDestroyOnLoad(ModObject);
 
         }
     }
+
+
 
    public class test :MonoBehaviour
     {

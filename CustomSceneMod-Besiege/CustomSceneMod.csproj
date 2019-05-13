@@ -31,8 +31,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="BaseFileClass\LanguageFile.cs" />
-    <Compile Include="BaseFileClass\SceneFolder.cs" />
-    <Compile Include="BaseFileClass\SettingFile.cs" />
+    <Compile Include="BaseFileClass\Scene\SceneFolder.cs" />
+    <Compile Include="BaseFileClass\Scene\SceneSettingFile.cs" />
+    <Compile Include="BaseFileClass\ModSettingFile.cs" />
     <Compile Include="Custom Scene\EnvironmentMod.cs" />
     <Compile Include="Custom Scene\EnvironmentMods\CameraMod.cs" />
     <Compile Include="Global\DataLoader.cs" />
@@ -92,12 +93,12 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy /Y "$(TargetPath)" "F:\Game\Besiege\Besiege.v0.80\Besiege_Data\Mods\$(TargetName)\$(TargetName).dll"
-copy /Y "$(ProjectDir)Resource\Settings.txt" "F:\Game\Besiege\Besiege.v0.80\Besiege_Data\Mods\$(TargetName)\Settings.txt"
-copy /Y "$(ProjectDir)Resources\CHN.txt" "F:\Game\Besiege\Besiege.v0.80\Besiege_Data\Mods\$(TargetName)\UI\CHN.txt"
-copy /Y "$(ProjectDir)Resources\EN.txt" "F:\Game\Besiege\Besiege.v0.80\Besiege_Data\Mods\$(TargetName)\UI\EN.txt"
-copy /Y "$(ProjectDir)Resources\icon.png" "F:\Game\Besiege\Besiege.v0.80\Besiege_Data\Mods\$(TargetName)\Resources\icon.png"
-copy /Y "$(ProjectDir)XML\Mod.xml" "F:\Game\Besiege\Besiege.v0.80\Besiege_Data\Mods\$(TargetName)\Mod.xml"</PostBuildEvent>
+    <PostBuildEvent>copy /Y "$(TargetPath)" "F:\Games\Besiege\v.0.8-beta\Besiege_Data\Mods\$(TargetName)\$(TargetName).dll"
+copy /Y "$(ProjectDir)Resource\Settings.txt" "F:\Games\Besiege\v.0.8-beta\Besiege_Data\Mods\$(TargetName)\Settings.txt"
+copy /Y "$(ProjectDir)Resources\CHN.txt" "F:\Games\Besiege\v.0.8-beta\Besiege_Data\Mods\$(TargetName)\UI\CHN.txt"
+copy /Y "$(ProjectDir)Resources\EN.txt" "F:\Games\Besiege\v.0.8-beta\Besiege_Data\Mods\$(TargetName)\UI\EN.txt"
+copy /Y "$(ProjectDir)Resources\icon.png" "F:\Games\Besiege\v.0.8-beta\Besiege_Data\Mods\$(TargetName)\Resources\icon.png"
+copy /Y "$(ProjectDir)XML\Mod.xml" "F:\Games\Besiege\v.0.8-beta\Besiege_Data\Mods\$(TargetName)\Mod.xml"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <StartAction>Program</StartAction>

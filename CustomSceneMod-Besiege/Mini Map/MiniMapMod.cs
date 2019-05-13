@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace BesiegeCustomScene
+namespace CustomScene
 {
     public class MiniMapMod : MonoBehaviour
     {

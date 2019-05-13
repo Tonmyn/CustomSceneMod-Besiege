@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace BesiegeCustomScene
+namespace CustomScene
 {
-    class CameraMod : EnvironmentMod
+    class CameraMod : EnvironmentMod<CameraPropertise>
     {
         
 
@@ -17,15 +17,18 @@ namespace BesiegeCustomScene
         public CameraPropertise defultePropertise;
 
         /// <summary>摄像头属性</summary>
-        public class CameraPropertise
-        {
-            public float farClipPlane = 4500f;
-            public float focusLerpSmooth = 8f;
-            //public bool fog;
-            public bool SSAO;
+        //public class CameraPropertise
+        //{
+        //    public float farClipPlane = 4500f;
+        //    public float focusLerpSmooth = 8f;
+        //    //public bool fog;
+        //    public bool SSAO;
 
-            //public static SceneSetting None { get; } = new SceneSetting { farClipPlane = 3000, focusLerpSmooth = 100, fog = Vector3.one, SSAO = false };
-        }
+        //    //public static SceneSetting None { get; } = new SceneSetting { farClipPlane = 3000, focusLerpSmooth = 100, fog = Vector3.one, SSAO = false };
+        //}
+
+        public override CameraPropertise Propertise => throw new NotImplementedException();
+
 
         public override void ReadEnvironment(SceneFolder scenePack)
         {
@@ -133,4 +136,21 @@ namespace BesiegeCustomScene
             cameraPropertise = defultePropertise = null;
         }
     }
+
+    public class CameraPropertise : EnvironmentPropertise
+    {
+        public float farClipPlane { get; set; } = 4500f;
+        public float focusLerpSmooth { get; set; } = 8f;
+        //public bool fog;
+        public bool SSAO { get; set; }
+
+        //public static SceneSetting None { get; } = new SceneSetting { farClipPlane = 3000, focusLerpSmooth = 100, fog = Vector3.one, SSAO = false };
+
+        public CameraPropertise()
+        {
+
+
+        }
+    }
+
 }

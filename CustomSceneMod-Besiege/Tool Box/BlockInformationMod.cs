@@ -6,9 +6,9 @@ using Modding;
 using Modding.Common;
 using UnityEngine;
 
-namespace BesiegeCustomScene
+namespace CustomScene
 {
-    class BlockInformationMod : MonoBehaviour
+    public class BlockInformationMod : MonoBehaviour
     {
 
         public enum VelocityUnit

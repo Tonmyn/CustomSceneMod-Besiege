@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace BesiegeCustomScene
+namespace CustomScene
 {
-    class TimerMod : MonoBehaviour
+    public class TimerMod : MonoBehaviour
     {
 
         

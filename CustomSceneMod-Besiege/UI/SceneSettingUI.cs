@@ -4,7 +4,7 @@ using UnityEngine;
 using Modding;
 using System.Reflection;
 
-namespace BesiegeCustomScene.UI
+namespace CustomScene.UI
 {
     class SceneSettingUI : MonoBehaviour
     {
@@ -52,33 +52,33 @@ namespace BesiegeCustomScene.UI
 
         void InitSceneMod()
         {
-            sceneMod = gameObject.AddComponent<CustomSceneMod>();
+            //sceneMod = gameObject.AddComponent<CustomSceneMod>();
 
-            OnSceneButtonClick += sceneMod.LoadScenePack;
+            //OnSceneButtonClick += sceneMod.LoadScenePack;
 
-            OnFogButtonClick += sceneMod.HideFog;
+            //OnFogButtonClick += sceneMod.HideFog;
 
-            OnFloorButtonClick += sceneMod.HideFloorBig;
+            //OnFloorButtonClick += sceneMod.HideFloorBig;
 
-            OnWorldBoundsButtonClick += sceneMod.HideWorldBoundaries;
+            //OnWorldBoundsButtonClick += sceneMod.HideWorldBoundaries;
 
-            OnReloadScenesButtonClick += sceneMod.ReloadScenePacks;
+            //OnReloadScenesButtonClick += sceneMod.ReloadScenePacks;
 
-            OnOpenScenePacksDirectoryButtonClick += sceneMod.OpenScenesDirectory;
+            //OnOpenScenePacksDirectoryButtonClick += sceneMod.OpenScenesDirectory;
 
-            GameObject go; 
-            go = new GameObject("Camera Mod");
-            go.AddComponent<CameraMod>().transform.SetParent(transform);
-            go = new GameObject("Mesh Mod");
-            go.AddComponent<MeshMod>().transform.SetParent(transform);
-            //go = new GameObject("Snow Mod");
-            //go.AddComponent<SnowMod>().transform.SetParent(transform);
-            //go = new GameObject("Cloud Mod");
-            //go.AddComponent<CloudMod>().transform.SetParent(transform);
-            go = new GameObject("Water Mod");
-            go.AddComponent<WaterMod>().transform.SetParent(transform);
-            go = new GameObject("Sky Mod");
-            go.AddComponent<SkyMod>().transform.SetParent(transform);
+            //GameObject go; 
+            //go = new GameObject("Camera Mod");
+            //go.AddComponent<CameraMod>().transform.SetParent(transform);
+            //go = new GameObject("Mesh Mod");
+            //go.AddComponent<MeshMod>().transform.SetParent(transform);
+            ////go = new GameObject("Snow Mod");
+            ////go.AddComponent<SnowMod>().transform.SetParent(transform);
+            ////go = new GameObject("Cloud Mod");
+            ////go.AddComponent<CloudMod>().transform.SetParent(transform);
+            //go = new GameObject("Water Mod");
+            //go.AddComponent<WaterMod>().transform.SetParent(transform);
+            //go = new GameObject("Sky Mod");
+            //go.AddComponent<SkyMod>().transform.SetParent(transform);
         }
 
         private void Update()

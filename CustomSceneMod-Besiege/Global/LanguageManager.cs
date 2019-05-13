@@ -2,7 +2,7 @@
 using System;
 using UnityEngine;
 
-namespace BesiegeCustomScene
+namespace CustomScene
 {
     public class LanguageManager : MonoBehaviour
     {

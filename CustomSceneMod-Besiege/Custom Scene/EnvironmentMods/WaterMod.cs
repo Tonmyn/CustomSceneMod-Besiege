@@ -4,15 +4,17 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-namespace BesiegeCustomScene
+namespace CustomScene
 {
-    public class WaterMod : EnvironmentMod
+    public class WaterMod : EnvironmentMod<WaterPropertise>
     {
  
         private List<GameObject> waterObjects;
         private int WaterSize = 0;
 
         List<WaterPropertise> waterPropertise;
+
+        public override CustomScene.WaterPropertise Propertise => throw new NotImplementedException();
 
         class WaterPropertise
         {
@@ -60,11 +62,11 @@ namespace BesiegeCustomScene
                             {
                                 if (Convert.ToInt32(chara[2]) == 0)
                                 {
-                                    BesiegeCustomSceneMod.Mod.GetComponent<Prop>().WaterTemp.SetActive(false);
+                                    Mod.ModObject.GetComponent<Prop>().WaterTemp.SetActive(false);
                                 }
                                 else
                                 {
-                                    BesiegeCustomSceneMod.Mod.GetComponent<Prop>().WaterTemp.SetActive(true);
+                                    Mod.ModObject.GetComponent<Prop>().WaterTemp.SetActive(true);
                                 }
                             }
                         }
@@ -121,7 +123,7 @@ namespace BesiegeCustomScene
         {
             try
             {        
-                if (BesiegeCustomSceneMod.Mod.GetComponent<Prop>().TileTemp == null) return;
+                if (Mod.ModObject.GetComponent<Prop>().TileTemp == null) return;
                 
                 if (WaterSize <= 0)
                 {
@@ -160,17 +162,17 @@ namespace BesiegeCustomScene
 #endif
             try
             {
-                BesiegeCustomSceneMod.Mod.GetComponent<Prop>().WaterTemp.SetActive(false);
+                Mod.ModObject.GetComponent<Prop>().WaterTemp.SetActive(false);
             }
             catch { }
             try
             {
-                Destroy(GameObject.Find("WaterTempReflectionMain Camera"));
+                UnityEngine.Object.Destroy(GameObject.Find("WaterTempReflectionMain Camera"));
             }
             catch { }
             for (int i = 0; i < waterObjects.Count; i++)
             {
-                Destroy(waterObjects[i]);
+                UnityEngine.Object.Destroy(waterObjects[i]);
             }
 
             waterObjects = null;
@@ -180,10 +182,10 @@ namespace BesiegeCustomScene
 
         GameObject CreateWaterObject(WaterPropertise waterPropertise)
         {
-            GameObject go = Instantiate(BesiegeCustomSceneMod.Mod.GetComponent<Prop>().TileTemp);
+            GameObject go = UnityEngine.Object.Instantiate(Mod.ModObject.GetComponent<Prop>().TileTemp);
             go.name = "Water Object";
             go.SetActive(true);
-            go.transform.SetParent(transform);
+            go.transform.SetParent(Mod.customSceneMod.transform);
             go.transform.localScale = waterPropertise.scale;
             go.transform.localPosition = waterPropertise.position;
 
@@ -229,7 +231,7 @@ namespace BesiegeCustomScene
                 {
                     if (info.gameObject.GetComponent<Floater>() != null)
                     {
-                        Destroy(info.gameObject.GetComponent<Floater>());
+                        UnityEngine.Object.Destroy(info.gameObject.GetComponent<Floater>());
                         sign = true;
                     }
                 }
@@ -240,6 +242,17 @@ namespace BesiegeCustomScene
                 GeoTools.Log("Error! ClearFloater Failed");
             }
         }
+    }
+
+    public class WaterPropertise : EnvironmentPropertise
+    {
+        public Mesh mesh = new Mesh();
+
+        public Vector3 position = Vector3.zero;
+
+        public Vector3 scale = Vector3.one;
+
+        public MeshCollider meshCollider = new MeshCollider();
     }
 
     public class Floater : MonoBehaviour

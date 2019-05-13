@@ -5,7 +5,7 @@ using System.Text;
 using UnityEngine;
 using Modding;
 
-namespace BesiegeCustomScene
+namespace CustomScene
 {
 
     [Obsolete]
@@ -141,6 +141,11 @@ namespace BesiegeCustomScene
         }
 
 
+
+    }
+
+    public class XML_Loader
+    {
 
     }
 }

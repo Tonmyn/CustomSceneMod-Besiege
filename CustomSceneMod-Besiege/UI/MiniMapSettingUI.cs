@@ -5,7 +5,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace BesiegeCustomScene.UI
+namespace CustomScene.UI
 {
     class MiniMapSettingUI : MonoBehaviour
     {

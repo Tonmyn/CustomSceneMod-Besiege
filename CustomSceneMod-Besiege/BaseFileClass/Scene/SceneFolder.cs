@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BesiegeCustomScene
+namespace CustomScene
 {
     /// <summary>地图包类</summary>
     public class SceneFolder

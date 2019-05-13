@@ -4,15 +4,17 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-namespace BesiegeCustomScene
+namespace CustomScene
 {
-    public class SnowMod : EnvironmentMod
+    public class SnowMod : EnvironmentMod<SnowPropertise>
     {
 
         List<GameObject> snowObjects;
         int snowSize = 0;
 
         SnowPropertise snowPropertises;
+
+        public override CustomScene.SnowPropertise Propertise => throw new NotImplementedException();
 
         class SnowPropertise
         {
@@ -106,7 +108,7 @@ namespace BesiegeCustomScene
         {
             try
             {
-                if (BesiegeCustomSceneMod.Mod.GetComponent<Prop>().SnowTemp == null)
+                if (Mod.ModObject.GetComponent<Prop>().SnowTemp == null)
                 {
                     GeoTools.Log("snow temp null");
                     return;
@@ -150,7 +152,7 @@ namespace BesiegeCustomScene
 #endif
             for (int i = 0; i < snowObjects.Count; i++)
             {
-                Destroy(snowObjects[i]);
+                UnityEngine.Object.Destroy(snowObjects[i]);
             }
 
             snowObjects = null;
@@ -159,10 +161,10 @@ namespace BesiegeCustomScene
 
         GameObject CreateSnowObject(SnowPropertise snowPropertise )
         {
-            GameObject go = (GameObject)Instantiate(BesiegeCustomSceneMod.Mod.GetComponent<Prop>().SnowTemp);
+            GameObject go = (GameObject)UnityEngine.Object.Instantiate(Mod.ModObject.GetComponent<Prop>().SnowTemp);
             go.name = "Snow Object";
             go.SetActive(true);
-            go.transform.SetParent(transform);
+            go.transform.SetParent(Mod.customSceneMod.transform);
             go.transform.localScale = snowPropertise.snowScale;
             go.transform.localPosition = snowPropertise.snowPosition;
 
@@ -175,5 +177,15 @@ namespace BesiegeCustomScene
             return go;
         }
 
+    }
+
+    public class SnowPropertise : EnvironmentPropertise
+    {
+        public Vector3 snowPosition = Vector3.zero;
+        public Vector3 snowScale = Vector3.one;
+        public Color snowColor = Color.white;
+        public float snowStartSize = 0f;
+        public float snowStartSpeed = 0f;
+        public int snowMaxParticles = 0;
     }
 }

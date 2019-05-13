@@ -4,9 +4,9 @@ using System.Text;
 using UnityEngine;
 using Modding.Levels;
 
-namespace BesiegeCustomScene
+namespace CustomScene
 {
-    public class CloudMod : EnvironmentMod
+    public class CloudMod : EnvironmentMod<CloudPropertise>
     {
         void Start()
         {          
@@ -38,6 +38,8 @@ namespace BesiegeCustomScene
         
         List<GameObject> cloudObjects;  
         CloudsPropertise cloudsPropertise;
+
+        public override CloudPropertise Propertise => throw new NotImplementedException();
 
         class CloudsPropertise
         {
@@ -115,7 +117,7 @@ namespace BesiegeCustomScene
         {
             try
             {
-                if (BesiegeCustomSceneMod.Mod.GetComponent<Prop>().CloudTemp == null) return;
+                if (Mod.ModObject.GetComponent<Prop>().CloudTemp == null) return;
                 if (cloudsPropertise == null) return;
 
                 int size = cloudsPropertise.cloudsSize;
@@ -152,7 +154,7 @@ namespace BesiegeCustomScene
 #endif
             for (int i = 0; i < cloudObjects.Count; i++)
             {
-                Destroy(cloudObjects[i]);
+                UnityEngine.Object.Destroy(cloudObjects[i]);
             }
 
             cloudObjects = null;
@@ -165,12 +167,12 @@ namespace BesiegeCustomScene
             Vector3 scale = cloudPropertise.cloudsScale;
             Color color = cloudPropertise.cloudsColor;
 
-            GameObject go = (GameObject)Instantiate(BesiegeCustomSceneMod.Mod.GetComponent<Prop>().CloudTemp, new Vector3(
+            GameObject go = (GameObject)UnityEngine.Object.Instantiate(Mod.ModObject.GetComponent<Prop>().CloudTemp, new Vector3(
                            UnityEngine.Random.Range(-scale.x + position.x, scale.x + position.x),
                            UnityEngine.Random.Range(position.y, scale.y + position.y),
                            UnityEngine.Random.Range(-scale.z + position.z, scale.z + position.z)),
                            new Quaternion(0, 0, 0, 0));
-            go.transform.SetParent(transform);
+            go.transform.SetParent(Mod.ModObject.GetComponent<CustomSceneMod>().SceneObjects.transform);
             go.transform.localScale = new Vector3(100, 100, 100);
             go.name = "Cloud Object";
             go.SetActive(true);
@@ -195,6 +197,14 @@ namespace BesiegeCustomScene
             //}
         }
 
+    }
+
+    public class CloudPropertise : EnvironmentPropertise
+    {
+        public int cloudsSize { get; set; } = 0;
+        public Vector3 cloudsPosition { get; set; } = Vector3.zero;
+        public Vector3 cloudsScale { get; set; } = new Vector3(1000, 200, 1000);
+        public Color cloudsColor { get; set; } = new Color(0.92f, 0.92f, 0.92f, 0.5f);
     }
 
     public class CloudScript : MonoBehaviour

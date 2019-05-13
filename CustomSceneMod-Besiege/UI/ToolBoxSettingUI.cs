@@ -2,7 +2,7 @@
 using UnityEngine;
 using Modding;
 
-namespace BesiegeCustomScene.UI
+namespace CustomScene.UI
 {
     class ToolBoxSettingUI : MonoBehaviour
     {

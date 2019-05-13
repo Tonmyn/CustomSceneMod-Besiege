@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.IO;
 
-namespace BesiegeCustomScene
+namespace CustomScene
 {
 
     public static class GeoTools

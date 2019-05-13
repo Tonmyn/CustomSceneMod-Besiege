@@ -6,10 +6,12 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.Rendering;
 using Modding;
+using Modding.Serialization;
+using Vector3 = UnityEngine.Vector3;
 
-namespace BesiegeCustomScene
+namespace CustomScene
 {
-    class MeshMod : EnvironmentMod
+    class MeshMod : EnvironmentMod<MeshPropertise>
     {
   
         private List<GameObject> meshObjects;
@@ -37,6 +39,7 @@ namespace BesiegeCustomScene
 
         //}
 
+        public override MeshPropertise Propertise => throw new NotImplementedException();
 
         public override void ReadEnvironment(SceneFolder scenePack)
         {
@@ -663,11 +666,11 @@ namespace BesiegeCustomScene
 #endif
             for (int i = 0; i < meshObjects.Count; i++)
             {
-                Destroy(meshObjects[i]);
+                UnityEngine.Object.Destroy(meshObjects[i]);
             }
             if (materialTemp != null)
             {
-                Destroy(materialTemp);
+                UnityEngine.Object.Destroy(materialTemp);
             }          
             materialTemp = null;
             meshObjects = null;          
@@ -685,7 +688,7 @@ namespace BesiegeCustomScene
             }
             go.GetComponent<MeshCollider>().sharedMesh.Clear();
             go.GetComponent<MeshFilter>().mesh.Clear();
-            go.transform.SetParent(transform);
+            go.transform.SetParent(Mod.ModObject.GetComponent<CustomSceneMod>().transform);
             go.transform.localScale = Vector3.one;
             go.transform.localPosition = Vector3.zero;   
             go.name = "Mesh Object";
@@ -739,4 +742,52 @@ namespace BesiegeCustomScene
         }
 
     }
+
+    public enum MeshType
+    {
+       Default =0,
+       Planar =1,
+       LargeObj =2,
+       HeightMap=3,
+
+    }
+
+    public class MeshPropertise : EnvironmentPropertise
+    {
+        public int Size { get; set; }
+        public MeshType MeshType { get; set; }
+        [CanBeEmpty]
+        public bool ShadowEnable { get; set; } = true;
+        [CanBeEmpty]
+        public string MaterialTemp { get; set; } = "";
+        [CanBeEmpty]
+        public MeshShader MeshShader { get; set; } = new MeshShader("", new MeshShader.ShaderPropertise { });
+        public string TextrueName { get; set; }
+        [CanBeEmpty]
+        public Vector3 Position { get; set; } = Vector3.zero;
+        [CanBeEmpty]
+        public Vector3 Scale { get; set; } = Vector3.one;
+
+    }
+
+    public class MeshShader
+    {
+        public string Name { get; }
+
+        public ShaderPropertise[] Propertise { get; set; }
+
+        public MeshShader(string name, params ShaderPropertise[] propertise)
+        {
+            Name = name;
+            Propertise = propertise;
+        }
+
+        public class ShaderPropertise
+        {
+            public string Name { get; }
+            public string Value { get; }
+        }
+
+    }
+
 }

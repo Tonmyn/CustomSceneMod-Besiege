@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace BesiegeCustomScene
+namespace CustomScene
 {
    
     [RequireComponent(typeof(WaterBase))]

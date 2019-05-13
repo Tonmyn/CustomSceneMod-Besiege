@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 using Modding;
 using Modding.Levels;
 
-namespace BesiegeCustomScene
+namespace CustomScene
 {
 
     public class CustomSceneMod : MonoBehaviour
@@ -19,6 +19,8 @@ namespace BesiegeCustomScene
         public static string ScenePacksPath;
         /// <summary>地图包列表</summary>
         public List<SceneFolder> ScenePacks;
+        /// <summary>地图物体</summary>
+        public GameObject SceneObjects;
 
         public bool worldBoundariesEnable = true;
         public bool FloorBigEnable = true;
@@ -34,6 +36,9 @@ namespace BesiegeCustomScene
             ScenePacksPath = GeoTools.ScenePackPath;
 
             ScenePacks = ReadScenePacks(ScenePacksPath, GeoTools.isDataMode);
+
+            SceneObjects = new GameObject("Scene Objects");
+            SceneObjects.transform.SetParent(transform);
         }
 
         void Start()

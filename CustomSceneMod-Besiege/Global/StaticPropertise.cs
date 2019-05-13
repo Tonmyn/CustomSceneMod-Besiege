@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 
-namespace BesiegeCustomScene
+namespace CustomScene
 {
 
     public class Prop : MonoBehaviour
