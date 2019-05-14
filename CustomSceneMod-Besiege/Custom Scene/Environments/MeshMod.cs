@@ -11,7 +11,7 @@ using Vector3 = UnityEngine.Vector3;
 
 namespace CustomScene
 {
-    class MeshMod : EnvironmentMod<MeshPropertise>
+    class MeshMod : Environment<MeshPropertise>
     {
   
         private List<GameObject> meshObjects;
@@ -415,7 +415,7 @@ namespace CustomScene
 
                                 //StartCoroutine(GeoTools.ResourceLoader.LoadTexture(chara[3],scenePack,GeoTools.isDataMode));
 
-                                StartCoroutine(settex(meshObjects[i], chara[3], scenePack, GeoTools.isDataMode));
+                                //_StartCoroutine(settex(meshObjects[i], chara[3], scenePack, GeoTools.isDataMode));
 
                                 //meshObjects[i].GetComponent<MeshRenderer>().material.mainTexture = ModResource.GetTexture("tex1");
 
@@ -688,7 +688,7 @@ namespace CustomScene
             }
             go.GetComponent<MeshCollider>().sharedMesh.Clear();
             go.GetComponent<MeshFilter>().mesh.Clear();
-            go.transform.SetParent(Mod.ModObject.GetComponent<CustomSceneMod>().transform);
+            go.transform.SetParent(Mod.environmentMod.transform);
             go.transform.localScale = Vector3.one;
             go.transform.localPosition = Vector3.zero;   
             go.name = "Mesh Object";

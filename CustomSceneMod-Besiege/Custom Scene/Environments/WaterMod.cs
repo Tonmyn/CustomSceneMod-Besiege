@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace CustomScene
 {
-    public class WaterMod : EnvironmentMod<WaterPropertise>
+    public class WaterMod : Environment<WaterPropertise>
     {
  
         private List<GameObject> waterObjects;
@@ -62,11 +62,11 @@ namespace CustomScene
                             {
                                 if (Convert.ToInt32(chara[2]) == 0)
                                 {
-                                    Mod.ModObject.GetComponent<Prop>().WaterTemp.SetActive(false);
+                                    Mod.prop.WaterTemp.SetActive(false);
                                 }
                                 else
                                 {
-                                    Mod.ModObject.GetComponent<Prop>().WaterTemp.SetActive(true);
+                                    Mod.prop.WaterTemp.SetActive(true);
                                 }
                             }
                         }
@@ -123,7 +123,7 @@ namespace CustomScene
         {
             try
             {        
-                if (Mod.ModObject.GetComponent<Prop>().TileTemp == null) return;
+                if (Mod.prop.TileTemp == null) return;
                 
                 if (WaterSize <= 0)
                 {
@@ -162,7 +162,7 @@ namespace CustomScene
 #endif
             try
             {
-                Mod.ModObject.GetComponent<Prop>().WaterTemp.SetActive(false);
+                Mod.prop.WaterTemp.SetActive(false);
             }
             catch { }
             try
@@ -182,10 +182,10 @@ namespace CustomScene
 
         GameObject CreateWaterObject(WaterPropertise waterPropertise)
         {
-            GameObject go = UnityEngine.Object.Instantiate(Mod.ModObject.GetComponent<Prop>().TileTemp);
+            GameObject go = UnityEngine.Object.Instantiate(Mod.prop.TileTemp);
             go.name = "Water Object";
             go.SetActive(true);
-            go.transform.SetParent(Mod.customSceneMod.transform);
+            go.transform.SetParent(Mod.environmentMod.transform);
             go.transform.localScale = waterPropertise.scale;
             go.transform.localPosition = waterPropertise.position;
 

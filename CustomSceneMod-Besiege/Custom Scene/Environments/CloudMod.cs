@@ -6,7 +6,7 @@ using Modding.Levels;
 
 namespace CustomScene
 {
-    public class CloudMod : EnvironmentMod<CloudPropertise>
+    public class CloudMod : Environment<CloudPropertise>
     {
         void Start()
         {          
@@ -117,7 +117,7 @@ namespace CustomScene
         {
             try
             {
-                if (Mod.ModObject.GetComponent<Prop>().CloudTemp == null) return;
+                if (Mod.prop.CloudTemp == null) return;
                 if (cloudsPropertise == null) return;
 
                 int size = cloudsPropertise.cloudsSize;
@@ -167,12 +167,12 @@ namespace CustomScene
             Vector3 scale = cloudPropertise.cloudsScale;
             Color color = cloudPropertise.cloudsColor;
 
-            GameObject go = (GameObject)UnityEngine.Object.Instantiate(Mod.ModObject.GetComponent<Prop>().CloudTemp, new Vector3(
+            GameObject go = (GameObject)UnityEngine.Object.Instantiate(Mod.prop.CloudTemp, new Vector3(
                            UnityEngine.Random.Range(-scale.x + position.x, scale.x + position.x),
                            UnityEngine.Random.Range(position.y, scale.y + position.y),
                            UnityEngine.Random.Range(-scale.z + position.z, scale.z + position.z)),
                            new Quaternion(0, 0, 0, 0));
-            go.transform.SetParent(Mod.ModObject.GetComponent<CustomSceneMod>().SceneObjects.transform);
+            go.transform.SetParent(Mod.environmentMod.SceneObjects.transform);
             go.transform.localScale = new Vector3(100, 100, 100);
             go.name = "Cloud Object";
             go.SetActive(true);

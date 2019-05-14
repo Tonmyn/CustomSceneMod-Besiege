@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace CustomScene
 {
-    class CameraMod : EnvironmentMod<CameraPropertise>
+    class CameraMod : Environment<CameraPropertise>
     {
         
 

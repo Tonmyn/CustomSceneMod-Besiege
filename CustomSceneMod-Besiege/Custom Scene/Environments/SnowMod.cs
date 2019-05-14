@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace CustomScene
 {
-    public class SnowMod : EnvironmentMod<SnowPropertise>
+    public class SnowMod : Environment<SnowPropertise>
     {
 
         List<GameObject> snowObjects;
@@ -108,7 +108,7 @@ namespace CustomScene
         {
             try
             {
-                if (Mod.ModObject.GetComponent<Prop>().SnowTemp == null)
+                if (Mod.prop.SnowTemp == null)
                 {
                     GeoTools.Log("snow temp null");
                     return;
@@ -161,10 +161,10 @@ namespace CustomScene
 
         GameObject CreateSnowObject(SnowPropertise snowPropertise )
         {
-            GameObject go = (GameObject)UnityEngine.Object.Instantiate(Mod.ModObject.GetComponent<Prop>().SnowTemp);
+            GameObject go = (GameObject)UnityEngine.Object.Instantiate(Mod.prop.SnowTemp);
             go.name = "Snow Object";
             go.SetActive(true);
-            go.transform.SetParent(Mod.customSceneMod.transform);
+            go.transform.SetParent(Mod.environmentMod.transform);
             go.transform.localScale = snowPropertise.snowScale;
             go.transform.localPosition = snowPropertise.snowPosition;
 

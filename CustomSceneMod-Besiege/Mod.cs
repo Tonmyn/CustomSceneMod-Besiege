@@ -10,11 +10,12 @@ namespace CustomScene
     public class Mod : ModEntryPoint
     {
         
-        public static GameObject ModObject;
+        private GameObject ModObject;
 
-        public static CustomSceneMod customSceneMod;
+        public static EnvironmentMod environmentMod;
         public static BlockInformationMod blockInformationMod;
         public static TimerMod timerMod;
+        public static Prop prop;
 
         public override void OnLoad()
         {
@@ -27,15 +28,20 @@ namespace CustomScene
                 name = string.Format("{0} {1}", DisplayName, Version)
             };
 
-            ModObject.AddComponent<Prop>();ModObject.AddComponent<test>();
+            //prop = ModObject.AddComponent<Prop>();
 
-            GameObject customScene = new GameObject("CustomScene");
-            customScene.AddComponent<UI.SceneSettingUI>();
-            customScene.transform.SetParent(ModObject.transform);
+            ModObject.AddComponent<test>();
 
-            GameObject toolbox = new GameObject("ToolBox");
-            toolbox.AddComponent<UI.ToolBoxSettingUI>();
-            toolbox.transform.SetParent(ModObject.transform);
+            //GameObject customScene = new GameObject("CustomScene");
+            //environmentMod = customScene.AddComponent<EnvironmentMod>();
+            //customScene.AddComponent<UI.EnvironmentSettingUI>();
+            //customScene.transform.SetParent(ModObject.transform);
+
+            //GameObject toolbox = new GameObject("ToolBox");
+            //blockInformationMod = toolbox.AddComponent<BlockInformationMod>();
+            //timerMod = toolbox.AddComponent<TimerMod>();
+            //toolbox.AddComponent<UI.ToolBoxSettingUI>();
+            //toolbox.transform.SetParent(ModObject.transform);
 
             //GameObject miniMap = new GameObject("Mini Map");
             //miniMap.AddComponent<UI.MiniMapSettingUI>();
@@ -53,6 +59,8 @@ namespace CustomScene
 
 
         testClass ts, ts1;
+
+        SceneSettingFile sceneSettingFile;
 
         public class testClass: Modding.Serialization.Element
         {
@@ -110,6 +118,8 @@ namespace CustomScene
             //ts.testClass2.matName = "mat name";
             //ts.testClass2.matType = "shader";
             //ts.testClass2.material = new Material(Shader.Find("diffuse"));
+
+            sceneSettingFile = new SceneSettingFile() {  AuthorName ="ltm", SceneDescription = "Ver.0.0.1"};
         }
 
         void Update()
@@ -118,16 +128,16 @@ namespace CustomScene
             {
                 Debug.Log("SerializeXml");
 
-                ModIO.SerializeXml(ts, "testfile.xml", true);
+                ModIO.SerializeXml(sceneSettingFile, "setting.xml", true);
 
             }
 
             if (Input.GetKeyDown(KeyCode.D))
             {
                 Debug.Log("DeserializeXml");
-                ts1 = ModIO.DeserializeXml<testClass>("testfile.xml", true,false);
+                sceneSettingFile = ModIO.DeserializeXml<SceneSettingFile>("setting.xml", true,false);
                 
-                Debug.Log(ts1.ToString());
+                Debug.Log(sceneSettingFile.ToString());
             }
         }
 

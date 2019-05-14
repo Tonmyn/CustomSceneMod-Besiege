@@ -5,13 +5,13 @@ using System.Text;
 using Modding.Serialization;
 
 namespace CustomScene
-{  
-    public class SceneSettingFile
+{
+    public class SceneSettingFile : Element
     {
-        [CanBeEmpty]
-        public string AuthorName { get; }
-        [CanBeEmpty]
-        public Version SceneVersion { get; }
+        [RequireToValidate]
+        public string AuthorName { get; set; }
+        [RequireToValidate]
+        public string SceneDescription { get; set; }
         [CanBeEmpty]
         public CameraPropertise CameraPropertise { get; }
         [CanBeEmpty]
@@ -24,5 +24,11 @@ namespace CustomScene
         public SnowPropertise SnowPropertise { get; }
         [CanBeEmpty]
         public WaterPropertise WaterPropertise { get; }
+
+
+        public override string ToString()
+        {
+            return string.Format("{0},{1},{2}", AuthorName, SceneDescription,CameraPropertise);
+        }
     }
 }

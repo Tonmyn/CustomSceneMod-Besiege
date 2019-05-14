@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 namespace CustomScene
 {
-    class SkyMod : EnvironmentMod<SkyPropertise>
+    class SkyMod : Environment<SkyPropertise>
     {
 
 
@@ -157,7 +157,7 @@ namespace CustomScene
         GameObject CreateSkyObject(SkyPropertise skyPropertise)
         {
             GameObject go = new GameObject("SKY SPHERE");
-            go.transform.SetParent(Mod.ModObject.GetComponent<CustomSceneMod>().transform);
+            go.transform.SetParent(Mod.environmentMod.transform);
 
             try
             {         

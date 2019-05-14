@@ -27,11 +27,11 @@ namespace CustomScene.UI
 
             GameObject go = new GameObject("Timer Mod");
             go.transform.SetParent(transform);
-            timerMod = go.AddComponent<TimerMod>();
+            timerMod = go.GetComponent<TimerMod>();
 
             go = new GameObject("Block Information Mod");
             go.transform.SetParent(transform);
-            blockInformationMod = go.AddComponent<BlockInformationMod>();
+            blockInformationMod = go.GetComponent<BlockInformationMod>();
 
         }
 

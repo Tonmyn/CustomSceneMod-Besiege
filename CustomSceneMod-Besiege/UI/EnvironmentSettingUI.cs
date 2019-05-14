@@ -6,10 +6,10 @@ using System.Reflection;
 
 namespace CustomScene.UI
 {
-    class SceneSettingUI : MonoBehaviour
+    class EnvironmentSettingUI : MonoBehaviour
     {
         /// <summary>地图包列表</summary>
-        public CustomSceneMod sceneMod;
+        public EnvironmentMod environmentMod;
 
         public bool showGUI = true;
 
@@ -45,14 +45,14 @@ namespace CustomScene.UI
         {
             InitSceneMod();
 
-            float height = (sceneMod.ScenePacks.Count - 1 + 1) * (buttonHeight + 5) + 5 - 5;
+            float height = (environmentMod.ScenePacks.Count - 1 + 1) * (buttonHeight + 5) + 5 - 5;
 
             sceneButtonsRect = new Rect(0, 0, 200, height);
         }
 
         void InitSceneMod()
         {
-            //sceneMod = gameObject.AddComponent<CustomSceneMod>();
+            environmentMod = gameObject.GetComponent<EnvironmentMod>();
 
             //OnSceneButtonClick += sceneMod.LoadScenePack;
 
@@ -124,9 +124,9 @@ namespace CustomScene.UI
                 {
                     GUILayout.BeginArea(new Rect(0, 0, 250, sceneButtonsRect.height));
                     {
-                        for (int i = 0; i < sceneMod.GetComponent<CustomSceneMod>().ScenePacks.Count; i++)
+                        for (int i = 0; i < environmentMod.GetComponent<EnvironmentMod>().ScenePacks.Count; i++)
                         {
-                            if (GUILayout.Button(sceneMod.GetComponent<CustomSceneMod>().ScenePacks[i].Name, GUILayout.Width(230), GUILayout.Height(20)))
+                            if (GUILayout.Button(environmentMod.GetComponent<EnvironmentMod>().ScenePacks[i].Name, GUILayout.Width(230), GUILayout.Height(20)))
                             {
                                 OnSceneButtonClick(i);
                             }
