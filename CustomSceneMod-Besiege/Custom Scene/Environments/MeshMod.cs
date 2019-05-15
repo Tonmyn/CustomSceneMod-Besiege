@@ -745,10 +745,10 @@ namespace CustomScene
 
     public enum MeshType
     {
-       Default =0,
-       Planar =1,
-       LargeObj =2,
-       HeightMap=3,
+        Default = 0,
+        Planar = 1,
+        LargeObj = 2,
+        HeightMap = 3,
 
     }
 
@@ -761,33 +761,17 @@ namespace CustomScene
         [CanBeEmpty]
         public string MaterialTemp { get; set; } = "";
         [CanBeEmpty]
-        public MeshShader MeshShader { get; set; } = new MeshShader("", new MeshShader.ShaderPropertise { });
+        public Serializable.Shader MeshShader { get; set; }
+        [CanBeEmpty]
         public string TextrueName { get; set; }
         [CanBeEmpty]
         public Vector3 Position { get; set; } = Vector3.zero;
+        [CanBeEmpty]
+        public Vector3 EularAngle { get; set; } = Vector3.zero;
         [CanBeEmpty]
         public Vector3 Scale { get; set; } = Vector3.one;
 
     }
 
-    public class MeshShader
-    {
-        public string Name { get; }
-
-        public ShaderPropertise[] Propertise { get; set; }
-
-        public MeshShader(string name, params ShaderPropertise[] propertise)
-        {
-            Name = name;
-            Propertise = propertise;
-        }
-
-        public class ShaderPropertise
-        {
-            public string Name { get; }
-            public string Value { get; }
-        }
-
-    }
 
 }

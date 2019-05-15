@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using Modding;
+using Modding.Serialization;
 
 namespace CustomScene
 {
@@ -44,7 +45,7 @@ namespace CustomScene
 
     }
 
-    public class EnvironmentPropertise
+    public class EnvironmentPropertise:Element
     {
 
 

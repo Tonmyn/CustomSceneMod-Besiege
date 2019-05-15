@@ -37,6 +37,7 @@
     <Compile Include="Custom Scene\Environment.cs" />
     <Compile Include="Custom Scene\Environments\CameraMod.cs" />
     <Compile Include="Global\DataLoader.cs" />
+    <Compile Include="Global\Serializable.cs" />
     <Compile Include="Mini Map\MiniMapMod.cs" />
     <Compile Include="Mod.cs" />
     <Compile Include="Global\LanguageManager.cs" />
