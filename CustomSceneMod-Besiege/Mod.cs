@@ -119,22 +119,7 @@ namespace CustomScene
             //ts.testClass2.matType = "shader";
             //ts.testClass2.material = new Material(Shader.Find("diffuse"));
 
-            sceneSettingFile = new SceneSettingFile() { AuthorName = "XultimateX", SceneDescription = "Ver.0.0.1",
-                /* Texture = new Serializable.Shader() { name="test-shader", propertise = new Serializable.Shader.ShaderPropertise[] { new Serializable.Shader.ShaderPropertise() { Name ="mainTexture", DataType ="Texture", Value = "test-tex"}, new Serializable.Shader.ShaderPropertise() { Name = "color", DataType = "Color", Value = "1,1,1,1" } } } */
-                MeshPropertise = new MeshPropertise() { Size = 5}
-                //{
-                //    collider = new Serializable.Collider() {  mesh = new Serializable.Mesh() { meshName="test-mesh"} },
-                //     mesh = new Serializable.Mesh() {  meshName ="test-mesh"},
-                //      name = "test-object",
-                //       renderer = new Serializable.Renderer()
-                //       {
-                //           material = new Serializable.Material()
-                //           {
-                //                 texture = new Serializable.Texture() {name = "test-tex"}
-                //           }
-                //       }              
-                //}
-            };
+            sceneSettingFile = new SceneSettingFile() { AuthorName = "ltm", SceneDescription = "Ver.0.0.1", Texture = new Serializable.Shader() { name="test-shader", propertise = new Serializable.Shader.ShaderPropertise[] { new Serializable.Shader.ShaderPropertise() { Name ="mainTexture", DataType ="Texture", Value = "test-tex"}, new Serializable.Shader.ShaderPropertise() { Name = "color", DataType = "Color", Value = "1,1,1,1" } } } };
         }
 
         void Update()

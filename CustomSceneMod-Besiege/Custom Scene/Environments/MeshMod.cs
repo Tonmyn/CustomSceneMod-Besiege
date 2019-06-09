@@ -755,15 +755,15 @@ namespace CustomScene
     public class MeshPropertise : EnvironmentPropertise
     {
         public int Size { get; set; }
-        public MeshType MeshType { get; set; } = MeshType.Default;
+        public MeshType MeshType { get; set; }
         [CanBeEmpty]
         public bool ShadowEnable { get; set; } = true;
         [CanBeEmpty]
         public string MaterialTemp { get; set; } = "";
         [CanBeEmpty]
-        public Serializable.Shader MeshShader { get; set; } = new Serializable.Shader();
+        public Serializable.Shader MeshShader { get; set; }
         [CanBeEmpty]
-        public string TextrueName { get; set; } = "";
+        public string TextrueName { get; set; }
         [CanBeEmpty]
         public Vector3 Position { get; set; } = Vector3.zero;
         [CanBeEmpty]
