@@ -773,5 +773,13 @@ namespace CustomScene
 
     }
 
-
+    public class MeshPropertise : EnvironmentPropertise
+    {
+        [CanBeEmpty]
+        public Serializable.Mesh Mesh { get; set; }
+        [CanBeEmpty]
+        public Serializable.Renderer Renderer { get; set; }
+        [CanBeEmpty]
+        public Serializable.Collider Collider { get; set; }
+    }
 }
