@@ -6,10 +6,12 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.Rendering;
 using Modding;
+using Modding.Serialization;
+using Vector3 = UnityEngine.Vector3;
 
-namespace BesiegeCustomScene
+namespace CustomScene
 {
-    class MeshMod : EnvironmentMod
+    class MeshMod : Environment<MeshsPropertise>
     {
   
         private List<GameObject> meshObjects;
@@ -37,6 +39,7 @@ namespace BesiegeCustomScene
 
         //}
 
+        public override MeshsPropertise Propertise => throw new NotImplementedException();
 
         public override void ReadEnvironment(SceneFolder scenePack)
         {
@@ -412,7 +415,7 @@ namespace BesiegeCustomScene
 
                                 //StartCoroutine(GeoTools.ResourceLoader.LoadTexture(chara[3],scenePack,GeoTools.isDataMode));
 
-                                StartCoroutine(settex(meshObjects[i], chara[3], scenePack, GeoTools.isDataMode));
+                                //_StartCoroutine(settex(meshObjects[i], chara[3], scenePack, GeoTools.isDataMode));
 
                                 //meshObjects[i].GetComponent<MeshRenderer>().material.mainTexture = ModResource.GetTexture("tex1");
 
@@ -663,11 +666,11 @@ namespace BesiegeCustomScene
 #endif
             for (int i = 0; i < meshObjects.Count; i++)
             {
-                Destroy(meshObjects[i]);
+                UnityEngine.Object.Destroy(meshObjects[i]);
             }
             if (materialTemp != null)
             {
-                Destroy(materialTemp);
+                UnityEngine.Object.Destroy(materialTemp);
             }          
             materialTemp = null;
             meshObjects = null;          
@@ -685,7 +688,7 @@ namespace BesiegeCustomScene
             }
             go.GetComponent<MeshCollider>().sharedMesh.Clear();
             go.GetComponent<MeshFilter>().mesh.Clear();
-            go.transform.SetParent(transform);
+            go.transform.SetParent(Mod.environmentMod.transform);
             go.transform.localScale = Vector3.one;
             go.transform.localPosition = Vector3.zero;   
             go.name = "Mesh Object";
@@ -739,4 +742,48 @@ namespace BesiegeCustomScene
         }
 
     }
+
+    public enum MeshType
+    {
+        Default = 0,
+        Planar = 1,
+        LargeObj = 2,
+        HeightMap = 3,
+
+    }
+
+    public class MeshsPropertise : EnvironmentPropertise
+    {
+        public int Size { get; set; }
+        public MeshType MeshType { get; set; } = MeshType.Default;
+        [CanBeEmpty]
+        public bool ShadowEnable { get; set; } = true;
+        //[CanBeEmpty]
+        //public string MaterialTemp { get; set; } = "";
+        [CanBeEmpty]
+        public Vector3 Position { get; set; } = Vector3.zero;
+        [CanBeEmpty]
+        public Vector3 EularAngle { get; set; } = Vector3.zero;
+        [CanBeEmpty]
+        public Vector3 Scale { get; set; } = Vector3.one;
+
+    }
+
+    public class MeshPropertise :EnvironmentPropertise
+    {
+
+
+
+        //[CanBeEmpty]
+        //public string MeshName { get; set; } = "Mesh Name";
+        //[CanBeEmpty]
+        //public string TextrueName { get; set; } = "Textrue Name";
+        [CanBeEmpty]
+        public Serializable.Mesh Mesh { get; set; } = new Serializable.Mesh();
+        [CanBeEmpty]
+        public Serializable.Renderer Renderer { get; set; } = new Serializable.Renderer();
+        [CanBeEmpty]
+        public Serializable.Collider Collider { get; set; } = new Serializable.Collider();
+    }
+
 }

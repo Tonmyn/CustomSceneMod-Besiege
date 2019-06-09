@@ -1788,11 +1788,12 @@ namespace BesiegeCustomScene
             return mesh;
         }
 
-        private static int currentWindowID = int.MaxValue - 10000;
+        private static int currentWindowID = /*int.MaxValue - 10000*/ ModUtility.GetWindowId();
 
         public static int GetWindowID()
         {
-            return currentWindowID--;
+            //return currentWindowID--;
+            return currentWindowID;
         }
 
         public static void Log(object message)
@@ -1885,6 +1886,30 @@ namespace BesiegeCustomScene
                 //yield return texture.Loaded;
 
                 //Debug.Log("图片读取成功...");
+            }
+
+            public static ModTexture LoadTexture(string name, string path, bool data = false)
+            {
+                string texturePath = path + "/" + name;
+                texturePath = ModIO.ExistsFile(texturePath + ".png", data) ? texturePath + ".png" : texturePath + ".jpg";
+
+                ModTexture texture = ModResource.CreateTextureResource(name, texturePath, data, true);
+                Debug.Log("图片开始读取...");
+
+                return texture;
+                //yield return texture.Loaded;
+
+                //Debug.Log("图片读取成功...");
+            }
+
+            public static Texture2D LoadTexture(string path,Vector2 size,bool data =false)
+            {
+                var bytes = ModIO.ReadAllBytes(path, data);
+
+                Texture2D t = new Texture2D((int)size.x, (int)size.y);
+                t.LoadImage(bytes);
+                Resources.UnloadUnusedAssets();
+                return t;
             }
         }
     }
