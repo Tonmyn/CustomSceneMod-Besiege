@@ -758,12 +758,12 @@ namespace CustomScene
         public MeshType MeshType { get; set; }
         [CanBeEmpty]
         public bool ShadowEnable { get; set; } = true;
-        [CanBeEmpty]
-        public string MaterialTemp { get; set; } = "";
+        //[CanBeEmpty]
+        //public string MaterialTemp { get; set; } = "";
         [CanBeEmpty]
         public Serializable.Shader MeshShader { get; set; }
-        [CanBeEmpty]
-        public string TextrueName { get; set; }
+        //[CanBeEmpty]
+        //public string TextrueName { get; set; }
         [CanBeEmpty]
         public Vector3 Position { get; set; } = Vector3.zero;
         [CanBeEmpty]

@@ -1,7 +1,10 @@
-using UnityEngine;
+﻿using UnityEngine;
 using Modding;
 using System.Collections.Generic;
 using System;
+using System.Collections;
+using static CustomScene.GeoTools;
+using System.Threading;
 
 namespace CustomScene
 {
@@ -119,7 +122,26 @@ namespace CustomScene
             //ts.testClass2.matType = "shader";
             //ts.testClass2.material = new Material(Shader.Find("diffuse"));
 
-            sceneSettingFile = new SceneSettingFile() { AuthorName = "ltm", SceneDescription = "Ver.0.0.1", Texture = new Serializable.Shader() { name="test-shader", propertise = new Serializable.Shader.ShaderPropertise[] { new Serializable.Shader.ShaderPropertise() { Name ="mainTexture", DataType ="Texture", Value = "test-tex"}, new Serializable.Shader.ShaderPropertise() { Name = "color", DataType = "Color", Value = "1,1,1,1" } } } };
+            sceneSettingFile = new SceneSettingFile()
+            {
+                AuthorName = "XultimateX",
+                SceneDescription = "Ver.0.0.1",
+                /* Texture = new Serializable.Shader() { name="test-shader", propertise = new Serializable.Shader.ShaderPropertise[] { new Serializable.Shader.ShaderPropertise() { Name ="mainTexture", DataType ="Texture", Value = "test-tex"}, new Serializable.Shader.ShaderPropertise() { Name = "color", DataType = "Color", Value = "1,1,1,1" } } } */
+                MeshsPropertise = new MeshsPropertise() { Size = 1 },
+                MeshPropertises = new MeshPropertise[] { new MeshPropertise() }
+                //{
+                //    collider = new Serializable.Collider() {  mesh = new Serializable.Mesh() { meshName="test-mesh"} },
+                //     mesh = new Serializable.Mesh() {  meshName ="test-mesh"},
+                //      name = "test-object",
+                //       renderer = new Serializable.Renderer()
+                //       {
+                //           material = new Serializable.Material()
+                //           {
+                //                 texture = new Serializable.Texture() {name = "test-tex"}
+                //           }
+                //       }              
+                //}
+            };
         }
 
         void Update()
@@ -141,5 +163,62 @@ namespace CustomScene
             }
         }
 
+        Texture2D[] texture = new Texture2D[50];
+
+        void OnGUI()
+        {
+            if (GUI.Button(new Rect(10, 10, 200, 200), texture[0]))
+            {
+                StartCoroutine(load());
+                //texture = null;
+               //texture = ResourceLoader.LoadTexture(@"Scenes\平地\Textures\GroundTexture.png", new Vector2(1, 1), true);
+
+                //Resources.UnloadUnusedAssets();
+            
+            }
+
+            if (GUI.Button(new Rect(10, 300, 200, 200),"clear"))
+            {
+                foreach (var tex in texture)
+                {
+                    Destroy(tex);
+                }
+                //Resources.UnloadUnusedAssets();
+                //Destroy(texture);
+            }
+
+        }
+
+        IEnumerator load()
+        {
+            //for (int i = 0; i < 50; i++)
+            //{
+            //    var tex = ResourceLoader.LoadTexture("test"+i, @"Scenes\平地\Textures\GroundTexture", true);
+            //    yield return new WaitUntil(() => tex.Loaded);
+            //    texture[i] = tex;
+
+
+            //    Debug.Log(i);
+            //    yield return new WaitForSeconds(0.5f);
+            //}
+
+            for (int i = 0; i<50; i++)
+            {
+                texture[i] = ResourceLoader.LoadTexture(@"Scenes\平地\Textures\GroundTexture.png", new Vector2(1, 1), true);
+
+                yield return 0;
+            }
+
+
+            //var tex = ResourceLoader.LoadTexture("test", @"Scenes\平地\Textures\GroundTexture", true);
+            //yield return new WaitUntil(() => tex.Loaded);
+            //texture = tex;
+
+            //var tex = Resources.LoadAsync/*<Texture2D>*/(@"F:\Games\Besiege\v.0.8-beta\Besiege_Data\Mods\Data\CustomSceneMod_2c12a0fb-c022-4717-a9e8-f8b2bd9de433\Scenes\平地\Textures\GroundTexture.png");
+            //yield return new WaitUntil(() => tex.isDone);
+
+            //texture = tex.asset as Texture2D;
+            //Debug.Log("done");
+        }
     }
 }

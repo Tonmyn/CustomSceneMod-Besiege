@@ -19,6 +19,8 @@ namespace CustomScene
         //public CloudPropertise CloudPropertise;
         [CanBeEmpty]
         public MeshsPropertise MeshsPropertise;
+        [CanBeEmpty]
+        public MeshPropertise[] MeshPropertises;
         //[CanBeEmpty]
         //public SkyPropertise SkyPropertise;
         //[CanBeEmpty]

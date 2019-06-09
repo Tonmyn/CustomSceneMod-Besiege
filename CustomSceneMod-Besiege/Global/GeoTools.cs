@@ -1889,7 +1889,7 @@ namespace CustomScene
 
             public static ModTexture LoadTexture(string name, string path, bool data = false)
             {
-                string texturePath = path + "/" + name;
+                string texturePath = path /*+ "/" + name*/;
                 texturePath = ModIO.ExistsFile(texturePath + ".png", data) ? texturePath + ".png" : texturePath + ".jpg";
 
                 ModTexture texture = ModResource.CreateTextureResource(name, texturePath, data, true);
@@ -1905,11 +1905,13 @@ namespace CustomScene
             {
                 var bytes = ModIO.ReadAllBytes(path, data);
 
+         
+
                 Texture2D t = new Texture2D((int)size.x, (int)size.y);
                 t.LoadImage(bytes);
                 Resources.UnloadUnusedAssets();
                 return t;
             }
-        }
+        }    
     }
 }
