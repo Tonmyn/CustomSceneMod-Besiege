@@ -11,7 +11,7 @@ using Vector3 = UnityEngine.Vector3;
 
 namespace CustomScene
 {
-    class MeshMod : Environment<MeshPropertise>
+    class MeshMod : Environment<MeshsPropertise>
     {
   
         private List<GameObject> meshObjects;
@@ -39,7 +39,7 @@ namespace CustomScene
 
         //}
 
-        public override MeshPropertise Propertise => throw new NotImplementedException();
+        public override MeshsPropertise Propertise => throw new NotImplementedException();
 
         public override void ReadEnvironment(SceneFolder scenePack)
         {
@@ -752,7 +752,7 @@ namespace CustomScene
 
     }
 
-    public class MeshPropertise : EnvironmentPropertise
+    public class MeshsPropertise : EnvironmentPropertise
     {
         public int Size { get; set; }
         public MeshType MeshType { get; set; }

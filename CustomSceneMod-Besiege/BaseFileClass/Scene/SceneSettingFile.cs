@@ -13,14 +13,12 @@ namespace CustomScene
         public string AuthorName;
         [RequireToValidate]
         public string SceneDescription;
-        [RequireToValidate]
-        public Serializable.Shader Texture; 
         //[CanBeEmpty]
         //public CameraPropertise CameraPropertise;
         //[CanBeEmpty]
         //public CloudPropertise CloudPropertise;
-        //[CanBeEmpty]
-        //public MeshPropertise MeshPropertise;
+        [CanBeEmpty]
+        public MeshsPropertise MeshsPropertise;
         //[CanBeEmpty]
         //public SkyPropertise SkyPropertise;
         //[CanBeEmpty]
@@ -31,7 +29,17 @@ namespace CustomScene
 
         public override string ToString()
         {
-            return string.Format("{0}\n{1}\n{2}\n", AuthorName, SceneDescription,Texture);
+            //StringBuilder sb = new StringBuilder();
+            //sb.Append(string.Format("Scene Authoer:{0}\nScene Description:{1}\nPropertise:\n", AuthorName, SceneDescription));
+
+            //foreach (var pro in Propertise)
+            //{
+            //    sb.Append(pro.ToString());
+            //}
+            //return sb.ToString();
+
+
+            return string.Format("Scene Authoer:{0}\nScene Description:{1}\nPropertise:\n{2}", AuthorName, SceneDescription, MeshsPropertise);
         }
     }
 }
