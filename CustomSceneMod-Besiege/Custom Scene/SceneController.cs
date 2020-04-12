@@ -54,7 +54,10 @@ namespace CustomScene
                 Debug.Log("create scene");
                 CreateNewScene("test1", true);
 
-                ReadScenes("Scenes", true);
+                Scenes = ReadScenes("Scenes", true);
+
+                CurrentScene = Scenes[0];
+                CurrentScene.Load(transform.parent);
             }
         }
 

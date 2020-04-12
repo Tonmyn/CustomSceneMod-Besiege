@@ -14,6 +14,7 @@ namespace CustomScene
     public class TerrainMod : EnvironmentMod<TerrainPropertise>,IResourceLoader
     {
         public override string Path { get; }
+        public override bool Data { get; set; }
         public override bool Enabled { get; protected set; } = false;
         private List<GameObject> meshObjects;
         //MeshPropertise[] meshPropertises;
@@ -28,16 +29,18 @@ namespace CustomScene
         ShadowCastingMode shadowCastingMode = ShadowCastingMode.On;
         public override TerrainPropertise Propertise { get; set; }
         public ResourceLoader resourceLoader { get; } = ResourceLoader.Instance;
-        
+
+
         public TerrainMod(string path,bool data = false)
         {
             Path = path + @"\Terrain";
+            Data = data;
             var propertisePath = Path + @"\TerrainPropertise.xml";
             try
             {
-                if (ModIO.ExistsFile(propertisePath, data))
+                if (ModIO.ExistsFile(propertisePath, Data))
                 {
-                    Propertise = ModIO.DeserializeXml<TerrainPropertise>(propertisePath, data);
+                    Propertise = ModIO.DeserializeXml<TerrainPropertise>(propertisePath, Data);
                     Enabled = true;
                 }
             }
@@ -52,16 +55,7 @@ namespace CustomScene
             {
                 TotalWorkNumber = Propertise.MeshPropertises.Count;
 
-                if (TotalWorkNumber > 0)
-                {
-                    foreach (var mp in Propertise.MeshPropertises)
-                    {
-                        var go = new GameObject("");
-
-                        resourceLoader.LoadEntityObject(go, mp, Path, data);
-
-                    }
-                }
+             
               
             }
 
@@ -653,24 +647,36 @@ namespace CustomScene
 
         public override void Load(Transform transform)
         {
-            if (!Enabled) return;
+            if (!Enabled || TotalWorkNumber<=0) return;
 
             TerrainObject = new GameObject("Terrain Object");
             TerrainObject.transform.SetParent(transform);
 
-            foreach (var mp in Propertise.MeshPropertises)
-            {
-                var index = Propertise.MeshPropertises.IndexOf(mp);
-                var name = "Mesh Object " + index;
-                var go = new GameObject(name);
-                var path = string.Format(@"{0}\{1}.obj", Path, mp.MeshName);
 
-                go.transform.SetParent(TerrainObject.transform);
-                ModResource.CreateMeshResource(name + "_mesh", path).SetOnObject(go, (goo) => { Debug.Log("mesh loaded ..."); });
-                ModResource.CreateTextureResource(name + "_texture", path).SetOnObject(go, (goo) => { Debug.Log("texture loaded ..."); });
+            //if (TotalWorkNumber > 0)
+            //{
+                foreach (var mp in Propertise.MeshPropertises)
+                {
+                    var go = new GameObject("");
+
+                    resourceLoader.LoadEntityObject(go, mp, Path,Data);
+
+                }
+            //}
+
+            //foreach (var mp in Propertise.MeshPropertises)
+            //{
+            //    var index = Propertise.MeshPropertises.IndexOf(mp);
+            //    var name = "Mesh Object " + index;
+            //    var go = new GameObject(name);
+            //    var path = string.Format(@"{0}\{1}.obj", Path, mp.MeshName);
+
+            //    go.transform.SetParent(TerrainObject.transform);
+            //    ModResource.CreateMeshResource(name + "_mesh", path).SetOnObject(go, (goo) => { Debug.Log("mesh loaded ..."); });
+            //    ModResource.CreateTextureResource(name + "_texture", path).SetOnObject(go, (goo) => { Debug.Log("texture loaded ..."); });
 
 
-            }
+            //}
 
 
         }

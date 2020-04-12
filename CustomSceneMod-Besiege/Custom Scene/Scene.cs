@@ -13,9 +13,10 @@ namespace CustomScene
     public class Scene : EnvironmentMod<ScenePropertise>
     {
         public override string Path { get; }
+        public override bool Data { get; set; }
         public override ScenePropertise Propertise { get; set; }
         public override bool Enabled { get; protected set; } = false;
-
+     
 
         #region Environment
         public TerrainMod  TerrainMod;
@@ -27,12 +28,13 @@ namespace CustomScene
         public Scene(string path,bool data = false)
         {
             Path = path;
+            Data = data;
             var propertisePath = Path + @"\ScenePropertise.xml";
             try
             {
-                if (ModIO.ExistsFile(propertisePath, data))
+                if (ModIO.ExistsFile(propertisePath, Data))
                 {
-                    Propertise = ModIO.DeserializeXml<ScenePropertise>(propertisePath, data);
+                    Propertise = ModIO.DeserializeXml<ScenePropertise>(propertisePath, Data);
                     Enabled = true;
                 }
             }

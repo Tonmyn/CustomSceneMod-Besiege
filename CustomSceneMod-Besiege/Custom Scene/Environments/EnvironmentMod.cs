@@ -11,6 +11,7 @@ namespace CustomScene
     abstract public class EnvironmentMod<T> where T : EnvironmentPropertise
     {
         public abstract string Path { get; }
+        public abstract bool Data { get; set; }
         public abstract T Propertise { get; set; }
         public abstract bool Enabled { get; protected set; }
         public int TotalWorkNumber { get; protected set; } = 1;
