@@ -73,7 +73,7 @@ namespace CustomScene
         {
             TerrainMod.Clear();
             //SkyMod.Clear();
-        }
+        }  
     }
 
     public class ScenePropertise : EnvironmentPropertise

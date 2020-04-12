@@ -45,6 +45,8 @@ namespace CustomScene
             //SceneObjects.transform.SetParent(transform);
 
             //Scenes = ReadScenes("Scenes", true);
+
+            ModConsole.RegisterCommand("csm_test", new CommandHandler((value) => { Debug.Log("do some..."); }), "show text");
         }
 
         void Update()

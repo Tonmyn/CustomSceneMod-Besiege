@@ -6,6 +6,7 @@ using System.Collections;
 using static CustomScene.GeoTools;
 using System.Threading;
 
+
 namespace CustomScene
 {
 
@@ -47,7 +48,7 @@ namespace CustomScene
             //miniMap.transform.SetParent(Mod.transform);
 
             UnityEngine.Object.DontDestroyOnLoad(ModObject);
-
+     
         }
     }
 
