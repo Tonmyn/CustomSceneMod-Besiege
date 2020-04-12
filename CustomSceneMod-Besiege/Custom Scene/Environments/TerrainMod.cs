@@ -879,7 +879,7 @@ namespace CustomScene
         [CanBeEmpty]
         public float Friction { get; set; }
         [CanBeEmpty]
-        public float Spring { get; set; }
+        public float Bounciness { get; set; }
         [CanBeEmpty]
         public int CombinMode { get; set; }
 
