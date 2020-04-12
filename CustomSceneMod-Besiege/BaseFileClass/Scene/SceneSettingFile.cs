@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace CustomScene
 {
+    [Obsolete]
     public class SceneSettingFile : Element
     {
         [RequireToValidate]
@@ -18,7 +19,7 @@ namespace CustomScene
         //[CanBeEmpty]
         //public CloudPropertise CloudPropertise;
         [CanBeEmpty]
-        public MeshsPropertise MeshsPropertise;
+        public TerrainPropertise MeshsPropertise;
         [CanBeEmpty]
         public MeshPropertise[] MeshPropertises;
         //[CanBeEmpty]

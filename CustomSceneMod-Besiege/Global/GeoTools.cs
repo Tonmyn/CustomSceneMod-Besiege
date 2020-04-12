@@ -1030,7 +1030,7 @@ namespace CustomScene
         }
         public static void GetLevelInfo()
         {
-            Scene scene1 = SceneManager.GetActiveScene();
+            UnityEngine.SceneManagement.Scene scene1 = SceneManager.GetActiveScene();
             GeoTools.Log("ActiveScene : " + scene1.rootCount.ToString() + "=>" + scene1.name);
             GeoTools.Log("SceneCount : " + SceneManager.sceneCountInBuildSettings.ToString());
         }
@@ -1107,7 +1107,7 @@ namespace CustomScene
             Mesh mesh = new Mesh();
             TextReader srd;
 
-            string objPath = scenePack.MeshsPath + "/" + Objname + ".obj";
+            string objPath = scenePack.Terrain_ResourcesPath + "/" + Objname + ".obj";
 
             if (!ModIO.ExistsFile(objPath,data)) return Prop.MeshFormBundle(Objname);
             try
@@ -1227,7 +1227,7 @@ namespace CustomScene
             Mesh mesh = new Mesh();
             TextReader srd;
 
-            string objPath = scenePack.MeshsPath + "/" + Objname + ".obj";
+            string objPath = scenePack.Terrain_ResourcesPath + "/" + Objname + ".obj";
 
             if (!ModIO.ExistsFile(objPath,data)) return Prop.MeshFormBundle(Objname);
             try
@@ -1427,7 +1427,7 @@ namespace CustomScene
             List<Vector3> newVertices = new List<Vector3>();
             List<int> triangleslist = new List<int>();
 
-            string objPath = scenePack.MeshsPath + "/" + Objname + ".obj";
+            string objPath = scenePack.Terrain_ResourcesPath + "/" + Objname + ".obj";
 
             TextReader srd;
             try
@@ -1651,7 +1651,7 @@ namespace CustomScene
       
         public static Texture LoadTexture(string TextureName, SceneFolder scenePack,bool data = false)
         {
-            string texturePath = scenePack.TexturesPath + "/" + TextureName;
+            string texturePath = scenePack.Sky_ResourcesPath + "/" + TextureName;
 
             try
             {
@@ -1700,7 +1700,7 @@ namespace CustomScene
             List<Vector3> newNormals = new List<Vector3>();
             Mesh mesh = new Mesh();
 
-            string objPath = scenePack.MeshsPath + "/" + Objname + ".obj";
+            string objPath = scenePack.Terrain_ResourcesPath + "/" + Objname + ".obj";
 
             TextReader srd;
             if (!ModIO.ExistsFile(objPath,data)) return Prop.MeshFormBundle(Objname);
@@ -1875,7 +1875,7 @@ namespace CustomScene
 
             public static ModTexture LoadTexture(string name, SceneFolder sceneFolder, bool data = false)
             {
-                string texturePath = sceneFolder.TexturesPath + "/" + name;
+                string texturePath = sceneFolder.Sky_ResourcesPath + "/" + name;
                 name = ModIO.ExistsFile(texturePath + ".png", data) ? texturePath + ".png" : texturePath + ".jpg";
 
                 ModTexture texture = ModResource.CreateTextureResource("tex1", name, data, true);

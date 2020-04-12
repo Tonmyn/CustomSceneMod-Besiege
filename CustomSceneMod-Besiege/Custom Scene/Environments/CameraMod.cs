@@ -1,156 +1,156 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
+﻿//using System;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Text;
+//using UnityEngine;
 
-namespace CustomScene
-{
-    class CameraMod : Environment<CameraPropertise>
-    {
+//namespace CustomScene
+//{
+//    public  class CameraMod : EnvironmentMod<CameraPropertise>
+//    {
         
 
-        /// <summary>摄像头设置参数</summary>
-        public CameraPropertise cameraPropertise;
+//        /// <summary>摄像头设置参数</summary>
+//        public CameraPropertise cameraPropertise;
 
-        /// <summary>默认的摄像头参数  储存原先的摄像头参数</summary>
-        public CameraPropertise defultePropertise;
+//        /// <summary>默认的摄像头参数  储存原先的摄像头参数</summary>
+//        public CameraPropertise defultePropertise;
 
-        /// <summary>摄像头属性</summary>
-        //public class CameraPropertise
-        //{
-        //    public float farClipPlane = 4500f;
-        //    public float focusLerpSmooth = 8f;
-        //    //public bool fog;
-        //    public bool SSAO;
+//        /// <summary>摄像头属性</summary>
+//        //public class CameraPropertise
+//        //{
+//        //    public float farClipPlane = 4500f;
+//        //    public float focusLerpSmooth = 8f;
+//        //    //public bool fog;
+//        //    public bool SSAO;
 
-        //    //public static SceneSetting None { get; } = new SceneSetting { farClipPlane = 3000, focusLerpSmooth = 100, fog = Vector3.one, SSAO = false };
-        //}
+//        //    //public static SceneSetting None { get; } = new SceneSetting { farClipPlane = 3000, focusLerpSmooth = 100, fog = Vector3.one, SSAO = false };
+//        //}
 
-        public override CameraPropertise Propertise => throw new NotImplementedException();
-
-
-        public override void ReadEnvironment(SceneFolder scenePack)
-        {
-            ClearEnvironment();
-
-            try
-            {
-                foreach (var str in scenePack.SettingFileDatas)
-                {
-                    string[] chara = str.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-
-                    if (chara.Length > 2)
-                    {
-                        #region Camera
-                        if (chara[0].ToLower() == nameof(Camera).ToLower())
-                        {
-
-                            cameraPropertise = cameraPropertise ?? new CameraPropertise();
-
-                            if (chara[1].ToLower() == nameof(cameraPropertise.farClipPlane).ToLower())
-                            {
-                                cameraPropertise.farClipPlane = Convert.ToInt32(chara[2]);
-                            }
-                            else if (chara[1].ToLower() == nameof(cameraPropertise.focusLerpSmooth).ToLower())
-                            {
-
-                                if (chara[2].ToLower() == "infinity")
-                                {
-                                    cameraPropertise.focusLerpSmooth = float.PositiveInfinity;
-                                }
-                                else
-                                {
-                                    cameraPropertise.focusLerpSmooth = Convert.ToInt32(chara[2]);
-                                }
-
-                            }                   
-                            else if (chara[1].ToLower() == nameof(cameraPropertise.SSAO).ToLower())
-                            {
-                                //if (chara[2] == "OFF")
-                                //{
-                                //    GeoTools.Log("SSAO OFF");
-                                //    OptionsMaster.SSAO = true;
-                                //    FindObjectOfType<ToggleAO>().Set();
-                                //}
-                                //else if (chara[2] == "ON")
-                                //{
-                                //    GeoTools.Log("SSAO ON");
-                                //    OptionsMaster.SSAO = false;
-                                //    FindObjectOfType<ToggleAO>().Set();
-                                //}
-                                //cameraPropertise.SSAO = dataLoader.readBool(chara, 1);
-                            }
-
-                        }
-                        #endregion
-                    }
-                }
-
-                GeoTools.Log("Read Camera Completed!");
-            }
-            catch (Exception ex)
-            {
-                GeoTools.Log("Read Camera Failed!");
-                GeoTools.Log(ex.Message);
-                return;
-            }
+//        public override CameraPropertise Propertise => throw new NotImplementedException();
 
 
-        }
+//        public override void Read(SceneFolder scenePack)
+//        {
+//            Clear();
+
+//            try
+//            {
+//                foreach (var str in scenePack.SettingFileDatas)
+//                {
+//                    string[] chara = str.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+
+//                    if (chara.Length > 2)
+//                    {
+//                        #region Camera
+//                        if (chara[0].ToLower() == nameof(Camera).ToLower())
+//                        {
+
+//                            cameraPropertise = cameraPropertise ?? new CameraPropertise();
+
+//                            if (chara[1].ToLower() == nameof(cameraPropertise.farClipPlane).ToLower())
+//                            {
+//                                cameraPropertise.farClipPlane = Convert.ToInt32(chara[2]);
+//                            }
+//                            else if (chara[1].ToLower() == nameof(cameraPropertise.focusLerpSmooth).ToLower())
+//                            {
+
+//                                if (chara[2].ToLower() == "infinity")
+//                                {
+//                                    cameraPropertise.focusLerpSmooth = float.PositiveInfinity;
+//                                }
+//                                else
+//                                {
+//                                    cameraPropertise.focusLerpSmooth = Convert.ToInt32(chara[2]);
+//                                }
+
+//                            }                   
+//                            else if (chara[1].ToLower() == nameof(cameraPropertise.SSAO).ToLower())
+//                            {
+//                                //if (chara[2] == "OFF")
+//                                //{
+//                                //    GeoTools.Log("SSAO OFF");
+//                                //    OptionsMaster.SSAO = true;
+//                                //    FindObjectOfType<ToggleAO>().Set();
+//                                //}
+//                                //else if (chara[2] == "ON")
+//                                //{
+//                                //    GeoTools.Log("SSAO ON");
+//                                //    OptionsMaster.SSAO = false;
+//                                //    FindObjectOfType<ToggleAO>().Set();
+//                                //}
+//                                //cameraPropertise.SSAO = dataLoader.readBool(chara, 1);
+//                            }
+
+//                        }
+//                        #endregion
+//                    }
+//                }
+
+//                GeoTools.Log("Read Camera Completed!");
+//            }
+//            catch (Exception ex)
+//            {
+//                GeoTools.Log("Read Camera Failed!");
+//                GeoTools.Log(ex.Message);
+//                return;
+//            }
 
 
-        public override void LoadEnvironment()
-        {
-            if (cameraPropertise == null) return;
+//        }
 
-            defultePropertise = new CameraPropertise();
 
-            GameObject mainCamera = GameObject.Find("Main Camera");
+//        public override void Load()
+//        {
+//            if (cameraPropertise == null) return;
 
-            Camera camera = mainCamera.GetComponent<Camera>();
-            defultePropertise.farClipPlane = camera.farClipPlane;
-            camera.farClipPlane = cameraPropertise.farClipPlane;
+//            defultePropertise = new CameraPropertise();
 
-            MouseOrbit mouseOrbit = mainCamera.GetComponent<MouseOrbit>();
-            defultePropertise.focusLerpSmooth = mouseOrbit.focusLerpSmooth;
-            mouseOrbit.focusLerpSmooth = cameraPropertise.focusLerpSmooth;
-        }
+//            GameObject mainCamera = GameObject.Find("Main Camera");
 
-        public override void ClearEnvironment()
-        {
-            if (cameraPropertise == null) return;
-            if (defultePropertise == null) return;
+//            Camera camera = mainCamera.GetComponent<Camera>();
+//            defultePropertise.farClipPlane = camera.farClipPlane;
+//            camera.farClipPlane = cameraPropertise.farClipPlane;
+
+//            MouseOrbit mouseOrbit = mainCamera.GetComponent<MouseOrbit>();
+//            defultePropertise.focusLerpSmooth = mouseOrbit.focusLerpSmooth;
+//            mouseOrbit.focusLerpSmooth = cameraPropertise.focusLerpSmooth;
+//        }
+
+//        public override void Clear()
+//        {
+//            if (cameraPropertise == null) return;
+//            if (defultePropertise == null) return;
             
-            GameObject mainCamera = GameObject.Find("Main Camera");
+//            GameObject mainCamera = GameObject.Find("Main Camera");
 
-            try
-            {
-                Camera camera = mainCamera.GetComponent<Camera>();
-                camera.farClipPlane = defultePropertise.farClipPlane;
+//            try
+//            {
+//                Camera camera = mainCamera.GetComponent<Camera>();
+//                camera.farClipPlane = defultePropertise.farClipPlane;
 
-                MouseOrbit mouseOrbit = mainCamera.GetComponent<MouseOrbit>();
-                mouseOrbit.focusLerpSmooth = defultePropertise.focusLerpSmooth;
-            }
-            catch { }
-            cameraPropertise = defultePropertise = null;
-        }
-    }
+//                MouseOrbit mouseOrbit = mainCamera.GetComponent<MouseOrbit>();
+//                mouseOrbit.focusLerpSmooth = defultePropertise.focusLerpSmooth;
+//            }
+//            catch { }
+//            cameraPropertise = defultePropertise = null;
+//        }
+//    }
 
-    public class CameraPropertise : EnvironmentPropertise
-    {
-        public float farClipPlane { get; set; } = 4500f;
-        public float focusLerpSmooth { get; set; } = 8f;
-        //public bool fog;
-        public bool SSAO { get; set; }
+//    public class CameraPropertise : EnvironmentPropertise
+//    {
+//        public float farClipPlane { get; set; } = 4500f;
+//        public float focusLerpSmooth { get; set; } = 8f;
+//        //public bool fog;
+//        public bool SSAO { get; set; }
 
-        //public static SceneSetting None { get; } = new SceneSetting { farClipPlane = 3000, focusLerpSmooth = 100, fog = Vector3.one, SSAO = false };
+//        //public static SceneSetting None { get; } = new SceneSetting { farClipPlane = 3000, focusLerpSmooth = 100, fog = Vector3.one, SSAO = false };
 
-        public CameraPropertise()
-        {
+//        public CameraPropertise()
+//        {
 
 
-        }
-    }
+//        }
+//    }
 
-}
+//}

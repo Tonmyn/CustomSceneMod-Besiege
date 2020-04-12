@@ -9,7 +9,7 @@ namespace CustomScene.UI
     class EnvironmentSettingUI : MonoBehaviour
     {
         /// <summary>地图包列表</summary>
-        public EnvironmentMod environmentMod;
+        public SceneController environmentMod;
 
         public bool showGUI = true;
 
@@ -52,8 +52,8 @@ namespace CustomScene.UI
 
         void InitSceneMod()
         {
-            environmentMod = gameObject.GetComponent<EnvironmentMod>();
-
+            //environmentMod = gameObject.GetComponent<SceneController>();
+            environmentMod = SceneController.Instance;
             //OnSceneButtonClick += sceneMod.LoadScenePack;
 
             //OnFogButtonClick += sceneMod.HideFog;
@@ -124,9 +124,9 @@ namespace CustomScene.UI
                 {
                     GUILayout.BeginArea(new Rect(0, 0, 250, sceneButtonsRect.height));
                     {
-                        for (int i = 0; i < environmentMod.GetComponent<EnvironmentMod>().ScenePacks.Count; i++)
+                        for (int i = 0; i < environmentMod.GetComponent<SceneController>().ScenePacks.Count; i++)
                         {
-                            if (GUILayout.Button(environmentMod.GetComponent<EnvironmentMod>().ScenePacks[i].Name, GUILayout.Width(230), GUILayout.Height(20)))
+                            if (GUILayout.Button(environmentMod.GetComponent<SceneController>().ScenePacks[i].Name, GUILayout.Width(230), GUILayout.Height(20)))
                             {
                                 OnSceneButtonClick(i);
                             }
