@@ -23,7 +23,7 @@ namespace CustomScene
         ///// <summary>地图物体</summary>
         //public GameObject SceneObjects;
         public Scene CurrentScene;
-        public List<Scene> Scenes;
+        public HashSet<Scene> Scenes;
 
 
         public bool worldBoundariesEnable = true;
@@ -46,21 +46,40 @@ namespace CustomScene
 
             //Scenes = ReadScenes("Scenes", true);
 
-            ModConsole.RegisterCommand("csm_test", new CommandHandler((value) => { Debug.Log("do some..."); }), "show text");
+            ModConsole.RegisterCommand("csm", new CommandHandler((value) =>
+            {
+                Dictionary<string, Action<string[]>> commandOfAction = new Dictionary<string, Action<string[]>>
+                {
+                    { "CreateNewScene".ToLower(),   (args)=>{ if(value[1]!= null&&value[1]!=""){SceneController.Instance.CreateNewScene(value[1], true);} } },
+                    { "LoadScene".ToLower(),   (args)=>{ if(value[1]!= null&&value[1]!=""){SceneController.Instance.LoadScene(value[1], true);} } },
+                };
+
+                if (commandOfAction.ContainsKey(value[0].ToLower()))
+                {
+                    commandOfAction[value[0].ToLower()].Invoke(value);
+                }
+                else
+                {
+                    Debug.Log(string.Format( "Unknown command '{0}', type 'help' for list.",value[0]));
+                }
+            }), 
+            "Custom Scene Mod Commands\n" +
+            "  usage: csm CreateNewScene <SceneName>. :  Create a new custom scene.\n" +
+            "  usage: csm LoadScene <SceneName>. :  Load a exist's custom scene.\n");
         }
 
         void Update()
         {
-            if (Input.GetKeyDown(KeyCode.L))
-            {
-                Debug.Log("create scene");
-                CreateNewScene("test1", true);
+            //if (Input.GetKeyDown(KeyCode.L))
+            //{
+            //    Debug.Log("create scene");
+            //    CreateNewScene("test1", true);
 
-                Scenes = ReadScenes("Scenes", true);
+            //    Scenes = ReadScenes("Scenes", true);
 
-                CurrentScene = Scenes[0];
-                CurrentScene.Load(transform.parent);
-            }
+            //    CurrentScene = Scenes.ToList()[0];
+            //    CurrentScene.Load(transform.parent);
+            //}
         }
 
         //void Start()
@@ -118,9 +137,9 @@ namespace CustomScene
             return SPs;
         }
 
-        public List<Scene> ReadScenes(string scenesPath, bool data = false)
+        public HashSet<Scene> ReadScenes(string scenesPath, bool data = false)
         {
-            List<Scene> scenes = new List<Scene>();
+            var scenes = new HashSet<Scene>();
 
             if (!ModIO.ExistsDirectory(scenesPath, data))
             {
@@ -164,10 +183,27 @@ namespace CustomScene
 
                 ModIO.CreateDirectory(path + @"\Terrain", data);
                 ModIO.SerializeXml(new TerrainPropertise(),path + @"\Terrain\TerrainPropertise.xml", data);
+
+                Debug.Log("Create Scene is success");
             }
             else
             {
                 Debug.Log("Scene is existed...");
+            }
+        }
+
+        public void LoadScene(string name, bool data = false)
+        {
+            var scene = Scenes.ToList().Find(match => match.Propertise.Name == name);
+
+            if (scene != null)
+            {
+                CurrentScene = Scenes.ToList().Find(match => match.Propertise.Name == name);
+                CurrentScene.Load(transform.parent);
+            }
+            else
+            {
+                Debug.Log("Scene is not exist...");
             }
         }
 

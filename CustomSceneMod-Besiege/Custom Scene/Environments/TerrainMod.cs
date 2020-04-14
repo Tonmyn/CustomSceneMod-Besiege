@@ -655,13 +655,13 @@ namespace CustomScene
 
             //if (TotalWorkNumber > 0)
             //{
-                foreach (var mp in Propertise.MeshPropertises)
-                {
-                    var go = new GameObject("");
+            foreach (var mp in Propertise.MeshPropertises)
+            {
+                var go = new GameObject("");
 
-                    resourceLoader.LoadEntityObject(go, mp, Path,Data);
+                resourceLoader.LoadEntityObject(go, mp, Path, Data, TerrainObject.transform);
 
-                }
+            }
             //}
 
             //foreach (var mp in Propertise.MeshPropertises)
