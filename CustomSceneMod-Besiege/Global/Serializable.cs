@@ -12,7 +12,7 @@ namespace CustomScene
     /// <summary>
     /// 序列化的类
     /// </summary>
-    public class Serializable
+   [Obsolete] public class Serializable
     {
 
 
@@ -176,7 +176,7 @@ namespace CustomScene
         }
     }
 
-    interface ISerializable<T>
+    [Obsolete]interface ISerializable<T>
     {
         T ToClass(); 
     }

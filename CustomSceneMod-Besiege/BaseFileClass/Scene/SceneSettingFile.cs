@@ -21,7 +21,7 @@ namespace CustomScene
         [CanBeEmpty]
         public TerrainPropertise MeshsPropertise;
         [CanBeEmpty]
-        public MeshPropertise[] MeshPropertises;
+        public TerrainUnitPropertise[] MeshPropertises;
         //[CanBeEmpty]
         //public SkyPropertise SkyPropertise;
         //[CanBeEmpty]

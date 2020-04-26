@@ -13,14 +13,14 @@ namespace CustomScene
     public class Scene : EnvironmentMod<ScenePropertise>
     {
         public override string Path { get; }
+        public override string PropertisePath { get { return Path + @"\ScenePropertise.xml"; } }
         public override bool Data { get; set; }
         public override ScenePropertise Propertise { get; set; }
         public override bool Enabled { get; protected set; } = false;
-     
 
         #region Environment
         public TerrainMod  TerrainMod;
-        //public SkyMod SkyMod;
+        public SkyMod SkyMod;
         #endregion
 
         public GameObject SceneObject;
@@ -29,12 +29,19 @@ namespace CustomScene
         {
             Path = path;
             Data = data;
-            var propertisePath = Path + @"\ScenePropertise.xml";
+            //PropertisePath = Path + @"\ScenePropertise.xml";
             try
             {
-                if (ModIO.ExistsFile(propertisePath, Data))
+                if (isExist)
                 {
-                    Propertise = ModIO.DeserializeXml<ScenePropertise>(propertisePath, Data);
+                    Propertise = ModIO.DeserializeXml<ScenePropertise>(PropertisePath, Data);
+                    Enabled = true;
+                }
+                else
+                {
+                    Propertise = new ScenePropertise();
+                    ModIO.CreateDirectory(Path, Data);
+                    ModIO.SerializeXml(Propertise, PropertisePath, Data);
                     Enabled = true;
                 }
             }
@@ -47,36 +54,69 @@ namespace CustomScene
 
             if (Enabled)
             {
+
+                #region Environment
                 TerrainMod = new TerrainMod(Path,data);
+                SkyMod = new SkyMod(Path, data);
+
+                #endregion
             }
         }
-
-
-        //internal override void Read()
-        //{
-        //    TerrainMod = new TerrainMod(Path);
-        //    //SkyMod.Read();
-        //}
 
         public override void Load(Transform transform)
         {
             if (!Enabled) return;
 
-            SceneObject = new GameObject("Scene Object");
+            SceneObject = new GameObject(string.Format("Scene -{0}-", Propertise.Name));
             SceneObject.transform.SetParent(transform);
 
+            #region Environment
             TerrainMod.Load(SceneObject.transform);
-            //SkyMod.Load();
-        }
+            SkyMod.Load(SceneObject.transform);
+            #endregion
 
+            SceneObject.transform.position = Propertise.Position;
+            SceneObject.transform.rotation = Quaternion.Euler(Propertise.Rotation);
+            SceneObject.transform.localScale = Propertise.Scale;
+        }
         public override void Clear()
         {
+            #region Environment
             TerrainMod.Clear();
-            //SkyMod.Clear();
-        }  
+            SkyMod.Clear();
+            #endregion
+
+            if (SceneObject == null) return;
+            UnityEngine.Object.Destroy(SceneObject);
+        }
+
+        //public  override void Create(string name,bool data = false)
+        //{
+        //    var path = @"Scenes\" + name;
+        //    if (!ModIO.ExistsDirectory(path, data))
+        //    {
+        //        ModIO.CreateDirectory(path, data);
+        //        ModIO.SerializeXml(new ScenePropertise() { Name = name }, PropertisePath, data);
+
+        //        #region Environment
+        //        TerrainMod.Create(path, data);
+        //        SkyMod.Create(path, data);
+        //        //ModIO.CreateDirectory(path + @"\Terrain", data);
+        //        //ModIO.SerializeXml(new TerrainPropertise(), path + @"\Terrain\TerrainPropertise.xml", data);
+
+        //        //ModIO.CreateDirectory(path + @"\Sky", data);
+        //        //ModIO.SerializeXml(new SkyPropertise(), path + @"\Sky\SkyPropertise.xml", data);
+        //        #endregion
+        //        Debug.Log("Create Scene is success");
+        //    }
+        //    else
+        //    {
+        //        Debug.Log("Scene is existed...");
+        //    }
+        //}
     }
 
-    public class ScenePropertise : EnvironmentPropertise
+    public class ScenePropertise : Element, IEnvironmentPropertise
     {
         [CanBeEmpty]
         public string Name { get; set; } = "Scene's Name";

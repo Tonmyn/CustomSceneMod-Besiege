@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Modding.Serialization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,5 +28,21 @@ namespace CustomScene
     
         abstract public Propertise FormatPropertise();
 
+    }
+
+    public class MeshPropertise : Element
+    {
+        [RequireToValidate]
+        public string MeshName { get; set; } = "Mesh Name";
+        [RequireToValidate]
+        public string TextureName { get; set; } = "Texture Name";
+        [CanBeEmpty]
+        public string MeshVersion { get; set; } = "V1.0";
+        [CanBeEmpty]
+        public Vector3 Position { get; set; } = Vector3.zero;
+        [CanBeEmpty]
+        public Vector3 Rotation { get; set; } = Vector3.zero;
+        [CanBeEmpty]
+        public Vector3 Scale { get; set; } = Vector3.one;
     }
 }

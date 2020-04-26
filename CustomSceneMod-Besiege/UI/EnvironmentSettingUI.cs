@@ -18,7 +18,7 @@ namespace CustomScene.UI
         public ModKey DisplaySceneSettingKey = ModKeys.GetKey("Scene SettingUI-key");
 
         /// <summary>地形按钮点击事件  按键序号</summary> 
-        public Action<int> OnSceneButtonClick;
+        public Action<int,bool> OnSceneButtonClick;
         /// <summary>去雾按钮点击事件</summary>
         public Action OnFogButtonClick;
         /// <summary>去地面按钮点击事件</summary>
@@ -54,7 +54,7 @@ namespace CustomScene.UI
         {
             //environmentMod = gameObject.GetComponent<SceneController>();
             environmentMod = SceneController.Instance;
-            //OnSceneButtonClick += sceneMod.LoadScenePack;
+            OnSceneButtonClick += /*sceneMod.LoadScenePack*/environmentMod.LoadScene;
 
             //OnFogButtonClick += sceneMod.HideFog;
 
@@ -64,7 +64,7 @@ namespace CustomScene.UI
 
             //OnReloadScenesButtonClick += sceneMod.ReloadScenePacks;
 
-            //OnOpenScenePacksDirectoryButtonClick += sceneMod.OpenScenesDirectory;
+            OnOpenScenePacksDirectoryButtonClick += /*sceneMod.OpenScenesDirectory*/ () => { ModIO.OpenFolderInFileBrowser(@"Scenes", true); };
 
             //GameObject go; 
             //go = new GameObject("Camera Mod");
@@ -115,20 +115,43 @@ namespace CustomScene.UI
             }
             GUILayout.EndHorizontal();
 
+            //GUILayout.BeginVertical();
+            //{
+            //    GUI.Label(new Rect(10, 50+25, 280, 20), LanguageManager.SceneListLabel);
+            //    GUI.Box(new Rect(10, 70+25, 260, 220), "");
+
+            //    scrollVector = GUI.BeginScrollView(new Rect(15, 75+25, 250, 210), scrollVector, sceneButtonsRect);
+            //    {
+            //        GUILayout.BeginArea(new Rect(0, 0, 250, sceneButtonsRect.height));
+            //        {
+            //            for (int i = 0; i < environmentMod.GetComponent<SceneController>().ScenePacks.Count; i++)
+            //            {
+            //                if (GUILayout.Button(environmentMod.GetComponent<SceneController>().ScenePacks[i].Name, GUILayout.Width(230), GUILayout.Height(20)))
+            //                {
+            //                    OnSceneButtonClick(i);
+            //                }
+            //            }
+            //        }
+            //        GUILayout.EndArea();
+            //    }
+            //    GUI.EndScrollView();
+            //}
+            //GUILayout.EndVertical();
+
             GUILayout.BeginVertical();
             {
-                GUI.Label(new Rect(10, 50+25, 280, 20), LanguageManager.SceneListLabel);
-                GUI.Box(new Rect(10, 70+25, 260, 220), "");
+                GUI.Label(new Rect(10, 50 + 25, 280, 20), LanguageManager.SceneListLabel);
+                GUI.Box(new Rect(10, 70 + 25, 260, 220), "");
 
-                scrollVector = GUI.BeginScrollView(new Rect(15, 75+25, 250, 210), scrollVector, sceneButtonsRect);
+                scrollVector = GUI.BeginScrollView(new Rect(15, 75 + 25, 250, 210), scrollVector, sceneButtonsRect);
                 {
                     GUILayout.BeginArea(new Rect(0, 0, 250, sceneButtonsRect.height));
                     {
-                        for (int i = 0; i < environmentMod.GetComponent<SceneController>().ScenePacks.Count; i++)
+                        for (int i = 0; i < environmentMod.Scenes.Count; i++)
                         {
-                            if (GUILayout.Button(environmentMod.GetComponent<SceneController>().ScenePacks[i].Name, GUILayout.Width(230), GUILayout.Height(20)))
+                            if (GUILayout.Button(environmentMod.Scenes[i].Propertise.Name, GUILayout.Width(230), GUILayout.Height(20)))
                             {
-                                OnSceneButtonClick(i);
+                                OnSceneButtonClick(i, true);
                             }
                         }
                     }

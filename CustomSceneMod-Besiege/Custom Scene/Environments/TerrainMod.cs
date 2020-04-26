@@ -14,6 +14,7 @@ namespace CustomScene
     public class TerrainMod : EnvironmentMod<TerrainPropertise>,IResourceLoader
     {
         public override string Path { get; }
+        public override string PropertisePath { get { return Path + @"\TerrainPropertise.xml"; } }
         public override bool Data { get; set; }
         public override bool Enabled { get; protected set; } = false;
         private List<GameObject> meshObjects;
@@ -35,12 +36,19 @@ namespace CustomScene
         {
             Path = path + @"\Terrain";
             Data = data;
-            var propertisePath = Path + @"\TerrainPropertise.xml";
+            //PropertisePath = Path + @"\TerrainPropertise.xml";
             try
             {
-                if (ModIO.ExistsFile(propertisePath, Data))
+                if (isExist)
                 {
-                    Propertise = ModIO.DeserializeXml<TerrainPropertise>(propertisePath, Data);
+                    Propertise = ModIO.DeserializeXml<TerrainPropertise>(PropertisePath, Data);
+                    Enabled = true;
+                }
+                else
+                {
+                    Propertise = new TerrainPropertise();
+                    ModIO.CreateDirectory(Path, Data);
+                    ModIO.SerializeXml(Propertise, PropertisePath, Data);
                     Enabled = true;
                 }
             }
@@ -53,7 +61,7 @@ namespace CustomScene
 
             if (Enabled)
             {
-                TotalWorkNumber = Propertise.MeshPropertises.Count;
+                TotalWorkNumber = Propertise.TerrainUnitPropertises.Count;
 
              
               
@@ -645,39 +653,31 @@ namespace CustomScene
         //        }
   
 
-        public override void Load(Transform transform)
+        public override void Load(Transform parent)
         {
             if (!Enabled || TotalWorkNumber<=0) return;
 
             TerrainObject = new GameObject("Terrain Object");
-            TerrainObject.transform.SetParent(transform);
+            TerrainObject.transform.SetParent(parent);
 
-
-            //if (TotalWorkNumber > 0)
-            //{
-            foreach (var mp in Propertise.MeshPropertises)
+            foreach (var tup in Propertise.TerrainUnitPropertises)
             {
                 var go = new GameObject("");
 
-                resourceLoader.LoadEntityObject(go, mp, Path, Data, TerrainObject.transform);
-
+                resourceLoader.LoadEntityObject(go, tup, Path, Data, TerrainObject.transform, processResource);
+                CurrentWorkNumber++;
             }
-            //}
+        }
+        private void processResource(GameObject gameObject,TerrainUnitPropertise propertise)
+        {
+            gameObject.layer = 29;
+            gameObject.isStatic = true;
 
-            //foreach (var mp in Propertise.MeshPropertises)
-            //{
-            //    var index = Propertise.MeshPropertises.IndexOf(mp);
-            //    var name = "Mesh Object " + index;
-            //    var go = new GameObject(name);
-            //    var path = string.Format(@"{0}\{1}.obj", Path, mp.MeshName);
-
-            //    go.transform.SetParent(TerrainObject.transform);
-            //    ModResource.CreateMeshResource(name + "_mesh", path).SetOnObject(go, (goo) => { Debug.Log("mesh loaded ..."); });
-            //    ModResource.CreateTextureResource(name + "_texture", path).SetOnObject(go, (goo) => { Debug.Log("texture loaded ..."); });
-
-
-            //}
-
+            var material = gameObject.GetComponent<MeshCollider>().material;
+            material.bounciness = propertise.Bounciness;
+            material.staticFriction = material.dynamicFriction = propertise.Friction;
+            material.bounceCombine = (PhysicMaterialCombine)propertise.CombinMode;
+            material.frictionCombine = (PhysicMaterialCombine)propertise.CombinMode;
 
         }
 
@@ -724,22 +724,9 @@ namespace CustomScene
         public override void Clear()
         {
             if (TerrainObject == null) return;
-
-            //foreach (var go in TerrainObjects)
-            //{
-            //    if (go == null) continue;
-
-            //    UnityEngine.Object.Destroy(go);
-            //}
-            //TerrainObjects = null;
             UnityEngine.Object.Destroy(TerrainObject);
-       
         }
 
-        ~TerrainMod()
-        {
-            Clear();
-        }
         //        public override void Clear()
         //        {
 
@@ -826,6 +813,7 @@ namespace CustomScene
 
         }
 
+
     }
 
     public enum MeshType
@@ -837,7 +825,7 @@ namespace CustomScene
 
     }
 
-    public class TerrainPropertise : EnvironmentPropertise
+    public class TerrainPropertise : Element, IEnvironmentPropertise
     {
         //public int Size { get; set; }
         //public MeshType MeshType { get; set; }
@@ -857,24 +845,24 @@ namespace CustomScene
         public Vector3 Scale { get; set; } = Vector3.one;
 
         [CanBeEmpty]
-        public List<MeshPropertise> MeshPropertises { get; set; } = new List<MeshPropertise>() { new MeshPropertise() };
+        public List<TerrainUnitPropertise> TerrainUnitPropertises { get; set; } = new List<TerrainUnitPropertise>() { new TerrainUnitPropertise() };
 
     }
 
-    public class MeshPropertise :Element
+    public class TerrainUnitPropertise :MeshPropertise
     {
-        [RequireToValidate]
-        public string MeshName { get; set; } = "Mesh Name";
-        [RequireToValidate]
-        public string TextureName { get; set; } = "Texture Name";
-        [CanBeEmpty]
-        public string MeshVersion { get; set; } = "V1.0";
-        [CanBeEmpty]
-        public Vector3 Position { get; set; }
-        [CanBeEmpty]
-        public Vector3 Rotation { get; set; }
-        [CanBeEmpty]
-        public Vector3 Scale { get; set; }
+        //[RequireToValidate]
+        //public string MeshName { get; set; } = "Mesh Name";
+        //[RequireToValidate]
+        //public string TextureName { get; set; } = "Texture Name";
+        //[CanBeEmpty]
+        //public string MeshVersion { get; set; } = "V1.0";
+        //[CanBeEmpty]
+        //public Vector3 Position { get; set; }
+        //[CanBeEmpty]
+        //public Vector3 Rotation { get; set; }
+        //[CanBeEmpty]
+        //public Vector3 Scale { get; set; }
 
         [CanBeEmpty]
         public float Friction { get; set; }

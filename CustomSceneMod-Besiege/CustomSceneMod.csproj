@@ -34,7 +34,6 @@
     <Compile Include="BaseFileClass\Scene\SceneFolder.cs" />
     <Compile Include="BaseFileClass\Scene\SceneSettingFile.cs" />
     <Compile Include="BaseFileClass\ModSettingFile.cs" />
-    <Compile Include="BasicFunction.cs" />
     <Compile Include="Custom Scene\Environments\EnvironmentMod.cs" />
     <Compile Include="Custom Scene\Environments\CameraMod.cs" />
     <Compile Include="Custom Scene\Scene.cs" />

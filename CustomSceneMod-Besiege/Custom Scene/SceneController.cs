@@ -22,8 +22,8 @@ namespace CustomScene
         public List<SceneFolder> ScenePacks;
         ///// <summary>地图物体</summary>
         //public GameObject SceneObjects;
-        public Scene CurrentScene;
-        public HashSet<Scene> Scenes;
+        public Scene CurrentScene { get; private set; }
+        public List<Scene> Scenes { get; private set; }
 
 
         public bool worldBoundariesEnable = true;
@@ -44,14 +44,14 @@ namespace CustomScene
             //SceneObjects = new GameObject("Scene Objects");
             //SceneObjects.transform.SetParent(transform);
 
-            //Scenes = ReadScenes("Scenes", true);
+            Scenes = ReadScenes(ScenePacksPath, true);
 
             ModConsole.RegisterCommand("csm", new CommandHandler((value) =>
             {
                 Dictionary<string, Action<string[]>> commandOfAction = new Dictionary<string, Action<string[]>>
                 {
                     { "CreateNewScene".ToLower(),   (args)=>{ if(value[1]!= null&&value[1]!=""){SceneController.Instance.CreateNewScene(value[1], true);} } },
-                    { "LoadScene".ToLower(),   (args)=>{ if(value[1]!= null&&value[1]!=""){SceneController.Instance.LoadScene(value[1], true);} } },
+                    { "LoadScene".ToLower(),   (args)=>{ if(value[1]!= null&&value[1]!=""){SceneController.Instance.LoadScene(value[1]);} } },
                 };
 
                 if (commandOfAction.ContainsKey(value[0].ToLower()))
@@ -62,24 +62,18 @@ namespace CustomScene
                 {
                     Debug.Log(string.Format( "Unknown command '{0}', type 'help' for list.",value[0]));
                 }
-            }), 
+            }),
+            "<color=#FF6347>" +
             "Custom Scene Mod Commands\n" +
-            "  usage: csm CreateNewScene <SceneName>. :  Create a new custom scene.\n" +
-            "  usage: csm LoadScene <SceneName>. :  Load a exist's custom scene.\n");
+            "  Usage: csm CreateNewScene <SceneName>. :  Create a new custom scene.\n" +
+            "  Usage: csm LoadScene <SceneName>. :  Load a exist's custom scene.\n" +
+            "</color>"
+            );
         }
 
         void Update()
         {
-            //if (Input.GetKeyDown(KeyCode.L))
-            //{
-            //    Debug.Log("create scene");
-            //    CreateNewScene("test1", true);
-
-            //    Scenes = ReadScenes("Scenes", true);
-
-            //    CurrentScene = Scenes.ToList()[0];
-            //    CurrentScene.Load(transform.parent);
-            //}
+   
         }
 
         //void Start()
@@ -121,7 +115,7 @@ namespace CustomScene
             List<SceneFolder> SPs = new List<SceneFolder>() { };
             List<string> scenePaths = new List<string>();
 
-            if (!ModIO.ExistsDirectory("Scenes", data))
+            if (!ModIO.ExistsDirectory(scenesPacksPath, data))
             {
                 ModIO.CreateDirectory("Scenes", data);
             }
@@ -137,7 +131,7 @@ namespace CustomScene
             return SPs;
         }
 
-        public HashSet<Scene> ReadScenes(string scenesPath, bool data = false)
+        public List<Scene> ReadScenes(string scenesPath, bool data = false)
         {
             var scenes = new HashSet<Scene>();
 
@@ -158,8 +152,8 @@ namespace CustomScene
                 }
                 Debug.Log(scenes.Count);
             }
-          
-            return scenes;
+
+            return scenes.ToList();
         }
 
         //        public void ReloadScenePacks()
@@ -171,39 +165,67 @@ namespace CustomScene
         //        {
         //            GeoTools.OpenDirctory(ScenePacksPath, GeoTools.isDataMode);
         //        }
-
-
-        public void CreateNewScene(string name ,bool data = false)
+        public void RefreshScenes()
         {
-            var path = @"Scenes\" + name;
-            if (!ModIO.ExistsDirectory(path, data))
+            Scenes.Clear();
+            Scenes = ReadScenes(ScenePacksPath, true);
+        }
+
+        public void CreateNewScene(string path ,bool data = false)
+        {
+            path = ScenePacksPath + @"\" + path; 
+            if (!Scenes.Exists(match =>  match.Path == path ))
             {
-                ModIO.CreateDirectory(path, data);
-                ModIO.SerializeXml(new ScenePropertise() { Name = name }, path + @"\ScenePropertise.xml", data);
+                new Scene(path, data);
+                RefreshScenes();
 
-                ModIO.CreateDirectory(path + @"\Terrain", data);
-                ModIO.SerializeXml(new TerrainPropertise(),path + @"\Terrain\TerrainPropertise.xml", data);
-
-                Debug.Log("Create Scene is success");
+                Debug.Log("Create Scene success...");
             }
             else
             {
-                Debug.Log("Scene is existed...");
+                Debug.Log("Scene is existed...");    
             }
         }
 
-        public void LoadScene(string name, bool data = false)
+        public void LoadScene(Scene scene)
         {
-            var scene = Scenes.ToList().Find(match => match.Propertise.Name == name);
+            ClearScene();
 
-            if (scene != null)
+            if (scene.isExist && scene!= null)
             {
-                CurrentScene = Scenes.ToList().Find(match => match.Propertise.Name == name);
+                CurrentScene = scene;
                 CurrentScene.Load(transform.parent);
             }
             else
             {
+                RefreshScenes();
                 Debug.Log("Scene is not exist...");
+            }
+        }
+        public void LoadScene(string name)
+        {
+            var scene = Scenes.Find(match => match.Propertise.Name == name);
+
+            LoadScene(scene);
+        }
+        public void LoadScene(int index,bool data = false)
+        {
+            if (index + 1 <= Scenes.Count)
+            {
+                LoadScene(Scenes[index]);
+            }
+            else
+            {
+                Debug.Log("index is wrong");
+                RefreshScenes();
+            }
+        }
+
+        public void ClearScene()
+        {
+            if (CurrentScene != null)
+            {
+                CurrentScene.Clear();
             }
         }
 
