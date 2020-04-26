@@ -52,6 +52,7 @@ namespace CustomScene
                 {
                     { "CreateNewScene".ToLower(),   (args)=>{ if(value[1]!= null&&value[1]!=""){SceneController.Instance.CreateNewScene(value[1], true);} } },
                     { "LoadScene".ToLower(),   (args)=>{ if(value[1]!= null&&value[1]!=""){SceneController.Instance.LoadScene(value[1]);} } },
+                     { "ClearScene".ToLower(),   (args)=>{ SceneController.Instance.ClearScene();} },
                 };
 
                 if (commandOfAction.ContainsKey(value[0].ToLower()))
@@ -65,8 +66,9 @@ namespace CustomScene
             }),
             "<color=#FF6347>" +
             "Custom Scene Mod Commands\n" +
-            "  Usage: csm CreateNewScene <SceneName>. :  Create a new custom scene.\n" +
-            "  Usage: csm LoadScene <SceneName>. :  Load a exist's custom scene.\n" +
+            "  Usage: csm CreateNewScene <SceneName> :  Create a new custom scene.\n" +
+            "  Usage: csm LoadScene <SceneName> :  Load a exist's custom scene.\n" +
+            "  Usage: csm ClearScene :  Load a exist's custom scene.\n" +
             "</color>"
             );
         }

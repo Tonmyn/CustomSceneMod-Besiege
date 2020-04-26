@@ -664,6 +664,7 @@ namespace CustomScene
             TerrainObject = new GameObject("Terrain Object");
             TerrainObject.transform.SetParent(parent);
 
+            TerrainUnitObjects = new List<GameObject>();
             foreach (var tup in Propertise.TerrainUnitPropertises)
             {
                 var go = new GameObject("");
