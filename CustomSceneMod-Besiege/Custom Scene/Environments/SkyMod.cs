@@ -14,17 +14,15 @@ namespace CustomScene
     public class SkyMod : EnvironmentMod<SkyPropertise>,IResourceLoader
     {
         public override string Path { get; }
-        public override string PropertisePath { get { return Path + @"\SkyPropertise.xml"; } }
-
-        private GameObject SkyObject;
-        private GameObject orginSkySphere;
-    
-        public override SkyPropertise Propertise { get; set; }
         public override bool Data { get; set; }
-        public override bool Enabled { get; protected set; }
+        public override bool Enabled { get; protected set; } = false;
+        public override SkyPropertise Propertise { get; set; }
+        public override string PropertisePath { get { return Path + @"\SkyPropertise.xml"; } }
         public ResourceLoader resourceLoader { get; } = ResourceLoader.Instance;
 
 
+        private GameObject SkyObject;
+        private GameObject orginSkySphere;
 
         public SkyMod(string path,bool data)
         {
@@ -59,8 +57,6 @@ namespace CustomScene
                 TotalWorkNumber = 1;
             }
         }
-
-
         public override void Load(Transform parent)
         {
             if (!Enabled || TotalWorkNumber <= 0) return;
@@ -81,19 +77,19 @@ namespace CustomScene
                 orginSkySphere.SetActive(false);
             }
         }
-
-        private void processResource(GameObject gameObject,SkyPropertise propertise)
-        { 
-        
-        }
-
         public override void Clear()
         {
             if (orginSkySphere != null) orginSkySphere.SetActive(true);
 
             if (SkyObject == null) return;
             UnityEngine.Object.Destroy(SkyObject);
-        }   
+        }
+        private void processResource(GameObject gameObject,SkyPropertise propertise)
+        { 
+        
+        }
+
+
     }
 
     public class SkyPropertise : MeshPropertise,IEnvironmentPropertise

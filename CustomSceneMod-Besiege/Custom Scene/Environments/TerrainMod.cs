@@ -14,22 +14,26 @@ namespace CustomScene
     public class TerrainMod : EnvironmentMod<TerrainPropertise>,IResourceLoader
     {
         public override string Path { get; }
-        public override string PropertisePath { get { return Path + @"\TerrainPropertise.xml"; } }
         public override bool Data { get; set; }
         public override bool Enabled { get; protected set; } = false;
-        private List<GameObject> meshObjects;
+        public override TerrainPropertise Propertise { get; set; }
+        public override string PropertisePath { get { return Path + @"\TerrainPropertise.xml"; } }
+        public ResourceLoader resourceLoader { get; } = ResourceLoader.Instance;
+
+
+        //private List<GameObject> meshObjects;
         //MeshPropertise[] meshPropertises;
         //private GameObject Meshs;
-        private GameObject materialTemp;
+        //private GameObject materialTemp;
 
         private GameObject TerrainObject;
-        private List<GameObject> TerrainObjects;
+        private List<GameObject> TerrainUnitObjects;
 
-        private int MeshSize = 0;
+        //private int MeshSize = 0;
 
-        ShadowCastingMode shadowCastingMode = ShadowCastingMode.On;
-        public override TerrainPropertise Propertise { get; set; }
-        public ResourceLoader resourceLoader { get; } = ResourceLoader.Instance;
+        //ShadowCastingMode shadowCastingMode = ShadowCastingMode.On;
+
+
 
 
         public TerrainMod(string path,bool data = false)
@@ -663,8 +667,9 @@ namespace CustomScene
             foreach (var tup in Propertise.TerrainUnitPropertises)
             {
                 var go = new GameObject("");
-
+  
                 resourceLoader.LoadEntityObject(go, tup, Path, Data, TerrainObject.transform, processResource);
+                TerrainUnitObjects.Add(go);
                 CurrentWorkNumber++;
             }
         }

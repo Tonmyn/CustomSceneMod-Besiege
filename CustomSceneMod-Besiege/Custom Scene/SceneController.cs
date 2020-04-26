@@ -31,8 +31,8 @@ namespace CustomScene
         public bool fogEnable = true;
 
         //public Action<SceneFolder> ReadSceneEvent;
-        public Action<Scene> LoadSceneEvent;
-        public Action ClearSceneEvent;
+        public event Action<Scene> OnLoadSceneEvent;
+        public event Action OnClearSceneEvent;
 
         void Awake()
         {
@@ -69,11 +69,6 @@ namespace CustomScene
             "  Usage: csm LoadScene <SceneName>. :  Load a exist's custom scene.\n" +
             "</color>"
             );
-        }
-
-        void Update()
-        {
-   
         }
 
         //void Start()
