@@ -17,7 +17,7 @@ namespace CustomScene
         public override bool Data { get; set; }
         public override bool Enabled { get; protected set; } = false;
         public override TerrainPropertise Propertise { get; set; }
-        public override string PropertisePath { get { return Path + @"\TerrainPropertise.xml"; } }
+        public override string PropertisePath { get { return Path + "TerrainPropertise.xml"; } }
         public ResourceLoader resourceLoader { get; } = ResourceLoader.Instance;
 
 
@@ -38,12 +38,12 @@ namespace CustomScene
 
         public TerrainMod(string path,bool data = false)
         {
-            Path = path + @"\Terrain";
+            Path = path + @"Terrain\";
             Data = data;
             //PropertisePath = Path + @"\TerrainPropertise.xml";
             try
             {
-                if (isExist)
+                if (isExistPropertiseFile)
                 {
                     Propertise = ModIO.DeserializeXml<TerrainPropertise>(PropertisePath, Data);
                     Enabled = true;

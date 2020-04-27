@@ -17,7 +17,7 @@ namespace CustomScene
         public override bool Data { get; set; }
         public override bool Enabled { get; protected set; } = false;
         public override SkyPropertise Propertise { get; set; }
-        public override string PropertisePath { get { return Path + @"\SkyPropertise.xml"; } }
+        public override string PropertisePath { get { return Path + "SkyPropertise.xml"; } }
         public ResourceLoader resourceLoader { get; } = ResourceLoader.Instance;
 
 
@@ -26,13 +26,13 @@ namespace CustomScene
 
         public SkyMod(string path,bool data)
         {
-            Path = path + @"\Sky";
+            Path = path + @"Sky\";
             Data = data;
             //PropertisePath = Path + @"\SkyPropertise.xml";
 
             try
             {
-                if (isExist)
+                if (isExistPropertiseFile)
                 {
                     Propertise = ModIO.DeserializeXml<SkyPropertise>(PropertisePath, Data);
                     Enabled = true;
@@ -64,12 +64,24 @@ namespace CustomScene
             SkyObject = new GameObject("Sky Object");
             SkyObject.transform.SetParent(parent);
 
-            SkyObject.AddComponent<CameraFollower>();
+
+            var msf = SkyObject.AddComponent<mySmoothFollow>();
+            msf.target = Camera.main.transform;
+            msf.smoothAmount = 1000000f;
+
+            var r = SkyObject.AddComponent<Rotate>();
+            r.degreesPerSecond = Propertise.AngularVelocity;
+            r.rotateAxis = Propertise.Axis;
+            r.unscaledTime = true;
+            r.worldSpace = true;
+            r.sineSpeed = 0;
+            r.sine = false;
 
             var go = new GameObject("");
+            go.transform.localScale = Propertise.Scale;
             resourceLoader.LoadVirtualObject(go, Propertise, Path, Data, SkyObject.transform, processResource);
+            
             CurrentWorkNumber++;
-
 
             orginSkySphere = GameObject.Find("STAR SPHERE");
             if (orginSkySphere != null)
@@ -92,28 +104,16 @@ namespace CustomScene
 
     }
 
-    public class SkyPropertise : MeshPropertise,IEnvironmentPropertise
+    public class SkyPropertise : MeshPropertise, IEnvironmentPropertise
     {
         [CanBeEmpty]
         public Vector3 Axis { get; set; } = Vector3.zero;
         [CanBeEmpty]
         public float AngularVelocity { get; set; } = 0f;
-    }
 
-    public class CameraFollower : MonoBehaviour
-    {
-        Camera mainCamera;
-
-        void Start()
+        public SkyPropertise()
         {
-            mainCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
+            Scale = Vector3.one * 100f;
         }
-
-        void Update()
-        {
-            this.transform.position = mainCamera.transform.position;
-            this.transform.localScale = Vector3.one * mainCamera.farClipPlane / /*42*/ 10;
-        }
-
     }
 }

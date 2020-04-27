@@ -12,18 +12,18 @@ using Modding.Levels;
 namespace CustomScene
 {
 
-    public class SceneController : SingleInstance<SceneController>
+    public class SceneModController : SingleInstance<SceneModController>
     {
-        public override string Name { get; } = "Scene Controller";
+        public override string Name { get; } = "SceneMod Controller";
 
         /// <summary>地图包路径</summary>
-        public static string ScenePacksPath = "Scenes";
+        public static string ScenePacksPath = @"Scenes\";
         /// <summary>地图包列表</summary>
         public List<SceneFolder> ScenePacks;
         ///// <summary>地图物体</summary>
         //public GameObject SceneObjects;
-        public Scene CurrentScene { get; private set; }
-        public List<Scene> Scenes { get; private set; }
+        public SceneMod CurrentScene { get; private set; }
+        public List<SceneMod> Scenes { get; private set; }
 
 
         public bool worldBoundariesEnable = true;
@@ -31,14 +31,11 @@ namespace CustomScene
         public bool fogEnable = true;
 
         //public Action<SceneFolder> ReadSceneEvent;
-        public event Action<Scene> OnLoadSceneEvent;
+        public event Action<SceneMod> OnLoadSceneEvent;
         public event Action OnClearSceneEvent;
 
         void Awake()
         {
-
-            ScenePacksPath = GeoTools.ScenePackPath;
-
             ScenePacks = ReadScenePacks(ScenePacksPath, GeoTools.isDataMode);
 
             //SceneObjects = new GameObject("Scene Objects");
@@ -50,9 +47,10 @@ namespace CustomScene
             {
                 Dictionary<string, Action<string[]>> commandOfAction = new Dictionary<string, Action<string[]>>
                 {
-                    { "CreateNewScene".ToLower(),   (args)=>{ if(value[1]!= null&&value[1]!=""){SceneController.Instance.CreateNewScene(value[1], true);} } },
-                    { "LoadScene".ToLower(),   (args)=>{ if(value[1]!= null&&value[1]!=""){SceneController.Instance.LoadScene(value[1]);} } },
-                     { "ClearScene".ToLower(),   (args)=>{ SceneController.Instance.ClearScene();} },
+                    { "CreateNewScene".ToLower(),   (args)=>{ if(value[1]!= null&&value[1]!=""){SceneModController.Instance.CreateNewScene(value[1], true);} } },
+                    { "LoadScene".ToLower(),   (args)=>{ if(value[1]!= null&&value[1]!=""){SceneModController.Instance.LoadScene(value[1]);} } },
+                    { "ClearScene".ToLower(),   (args)=>{ SceneModController.Instance.ClearScene();} },
+                    { "RefreshScene".ToLower(),   (args)=>{ SceneModController.Instance.RefreshScenes();} },
                 };
 
                 if (commandOfAction.ContainsKey(value[0].ToLower()))
@@ -68,7 +66,8 @@ namespace CustomScene
             "Custom Scene Mod Commands\n" +
             "  Usage: csm CreateNewScene <SceneName> :  Create a new custom scene.\n" +
             "  Usage: csm LoadScene <SceneName> :  Load a exist's custom scene.\n" +
-            "  Usage: csm ClearScene :  Load a exist's custom scene.\n" +
+            "  Usage: csm ClearScene :  Clear custom scene.\n" +
+            "  Usage: csm RefreshScene :  Refresh custom scenes.\n" +
             "</color>"
             );
         }
@@ -128,26 +127,23 @@ namespace CustomScene
             return SPs;
         }
 
-        public List<Scene> ReadScenes(string scenesPath, bool data = false)
+        public List<SceneMod> ReadScenes(string scenesPath, bool data = false)
         {
-            var scenes = new HashSet<Scene>();
+            var scenes = new HashSet<SceneMod>();
 
             if (!ModIO.ExistsDirectory(scenesPath, data))
             {
                 ModIO.CreateDirectory(scenesPath, data);
             }
 
-            var paths = ModIO.GetDirectories(scenesPath, data);
+            var paths = ModIO.GetDirectories(scenesPath, data);        
             if (paths.Length > 0)
             {
-                Debug.Log(paths.Length);
                 foreach (var path in paths)
                 {
-                    Debug.Log(path);
-                    var scene = new Scene(path, data);
+                    var scene = new SceneMod(path + @"\", data);
                     if (scene.Enabled) scenes.Add(scene);
                 }
-                Debug.Log(scenes.Count);
             }
 
             return scenes.ToList();
@@ -170,10 +166,10 @@ namespace CustomScene
 
         public void CreateNewScene(string path ,bool data = false)
         {
-            path = ScenePacksPath + @"\" + path; 
+            path = ScenePacksPath + path; 
             if (!Scenes.Exists(match =>  match.Path == path ))
             {
-                new Scene(path, data);
+                new SceneMod(path, data);
                 RefreshScenes();
 
                 Debug.Log("Create Scene success...");
@@ -184,11 +180,11 @@ namespace CustomScene
             }
         }
 
-        public void LoadScene(Scene scene)
+        public void LoadScene(SceneMod scene)
         {
             ClearScene();
 
-            if (scene.isExist && scene!= null)
+            if (scene.isExistPropertiseFile && scene!= null)
             {
                 CurrentScene = scene;
                 CurrentScene.Load(transform.parent);
@@ -223,6 +219,7 @@ namespace CustomScene
             if (CurrentScene != null)
             {
                 CurrentScene.Clear();
+                CurrentScene = null;
             }
         }
 

@@ -16,7 +16,7 @@ namespace CustomScene
         
         public static GameObject ModObject;
 
-        public static SceneController SceneController;
+        public static SceneModController SceneController;
         public static BlockInformationMod blockInformationMod;
         public static TimerMod timerMod;
         public static Prop prop;
@@ -32,7 +32,7 @@ namespace CustomScene
             //ModObject.AddComponent<test>();
 
             GameObject customScene = new GameObject("CustomScene");
-            SceneController = SceneController.Instance;
+            SceneController = SceneModController.Instance;
             SceneController.transform.SetParent(customScene.transform);
             customScene.AddComponent<UI.EnvironmentSettingUI>();
             customScene.transform.SetParent(ModObject.transform);

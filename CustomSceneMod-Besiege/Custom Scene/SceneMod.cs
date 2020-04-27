@@ -10,10 +10,10 @@ using Vector3 = Modding.Serialization.Vector3;
 
 namespace CustomScene
 {
-    public class Scene : EnvironmentMod<ScenePropertise>
+    public class SceneMod : EnvironmentMod<ScenePropertise>
     {
         public override string Path { get; }
-        public override string PropertisePath { get { return Path + @"\ScenePropertise.xml"; } }
+        public override string PropertisePath { get { return Path + "ScenePropertise.xml"; } }
         public override bool Data { get; set; }
         public override ScenePropertise Propertise { get; set; }
         public override bool Enabled { get; protected set; } = false;
@@ -25,14 +25,14 @@ namespace CustomScene
 
         public GameObject SceneObject;
 
-        public Scene(string path,bool data = false)
+        public SceneMod(string path,bool data = false)
         {
-            Path = path;
+            Path = path + @"\";
             Data = data;
             //PropertisePath = Path + @"\ScenePropertise.xml";
             try
             {
-                if (isExist)
+                if (isExistPropertiseFile)
                 {
                     Propertise = ModIO.DeserializeXml<ScenePropertise>(PropertisePath, Data);
                     Enabled = true;
@@ -89,31 +89,6 @@ namespace CustomScene
             if (SceneObject == null) return;
             UnityEngine.Object.Destroy(SceneObject);
         }
-
-        //public  override void Create(string name,bool data = false)
-        //{
-        //    var path = @"Scenes\" + name;
-        //    if (!ModIO.ExistsDirectory(path, data))
-        //    {
-        //        ModIO.CreateDirectory(path, data);
-        //        ModIO.SerializeXml(new ScenePropertise() { Name = name }, PropertisePath, data);
-
-        //        #region Environment
-        //        TerrainMod.Create(path, data);
-        //        SkyMod.Create(path, data);
-        //        //ModIO.CreateDirectory(path + @"\Terrain", data);
-        //        //ModIO.SerializeXml(new TerrainPropertise(), path + @"\Terrain\TerrainPropertise.xml", data);
-
-        //        //ModIO.CreateDirectory(path + @"\Sky", data);
-        //        //ModIO.SerializeXml(new SkyPropertise(), path + @"\Sky\SkyPropertise.xml", data);
-        //        #endregion
-        //        Debug.Log("Create Scene is success");
-        //    }
-        //    else
-        //    {
-        //        Debug.Log("Scene is existed...");
-        //    }
-        //}
     }
 
     public class ScenePropertise : Element, IEnvironmentPropertise

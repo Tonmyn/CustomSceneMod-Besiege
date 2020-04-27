@@ -17,7 +17,7 @@ namespace CustomScene
         public abstract bool Enabled { get; protected set; }
         public int TotalWorkNumber { get; protected set; } = 1;
         public int CurrentWorkNumber { get; protected set; } = 0;
-        public bool isExist { get { return ModIO.ExistsFile(PropertisePath, Data); } }
+        public bool isExistPropertiseFile { get { return ModIO.ExistsFile(PropertisePath, Data); } }
 
         public abstract void Load(Transform transform);
         public abstract void Clear();

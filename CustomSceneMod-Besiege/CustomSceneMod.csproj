@@ -36,7 +36,7 @@
     <Compile Include="BaseFileClass\ModSettingFile.cs" />
     <Compile Include="Custom Scene\Environments\EnvironmentMod.cs" />
     <Compile Include="Custom Scene\Environments\CameraMod.cs" />
-    <Compile Include="Custom Scene\Scene.cs" />
+    <Compile Include="Custom Scene\SceneMod.cs" />
     <Compile Include="Global\DataLoader.cs" />
     <Compile Include="Global\ResourceLoader.cs" />
     <Compile Include="Global\Serializable.cs" />
@@ -45,7 +45,7 @@
     <Compile Include="Mod.cs" />
     <Compile Include="Global\LanguageManager.cs" />
     <Compile Include="Global\SettingsManager.cs" />
-    <Compile Include="Custom Scene\SceneController.cs" />
+    <Compile Include="Custom Scene\SceneModController.cs" />
     <Compile Include="Custom Scene\Environments\SkyMod.cs" />
     <Compile Include="Custom Scene\Environments\CloudMod.cs" />
     <Compile Include="Tool Box\BlockInformationMod.cs" />
