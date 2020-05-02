@@ -89,6 +89,14 @@ namespace CustomScene
         //    };
         //}
 
+        void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.I))
+            {
+                Debug.Log(SceneManager.GetActiveScene().name);
+            }
+        }
+
         //void OnDisable()
         //{
         //    //ClearEnvironment();
@@ -186,6 +194,14 @@ namespace CustomScene
 
             if (scene.isExistPropertiseFile && scene!= null)
             {
+                //SceneManager.LoadScene("MasterSceneMultiplayer", LoadSceneMode.Single);
+                
+                
+                HideFloorBigy();
+                HideFog();
+
+
+
                 CurrentScene = scene;
                 CurrentScene.Load(transform.parent);
             }
@@ -319,178 +335,187 @@ namespace CustomScene
 
 
 
-        //        #region 隐藏/显示地面 空气墙 雾
+        #region 隐藏/显示地面 空气墙 雾
 
-        //        /// <summary>
-        //        /// 隐藏地面
-        //        /// </summary>
-        //        public void HideFloorBig()
-        //        {
+        /// <summary>
+        /// 隐藏地面
+        /// </summary>
+        public void HideFloorBig()
+        {
 
-        //            if (!FloorBigEnable)
-        //            {
-        //                UnhideFloorBig();
-        //                return;
-        //            }
+            if (!FloorBigEnable)
+            {
+                UnhideFloorBig();
+                return;
+            }
 
-        //            HideFloorBigy();
+            HideFloorBigy();
 
-        //        }
+        }
 
-        //        private void HideFloorBigy()
-        //        {
+        private void HideFloorBigy()
+        {
 
-        //            GameObject floorBig = GameObject.Find("FloorBig");
+            GameObject floorBig = GameObject.Find("FloorBig");
+            try
+            {
+                floorBig.SetActive(false);
+            }
+            catch
+            { 
+            
+            }
 
-        //            try
-        //            {
-        //                floorBig.GetComponent<BoxCollider>().enabled = false;
-        //                floorBig.GetComponent<MeshRenderer>().enabled = false;
-        //                foreach (var v in floorBig.GetComponentsInChildren<Renderer>())
-        //                {
-        //                    v.enabled = false;
-        //                }
+            //try
+            //{
+            //    floorBig.GetComponent<BoxCollider>().enabled = false;
+            //    floorBig.GetComponent<MeshRenderer>().enabled = false;
+            //    foreach (var v in floorBig.GetComponentsInChildren<Renderer>())
+            //    {
+            //        v.enabled = false;
+            //    }
 
-        //                FloorBigEnable = false;
-        //            }
-        //            catch { }
-        //        }
+            //    FloorBigEnable = false;
+            //}
+            //catch { }
+        }
 
-        //        /// <summary>
-        //        /// 还原FloorBig
-        //        /// </summary>
-        //        private void UnhideFloorBig()
-        //        {
+        /// <summary>
+        /// 还原FloorBig
+        /// </summary>
+        private void UnhideFloorBig()
+        {
 
-        //            GameObject floorBig = GameObject.Find("FloorBig");
+            GameObject floorBig = GameObject.Find("FloorBig");
 
-        //            try
-        //            {
-        //                floorBig.GetComponent<BoxCollider>().enabled = true;
-        //                floorBig.GetComponent<MeshRenderer>().enabled = true;
-        //                foreach (var v in floorBig.GetComponentsInChildren<Renderer>())
-        //                {
-        //                    v.enabled = true;
-        //                }
-        //                FloorBigEnable = true;
-        //            }
-        //            catch { }
+            floorBig.SetActive(true);
+            //try
+            //{
+            //    floorBig.GetComponent<BoxCollider>().enabled = true;
+            //    floorBig.GetComponent<MeshRenderer>().enabled = true;
+            //    foreach (var v in floorBig.GetComponentsInChildren<Renderer>())
+            //    {
+            //        v.enabled = true;
+            //    }
+            //    FloorBigEnable = true;
+            //}
+            //catch { }
 
-        //        }
+        }
 
-        //        /// <summary>
-        //        /// 隐藏空气墙
-        //        /// </summary>
-        //        public void HideWorldBoundaries()
-        //        {
-        //            try
-        //            {
+        /// <summary>
+        /// 隐藏空气墙
+        /// </summary>
+        public void HideWorldBoundaries()
+        {
+            try
+            {
 
-        //                //单人模式下
-        //                GameObject WorldBoundaries_Large = GameObject.Find("WORLD BOUNDARIES_LARGE");
+                //单人模式下
+                GameObject WorldBoundaries_Large = GameObject.Find("WORLD BOUNDARIES_LARGE");
 
-        //                SetWorldBoundaries(WorldBoundaries_Large);
+                SetWorldBoundaries(WorldBoundaries_Large);
 
-        //            }
-        //            catch (Exception e)
-        //            {
-        //                GeoTools.Log(e.Message);
-        //                worldBoundariesEnable = !worldBoundariesEnable;
-        //            }
+            }
+            catch (Exception e)
+            {
+                GeoTools.Log(e.Message);
+                worldBoundariesEnable = !worldBoundariesEnable;
+            }
 
-        //            try
-        //            {
-        //                //多人模式下
-        //                GameObject worldBoundaries = GameObject.Find("WORLD BOUNDARIES");
-        //                //Bounds worldBoundaries = new Bounds();
-        //                //if (WorldBoundaries == null)
-        //                //{
-        //                //    Debug.LogError("Can't find level bounds!");
-        //                //}
-        //                //Collider[] componentsInChildren = WorldBoundaries.GetComponentsInChildren<Collider>(true);
-        //                //for (int i = 0; i < componentsInChildren.Length; i++)
-        //                //{
-        //                //    Bounds bound = componentsInChildren[i].bounds;
-        //                //    if (i != 0)
-        //                //    {
-        //                //        worldBoundaries.Encapsulate(bound);
-        //                //    }
-        //                //    else
-        //                //    {
-        //                //        worldBoundaries = bound;
-        //                //    }
-        //                //}
-        //                //worldBoundaries.Expand(worldBoundaries.extents * 2f * 100f);
+            try
+            {
+                //多人模式下
+                GameObject worldBoundaries = GameObject.Find("WORLD BOUNDARIES");
+                //Bounds worldBoundaries = new Bounds();
+                //if (WorldBoundaries == null)
+                //{
+                //    Debug.LogError("Can't find level bounds!");
+                //}
+                //Collider[] componentsInChildren = WorldBoundaries.GetComponentsInChildren<Collider>(true);
+                //for (int i = 0; i < componentsInChildren.Length; i++)
+                //{
+                //    Bounds bound = componentsInChildren[i].bounds;
+                //    if (i != 0)
+                //    {
+                //        worldBoundaries.Encapsulate(bound);
+                //    }
+                //    else
+                //    {
+                //        worldBoundaries = bound;
+                //    }
+                //}
+                //worldBoundaries.Expand(worldBoundaries.extents * 2f * 100f);
 
-        //                //NetworkCompression.SetWorldBounds(worldBoundaries);
-        //                SetWorldBoundaries(worldBoundaries);
+                //NetworkCompression.SetWorldBounds(worldBoundaries);
+                SetWorldBoundaries(worldBoundaries);
 
-        //            }
-        //            catch (Exception e)
-        //            {
-        //                GeoTools.Log(e.Message);
-        //                worldBoundariesEnable = !worldBoundariesEnable;
-        //            }
+            }
+            catch (Exception e)
+            {
+                GeoTools.Log(e.Message);
+                worldBoundariesEnable = !worldBoundariesEnable;
+            }
 
-        //            void SetWorldBoundaries(GameObject WorldBoundaries)
-        //            {
-        //                worldBoundariesEnable = !worldBoundariesEnable;
+            void SetWorldBoundaries(GameObject WorldBoundaries)
+            {
+                worldBoundariesEnable = !worldBoundariesEnable;
 
-        //                foreach (BoxCollider BC in WorldBoundaries.GetComponentsInChildren<BoxCollider>())
-        //                {
-        //                    BC.isTrigger = !worldBoundariesEnable;
-        //                }
+                foreach (BoxCollider BC in WorldBoundaries.GetComponentsInChildren<BoxCollider>())
+                {
+                    BC.isTrigger = !worldBoundariesEnable;
+                }
 
-        //                foreach (Renderer MR in WorldBoundaries.GetComponentsInChildren<Renderer>())
-        //                {
-        //                    MR.enabled = worldBoundariesEnable;
-        //                }
+                foreach (Renderer MR in WorldBoundaries.GetComponentsInChildren<Renderer>())
+                {
+                    MR.enabled = worldBoundariesEnable;
+                }
 
-        //            }
+            }
 
 
-        //        }
+        }
 
-        //        /// <summary>
-        //        /// 隐藏雾
-        //        /// </summary>
-        //        public void HideFog()
-        //        {
-        //            fogEnable = !fogEnable;
+        /// <summary>
+        /// 隐藏雾
+        /// </summary>
+        public void HideFog()
+        {
+            fogEnable = !fogEnable;
 
-        //            Camera.main.farClipPlane = fogEnable ? 1500 : 150000;
+            Camera.main.farClipPlane = fogEnable ? 1500 : 150000;
 
-        //            try
-        //            {
-        //                if (SceneManager.GetActiveScene().name == "BARREN EXPANSE" || (SceneManager.GetActiveScene().name == "MasterSceneMultiplayer" && (Level.GetCurrentLevel().Setup.Name == null || Level.GetCurrentLevel().Setup.Name == "")))
-        //                {
+            try
+            {
+                if (SceneManager.GetActiveScene().name == "BARREN EXPANSE" || (SceneManager.GetActiveScene().name == "MasterSceneMultiplayer" && (Level.GetCurrentLevel().Setup.Name == null || Level.GetCurrentLevel().Setup.Name == "")))
+                {
 
-        //                    GameObject mainCamera = GameObject.Find("Main Camera");
-        //                    mainCamera.GetComponent<ColorfulFog>().enabled = fogEnable;
-        //                }
-        //            }
-        //            catch
-        //            { }
+                    GameObject mainCamera = GameObject.Find("Main Camera");
+                    mainCamera.GetComponent<ColorfulFog>().enabled = fogEnable;
+                }
+            }
+            catch
+            { }
 
-        //            try
-        //            {
-        //                GameObject fogSPHERE = GameObject.Find("FOG SPHERE");
-        //                fogSPHERE.GetComponent<MeshRenderer>().enabled = fogEnable;
-        //            }
-        //            catch
-        //            { }
+            try
+            {
+                GameObject fogSPHERE = GameObject.Find("FOG SPHERE");
+                fogSPHERE.GetComponent<MeshRenderer>().enabled = fogEnable;
+            }
+            catch
+            { }
 
-        //            try
-        //            {
-        //                GameObject.Find("Fog Volume").GetComponent<MeshRenderer>().enabled = fogEnable;
-        //            }
-        //            catch (Exception e)
-        //            {
-        //                GeoTools.Log(e.Message);
-        //            }
+            try
+            {
+                GameObject.Find("Fog Volume").GetComponent<MeshRenderer>().enabled = fogEnable;
+            }
+            catch (Exception e)
+            {
+                GeoTools.Log(e.Message);
+            }
 
-        //        }
-        //        #endregion
+        }
+        #endregion
     }
 
 

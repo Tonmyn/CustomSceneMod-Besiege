@@ -7,19 +7,20 @@ using Modding.Serialization;
 using Vector3 = UnityEngine.Vector3;
 using Modding;
 using System.Threading;
+using System.Collections;
 
 namespace CustomScene
 {
-    public class CloudMod : EnvironmentMod<CloudPropertise>
+    public class CloudMod : EnvironmentMod<CloudPropertise>,IResourceLoader
     {
         public override string Path { get; }
         public override bool Data { get; set; }
         public override CloudPropertise Propertise { set; get; }
         public override string PropertisePath { get { return Path + "CloudPropertise.xml"; } }
         public override bool Enabled { get; protected set; } = false;
+        public ResourceLoader resourceLoader { get; } = ResourceLoader.Instance;
 
         private GameObject cloudObject;
-        private List<GameObject> cloudUnitObjects;
 
         public CloudMod(string path, bool data)
         {
@@ -65,15 +66,15 @@ namespace CustomScene
             cloudObject = new GameObject("Cloud Object");
             cloudObject.transform.SetParent(parent);
 
-            cloudUnitObjects = new List<GameObject>();
             for (int i = 0; i < Propertise.Size; i++)
             {
-                cloudUnitObjects.Add(CreateCloudObject());
+                resourceLoader.StartCoroutine(CreateCloudObject());
+
                 CurrentWorkNumber++;
                 Thread.Sleep((int)Time.deltaTime * 200);
             }
 
-            GameObject CreateCloudObject()
+            IEnumerator CreateCloudObject()
             {
                 var position = Propertise.Position;
                 var scale = Propertise.Scale;
@@ -87,9 +88,8 @@ namespace CustomScene
                                UnityEngine.Random.Range(position.y, scale.y + position.y),
                                UnityEngine.Random.Range(-scale.z + position.z, scale.z + position.z));
 
-                GameObject go = (GameObject)UnityEngine.Object.Instantiate(getCloudTemp(), randomPosition, Quaternion.identity, cloudObject.transform);
+                var go = (GameObject)UnityEngine.Object.Instantiate(getCloudTemp(), randomPosition, Quaternion.identity, cloudObject.transform);
                 go.transform.localScale = unitScale;
-                go.name = "Cloud Unit Object";
                 go.SetActive(true);
 
                 ParticleSystem ps = go.GetComponent<ParticleSystem>();
@@ -98,7 +98,7 @@ namespace CustomScene
                 var cs = go.AddComponent<CloudScript>();
                 cs.SizeRandomBounds = unitSizeBounds;
 
-                return go;
+                yield return 0;
 
                 GameObject getCloudTemp()
                 {

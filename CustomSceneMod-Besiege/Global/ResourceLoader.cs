@@ -41,6 +41,8 @@ namespace CustomScene
             var meshPath = string.Format(@"{0}\{1}.obj", path, meshPropertise.MeshName);
             var texturePath = string.Format(@"{0}\{1}.png", path, meshPropertise.TextureName);
 
+            Debug.Log(texturePath);
+
             if (ModIO.ExistsFile(meshPath, data))
             {
                 var mesh = ModResource.CreateMeshResource(GeoTools.GetRandomString(), meshPath, data);
