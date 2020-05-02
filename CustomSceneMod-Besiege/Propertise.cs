@@ -30,7 +30,17 @@ namespace CustomScene
 
     }
 
-    public class MeshPropertise : Element
+    public class TransformPropertise : Element
+    {
+        [CanBeEmpty]
+        public Vector3 Position { get; set; } = Vector3.zero;
+        [CanBeEmpty]
+        public Vector3 Rotation { get; set; } = Vector3.zero;
+        [CanBeEmpty]
+        public Vector3 Scale { get; set; } = Vector3.one;
+    }
+
+    public class MeshPropertise : TransformPropertise
     {
         [RequireToValidate]
         public string MeshName { get; set; } = "Mesh Name";
@@ -38,11 +48,5 @@ namespace CustomScene
         public string TextureName { get; set; } = "Texture Name";
         [CanBeEmpty]
         public string MeshVersion { get; set; } = "V1.0";
-        [CanBeEmpty]
-        public Vector3 Position { get; set; } = Vector3.zero;
-        [CanBeEmpty]
-        public Vector3 Rotation { get; set; } = Vector3.zero;
-        [CanBeEmpty]
-        public Vector3 Scale { get; set; } = Vector3.one;
     }
 }

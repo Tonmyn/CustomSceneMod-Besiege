@@ -21,7 +21,7 @@ namespace CustomScene
         public ResourceLoader resourceLoader { get; } = ResourceLoader.Instance;
 
 
-        private GameObject SkyObject;
+        private GameObject skyObject;
         private GameObject orginSkySphere;
 
         public SkyMod(string path,bool data)
@@ -61,15 +61,15 @@ namespace CustomScene
         {
             if (!Enabled || TotalWorkNumber <= 0) return;
 
-            SkyObject = new GameObject("Sky Object");
-            SkyObject.transform.SetParent(parent);
+            skyObject = new GameObject("Sky Object");
+            skyObject.transform.SetParent(parent);
 
 
-            var msf = SkyObject.AddComponent<mySmoothFollow>();
+            var msf = skyObject.AddComponent<mySmoothFollow>();
             msf.target = Camera.main.transform;
             msf.smoothAmount = 1000000f;
 
-            var r = SkyObject.AddComponent<Rotate>();
+            var r = skyObject.AddComponent<Rotate>();
             r.degreesPerSecond = Propertise.AngularVelocity;
             r.rotateAxis = Propertise.Axis;
             r.unscaledTime = true;
@@ -79,7 +79,7 @@ namespace CustomScene
 
             var go = new GameObject("");
             go.transform.localScale = Propertise.Scale;
-            resourceLoader.LoadVirtualObject(go, Propertise, Path, Data, SkyObject.transform, processResource);
+            resourceLoader.LoadVirtualObject(go, Propertise, Path, Data, skyObject.transform, processResource);
             
             CurrentWorkNumber++;
 
@@ -93,8 +93,8 @@ namespace CustomScene
         {
             if (orginSkySphere != null) orginSkySphere.SetActive(true);
 
-            if (SkyObject == null) return;
-            UnityEngine.Object.Destroy(SkyObject);
+            if (skyObject == null) return;
+            UnityEngine.Object.Destroy(skyObject);
         }
         private void processResource(GameObject gameObject,SkyPropertise propertise)
         { 

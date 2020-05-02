@@ -673,19 +673,20 @@ namespace CustomScene
                 TerrainUnitObjects.Add(go);
                 CurrentWorkNumber++;
             }
-        }
-        private void processResource(GameObject gameObject,TerrainUnitPropertise propertise)
-        {
-            gameObject.layer = 29;
-            gameObject.isStatic = true;
 
-            var material = gameObject.GetComponent<MeshCollider>().material;
-            material.bounciness = propertise.Bounciness;
-            material.staticFriction = material.dynamicFriction = propertise.Friction;
-            material.bounceCombine = (PhysicMaterialCombine)propertise.CombinMode;
-            material.frictionCombine = (PhysicMaterialCombine)propertise.CombinMode;
+            void processResource(GameObject gameObject, TerrainUnitPropertise propertise)
+            {
+                gameObject.layer = 29;
+                gameObject.isStatic = true;
 
+                var material = gameObject.GetComponent<MeshCollider>().material;
+                material.bounciness = propertise.Bounciness;
+                material.staticFriction = material.dynamicFriction = propertise.Friction;
+                material.bounceCombine = (PhysicMaterialCombine)propertise.CombinMode;
+                material.frictionCombine = (PhysicMaterialCombine)propertise.CombinMode;
+            }
         }
+
 
         //        public override void Load(Transform transform)
         //        {

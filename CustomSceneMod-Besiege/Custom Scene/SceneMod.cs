@@ -21,6 +21,7 @@ namespace CustomScene
         #region Environment
         public TerrainMod  TerrainMod;
         public SkyMod SkyMod;
+        public CloudMod CloudMod;
         #endregion
 
         public GameObject SceneObject;
@@ -56,9 +57,9 @@ namespace CustomScene
             {
 
                 #region Environment
-                TerrainMod = new TerrainMod(Path,data);
-                SkyMod = new SkyMod(Path, data);
-
+                TerrainMod = new TerrainMod(Path,Data);
+                SkyMod = new SkyMod(Path, Data);
+                CloudMod = new CloudMod(Path, Data);
                 #endregion
             }
         }
@@ -73,6 +74,7 @@ namespace CustomScene
             #region Environment
             TerrainMod.Load(SceneObject.transform);
             SkyMod.Load(SceneObject.transform);
+            CloudMod.Load(SceneObject.transform);
             #endregion
 
             SceneObject.transform.position = Propertise.Position;
@@ -84,6 +86,7 @@ namespace CustomScene
             #region Environment
             TerrainMod.Clear();
             SkyMod.Clear();
+            CloudMod.Clear();
             #endregion
 
             if (SceneObject == null) return;
@@ -91,7 +94,7 @@ namespace CustomScene
         }
     }
 
-    public class ScenePropertise : Element, IEnvironmentPropertise
+    public class ScenePropertise : TransformPropertise, IEnvironmentPropertise
     {
         [CanBeEmpty]
         public string Name { get; set; } = "Scene's Name";
@@ -99,11 +102,5 @@ namespace CustomScene
         public string Author { get; private set; } = "Scene's Author";
         [CanBeEmpty]
         public string Description { get; private set; } = "Scene's Description";
-        [CanBeEmpty]
-        public Vector3 Position { get; set; } = Vector3.zero;
-        [CanBeEmpty]
-        public Vector3 Rotation { get; set; } = Vector3.zero;
-        [CanBeEmpty]
-        public Vector3 Scale { get; set; } = Vector3.one;
     }
 }

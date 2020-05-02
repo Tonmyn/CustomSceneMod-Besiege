@@ -5,230 +5,153 @@ using UnityEngine;
 using Modding.Levels;
 using Modding.Serialization;
 using Vector3 = UnityEngine.Vector3;
+using Modding;
+using System.Threading;
 
 namespace CustomScene
 {
     public class CloudMod : EnvironmentMod<CloudPropertise>
     {
-        void Start()
+        public override string Path { get; }
+        public override bool Data { get; set; }
+        public override CloudPropertise Propertise { set; get; }
+        public override string PropertisePath { get { return Path + "CloudPropertise.xml"; } }
+        public override bool Enabled { get; protected set; } = false;
+
+        private GameObject cloudObject;
+        private List<GameObject> cloudUnitObjects;
+
+        public CloudMod(string path, bool data)
         {
-            //new CommandRegistration("VP_CloudSize", (string[] args) =>
-            //{
-            //    if (args.Length < 1)
-            //    {
-            //        GeoTools.Log("ERROR!");
-            //    }
-            //    try
-            //    {
-            //        int cloudSize = int.Parse(args[0]);
-            //        if (cloudSize < 0 || cloudSize > 3000) { GeoTools.Log("Your cloud amount is not available. "); }
-            //        else
-            //        {
-            //            this.cloudSize = cloudSize;
-            //            LoadCloud();
-            //        }
-            //    }
-            //    catch
-            //    {
-            //        GeoTools.Log("Could not parse " + args[0] + "to cloud amount");
-            //    }
-            //    GeoTools.Log("There will be " + cloudSize.ToString() + " clouds" + "\n");
-            //}, "Set CloudSize.No bigger than 80 and no less than 10.");
-
-        }
-
-
-        List<GameObject> cloudObjects;
-        CloudsPropertise cloudsPropertise;
-
-        public override CloudPropertise Propertise => throw new NotImplementedException();
-
-        class CloudsPropertise
-        {
-            public int cloudsSize = 0;
-            public Vector3 cloudsPosition = Vector3.zero;
-            public Vector3 cloudsScale = new Vector3(1000, 200, 1000);
-            public Color cloudsColor = new Color(0.92f, 0.92f, 0.92f, 0.5f);
-        }
-
-        public override void Read(SceneFolder scenePack)
-        {
-            Clear();
+            Path = path + @"Cloud\";
+            Data = data;
+            //PropertisePath = Path + @"\SkyPropertise.xml";
 
             try
             {
-                foreach (var str in scenePack.SettingFileDatas)
+                if (isExistPropertiseFile)
                 {
-                    string[] chara = str.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-                    if (chara.Length > 2)
-                    {
-                        if (chara[0].ToLower() == "cloud" || chara[0].ToLower() == "clouds")
-                        {
-
-                            if (chara[1] == "size")
-                            {
-                                int size = Mathf.Clamp(Convert.ToInt32(chara[2]), 0, 1000);
-
-                                if (size <= 0)
-                                {
-                                    break;
-                                }
-                                cloudsPropertise = new CloudsPropertise();
-                                cloudsPropertise.cloudsSize = size;
-                            }
-                            else if (chara[1].ToLower() == "floorscale" || chara[1].ToLower() == "cloudscale" || chara[1].ToLower() == "scale")
-                            {
-                                cloudsPropertise.cloudsScale = new Vector3(
-                                Convert.ToSingle(chara[2]),
-                                Convert.ToSingle(chara[3]),
-                                Convert.ToSingle(chara[4]));
-                            }
-                            else if (chara[1].ToLower() == "location")
-                            {
-                                cloudsPropertise.cloudsPosition = new Vector3(
-                                Convert.ToSingle(chara[2]),
-                                Convert.ToSingle(chara[3]),
-                                Convert.ToSingle(chara[4]));
-                            }
-                            else if (chara[1].ToLower() == "color")
-                            {
-                                cloudsPropertise.cloudsColor = new Color(
-                                Convert.ToSingle(chara[2]),
-                                Convert.ToSingle(chara[3]),
-                                Convert.ToSingle(chara[4]),
-                                Convert.ToSingle(chara[5]));
-                            }
-                        }
-                    }
-
-                }
-#if DEBUG
-                GeoTools.Log("Read Cloud Completed!");
-#endif
-            }
-
-            catch (Exception ex)
-            {
-                GeoTools.Log("Error! Read Cloud Failed!");
-                GeoTools.Log(ex.Message);
-                Clear();
-                return;
-            }
-        }
-        public override void Load()
-        {
-            try
-            {
-                if (Mod.prop.CloudTemp == null) return;
-                if (cloudsPropertise == null) return;
-
-                int size = cloudsPropertise.cloudsSize;
-                if (size <= 0)
-                {
-                    return;
+                    Propertise = ModIO.DeserializeXml<CloudPropertise>(PropertisePath, Data);
+                    Enabled = true;
                 }
                 else
                 {
-                    cloudObjects = new List<GameObject>();
-
-                    for (int i = 0; i < size; i++)
-                    {
-                        cloudObjects.Add(CreateCloudObject(cloudsPropertise));
-                    }
-#if DEBUG
-                    GeoTools.Log("Load Cloud Successfully");
-#endif
+                    Propertise = new CloudPropertise();
+                    ModIO.CreateDirectory(Path, Data);
+                    ModIO.SerializeXml(Propertise, PropertisePath, Data);
+                    Enabled = true;
                 }
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                GeoTools.Log("Error! Load Cloud Failed");
-                GeoTools.Log(ex.Message);
-                Clear();
+                Propertise = new CloudPropertise();
+                Debug.Log("Cloud Propertise File Format is wrong...");
+                Debug.Log(e.Message);
+            }
+
+            if (Enabled)
+            {
+                TotalWorkNumber = Propertise.Size;
+
+
+
+            }
+        }
+
+        public override void Load(Transform parent)
+        {
+            if (!Enabled || TotalWorkNumber <= 0) return;
+
+            cloudObject = new GameObject("Cloud Object");
+            cloudObject.transform.SetParent(parent);
+
+            cloudUnitObjects = new List<GameObject>();
+            for (int i = 0; i < Propertise.Size; i++)
+            {
+                cloudUnitObjects.Add(CreateCloudObject());
+                CurrentWorkNumber++;
+                Thread.Sleep((int)Time.deltaTime * 200);
+            }
+
+            GameObject CreateCloudObject()
+            {
+                var position = Propertise.Position;
+                var scale = Propertise.Scale;
+                var color = Propertise.Color;
+                var unitScale = Propertise.CloudUnitScale;
+                var unitSizeBounds = Propertise.CloudUnitRandomSizeBounds;
+
+
+                var randomPosition = new Vector3(
+                               UnityEngine.Random.Range(-scale.x + position.x, scale.x + position.x),
+                               UnityEngine.Random.Range(position.y, scale.y + position.y),
+                               UnityEngine.Random.Range(-scale.z + position.z, scale.z + position.z));
+
+                GameObject go = (GameObject)UnityEngine.Object.Instantiate(getCloudTemp(), randomPosition, Quaternion.identity, cloudObject.transform);
+                go.transform.localScale = unitScale;
+                go.name = "Cloud Unit Object";
+                go.SetActive(true);
+
+                ParticleSystem ps = go.GetComponent<ParticleSystem>();
+                ps.startColor = color;
+
+                var cs = go.AddComponent<CloudScript>();
+                cs.SizeRandomBounds = unitSizeBounds;
+
+                return go;
+
+                GameObject getCloudTemp()
+                {
+                    var lp = UnityEngine.Object.Instantiate(PrefabMaster.GetPrefab(StatMaster.Category.Weather, 2).transform.FindChild("CLOUD").GetChild(0).gameObject);
+                    lp.SetActive(false);
+                    return lp;
+                }
             }
         }
         public override void Clear()
         {
-            if (cloudObjects == null) return;
-            if (cloudObjects.Count <= 0) return;
-#if DEBUG
-            GeoTools.Log("Clear Cloud");
-#endif
-            for (int i = 0; i < cloudObjects.Count; i++)
-            {
-                UnityEngine.Object.Destroy(cloudObjects[i]);
-            }
-
-            cloudObjects = null;
-            cloudsPropertise = null;
-        }
-
-        GameObject CreateCloudObject(CloudsPropertise cloudPropertise)
-        {
-            Vector3 position = cloudPropertise.cloudsPosition;
-            Vector3 scale = cloudPropertise.cloudsScale;
-            Color color = cloudPropertise.cloudsColor;
-
-            GameObject go = (GameObject)UnityEngine.Object.Instantiate(Mod.prop.CloudTemp, new Vector3(
-                           UnityEngine.Random.Range(-scale.x + position.x, scale.x + position.x),
-                           UnityEngine.Random.Range(position.y, scale.y + position.y),
-                           UnityEngine.Random.Range(-scale.z + position.z, scale.z + position.z)),
-                           new Quaternion(0, 0, 0, 0));
-            go.transform.SetParent(Mod.SceneController.SceneObjects.transform);
-            go.transform.localScale = new Vector3(100, 100, 100);
-            go.name = "Cloud Object";
-            go.SetActive(true);
-
-            ParticleSystem ps = go.GetComponent<ParticleSystem>();
-            ps.startColor = color;
-
-            go.AddComponent<CloudScript>();
-
-            return go;
-        }
-
-        void Update()
-        {
-            //if (Input.GetKeyDown(KeyCode.T))
-            //{
-            //    BesiegeConsoleController.ShowMessage(":??");
-
-
-            //    Level.GetCurrentLevel().AddEntity(8003, Vector3.up * 10, transform.rotation, Vector3.one * 3);
-
-            //}
+            if (cloudObject == null) return;
+            UnityEngine.Object.Destroy(cloudObject);
         }
 
     }
 
-    public class CloudPropertise : Element, IEnvironmentPropertise
+    public class CloudPropertise : TransformPropertise, IEnvironmentPropertise
     {
         [CanBeEmpty]
-        public int cloudsSize { get; set; } = 0;
+        public int Size { get; set; } = 500;
         [CanBeEmpty]
-        public Vector3 cloudsPosition { get; set; } = Vector3.zero;
+        public Vector3 CloudUnitScale { get; set; } = Vector3.one * 30f;
         [CanBeEmpty]
-        public Vector3 cloudsScale { get; set; } = new Vector3(1000, 200, 1000);
+        public Vector2 CloudUnitRandomSizeBounds{ get; set; } = new Vector2(20, 50);
         [CanBeEmpty]
-        public Color cloudsColor { get; set; } = new Color(0.92f, 0.92f, 0.92f, 0.5f);
+        public Color Color { get; set; } = new Color(0.92f, 0.92f, 0.92f, 0.5f);
+
+        public CloudPropertise()
+        {
+            Position = new Vector3(0, 200f, 0);
+            Scale = new Vector3(1000f, 200f, 1000f);
+        }
     }
 
     public class CloudScript : MonoBehaviour
     {
-        int time = 0;
+        public int timeBound = 120;
+        public Vector2 SizeRandomBounds = Vector2.one * 10f;
 
+        int time = 0;
         Vector3 axis = new Vector3(UnityEngine.Random.Range(-0.1f, 0.1f), 1f, UnityEngine.Random.Range(-0.1f, 0.1f));
 
         private void FixedUpdate()
         {
 
             transform.RotateAround(transform.localPosition, axis, Time.deltaTime * 0.3f);
-            if (time++ == 20)
+            if (time++ == timeBound)
             {
-                GetComponent<ParticleSystem>().startSize = UnityEngine.Random.Range(30, 200);
+                GetComponent<ParticleSystem>().startSize = UnityEngine.Random.Range(SizeRandomBounds.x, SizeRandomBounds.y);
             }
 
-            if (time > 20)
+            if (time > timeBound)
             {
                 time = 0;
             }
