@@ -432,8 +432,6 @@ namespace CustomScene
                 }
             }
 
-            Camera.main.farClipPlane = fogDisabled ? noFogFarClip : defaultFarClip;
-
             try
             {
                 fogSphere.GetComponent<MeshRenderer>().enabled = fogDisabled;
@@ -481,7 +479,7 @@ namespace CustomScene
             }
 
             fogDisabled = !fogDisabled;
-
+            Camera.main.farClipPlane = fogDisabled ? noFogFarClip : defaultFarClip;
         }
         #endregion
     }
