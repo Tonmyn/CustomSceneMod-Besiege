@@ -25,10 +25,18 @@ namespace CustomScene
         public SceneMod CurrentScene { get; private set; }
         public List<SceneMod> Scenes { get; private set; }
 
-
-        public bool worldBoundariesEnable = true;
-        public bool FloorBigEnable = true;
-        public bool fogEnable = true;
+        private GameObject floorBig;
+        private GameObject levelBoundary;
+        private GameObject spWorldBoundary;
+        private GameObject mpWorldBoundary;
+        private GameObject fogSphere;
+        private GameObject mainCamera;
+        private ColorfulFog activeColorfulFog;
+        public bool worldBoundaryHidden = false;
+        public bool floorBigDisabled = false;
+        public bool fogDisabled = false;
+        private int defaultFarClip = 1500;
+        private int noFogFarClip = 1500000;
 
         //public Action<SceneFolder> ReadSceneEvent;
         public event Action<SceneMod> OnLoadSceneEvent;
@@ -36,6 +44,9 @@ namespace CustomScene
 
         void Awake()
         {
+            worldBoundaryHidden = false;
+            floorBigDisabled = false;
+
             ScenePacks = ReadScenePacks(ScenePacksPath, GeoTools.isDataMode);
 
             //SceneObjects = new GameObject("Scene Objects");
@@ -59,7 +70,7 @@ namespace CustomScene
                 }
                 else
                 {
-                    Debug.Log(string.Format( "Unknown command '{0}', type 'help' for list.",value[0]));
+                    Debug.Log(string.Format("Unknown command '{0}', type 'help' for list.", value[0]));
                 }
             }),
             "<color=#FF6347>" +
@@ -144,7 +155,7 @@ namespace CustomScene
                 ModIO.CreateDirectory(scenesPath, data);
             }
 
-            var paths = ModIO.GetDirectories(scenesPath, data);        
+            var paths = ModIO.GetDirectories(scenesPath, data);
             if (paths.Length > 0)
             {
                 foreach (var path in paths)
@@ -172,10 +183,10 @@ namespace CustomScene
             Scenes = ReadScenes(ScenePacksPath, true);
         }
 
-        public void CreateNewScene(string path ,bool data = false)
+        public void CreateNewScene(string path, bool data = false)
         {
-            path = ScenePacksPath + path; 
-            if (!Scenes.Exists(match =>  match.Path == path ))
+            path = ScenePacksPath + path;
+            if (!Scenes.Exists(match => match.Path == path))
             {
                 new SceneMod(path, data);
                 RefreshScenes();
@@ -184,7 +195,7 @@ namespace CustomScene
             }
             else
             {
-                Debug.Log("Scene is existed...");    
+                Debug.Log("Scene is existed...");
             }
         }
 
@@ -192,13 +203,13 @@ namespace CustomScene
         {
             ClearScene();
 
-            if (scene.isExistPropertiseFile && scene!= null)
+            if (scene.isExistPropertiseFile && scene != null)
             {
                 //SceneManager.LoadScene("MasterSceneMultiplayer", LoadSceneMode.Single);
-                
-                
-                HideFloorBigy();
-                HideFog();
+
+
+                ToggleFloorBig();
+                ToggleFog();
 
 
 
@@ -217,7 +228,7 @@ namespace CustomScene
 
             LoadScene(scene);
         }
-        public void LoadScene(int index,bool data = false)
+        public void LoadScene(int index, bool data = false)
         {
             if (index + 1 <= Scenes.Count)
             {
@@ -340,179 +351,136 @@ namespace CustomScene
         /// <summary>
         /// 隐藏地面
         /// </summary>
-        public void HideFloorBig()
+        public void ToggleFloorBig()
         {
-
-            if (!FloorBigEnable)
-            {
-                UnhideFloorBig();
-                return;
-            }
-
-            HideFloorBigy();
-
-        }
-
-        private void HideFloorBigy()
-        {
-
-            GameObject floorBig = GameObject.Find("FloorBig");
+            if (floorBig == null) floorBig = GameObject.Find("FloorBig");
             try
             {
-                floorBig.SetActive(false);
+                floorBig.SetActive(floorBigDisabled);
+                floorBigDisabled = !floorBigDisabled;
             }
             catch
-            { 
-            
+            {
+                Debug.Log("something is wrong setting floor big");
             }
-
-            //try
-            //{
-            //    floorBig.GetComponent<BoxCollider>().enabled = false;
-            //    floorBig.GetComponent<MeshRenderer>().enabled = false;
-            //    foreach (var v in floorBig.GetComponentsInChildren<Renderer>())
-            //    {
-            //        v.enabled = false;
-            //    }
-
-            //    FloorBigEnable = false;
-            //}
-            //catch { }
-        }
-
-        /// <summary>
-        /// 还原FloorBig
-        /// </summary>
-        private void UnhideFloorBig()
-        {
-
-            GameObject floorBig = GameObject.Find("FloorBig");
-
-            floorBig.SetActive(true);
-            //try
-            //{
-            //    floorBig.GetComponent<BoxCollider>().enabled = true;
-            //    floorBig.GetComponent<MeshRenderer>().enabled = true;
-            //    foreach (var v in floorBig.GetComponentsInChildren<Renderer>())
-            //    {
-            //        v.enabled = true;
-            //    }
-            //    FloorBigEnable = true;
-            //}
-            //catch { }
-
         }
 
         /// <summary>
         /// 隐藏空气墙
         /// </summary>
-        public void HideWorldBoundaries()
+        public void ToggleWorldBoundary()
         {
-            try
-            {
-
-                //单人模式下
-                GameObject WorldBoundaries_Large = GameObject.Find("WORLD BOUNDARIES_LARGE");
-
-                SetWorldBoundaries(WorldBoundaries_Large);
-
-            }
-            catch (Exception e)
-            {
-                GeoTools.Log(e.Message);
-                worldBoundariesEnable = !worldBoundariesEnable;
-            }
+            if (levelBoundary == null) levelBoundary = GameObject.Find("WORLD BOUNDARIES");
+            if (spWorldBoundary == null) spWorldBoundary = GameObject.Find("WORLD BOUNDARIES_LARGE");
+            if (mpWorldBoundary == null) mpWorldBoundary = GameObject.Find("WORLD BOUNDARIES LARGE");
 
             try
             {
-                //多人模式下
-                GameObject worldBoundaries = GameObject.Find("WORLD BOUNDARIES");
-                //Bounds worldBoundaries = new Bounds();
-                //if (WorldBoundaries == null)
-                //{
-                //    Debug.LogError("Can't find level bounds!");
-                //}
-                //Collider[] componentsInChildren = WorldBoundaries.GetComponentsInChildren<Collider>(true);
-                //for (int i = 0; i < componentsInChildren.Length; i++)
-                //{
-                //    Bounds bound = componentsInChildren[i].bounds;
-                //    if (i != 0)
-                //    {
-                //        worldBoundaries.Encapsulate(bound);
-                //    }
-                //    else
-                //    {
-                //        worldBoundaries = bound;
-                //    }
-                //}
-                //worldBoundaries.Expand(worldBoundaries.extents * 2f * 100f);
-
-                //NetworkCompression.SetWorldBounds(worldBoundaries);
-                SetWorldBoundaries(worldBoundaries);
-
+                levelBoundary.SetActive(worldBoundaryHidden);
+                worldBoundaryHidden = !worldBoundaryHidden;
             }
-            catch (Exception e)
+            catch
             {
-                GeoTools.Log(e.Message);
-                worldBoundariesEnable = !worldBoundariesEnable;
+#if DEBUG
+                Debug.Log(levelBoundary == null);
+                Debug.Log("something is wrong setting level world boundary");
+#endif
             }
 
-            void SetWorldBoundaries(GameObject WorldBoundaries)
+            try
             {
-                worldBoundariesEnable = !worldBoundariesEnable;
-
-                foreach (BoxCollider BC in WorldBoundaries.GetComponentsInChildren<BoxCollider>())
-                {
-                    BC.isTrigger = !worldBoundariesEnable;
-                }
-
-                foreach (Renderer MR in WorldBoundaries.GetComponentsInChildren<Renderer>())
-                {
-                    MR.enabled = worldBoundariesEnable;
-                }
-
+                spWorldBoundary.SetActive(worldBoundaryHidden);
+                worldBoundaryHidden = !worldBoundaryHidden;
+            }
+            catch
+            {
+#if DEBUG
+                Debug.Log(spWorldBoundary == null);
+                Debug.Log("something is wrong setting sp world boundary");
+#endif
             }
 
-
+            try
+            {
+                mpWorldBoundary.SetActive(worldBoundaryHidden);
+                worldBoundaryHidden = !worldBoundaryHidden;
+            }
+            catch
+            {
+#if DEBUG
+                Debug.Log(mpWorldBoundary == null);
+                Debug.Log("something is wrong setting mp world boundary");
+#endif
+            }
         }
 
         /// <summary>
         /// 隐藏雾
         /// </summary>
-        public void HideFog()
+        public void ToggleFog()
         {
-            fogEnable = !fogEnable;
 
-            Camera.main.farClipPlane = fogEnable ? 1500 : 150000;
+            if (fogSphere == null) fogSphere = GameObject.Find("FOG SPHERE");
+            if (mainCamera == null) mainCamera = GameObject.Find("Main Camera");
+            if (activeColorfulFog == null && mainCamera != null)
+            {
+                List<ColorfulFog> colourfulFogs = new List<ColorfulFog>();
+                mainCamera.GetComponents(colourfulFogs);
+                foreach (var fog in colourfulFogs)
+                {
+                    if (fog.enabled) activeColorfulFog = fog;
+                }
+            }
+
+            Camera.main.farClipPlane = fogDisabled ? noFogFarClip : defaultFarClip;
 
             try
             {
-                if (SceneManager.GetActiveScene().name == "BARREN EXPANSE" || (SceneManager.GetActiveScene().name == "MasterSceneMultiplayer" && (Level.GetCurrentLevel().Setup.Name == null || Level.GetCurrentLevel().Setup.Name == "")))
-                {
+                fogSphere.GetComponent<MeshRenderer>().enabled = fogDisabled;
+            }
+            catch
+            {
+#if DEBUG
+                Debug.Log(fogSphere == null);
+                Debug.Log("something is wrong with fog sphere");
+#endif
+            }
 
-                    GameObject mainCamera = GameObject.Find("Main Camera");
-                    mainCamera.GetComponent<ColorfulFog>().enabled = fogEnable;
+            try
+            {
+                activeColorfulFog.enabled = fogDisabled;
+            }
+            catch
+            {
+#if DEBUG
+                Debug.Log(activeColorfulFog == null);
+                Debug.Log("something is wrong with active fog renderer");
+#endif
+            }
+
+            try
+            {
+                GameObject[] fogs = FindObjectsOfType<GameObject>();
+                foreach (var fog in fogs)
+                {
+                    if (fog == null) continue;
+                    if (fog.name.Contains("Fog"))
+                    {
+                        Debug.Log(fog.name);
+                        MeshRenderer mesh = fog.GetComponent<MeshRenderer>();
+                        if (mesh == null) continue;
+                        mesh.enabled = fogDisabled;
+                    }
                 }
             }
             catch
-            { }
+            {
+#if DEBUG
+                Debug.Log("something is wrong with fog volume");
+#endif
+            }
 
-            try
-            {
-                GameObject fogSPHERE = GameObject.Find("FOG SPHERE");
-                fogSPHERE.GetComponent<MeshRenderer>().enabled = fogEnable;
-            }
-            catch
-            { }
-
-            try
-            {
-                GameObject.Find("Fog Volume").GetComponent<MeshRenderer>().enabled = fogEnable;
-            }
-            catch (Exception e)
-            {
-                GeoTools.Log(e.Message);
-            }
+            fogDisabled = !fogDisabled;
 
         }
         #endregion

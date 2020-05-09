@@ -18,7 +18,7 @@ namespace CustomScene.UI
         public ModKey DisplaySceneSettingKey = ModKeys.GetKey("Scene SettingUI-key");
 
         /// <summary>地形按钮点击事件  按键序号</summary> 
-        public Action<int,bool> OnSceneButtonClick;
+        public Action<int, bool> OnSceneButtonClick;
         /// <summary>去雾按钮点击事件</summary>
         public Action OnFogButtonClick;
         /// <summary>去地面按钮点击事件</summary>
@@ -33,7 +33,7 @@ namespace CustomScene.UI
         readonly int windowID = GeoTools.GetWindowID();
 
         Vector2 scrollVector = Vector2.zero;
-        Rect windowRect = new Rect(Screen.width * 0.05f, Screen.height * 0.5f, 280, 300f+25f);
+        Rect windowRect = new Rect(Screen.width * 0.05f, Screen.height * 0.5f, 280, 300f + 25f);
 
         /// <summary>地图按钮高度</summary>
         readonly int buttonHeight = 20;
@@ -56,11 +56,11 @@ namespace CustomScene.UI
             environmentMod = SceneModController.Instance;
             OnSceneButtonClick += /*sceneMod.LoadScenePack*/environmentMod.LoadScene;
 
-            //OnFogButtonClick += sceneMod.HideFog;
+            OnFogButtonClick += environmentMod.ToggleFog;
 
-            //OnFloorButtonClick += sceneMod.HideFloorBig;
+            OnFloorButtonClick += environmentMod.ToggleFloorBig;
 
-            //OnWorldBoundsButtonClick += sceneMod.HideWorldBoundaries;
+            OnWorldBoundsButtonClick += environmentMod.ToggleWorldBoundary;
 
             //OnReloadScenesButtonClick += sceneMod.ReloadScenePacks;
 
@@ -110,8 +110,8 @@ namespace CustomScene.UI
 
             GUILayout.BeginHorizontal();
             {
-                if (GUI.Button(new Rect(10, 20+25, 120, 20), LanguageManager.ReloadButonLabel)) { OnReloadScenesButtonClick(); }
-                if (GUI.Button(new Rect(100+50, 20+25, 120, 20), LanguageManager.ScenesDirectoryButtonLabel)) { OnOpenScenePacksDirectoryButtonClick(); }
+                if (GUI.Button(new Rect(10, 20 + 25, 120, 20), LanguageManager.ReloadButonLabel)) { OnReloadScenesButtonClick(); }
+                if (GUI.Button(new Rect(100 + 50, 20 + 25, 120, 20), LanguageManager.ScenesDirectoryButtonLabel)) { OnOpenScenePacksDirectoryButtonClick(); }
             }
             GUILayout.EndHorizontal();
 
