@@ -44,41 +44,39 @@ namespace CustomScene.UI
         void Awake()
         {
             InitSceneMod();
+            refreshSceneButtons();
 
-            float height = (environmentMod.ScenePacks.Count - 1 + 1) * (buttonHeight + 5) + 5 - 5;
+            void InitSceneMod()
+            {
+                //environmentMod = gameObject.GetComponent<SceneController>();
+                environmentMod = SceneModController.Instance;
+                OnSceneButtonClick += /*sceneMod.LoadScenePack*/environmentMod.LoadScene;
 
-            sceneButtonsRect = new Rect(0, 0, 200, height);
-        }
+                OnFogButtonClick += environmentMod.ToggleFog;
 
-        void InitSceneMod()
-        {
-            //environmentMod = gameObject.GetComponent<SceneController>();
-            environmentMod = SceneModController.Instance;
-            OnSceneButtonClick += /*sceneMod.LoadScenePack*/environmentMod.LoadScene;
+                OnFloorButtonClick += environmentMod.ToggleFloorBig;
 
-            OnFogButtonClick += environmentMod.ToggleFog;
+                OnWorldBoundsButtonClick += environmentMod.ToggleWorldBoundary;
 
-            OnFloorButtonClick += environmentMod.ToggleFloorBig;
+                OnReloadScenesButtonClick += environmentMod.RefreshScenes;
+                OnReloadScenesButtonClick += refreshSceneButtons;
 
-            OnWorldBoundsButtonClick += environmentMod.ToggleWorldBoundary;
+                OnOpenScenePacksDirectoryButtonClick += () => { ModIO.OpenFolderInFileBrowser(@"Scenes", true); };
 
-            //OnReloadScenesButtonClick += sceneMod.ReloadScenePacks;
-
-            OnOpenScenePacksDirectoryButtonClick += /*sceneMod.OpenScenesDirectory*/ () => { ModIO.OpenFolderInFileBrowser(@"Scenes", true); };
-
-            //GameObject go; 
-            //go = new GameObject("Camera Mod");
-            //go.AddComponent<CameraMod>().transform.SetParent(transform);
-            //go = new GameObject("Mesh Mod");
-            //go.AddComponent<MeshMod>().transform.SetParent(transform);
-            ////go = new GameObject("Snow Mod");
-            ////go.AddComponent<SnowMod>().transform.SetParent(transform);
-            ////go = new GameObject("Cloud Mod");
-            ////go.AddComponent<CloudMod>().transform.SetParent(transform);
-            //go = new GameObject("Water Mod");
-            //go.AddComponent<WaterMod>().transform.SetParent(transform);
-            //go = new GameObject("Sky Mod");
-            //go.AddComponent<SkyMod>().transform.SetParent(transform);
+                //GameObject go; 
+                //go = new GameObject("Camera Mod");
+                //go.AddComponent<CameraMod>().transform.SetParent(transform);
+                //go = new GameObject("Mesh Mod");
+                //go.AddComponent<MeshMod>().transform.SetParent(transform);
+                ////go = new GameObject("Snow Mod");
+                ////go.AddComponent<SnowMod>().transform.SetParent(transform);
+                ////go = new GameObject("Cloud Mod");
+                ////go.AddComponent<CloudMod>().transform.SetParent(transform);
+                //go = new GameObject("Water Mod");
+                //go.AddComponent<WaterMod>().transform.SetParent(transform);
+                //go = new GameObject("Sky Mod");
+                //go.AddComponent<SkyMod>().transform.SetParent(transform);
+            }
         }
 
         private void Update()
@@ -115,29 +113,6 @@ namespace CustomScene.UI
             }
             GUILayout.EndHorizontal();
 
-            //GUILayout.BeginVertical();
-            //{
-            //    GUI.Label(new Rect(10, 50+25, 280, 20), LanguageManager.SceneListLabel);
-            //    GUI.Box(new Rect(10, 70+25, 260, 220), "");
-
-            //    scrollVector = GUI.BeginScrollView(new Rect(15, 75+25, 250, 210), scrollVector, sceneButtonsRect);
-            //    {
-            //        GUILayout.BeginArea(new Rect(0, 0, 250, sceneButtonsRect.height));
-            //        {
-            //            for (int i = 0; i < environmentMod.GetComponent<SceneController>().ScenePacks.Count; i++)
-            //            {
-            //                if (GUILayout.Button(environmentMod.GetComponent<SceneController>().ScenePacks[i].Name, GUILayout.Width(230), GUILayout.Height(20)))
-            //                {
-            //                    OnSceneButtonClick(i);
-            //                }
-            //            }
-            //        }
-            //        GUILayout.EndArea();
-            //    }
-            //    GUI.EndScrollView();
-            //}
-            //GUILayout.EndVertical();
-
             GUILayout.BeginVertical();
             {
                 GUI.Label(new Rect(10, 50 + 25, 280, 20), LanguageManager.SceneListLabel);
@@ -162,6 +137,13 @@ namespace CustomScene.UI
             GUILayout.EndVertical();
 
             GUI.DragWindow();
+        }
+
+        void refreshSceneButtons()
+        {
+            float height = (environmentMod.Scenes.Count - 1 + 1) * (buttonHeight + 5) + 5 - 5;
+
+            sceneButtonsRect = new Rect(0, 0, 200, height);
         }
 
         GUIStyle windowStyle = new GUIStyle()

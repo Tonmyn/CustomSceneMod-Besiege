@@ -11,12 +11,14 @@ using Vector3 = UnityEngine.Vector3;
 
 namespace CustomScene
 {
-    public class SkyMod : EnvironmentMod<SkyPropertise>,IResourceLoader
+    public class SkyMod : EnvironmentMod<SkyPropertise>, IResourceLoader
     {
+        private const string FolderPath = @"Sky\";
         public override string Path { get; }
         public override bool Data { get; set; }
         public override bool Enabled { get; protected set; } = false;
         public override SkyPropertise Propertise { get; set; }
+
         public override string PropertisePath { get { return Path + "SkyPropertise.xml"; } }
         public ResourceLoader resourceLoader { get; } = ResourceLoader.Instance;
 
@@ -26,7 +28,7 @@ namespace CustomScene
 
         public SkyMod(string path,bool data)
         {
-            Path = path + @"Sky\";
+            Path = path + FolderPath;
             Data = data;
             //PropertisePath = Path + @"\SkyPropertise.xml";
 
